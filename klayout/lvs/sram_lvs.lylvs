@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<klayout-macro>
+ <description>SRAM LVS (array must-connect pins)</description>
+ <version>1.0</version>
+ <category>lvs</category>
+ <prolog/>
+ <epilog/>
+ <doc>TR-1um LVS with cell-local implicit connections for repeated Vss, Vdd and WL labels in the sram bit cell.</doc>
+ <autorun>false</autorun>
+ <autorun-early>false</autorun-early>
+ <priority>0</priority>
+ <shortcut/>
+ <show-in-menu>true</show-in-menu>
+ <group-name>lvs_scripts</group-name>
+ <menu-path>tools_menu.lvs.end</menu-path>
+ <interpreter>dsl</interpreter>
+ <dsl-interpreter-name>lvs-dsl-xml</dsl-interpreter-name>
+ <text>
+# %include ./sram.lvs
+ </text>
+</klayout-macro>
