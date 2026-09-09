@@ -7,6 +7,7 @@ import hashlib
 import os
 import traceback
 from collections import Counter
+from contextlib import contextmanager
 from pathlib import Path
 
 import pya
@@ -24,6 +25,23 @@ OFFICIAL_DRC_DEBOUNCE_MS = 900
 MAX_MARKERS = 300
 STATUS_PRIORITY = 5
 CONTROLLER_KEY = "_tr1um_live_drc_controller"
+
+
+@contextmanager
+def _hold_layout_display(window):
+    """Keep the canvas painted while DRC temporarily selects its progress page.
+
+    DRC's AbstractProgress switches MainWindow's central stack immediately,
+    even for sub-second runs. Suppress painting for this synchronous call and
+    restore the previous state on success or failure. This does not alter the
+    official runset or disable progress for unrelated operations.
+    """
+    updates_enabled = window.updatesEnabled
+    window.setUpdatesEnabled(False)
+    try:
+        yield
+    finally:
+        window.setUpdatesEnabled(updates_enabled)
 
 
 class _CallbackAction(pya.Action):
@@ -317,7 +335,8 @@ class LiveDrcController:
                 raise RuntimeError(
                     f"unexpected runset interpreter: {macro.interpreter_name()}"
                 )
-            return_code = macro.run()
+            with _hold_layout_display(self.main_window):
+                return_code = macro.run()
             if return_code != 0:
                 raise RuntimeError(f"official DRC exited with code {return_code}")
 
@@ -347,18 +366,12 @@ class LiveDrcController:
             self._official_rdb = database
             self._official_rdb_view = view
 
-            # The RDB browser renders every official marker correctly,
-            # including hierarchy references which cannot be represented by a
-            # simple top-level pya.Marker.
-            self.clear_markers(clear_status=False)
-            view.show_rdb(rdb_index, int(cellview.index()))
+            # Do not call show_rdb here: reopening the marker browser after
+            # every edit causes a distracting window flash.  Render the flat
+            # official DRC geometries as normal overlay markers instead.  The
+            # complete RDB remains available through "Show official results".
+            self._show_official_markers(view, database)
             self._show_official_summary(database)
-
-            # Opening the marker browser can resize the layout viewport.  Keep
-            # that UI-only change from scheduling a redundant official pass.
-            current = self._current_context()
-            if current is not None and current[0] == view:
-                self._signature = self._shape_signature(*current)
         except Exception as exc:
             traceback.print_exc()
             self.main_window.message(
@@ -393,6 +406,43 @@ class LiveDrcController:
             -1,
             STATUS_PRIORITY,
         )
+
+    def _show_official_markers(self, view, database):
+        self.clear_markers(clear_status=False)
+        marker_budget = MAX_MARKERS
+        for item in database.each_item():
+            geometry = None
+            for value in item.each_value():
+                if value.is_edge_pair():
+                    # Marker has no DEdgePair overload.  Convert the pair to a
+                    # minimally expanded polygon in micron coordinates.
+                    geometry = value.edge_pair().polygon(0.001)
+                elif value.is_polygon():
+                    geometry = value.polygon()
+                elif value.is_box():
+                    geometry = value.box()
+                elif value.is_path():
+                    geometry = value.path()
+                elif value.is_edge():
+                    geometry = value.edge()
+                elif value.is_text():
+                    geometry = value.text()
+                if geometry is not None:
+                    break
+            if geometry is None:
+                continue
+            marker = pya.Marker(view)
+            marker.set(geometry)
+            marker.color = 0xFF3030
+            marker.frame_color = 0xFF3030
+            marker.line_width = 2
+            marker.vertex_size = 0
+            marker.halo = 1
+            marker.dismissable = False
+            self._markers.append(marker)
+            marker_budget -= 1
+            if marker_budget <= 0:
+                break
 
     def _official_rdb_index(self):
         if self._official_rdb is None or self._official_rdb_view is None:

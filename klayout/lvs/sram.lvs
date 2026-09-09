@@ -1,19 +1,10 @@
-# SRAM bit-cell LVS wrapper for the TR-1um drawing rules.
-#
-# The bit cell intentionally leaves repeated Vss, Vdd and WL shapes
-# disconnected.  They are completed by the array-level rails.  KLayout calls
-# these "implicit" or "must-connect" nets: the equally named fragments are
-# treated as one logical net for cell-level LVS, while hierarchical extraction
-# still checks that the parent connects them.
+# TR-1um extraction/comparison, with one SRAM cell-boundary assumption.
+# Both Vss rails and the NMOS substrate are tied together in sram_array.
+# See README.md for the independent, unmodified-PDK array check.
 
 # Run mode (same interface as the PDK-provided TR-1um LVS macro).
-if $run_mode == "flat"
-  puts("Setting running mode => flat")
-  flat
-else
-  puts("Setting running mode => deep")
-  deep
-end
+raise("SRAM LVS requires deep mode for cell-scoped must-connect checks") if $run_mode == "flat"
+deep
 
 # Input and top cell (same interface as the PDK macro).
 if $input
@@ -22,13 +13,6 @@ if $input
   else
     source($input)
   end
-end
-
-# This exception is intentionally valid only for the standalone SRAM bit cell.
-# Array/top-level verification must use the normal TR-1um rule so the real rail
-# connections are checked physically.
-unless source.cell_name == "sram"
-  raise("This LVS wrapper is only for top cell 'sram'; use TR-1um LVS for '#{source.cell_name}'")
 end
 
 NET_ONLY = $netlist_only ? true : false
@@ -48,37 +32,17 @@ end
 # %include /home/ishi-kai/pdk/TR-1um/libs.tech/klayout/tech/lvs/02_Extract.lvs
 # %include /home/ishi-kai/pdk/TR-1um/libs.tech/klayout/tech/lvs/04_Custom.lvs
 
-# Cell-local LVS exception: these same-name fragments are connected by rails
-# only after the bit cell is placed in an SRAM array.
-connect_implicit("sram", "Vdd")
-connect_implicit("sram", "WL")
-
-# Give the SRAM n-well the name Vdd through a separate extraction-only copy of
-# the Vdd labels which overlap it.  The original label layer remains connected
-# to M1 by the PDK rule.  Because these are distinct text layers, this names the
-# well without shorting it to M1; connect_implicit above remains responsible for
-# the cell-scoped must-connect relationship.  This avoids a global n-well rule
-# that could affect unrelated cells.
-sram_well_vdd_labels = M1_LBL.texts("Vdd")
-connect(WN, sram_well_vdd_labels)
-
-# The PDK names the global NMOS substrate net "VSS", while this design's
-# schematic and source-rail labels use "Vss".  Explicit must-connect resolves
-# that case-only naming difference and also joins every Vss fragment.
+# Must-connect applies only inside sram. A parent must physically complete it.
+# WL and Vdd are already physically connected and need no extraction overrides.
 connect_explicit("sram", ["VSS", "Vss"])
 
-# The explicit VSS/Vss must-connect net receives a compound display name.
-# Normalize only that intentional alias before the PDK creates/checks top-level
-# pins; strict checking remains enabled for every other port.
+# Match the schematic spelling after KLayout joins the substrate/rail names.
+# Do not rename or join any unrelated net.
 sram_circuit = netlist.circuit_by_name("sram")
 raise("Extracted circuit 'sram' was not found") unless sram_circuit
-
-{
-  "VSS,Vss" => "Vss"
-}.each do |joined_name, pin_name|
-  joined_net = sram_circuit.net_by_name(joined_name)
-  raise("Expected must-connect net '#{joined_name}' was not found") unless joined_net
-  joined_net.name = pin_name
+["VSS,Vss", "Vss,VSS"].each do |name|
+  joined = sram_circuit.net_by_name(name)
+  joined.name = "Vss" if joined
 end
 
 # %include /home/ishi-kai/pdk/TR-1um/libs.tech/klayout/tech/lvs/05_Compare.lvs

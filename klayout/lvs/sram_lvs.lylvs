@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <klayout-macro>
- <description>SRAM LVS (array must-connect pins)</description>
+ <description>SRAM / array LVS (Vss must-connect)</description>
  <version>1.0</version>
  <category>lvs</category>
  <prolog/>
  <epilog/>
- <doc>TR-1um LVS with cell-local implicit connections for repeated Vss, Vdd and WL labels in the sram bit cell.</doc>
+ <doc>Unmodified TR-1um rules with a cell-scoped VSS/Vss must-connect. WL and Vdd use physical connectivity.</doc>
  <autorun>false</autorun>
  <autorun-early>false</autorun-early>
  <priority>0</priority>

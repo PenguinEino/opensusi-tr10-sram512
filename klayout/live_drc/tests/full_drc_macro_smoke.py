@@ -74,6 +74,7 @@ cell.shapes(wn).insert(
 controller = install()
 controller.run_official_now(force=True)
 assert controller._official_rdb is not None
+assert controller._markers, "official RDB was not rendered as overlay markers"
 category_names = {
     category.name().split(":", 1)[0]
     for category in controller._official_rdb.each_category()
@@ -90,6 +91,7 @@ print(
 )
 assert controller._official_rdb_index() is not None
 assert int(view.num_rdbs()) == managed_count
+assert controller._markers, "refreshed official markers are missing"
 print(
     "Controller official auto-DRC: AP.WN detected; "
     f"{controller._official_rdb.num_items()} total item(s)"

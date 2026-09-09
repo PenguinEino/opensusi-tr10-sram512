@@ -1,0 +1,22 @@
+** sch_path: /home/ishi-kai/sram/sram_array.sch
+.subckt sram_array WL1 Vdd Vss BL0 BLB0 BL1 BLB1 WL0
+*.PININFO WL1:I Vdd:I Vss:I BL0:B BLB0:B BL1:B BLB1:B WL0:I
+x1 WL0 Vdd BLB0 net1 net2 BL0 Vss sram
+x2 WL1 Vdd BLB0 net3 net4 BL0 Vss sram
+x3 WL0 Vdd BLB1 net5 net6 BL1 Vss sram
+x4 WL1 Vdd BLB1 net7 net8 BL1 Vss sram
+.ends
+
+* expanding   symbol:  sram.sym # of pins=7
+** sym_path: /home/ishi-kai/sram/sram.sym
+** sch_path: /home/ishi-kai/sram/sram.sch
+.subckt sram WL Vdd BLB Q QB BL Vss
+*.PININFO Vdd:B BLB:B BL:B WL:I Q:O QB:O Vss:B
+MXM1 Q QB Vss Vss NMOS w=3.4u l=1u
+MXM2 Q QB Vdd Vdd PMOS w=3.4u l=1u
+MXM3 QB Q Vss Vss NMOS w=3.4u l=1u
+MXM4 QB Q Vdd Vdd PMOS w=3.4u l=1u
+MXM7 Q WL BL Vss NMOS w=3.4u l=1u
+MXM6 QB WL BLB Vss NMOS w=3.4u l=1u
+.ends
+

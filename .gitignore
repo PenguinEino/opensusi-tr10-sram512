@@ -1,0 +1,5 @@
+/build/lvs/
+/klayout/lvs/**/__pycache__/
+/klayout/path_preview/**/__pycache__/
+
+/xschem/flat_top/tests/__pycache__/

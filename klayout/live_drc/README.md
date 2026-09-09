@@ -8,9 +8,13 @@ shape count and bounding box remain unchanged. Violations are drawn as red
 markers.
 
 After the fast viewport check, the unmodified official PDK `run.drc` is run
-against the current unsaved layout after 900 ms without another edit. Its full
-report is shown in KLayout's Marker Database Browser. The previous automatic
-report is replaced after a new run completes successfully.
+against the current unsaved layout after 900 ms without another edit. Official
+violations are rendered as red overlay markers without opening a window. The
+complete report opens only when **Show official results** is selected. The
+previous automatic report is replaced after a new run completes successfully.
+The layout display is held during the synchronous official run so KLayout's
+temporary DRC progress page does not flash. Painting is restored even on an
+error; this does not change DRC results or make the check asynchronous.
 
 The numeric values are loaded at startup from:
 
@@ -63,7 +67,9 @@ Run:
 ./klayout/live_drc/install.sh
 ```
 
-Restart KLayout. The macro starts enabled and adds `Tools > TR-1um Live DRC`
+Restart KLayout, or open `pymacros/TR-1um_live_drc.lym` in Macro Development
+and run it to reload the controller in the current session.
+The macro starts enabled and adds `Tools > TR-1um Live DRC`
 with these commands:
 
 - **Enabled**: master switch
@@ -79,4 +85,6 @@ klayout -z -nc -rx -e -n TR-1um sram.gds \
   -r klayout/live_drc/tests/gui_smoke.py
 klayout -z -nc -rx -e -n TR-1um sram.gds \
   -r klayout/live_drc/tests/full_drc_macro_smoke.py
+QT_QPA_PLATFORM=offscreen klayout -z -nc -rx -e -n TR-1um sram.gds \
+  -r klayout/live_drc/tests/progress_smoke.py
 ```
