@@ -3,3 +3,8 @@
 /klayout/path_preview/**/__pycache__/
 
 /xschem/flat_top/tests/__pycache__/
+
+# Regenerated ngspice waveforms and testbench netlists
+/simulation/*.raw
+/simulation/sram_tb*.spice
+/simulation/sense_amp_7t.spice
