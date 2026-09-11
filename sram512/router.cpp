@@ -17,9 +17,15 @@ template<class T> void readv(ifstream&f,vector<T>&v,int n){v.resize(n);f.read((c
 int main(int argc,char**argv){
  if(argc<3)return 2;ifstream f(argv[1],ios::binary);int h[4];f.read((char*)h,sizeof(h));
  int nx=h[0],ny=h[1],nn=h[2],iterations=h[3],plane=nx*ny,N=2*plane,sx=2*nx-1,sy=2*ny-1;
+ int step=argc>3?atoi(argv[3]):5500;int halo=step==2750?1:0;
+ if(step!=5500&&step!=2750)return 3;
  vector<int> fixed,via,viafixed;readv(f,fixed,2*sx*sy);readv(f,via,plane);readv(f,viafixed,plane);
  vector<Net> nets(nn);for(auto&n:nets){int np;f.read((char*)&n.id,4);f.read((char*)&np,4);n.pins.resize(np);for(auto&p:n.pins){int sz;f.read((char*)&sz,4);readv(f,p,sz);}}
  vector<int> used(N),parent(N),stamp(N),tree(N),hist(N);vector<float> dist(N);int clock=0;
+ auto nearby=[&](int u,auto action){int l=u/plane,p=u%plane,x=p%nx,y=p/nx;
+  for(int dy=-halo;dy<=halo;dy++)for(int dx=-halo;dx<=halo;dx++)
+   if(x+dx>=0&&x+dx<nx&&y+dy>=0&&y+dy<ny)action(l*plane+(y+dy)*nx+x+dx);
+ };
  auto own=[&](int x,int id){return x==0||x==id;};
  auto pointok=[&](int u,int id){int l=u/plane,p=u%plane;return own(fixed[l*sx*sy+2*(p/nx)*sx+2*(p%nx)],id);};
  auto edgeok=[&](int u,int v,int id){int l=u/plane,p=u%plane,q=v%plane;
@@ -29,8 +35,9 @@ int main(int argc,char**argv){
  vector<int> order(nn);for(int i=0;i<nn;i++)order[i]=i;
  stable_sort(order.begin(),order.end(),[&](int a,int b){return nets[a].pins.size()>nets[b].pins.size();});
  mt19937 rng(512);bool success=false;
+ int bestscore=numeric_limits<int>::max();vector<vector<pair<int,int>>> bestedges;
  for(int it=0;it<iterations;it++){
-  int unrouted=0;float pressure=1.0f+it*1.0f;
+  int unrouted=0;float pressure=2.0f;
   if(it)shuffle(order.begin(),order.end(),rng);
   for(int ni:order){auto&net=nets[ni];for(int u:net.nodes)used[u]--;net.nodes.clear();net.edges.clear();
    fill(tree.begin(),tree.end(),0);unordered_set<int> touched;bool failed=false;
@@ -51,7 +58,8 @@ int main(int argc,char**argv){
      for(int v:ne){if(v<0||!pointok(v,net.id)||!edgeok(u,v,net.id))continue;
       bool change=(v/plane!=l),horizontal=(v==u+1||v==u-1);
       float base=change?5.0f:((l==0)==horizontal?1.0f:1.6f);
-      float cost=base+pressure*used[v]*20.0f+hist[v]*2.0f;
+      int occupancy=0;nearby(v,[&](int w){occupancy+=used[w];});
+      float cost=base+pressure*occupancy*20.0f+hist[v]*10.0f;
       float g=a.g+cost;if(stamp[v]!=clock||g<dist[v]){stamp[v]=clock;dist[v]=g;parent[v]=u;pq.push({g+heuristic(v),g,v});}
      }
     }
@@ -62,10 +70,18 @@ int main(int argc,char**argv){
    if(failed)unrouted++;
    net.nodes.assign(touched.begin(),touched.end());for(int u:net.nodes)used[u]++;
   }
-  int conflicts=0;for(int u=0;u<N;u++)if(used[u]>1){conflicts++;hist[u]+=used[u]-1;}
+  vector<int> conflicting(N),member(N);int nc=0;
+  for(auto&net:nets){nc++;for(int u:net.nodes)member[u]=nc;
+   for(int u:net.nodes)nearby(u,[&](int v){if(used[v]>(member[v]==nc?1:0))conflicting[u]=1;});
+  }
+  int conflicts=0;for(int u=0;u<N;u++)if(conflicting[u]){conflicts++;hist[u]++;}
   cerr<<"iteration "<<it<<" conflicts "<<conflicts<<" unreachable "<<unrouted<<"\n";
+  int score=conflicts+unrouted*N;
+  if(score<bestscore){bestscore=score;bestedges.clear();for(auto&n:nets)bestedges.push_back(n.edges);}
   if(conflicts==0&&unrouted==0){success=true;break;}
  }
+ if(!success)for(int i=0;i<nn;i++)nets[i].edges=bestedges[i];
+ cerr<<"best congestion score "<<bestscore<<"\n";
  ofstream out(argv[2]);out<<success<<"\n";for(auto&n:nets){out<<n.id<<" "<<n.edges.size()<<"\n";for(auto e:n.edges)out<<e.first<<" "<<e.second<<"\n";}
  return success?0:1;
 }

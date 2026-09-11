@@ -57,10 +57,18 @@ class Router:
             else:
                 assert matches,(gds_cell.name,layer)
                 layers.append(matches[0])
+        covered=[db.Region(),db.Region()]
         for n in c.each_net():
             regs=[v.polygons_of_net(n,i,True).transformed(scale).transformed(transform) if i is not None else db.Region() for i in layers]
+            for k,reg in enumerate(regs):covered[k]+=reg
             name=mapping.get(n.name.lower())
             self.add_geometry(regs,name,f'{instance}.{n.name}' if name is not None and any(not r.is_empty() for r in regs) else None)
+        # Child circuits also contain private nets (cell Q/QB, gate internal
+        # nodes). They are not enumerated by the parent circuit's each_net().
+        # Their actual metal must remain an obstacle to parent-level routing.
+        private=[db.Region(gds_cell.begin_shapes_rec(self.l.layer(*layer))).transformed(transform)-covered[k]
+                 for k,layer in enumerate((M1,M2))]
+        self.add_geometry(private)
     def prepare(self):
         fixed=np.zeros((2,self.sx*self.sy),dtype=np.int32);viametal=np.zeros(self.nx*self.ny,dtype=np.int32)
         origin=(self.ox,self.oy)
@@ -111,7 +119,7 @@ class Router:
         binary=WORK/'router';source=HERE/'router.cpp'
         if not binary.exists() or source.stat().st_mtime>binary.stat().st_mtime:
             run(['g++','-O3','-std=c++17',source,'-o',binary],WORK,'router_compile.log')
-        code,log=run([binary,inp,work/'routes.txt'],work,'router.log',False)
+        code,log=run([binary,inp,work/'routes.txt',self.step],work,'router.log',False)
         print(log[-2000:],flush=True)
         lines=(work/'routes.txt').read_text().splitlines();success=lines[0]=='1'
         paths={};i=1
@@ -127,13 +135,24 @@ class Router:
     def draw(self,paths):
         metals=[db.Region(),db.Region()];vias=set()
         for nid,edges in paths.items():
+            own=[db.Region(),db.Region()];ownvias=set()
             for a,b in edges:
                 la,pa=self.point(a);lb,pb=self.point(b)
-                if la!=lb:vias.add((pa.x,pa.y))
-                else:metals[la].insert(db.Path([pa,pb],1800 if la==0 else 3400,900 if la==0 else 1700,900 if la==0 else 1700).polygon())
+                if la!=lb:ownvias.add((pa.x,pa.y))
+                else:own[la].insert(db.Path([pa,pb],1800 if la==0 else 3400,900 if la==0 else 1700,900 if la==0 else 1700).polygon())
+            for x,y in ownvias:
+                for reg in own:reg.insert(db.Box(x-1700,y-1700,x+1700,y+1700))
+            for k in range(2):
+                native=self.regions[k].get(nid,db.Region())
+                joined=native+own[k]
+                # All additions belong to this one electrical net. Never
+                # close a design-wide gap between two independent signals.
+                radius=900 if k==0 else 1000
+                filled=joined+joined.sized(radius).sized(-radius)
+                metals[k]+=filled-native
+            vias.update(ownvias)
         for x,y in vias:
             self.top.shapes(self.l.layer(*VIA)).insert(db.Box(x-700,y-700,x+700,y+700))
-            for r in metals:r.insert(db.Box(x-1700,y-1700,x+1700,y+1700))
         for k,layer in enumerate((M1,M2)):self.top.shapes(self.l.layer(*layer)).insert(metals[k].merged())
         return metals
 

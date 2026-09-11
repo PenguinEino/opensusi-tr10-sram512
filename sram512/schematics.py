@@ -258,9 +258,20 @@ def top(tb=False):
     else:
         s.finish();s.save('sram512.sch');symbol('sram512',['CLK','RESET','SDI','WE'],['SDO'])
 
+def macro():
+    s=Sheet()
+    s.text('SRAM512 MACRO | 16 x 32 | seven external connections',-550,-430,.45)
+    s.text('The inner sheet contains the complete cell array and peripheral circuits.',-550,-370,.3)
+    ports=['CLK','RESET','SDI','WE','SDO','VDD','VSS']
+    s.device('sram512','core',0,0,{n:n for n in ports})
+    for i,n in enumerate(ports):
+        s.named_port(n,-550,-210+i*90,'inout' if n.startswith('V') else 'out' if n=='SDO' else 'in')
+    s.finish();s.save('sram512_macro.sch')
+    symbol('sram512_macro',['CLK','RESET','SDI','WE'],['SDO'])
+
 def main():
     for b in blocks():logic_sheet(b)
-    bitcell_array();column_cell();controller();top();top(True)
+    bitcell_array();column_cell();controller();top();top(True);macro()
     path=netlist(ROOT/'sram512.sch',WORK/'schematic')
     print(path)
 
