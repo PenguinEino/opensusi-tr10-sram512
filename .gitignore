@@ -34,3 +34,7 @@
 # SRAM macro capacity and serial extracted-circuit study
 /build/sram_macro_study/
 /klayout/sram_macro_study/__pycache__/
+
+# T4 two-metal topology exploration
+/build/sram_t4/
+/klayout/sram_t4/__pycache__/
