@@ -129,12 +129,8 @@ DINは各周期の5〜6 nsと15〜16 nsに切り替え、以後対象データ�
 
 5 V・27℃、CBL=10 fF・CY=100 fFで全判定PASS。WRITE_EN→PDの2.5 V交差による遅延は、立上り約2.16 ns、立下り約1.40 ns。配線抽出前の結果です。DIN/WRITE_EN/PDの波形と、PDがWLより先に立ち上がる部分の拡大プロットを追加しています。入力とアクセス順序はまだTBの電圧源が与えており、シーケンサとシリアル回路は未実装です。
 
-## クロック式シーケンサ＋2×2
+## シリアル制御の次段階
 
-[sram_tb_sequencer.sch](sram_tb_sequencer.sch) は、プリチャージ・書き込み許可・WL許可・SAEを実スタセルのシーケンサで生成する統合TBです。シフトレジスタの代わりにRA_IN/CA_IN/DIN_IN/WRITE_IN/STARTを電圧源で与え、E0でアクセス用FFへ保持します。回路本体は `sram_sequencer.sch`、保持レジスタは `sync_register_bit.sch` です。
+確定した7ピン・シリアル入力仕様は [SEQUENCER_DESIGN.md](SEQUENCER_DESIGN.md) に記載しています。外部CLKで受信から読み書き完了まで進める単一カウンタ方式で、非同期RESETを採用します。
 
-100 ns周期でE0からE7へ進み、各セルへの書込み→読出しを16操作実行します。初回E0は350 ns、次の操作は900 ns後。E6でSOUTをREAD_DATAへ保持します。入力の途中変更とBUSY中のSTARTは現在の操作に影響しません。RESETは同期式で、初期状態を `.ic` で強制していません。各ビット線と共通線のプリチャージは同じPREB出力で制御します。
-
-5 V・27℃で全16操作PASS。`python3 scripts/verify_sequencer.py` は一時ディレクトリでネットリスト・ngspice実行後、1,717項目の区間判定を行います。保存済みの `sequencer_waveforms.txt` を引数に渡せば判定だけ実行できます。大きな波形ファイルはGit管理しません。
-
-状態表、リセット・開始受付の仕様、制約は [SEQUENCER_DESIGN.md](SEQUENCER_DESIGN.md) を参照してください。
+以前の並列入力・START受付・同期RESETのシーケンサーと専用TB、保持レジスタ、専用検証スクリプト・操作一覧は削除しました。新仕様のRTL・回路図・専用TBは未作成です。現時点の統合検証基準は、上記の `sram_tb_array_write_control.sch` です。
