@@ -38,3 +38,7 @@
 # T4 two-metal topology exploration
 /build/sram_t4/
 /klayout/sram_t4/__pycache__/
+
+# Compacted shared-source SRAM study
+/build/sram_compact/
+/klayout/sram_compact/__pycache__/
