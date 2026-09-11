@@ -27,3 +27,6 @@
 /simulation/serial_spice_waveforms.txt
 /serial_spice_waveforms.txt
 /sram_tb_serial.raw
+
+# Reproducible SRAM research verification and simulation outputs
+/build/sram_research/
