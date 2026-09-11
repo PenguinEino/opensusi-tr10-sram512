@@ -18,6 +18,9 @@
 # Digital RTL simulation executables, logs and optional VCD waveforms
 /build/rtl/
 
+# Dense SRAM layout verification, extracted netlists, and simulator outputs
+/build/dense_sram/
+
 # Serial controller schematic generation and transistor verification
 /build/serial_sch/
 /build/serial_spice/
