@@ -36,7 +36,10 @@ def netlist_and_simulate(work,case):
     paths=[ROOT,Path('/usr/local/share/xschem/xschem_library'),Path('/usr/local/share/xschem/xschem_library/devices'),lib,lib/'TR-1umLIB',lib/'TR-1um_5_stdcell']
     rc=work/'xschemrc'
     rc.write_text('set XSCHEM_LIBRARY_PATH {'+':'.join(map(str,paths))+'}\n'+f'set LIB {{{pdk}/libs.tech/spice/models}}\nset lvs_netlist 0\nset top_is_subckt 0\nset spiceprefix 1\n')
-    run(['xschem','-r','-x','--rcfile',rc,'-s','--command','xschem netlist; exit','-o',work,ROOT/'sram_tb_serial.sch'],work,'netlist.log')
+    # ERC messages live in Xschem's info window, not stdout by default.
+    # Print them and propagate the netlister status so run() checks both.
+    command='set result [xschem netlist]; puts [xschem get infowindow_text]; exit $result'
+    run(['xschem','-r','-x','--rcfile',rc,'-s','--command',command,'-o',work,ROOT/'sram_tb_serial.sch'],work,'netlist.log')
     net=(work/'sram_tb_serial.spice').read_text()
     # Detect edits to the generator/stimulus without corresponding TB updates.
     flat=re.sub(r'\n\+\s*',' ',net)

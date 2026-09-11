@@ -157,4 +157,6 @@ python3 scripts/verify_serial_spice.py
 
 ネットリスト・ログ・波形・比較結果はGit対象外の `build/serial_spice/` へ保存します。回路図を再生成・上書きせずに検証します。完了済み波形を再判定する場合は `python3 scripts/verify_serial_spice.py --reuse build/serial_spice`。刺激を変更した場合は回路図のPWLと `scripts/serial_spice_stimulus.py` の両方を合わせます。
 
+通常実行では、Xschemの情報ウィンドウに出る階層全体のERCメッセージも `netlist.log` に保存し、警告・エラーがあればシミュレーション前に停止します。Q/QB・E7・PC_ON・TRACKのNC表示は、意図的に回路負荷を接続しない端子の印です。ネットを切断する素子ではなく、SPICEにはコメントとして出力されるため、名前による波形観測は引き続きできます。
+
 5 V・27℃、ローカル線追加10 fF、共通線追加100 fF、SA各出力・SDO追加10 fFでPASS。3,408件のRTL比較と745件の区間判定で、保持・選択・プリチャージ・実WL/PD・SA・受信途中の非同期RESETを確認しました。初期値の `.ic` はありません。最短周期・ばらつき・配線抽出・実パッド負荷は未評価です。

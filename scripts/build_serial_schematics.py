@@ -94,7 +94,7 @@ def controller():
         s.lead(f'xnext{i}','B',[(490,y+20)],False)
     for x,net,start,end in [(900,'CLK',-60,1070),(950,'RESET',-20,1090),(490,'COUNT_RUN',-110,1020)]:
         s.wire([(x,start),(x,end)],net)
-        s.label(x,start,net,onwire=True)
+        if net=='COUNT_RUN':s.label(x,start,net,onwire=True)
     s.port('CLK',900,-60);s.port('RESET',950,-20)
     s.gate('AND2_X1','xcarry2',0,1200,A='C0',B='C1',Y='CARRY2')
     s.gate('AND3_X1','xcarry3',520,1200,A='C0',B='C1',C='C2',Y='CARRY3')
@@ -117,6 +117,7 @@ def controller():
             px,py=s.at(f'xdecode{e}',p)
             s.lead(f'xdecode{e}',p,[(rails[n],py)],False)
         s.lead(f'xdecode{e}','Y',[(2180,y)])
+        if e==7:s.comp('devices/noconn.sym',2180,y,'name=nc_e7')
         s.text(f'{v:04b}  =  {v}  /  E{e}',1930,y+70,.23)
     s.gate('NAND2','xrx_low',1370,1690,A='C0',B='C1',Y='RX_LOW')
     s.gate('AND3_X1','xrx',1810,1690,A='C3B',B='C2B',C='RX_LOW',Y='RX')
@@ -127,6 +128,9 @@ def controller():
     s.text('C  /  REGISTERED CONTROL OUTPUTS',2530,-250,.36)
     # One DFF's QB directly drives both physical precharge domains.
     s.gate('DFFR','xpc',4380,130,D='E0',Q='PC_ON',QB='PREB',CK='CLK',RST='RESET')
+    s.lead('xpc','Q',[(4590,100)],False)
+    s.label(4510,100,'PC_ON',onwire=True)
+    s.comp('devices/noconn.sym',4590,100,'name=nc_pc_on')
     s.lead('xpc','D',[(4000,100)])
     s.lead('xpc','QB',[(4650,140)],False);s.port('PREB',4650,140,'out')
     s.text('PC_ON.QB -> PREB (also common-line YPREB)',3900,265,.25)
@@ -150,6 +154,9 @@ def controller():
     s.link('xtrack_e0','Y','xtrack_d','A',via=[(3540,1070),(3540,1240)])
     s.link('xtrack_later','Y','xtrack_d','B',via=[(3600,1420),(3600,1280)])
     s.gate('DFFR','xtrack',4380,1290,D='TRACK_D',Q='TRACK',QB='SAE',CK='CLK',RST='RESET')
+    s.lead('xtrack','Q',[(4590,1260)],False)
+    s.label(4510,1260,'TRACK',onwire=True)
+    s.comp('devices/noconn.sym',4590,1260,'name=nc_track')
     s.link('xtrack_d','Y','xtrack','D',label=True)
     s.lead('xtrack','QB',[(4650,1300)],False);s.port('SAE',4650,1300,'out')
     s.text('E0 uses external WE; E1..E3 use the held W. SAE is TRACK.QB.',2540,1600,.25)
@@ -208,6 +215,7 @@ def controller():
         s.wire([(3200,2250+dy),(3970,2250+dy)],n);s.label(3200,2250+dy,n,onwire=True)
     s.text('All MUX: S=0 -> A (feedback); S=1 -> B (new data).',-180,3430,.28)
     s.text('RST pins connect directly to RESET. Q resets LOW; QB resets HIGH. No custom bit-register symbols.',-180,3490,.28)
+    s.text('NC: intentionally no circuit load; named nets remain available for waveform probes.',-180,3550,.25)
     s.port('VDD',4720,2900,'inout');s.port('VSS',4720,3040,'inout')
     s.finish()
     return s
@@ -248,6 +256,10 @@ def testbench(pins):
             if sym in ['devices/vsource.sym','devices/code.sym','devices/netlist_options.sym'] or y>=1900:continue
             if sym=='devices/lab_pin.sym' and (x,y) in replaced:continue
             s.lines.append(rec.rstrip().replace('YPREB','PREB'))
+            # SRAM Q/QB are waveform probes, with no electrical load in this TB.
+            if sym=='devices/lab_pin.sym' and re.search(r'\blab=QB?[01][01]\b',rec):
+                net=re.search(r'\blab=(\w+)',rec)[1]
+                s.comp('devices/noconn.sym',x,y,f'name=nc_{net}')
     s.text('SERIAL 2 x 2 SRAM | 7-pin interface | real standard-cell controller',-2130,-350,.43)
     s.text('SRAM cells above / column mux and common lines in the middle / shared write and sense below',-800,-250,.27)
     s.text('COLUMN 0',100,-175);s.text('COLUMN 1',900,-175)
@@ -273,7 +285,6 @@ def testbench(pins):
     s.label(-810,-40,'PREB',onwire=True)
     x,y=coords['SAE'];s.wire([(x,y),(930,y),(930,1440),(1000,1440)],'SAE');s.label(930,y,'SAE',onwire=True)
     x,y=coords['SOUT'];s.wire([(1500,1320),(1860,1320),(1860,2750),(-1840,2750),(-1840,y),(x,y)],'SOUT')
-    s.label(1500,1320,'SOUT',onwire=True)
     x,y=coords['SDO'];s.wire([(x,y),(-540,y)],'SDO');s.port('SDO',-540,y,'out')
     s.comp('devices/capa.sym',-620,y+80,'name=CSDO value=10f m=1')
     s.wire([(-620,y),(-620,y+50)],'SDO');s.comp('devices/gnd.sym',-620,y+110,'name=g_sdo lab=GND')
@@ -299,6 +310,7 @@ def testbench(pins):
            'Read old cell after reset, then another write/read.',
            'SDI and WE change during access; held command must not.',
            'No .ic: only written SRAM cells have expected contents.',
+           'Q/QB NC markers: waveform probes, no circuit load.',
            '', 'CONTROL INTERNALS: descend into xctrl (e).',
            'Flat sheet: DFFR + MUX feedback is directly visible.',
            'All RST pins use asynchronous RESET; no helper bit symbols.']

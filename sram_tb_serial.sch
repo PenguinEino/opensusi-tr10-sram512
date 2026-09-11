@@ -70,8 +70,10 @@ N 0 200 100 200 {lab=BL0}
 N 400 200 500 200 {lab=BLB0}
 N 400 220 430 220 {lab=Q00}
 C {devices/lab_pin.sym} 430 220 2 0 {name=wirelabel51 lab=Q00}
+C {devices/noconn.sym} 430 220 0 0 {name=nc_Q00}
 N 400 240 430 240 {lab=QB00}
 C {devices/lab_pin.sym} 430 240 2 0 {name=wirelabel53 lab=QB00}
+C {devices/noconn.sym} 430 240 0 0 {name=nc_QB00}
 N 400 260 430 260 {lab=VDD}
 C {devices/lab_pin.sym} 430 260 2 0 {name=wirelabel55 lab=VDD}
 N 400 280 430 280 {lab=GND}
@@ -82,8 +84,10 @@ N 0 470 100 470 {lab=BL0}
 N 400 470 500 470 {lab=BLB0}
 N 400 490 430 490 {lab=Q10}
 C {devices/lab_pin.sym} 430 490 2 0 {name=wirelabel63 lab=Q10}
+C {devices/noconn.sym} 430 490 0 0 {name=nc_Q10}
 N 400 510 430 510 {lab=QB10}
 C {devices/lab_pin.sym} 430 510 2 0 {name=wirelabel65 lab=QB10}
+C {devices/noconn.sym} 430 510 0 0 {name=nc_QB10}
 N 400 530 430 530 {lab=VDD}
 C {devices/lab_pin.sym} 430 530 2 0 {name=wirelabel67 lab=VDD}
 N 400 550 430 550 {lab=GND}
@@ -153,8 +157,10 @@ N 800 200 900 200 {lab=BL1}
 N 1200 200 1300 200 {lab=BLB1}
 N 1200 220 1230 220 {lab=Q01}
 C {devices/lab_pin.sym} 1230 220 2 0 {name=wirelabel109 lab=Q01}
+C {devices/noconn.sym} 1230 220 0 0 {name=nc_Q01}
 N 1200 240 1230 240 {lab=QB01}
 C {devices/lab_pin.sym} 1230 240 2 0 {name=wirelabel111 lab=QB01}
+C {devices/noconn.sym} 1230 240 0 0 {name=nc_QB01}
 N 1200 260 1230 260 {lab=VDD}
 C {devices/lab_pin.sym} 1230 260 2 0 {name=wirelabel113 lab=VDD}
 N 1200 280 1230 280 {lab=GND}
@@ -165,8 +171,10 @@ N 800 470 900 470 {lab=BL1}
 N 1200 470 1300 470 {lab=BLB1}
 N 1200 490 1230 490 {lab=Q11}
 C {devices/lab_pin.sym} 1230 490 2 0 {name=wirelabel121 lab=Q11}
+C {devices/noconn.sym} 1230 490 0 0 {name=nc_Q11}
 N 1200 510 1230 510 {lab=QB11}
 C {devices/lab_pin.sym} 1230 510 2 0 {name=wirelabel123 lab=QB11}
+C {devices/noconn.sym} 1230 510 0 0 {name=nc_QB11}
 N 1200 530 1230 530 {lab=VDD}
 C {devices/lab_pin.sym} 1230 530 2 0 {name=wirelabel125 lab=VDD}
 N 1200 550 1230 550 {lab=GND}
@@ -301,28 +309,28 @@ T {COLUMN DECODE} -730 1240 0 0 0.27 0.27 {}
 T {COMMON PRECHARGE / WRITE / SENSE} -180 1730 0 0 0.3 0.3 {}
 T {CBL=10f, CY=100f: added learning loads, not extracted capacitance} -180 1790 0 0 0.25 0.25 {}
 C {sram_serial_controller.sym} -1450 2280 0 0 {name=xctrl}
-C {devices/lab_pin.sym} -1450 1890 0 0 {name=l219 lab=VDD}
-C {devices/lab_pin.sym} -1450 2670 0 0 {name=l220 lab=GND}
+C {devices/lab_pin.sym} -1450 1890 0 0 {name=l227 lab=VDD}
+C {devices/lab_pin.sym} -1450 2670 0 0 {name=l228 lab=GND}
 N -1150 2035 -1050 2035 {lab=RA}
 N -1050 2035 -1050 430 {lab=RA}
 N -1050 430 -680 430 {lab=RA}
-C {devices/lab_pin.sym} -680 430 0 0 {name=l224 lab=RA}
+C {devices/lab_pin.sym} -680 430 0 0 {name=l232 lab=RA}
 N -1150 2105 -1010 2105 {lab=CA}
 N -1010 2105 -1010 940 {lab=CA}
 N -1010 940 -680 940 {lab=CA}
-C {devices/lab_pin.sym} -680 940 0 0 {name=l228 lab=CA}
+C {devices/lab_pin.sym} -680 940 0 0 {name=l236 lab=CA}
 N -1150 2175 -970 2175 {lab=DIN}
 N -970 2175 -970 1470 {lab=DIN}
 N -970 1470 -680 1470 {lab=DIN}
-C {devices/lab_pin.sym} -680 1470 0 0 {name=l232 lab=DIN}
+C {devices/lab_pin.sym} -680 1470 0 0 {name=l240 lab=DIN}
 N -1150 2385 -930 2385 {lab=WL_EN}
 N -930 2385 -930 510 {lab=WL_EN}
 N -930 510 -680 510 {lab=WL_EN}
-C {devices/lab_pin.sym} -680 510 0 0 {name=l236 lab=WL_EN}
+C {devices/lab_pin.sym} -680 510 0 0 {name=l244 lab=WL_EN}
 N -1150 2315 -890 2315 {lab=WRITE_EN}
 N -890 2315 -890 1550 {lab=WRITE_EN}
 N -890 1550 -680 1550 {lab=WRITE_EN}
-C {devices/lab_pin.sym} -680 1550 0 0 {name=l240 lab=WRITE_EN}
+C {devices/lab_pin.sym} -680 1550 0 0 {name=l248 lab=WRITE_EN}
 N -1150 2245 -810 2245 {lab=PREB}
 N -810 2245 -810 -40 {lab=PREB}
 N -810 -40 1260 -40 {lab=PREB}
@@ -333,17 +341,16 @@ N 1260 -40 1260 0 {lab=PREB}
 N -810 1070 610 1070 {lab=PREB}
 N 610 1070 610 1170 {lab=PREB}
 N 110 1070 110 1170 {lab=PREB}
-C {devices/lab_wire.sym} -810 -40 0 0 {name=l251 lab=PREB}
+C {devices/lab_wire.sym} -810 -40 0 0 {name=l259 lab=PREB}
 N -1150 2455 930 2455 {lab=SAE}
 N 930 2455 930 1440 {lab=SAE}
 N 930 1440 1000 1440 {lab=SAE}
-C {devices/lab_wire.sym} 930 2455 0 0 {name=l255 lab=SAE}
+C {devices/lab_wire.sym} 930 2455 0 0 {name=l263 lab=SAE}
 N 1500 1320 1860 1320 {lab=SOUT}
 N 1860 1320 1860 2750 {lab=SOUT}
 N 1860 2750 -1840 2750 {lab=SOUT}
 N -1840 2750 -1840 2450 {lab=SOUT}
 N -1840 2450 -1750 2450 {lab=SOUT}
-C {devices/lab_wire.sym} 1500 1320 0 0 {name=l261 lab=SOUT}
 N -1150 2525 -540 2525 {lab=SDO}
 C {devices/opin.sym} -540 2525 0 0 {name=pSDO lab=SDO}
 C {devices/capa.sym} -620 2605 0 0 {name=CSDO value=10f m=1}
@@ -354,31 +361,31 @@ value="PWL(0n 0 250n 0 251n 5 300n 5 301n 0 350n 0 351n 5 400n 5 401n 0 450n 0 4
 savecurrent=false
 hide_texts=true}
 N -2070 2110 -1750 2110 {lab=CLK}
-C {devices/lab_wire.sym} -1970 2110 0 0 {name=l269 lab=CLK}
+C {devices/lab_wire.sym} -1970 2110 0 0 {name=l276 lab=CLK}
 C {devices/gnd.sym} -2070 2170 0 0 {name=g_CLK lab=GND}
 C {devices/vsource.sym} -2070 2225 0 0 {name=VRESET
 value="PWL(0n 5 120n 5 121n 0 18030n 0 18031n 5 18160n 5 18161n 0 21680n 0)"
 savecurrent=false
 hide_texts=true}
 N -2070 2195 -1750 2195 {lab=RESET}
-C {devices/lab_wire.sym} -1970 2195 0 0 {name=l273 lab=RESET}
+C {devices/lab_wire.sym} -1970 2195 0 0 {name=l280 lab=RESET}
 C {devices/gnd.sym} -2070 2255 0 0 {name=g_RESET lab=GND}
 C {devices/vsource.sym} -2070 2310 0 0 {name=VSDI
 value="PWL(0n 0 610n 0 611n 5 710n 5 711n 0 810n 0 811n 5 910n 5 911n 0 1010n 0 1011n 5 1110n 5 1111n 0 1210n 0 1211n 5 1310n 5 1311n 0 1710n 0 1711n 5 1810n 5 1811n 0 1910n 0 1911n 5 2010n 5 2011n 0 2110n 0 2111n 5 2210n 5 2211n 0 2310n 0 2311n 5 2410n 5 2411n 0 2510n 0 2511n 5 2710n 5 2711n 0 2810n 0 2811n 5 2910n 5 2911n 0 3010n 0 3011n 5 3110n 5 3111n 0 3210n 0 3211n 5 3310n 5 3311n 0 3410n 0 3411n 5 3510n 5 3511n 0 3610n 0 3611n 5 3710n 5 3711n 0 3910n 0 3911n 5 4010n 5 4011n 0 4110n 0 4111n 5 4210n 5 4211n 0 4310n 0 4311n 5 4410n 5 4411n 0 4510n 0 4511n 5 4710n 5 4711n 0 4810n 0 4811n 5 4910n 5 4911n 0 5010n 0 5011n 5 5110n 5 5111n 0 5210n 0 5211n 5 5310n 5 5311n 0 5410n 0 5411n 5 5510n 5 5511n 0 5610n 0 5611n 5 5810n 5 5811n 0 6110n 0 6111n 5 6210n 5 6211n 0 6310n 0 6311n 5 6410n 5 6411n 0 6510n 0 6511n 5 6610n 5 6611n 0 6710n 0 6711n 5 7010n 5 7011n 0 7210n 0 7211n 5 7310n 5 7311n 0 7410n 0 7411n 5 7510n 5 7511n 0 7610n 0 7611n 5 7710n 5 7711n 0 7810n 0 7811n 5 8110n 5 8111n 0 8310n 0 8311n 5 8410n 5 8411n 0 8510n 0 8511n 5 8610n 5 8611n 0 8710n 0 8711n 5 8810n 5 8811n 0 8910n 0 8911n 5 9010n 5 9011n 0 9210n 0 9211n 5 9310n 5 9311n 0 9410n 0 9411n 5 9510n 5 9511n 0 9610n 0 9611n 5 9710n 5 9711n 0 9810n 0 9811n 5 9910n 5 9911n 0 10010n 0 10011n 5 10110n 5 10111n 0 10510n 0 10511n 5 10610n 5 10611n 0 10710n 0 10711n 5 10810n 5 10811n 0 10910n 0 10911n 5 11010n 5 11011n 0 11110n 0 11111n 5 11210n 5 11211n 0 11310n 0 11311n 5 11410n 5 11411n 0 11610n 0 11611n 5 11710n 5 11711n 0 11810n 0 11811n 5 11910n 5 11911n 0 12010n 0 12011n 5 12110n 5 12111n 0 12210n 0 12211n 5 12310n 5 12311n 0 12410n 0 12411n 5 12510n 5 12511n 0 12710n 0 12711n 5 12810n 5 12811n 0 12910n 0 12911n 5 13010n 5 13011n 0 13110n 0 13111n 5 13210n 5 13211n 0 13310n 0 13311n 5 13510n 5 13511n 0 13810n 0 13811n 5 13910n 5 13911n 0 14010n 0 14011n 5 14110n 5 14111n 0 14210n 0 14211n 5 14310n 5 14311n 0 14410n 0 14411n 5 14610n 5 14611n 0 14910n 0 14911n 5 15010n 5 15011n 0 15110n 0 15111n 5 15210n 5 15211n 0 15310n 0 15311n 5 15410n 5 15411n 0 15510n 0 15511n 5 15910n 5 15911n 0 16010n 0 16011n 5 16110n 5 16111n 0 16210n 0 16211n 5 16310n 5 16311n 0 16410n 0 16411n 5 16510n 5 16511n 0 16610n 0 16611n 5 16910n 5 16911n 0 17110n 0 17111n 5 17210n 5 17211n 0 17310n 0 17311n 5 17410n 5 17411n 0 17510n 0 17511n 5 17610n 5 17611n 0 17710n 0 17711n 5 18440n 5 18441n 0 18640n 0 18641n 5 18740n 5 18741n 0 18840n 0 18841n 5 18940n 5 18941n 0 19040n 0 19041n 5 19140n 5 19141n 0 19240n 0 19241n 5 19340n 5 19341n 0 19440n 0 19441n 5 19640n 5 19641n 0 19740n 0 19741n 5 19840n 5 19841n 0 19940n 0 19941n 5 20040n 5 20041n 0 20140n 0 20141n 5 20240n 5 20241n 0 20340n 0 20341n 5 20440n 5 20441n 0 20540n 0 20541n 5 20640n 5 20641n 0 20840n 0 20841n 5 20940n 5 20941n 0 21040n 0 21041n 5 21140n 5 21141n 0 21240n 0 21241n 5 21340n 5 21341n 0 21440n 0 21441n 5 21680n 5)"
 savecurrent=false
 hide_texts=true}
 N -2070 2280 -1750 2280 {lab=SDI}
-C {devices/lab_wire.sym} -1970 2280 0 0 {name=l277 lab=SDI}
+C {devices/lab_wire.sym} -1970 2280 0 0 {name=l284 lab=SDI}
 C {devices/gnd.sym} -2070 2340 0 0 {name=g_SDI lab=GND}
 C {devices/vsource.sym} -2070 2395 0 0 {name=VWE
 value="PWL(0n 0 310n 0 311n 5 410n 5 411n 0 510n 0 511n 5 610n 5 611n 0 1410n 0 1411n 5 1510n 5 1511n 0 1710n 0 1711n 5 2410n 5 2411n 0 2510n 0 2511n 5 2610n 5 2611n 0 2710n 0 2711n 5 2810n 5 2811n 0 3610n 0 3611n 5 3710n 5 3711n 0 3910n 0 3911n 5 4610n 5 4611n 0 4710n 0 4711n 5 4810n 5 4811n 0 4910n 0 4911n 5 5010n 5 5011n 0 5810n 0 5811n 5 5910n 5 5911n 0 6110n 0 6111n 5 6810n 5 6811n 0 6910n 0 6911n 5 7010n 5 7011n 0 7110n 0 7111n 5 7210n 5 7211n 0 8010n 0 8011n 5 8110n 5 8111n 0 8310n 0 8311n 5 9010n 5 9011n 0 9110n 0 9111n 5 9210n 5 9211n 0 9310n 0 9311n 5 9410n 5 9411n 0 10210n 0 10211n 5 10310n 5 10311n 0 10510n 0 10511n 5 11210n 5 11211n 0 11310n 0 11311n 5 11410n 5 11411n 0 11510n 0 11511n 5 11610n 5 11611n 0 12410n 0 12411n 5 12510n 5 12511n 0 12710n 0 12711n 5 13410n 5 13411n 0 13510n 0 13511n 5 13610n 5 13611n 0 13710n 0 13711n 5 13810n 5 13811n 0 14610n 0 14611n 5 14710n 5 14711n 0 14910n 0 14911n 5 15610n 5 15611n 0 15710n 0 15711n 5 15810n 5 15811n 0 15910n 0 15911n 5 16010n 5 16011n 0 16810n 0 16811n 5 16910n 5 16911n 0 17110n 0 17111n 5 17810n 5 17811n 0 18340n 0 18341n 5 18440n 5 18441n 0 18640n 0 18641n 5 19340n 5 19341n 0 19440n 0 19441n 5 19540n 5 19541n 0 19640n 0 19641n 5 19740n 5 19741n 0 20540n 0 20541n 5 20640n 5 20641n 0 20840n 0 20841n 5 21680n 5)"
 savecurrent=false
 hide_texts=true}
 N -2070 2365 -1750 2365 {lab=WE}
-C {devices/lab_wire.sym} -1970 2365 0 0 {name=l281 lab=WE}
+C {devices/lab_wire.sym} -1970 2365 0 0 {name=l288 lab=WE}
 C {devices/gnd.sym} -2070 2425 0 0 {name=g_WE lab=GND}
 C {devices/vsource.sym} -2070 1840 0 0 {name=VVDD value=5 savecurrent=false}
-C {devices/lab_pin.sym} -2070 1810 0 0 {name=l284 lab=VDD}
+C {devices/lab_pin.sym} -2070 1810 0 0 {name=l291 lab=VDD}
 C {devices/gnd.sym} -2070 1870 0 0 {name=g_vdd lab=GND}
 T {EXTERNAL INPUTS ONLY} -2140 1960 0 0 0.28 0.28 {}
 T {SOUT returns to result FF -> SDO} -300 2720 0 0 0.27 0.27 {}
@@ -398,10 +405,11 @@ T {16 checkerboard writes/reads, then partial RX reset.} 2230 376 0 0 0.27 0.27 
 T {Read old cell after reset, then another write/read.} 2230 424 0 0 0.27 0.27 {}
 T {SDI and WE change during access; held command must not.} 2230 472 0 0 0.27 0.27 {}
 T {No .ic: only written SRAM cells have expected contents.} 2230 520 0 0 0.27 0.27 {}
-T {} 2230 568 0 0 0.27 0.27 {}
-T {CONTROL INTERNALS: descend into xctrl (e).} 2230 616 0 0 0.27 0.27 {}
-T {Flat sheet: DFFR + MUX feedback is directly visible.} 2230 664 0 0 0.27 0.27 {}
-T {All RST pins use asynchronous RESET; no helper bit symbols.} 2230 712 0 0 0.27 0.27 {}
+T {Q/QB NC markers: waveform probes, no circuit load.} 2230 568 0 0 0.27 0.27 {}
+T {} 2230 616 0 0 0.27 0.27 {}
+T {CONTROL INTERNALS: descend into xctrl (e).} 2230 664 0 0 0.27 0.27 {}
+T {Flat sheet: DFFR + MUX feedback is directly visible.} 2230 712 0 0 0.27 0.27 {}
+T {All RST pins use asynchronous RESET; no helper bit symbols.} 2230 760 0 0 0.27 0.27 {}
 T {  250 ns RX: W row0 col0 = 0} 2230 860 0 0 0.25 0.25 {}
 T { 1350 ns RX: R row0 col0 = 0} 2230 898 0 0 0.25 0.25 {}
 T { 2450 ns RX: W row0 col1 = 1} 2230 936 0 0 0.25 0.25 {}
