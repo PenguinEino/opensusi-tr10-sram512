@@ -42,3 +42,7 @@
 # Compacted shared-source SRAM study
 /build/sram_compact/
 /klayout/sram_compact/__pycache__/
+
+# TR-1um PCell SRAM experiments and regenerated simulation data
+/build/sram_pcell/
+/klayout/sram_pcell/__pycache__/
