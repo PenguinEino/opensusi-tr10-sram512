@@ -4,7 +4,9 @@ from pathlib import Path
 import argparse, hashlib, importlib.util, json, sys
 import klayout.db as db
 HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[1]
-PDK=Path('/home/ishi-kai/pdk/TR-1um')
+sys.path.insert(0,str(ROOT/'scripts'))
+from pdk_profiles import pdk_path
+PDK=pdk_path()
 sys.path.insert(0,str(PDK/'libs.tech/klayout/tech/python'))
 from cells import tr_1um
 LIBRARY=tr_1um('TR-1um')

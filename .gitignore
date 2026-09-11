@@ -53,3 +53,8 @@
 /build/pdk_checks/
 /scripts/__pycache__/
 /scripts/tests/__pycache__/
+
+# 512-bit implementation verification and regenerable waveforms
+/build/sram512/
+/sram512/__pycache__/
+/sram512*.raw
