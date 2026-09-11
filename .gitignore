@@ -30,3 +30,7 @@
 
 # Reproducible SRAM research verification and simulation outputs
 /build/sram_research/
+
+# SRAM macro capacity and serial extracted-circuit study
+/build/sram_macro_study/
+/klayout/sram_macro_study/__pycache__/
