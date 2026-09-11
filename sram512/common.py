@@ -43,7 +43,7 @@ def netlist(schematic, work, subckt=True, erc=True):
     command='set result [xschem netlist]; puts [xschem get infowindow_text]; exit $result'
     _, log = run(['xschem','-r','-x','--rcfile',rc,'-s','--command',command,
                   '-o',work,schematic],work,'netlist.log')
-    if erc and re.search(r'(?im)error:|warning:|symbol not found', log):
+    if erc and re.search(r'(?im)error:|warning:|symbol not found|SKIPPING', log):
         raise RuntimeError(f'ERC failed: {work}/netlist.log\n{log[-2000:]}')
     result=work/(schematic.stem+'.spice')
     if 'IS MISSING' in result.read_text():
