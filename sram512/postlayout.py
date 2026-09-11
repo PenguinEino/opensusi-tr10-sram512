@@ -71,25 +71,32 @@ def devices(folder):
                         physical_fingers=sum(r['fingers'] for r in records if r['model'] in ('NMOS','PMOS')),
                         model_counts=dict(Counter(r['model'] for r in records)),source=str(folder))
 
-def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale=None,recheck=False):
-    work=WORK/'analog'/name;work.mkdir(parents=True,exist_ok=True)
-    records,provenance=devices(folder);write_json(work/'physical_devices.json',records)
-    case=scenario(period=period)
-    extra=[];wire_nodes=[];rc_info=None
-    if rc_scale is not None:
-        from wire_rc import add_rc
-        records,extra,wire_nodes,rc_info=add_rc(folder,records,rc_scale)
-        write_json(work/'wire_rc.json',rc_info)
+def device_lines(records):
     lines=['* Physically extracted 512-bit SRAM',f'.include {PDK}/libs.tech/spice/models/ip62_models']
     for i,r in enumerate(records):
         if r['model'] in ('DP','DN'):
-            # Same default 3.6 x 3.6 um diode and m=1 as the dev Xschem symbol.
             lines.append(f'Dphysical{i} {r["nets"]["A"]} {r["nets"]["C"]} {r["model"]} m=1')
             continue
         suffix={'W':'u','L':'u','AS':'p','AD':'p','PS':'u','PD':'u'}
         pars=' '.join(f'{p}={val:.12g}{suffix[p]}' for p,val in r['parameters'].items())
         lines.append(f'XM{i} '+' '.join(r['nets'][p] for p in ('D','G','S','B'))+f" {r['model']} {pars} m={r['fingers']}")
-    lines=[re.sub(r'(?i)\bvss\b','0',line) for line in lines]
+    return [re.sub(r'(?i)\bvss\b','0',line) for line in lines]
+
+def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale=None,recheck=False,power_sheet=None):
+    work=WORK/'analog'/name;work.mkdir(parents=True,exist_ok=True)
+    records,provenance=devices(folder);write_json(work/'physical_devices.json',records)
+    case=scenario(period=period)
+    extra=[];wire_nodes=[];rc_info=None;power_info=None
+    if rc_scale is not None:
+        from wire_rc import add_rc
+        records,extra,wire_nodes,rc_info=add_rc(folder,records,rc_scale)
+        write_json(work/'wire_rc.json',rc_info)
+    if power_sheet is not None:
+        from power_rc import add_power_rc
+        records,power_lines,power_nodes,power_info=add_power_rc(folder,records,power_sheet)
+        extra+=power_lines;wire_nodes+=power_nodes
+        write_json(work/'power_rc.json',power_info)
+    lines=device_lines(records)
     lines+=['VVDD vdd 0 5']
     for n,events in case['events'].items():lines.append(f'V{n} {n} 0 {pwl(events)}')
     if rc_scale is None:
@@ -112,6 +119,11 @@ def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale
         _,log=run(['ngspice','-b',path],work,'simulation.log')
     notices=simulation_diagnostics(log)
     result=verify(work/'sram512_tb.raw',case,vdd)
+    if power_info is not None:
+        from power_rc import verify_power
+        result['power_supply_observations']=verify_power(work/'sram512_tb.raw',case,vdd)
+        result['power_resistance_model']={k:power_info[k] for k in ('sheet_ohm','via_ohm','scope','source_gds_sha256')}
+        result['power_resistance_model']['detailed_parameters_sha256']=sha(work/'power_rc.json')
     if rc_scale is not None:
         from wire_rc import verify_rc
         rc_checks=verify_rc(work/'sram512_tb.raw',case,vdd)
@@ -135,6 +147,6 @@ def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale
 if __name__=='__main__':
     ap=argparse.ArgumentParser();ap.add_argument('folder',type=Path);ap.add_argument('--name',default='postlayout_nominal');ap.add_argument('--rc-scale',type=float)
     ap.add_argument('--vdd',type=float,default=5);ap.add_argument('--temperature',type=float,default=27)
-    ap.add_argument('--period',type=float,default=1000);ap.add_argument('--recheck',action='store_true');a=ap.parse_args()
-    result=simulate(a.folder.resolve(),a.name,period=a.period,vdd=a.vdd,temp=a.temperature,rc_scale=a.rc_scale,recheck=a.recheck)
+    ap.add_argument('--period',type=float,default=1000);ap.add_argument('--recheck',action='store_true');ap.add_argument('--power-sheet',type=float);a=ap.parse_args()
+    result=simulate(a.folder.resolve(),a.name,period=a.period,vdd=a.vdd,temp=a.temperature,rc_scale=a.rc_scale,recheck=a.recheck,power_sheet=a.power_sheet)
     raise SystemExit(0 if result['passed'] else 1)

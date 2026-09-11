@@ -95,8 +95,10 @@ def verify(path,case,vdd=5):
             failures.append(dict(net=n,expected=b,start_ns=a,end_ns=z,min_v=low,max_v=high))
     period=case['period_ns'];known={};sdo=0
     # Async RESET establishes a safe control state, without resetting the array.
-    for n,b in [('PREB',1),('SAE',1),('WL_EN',0),('WRITE_EN',0),('SDO',0)]:level(n,b,.6*period)
+    for n,b in [('PREB',1),('SAE',1),('WL_EN',0),('WRITE_EN',0),('SDO',0)]:level(n,b,case.get('initial_check_ns',.6*period))
     for i,op in enumerate(case['operations']):
+        if i in case.get('reset_before',[]):sdo=0
+        for address in case.get('invalidated_before',{}).get(i,[]):known.pop(tuple(address),None)
         first=op['first'];e=op['e0'];r=op['row'];c=op['col'];wr=op['write'];data=op['data']
         for p,num,v in [('RA',4,r),('CA',5,c)]:
             for k in range(num):level(f'{p}{k}',(v>>k)&1,e-.1*period,e+7.8*period)

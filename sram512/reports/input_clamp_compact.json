@@ -1,9 +1,7 @@
 {
-  "passed": true,
-  "items": 0,
-  "categories": {},
-  "drawing_sha256": "edc28e137131a870bd7d0a99b587b472b969a861329af68d25aaf9493da63b20",
-  "mask_sha256": "bc3049d4cbfaa9b7b05540e56536da4d2f845718a358ba64921ae5169364058e",
+  "top": "sram512_input_clamp",
+  "gds_sha256": "57647c89fd8e8c18fe5f67bf8f70182b461806ccdf39da18f1ec0127248f1b79",
+  "reference_sha256": "7ea71c4172657baeba3df65b311c6595dd05a1efd7d12c9650e1e9cf5721bef3",
   "pdk": {
     "profile": "dev",
     "pdk_directory": "/home/ishi-kai/sram/.pdk/dev/TR-1um",
@@ -43,7 +41,16 @@
       "libs.tech/klayout/tech/lvs/run.lvs": "b9c776230ab5afe9ddd2dccee5996c49acae5db0fc6ba5cd375dd6be1d36a6f0"
     }
   },
-  "source": "/home/ishi-kai/sram/build/sram512/extracted_sources/edc28e137131a870bd7d0a99b587b472b969a861329af68d25aaf9493da63b20",
-  "waiver_regions": 0,
-  "scope": "Official MDP and complete IP62 mask DRC of the core; package/pad integration is separate."
+  "drc": {
+    "passed": true,
+    "items": 0,
+    "categories": {}
+  },
+  "lvs": {
+    "passed": true,
+    "circuit_pairs": [
+      "Match"
+    ],
+    "errors": []
+  }
 }
