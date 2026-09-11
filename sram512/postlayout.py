@@ -1,0 +1,140 @@
+#!/usr/bin/env python3
+"""Simulate the actual MOS network from an unchanged-deck, matched LVS DB.
+
+LVS correspondence supplies observation names only. Connections, dimensions,
+junction areas/perimeters and physical finger counts come from extraction.
+Interconnect RC is a separate analysis and is never claimed to be in LVS.
+"""
+import argparse,time
+import numpy as np
+from collections import Counter
+from analog import scenario,pwl,control,verify,load_raw
+from common import *
+
+def observation_name(name):
+    parts=name.lower().split('.')
+    return '.'.join(['x'+p for p in parts[:-1]]+parts[-1:])
+
+def rc_summary(info,path):
+    result={k:info[k] for k in ('kind','scale','coefficients','segments','assumptions')}
+    result.update(geometry_nets=len(info['geometry']),detailed_parameters_sha256=sha(path),
+                  detailed_parameters_file=str(path),clock=info['gate_loads']['xctrl.cki'])
+    result['wire_groups']={}
+    for prefix,pattern in [('bitline',r'blb?\d+'),('wordline',r'wl(?:_r)?\d+'),('common',r'yb?')]:
+        values=[v for n,v in info['ladder_nets'].items() if re.fullmatch(pattern,n)]
+        result['wire_groups'][prefix]=dict(nets=len(values),
+            resistance_ohm_range=[min(v['resistance_ohm'] for v in values),max(v['resistance_ohm'] for v in values)],
+            capacitance_ff_range=[min(v['cap_ff'] for v in values),max(v['cap_ff'] for v in values)])
+    return result
+
+def devices(folder):
+    result=json.loads((folder/'checks/result.json').read_text())
+    assert result['lvs']['passed'] and result['drc']['passed']
+    assert result['gds_sha256']==sha(folder/'sram512.gds')
+    v=db.LayoutVsSchematic();v.read(str(folder/'checks/sram512_macro.lvsdb'))
+    assert all(p.status()==db.NetlistCrossReference.Match for p in v.xref().each_circuit_pair())
+    core=v.netlist().circuit_by_name('sram512');aliases={}
+    for p in v.xref().each_net_pair(core):
+        if p.first() is not None and p.second() is not None:
+            aliases[p.first().cluster_id]=observation_name(p.second().name)
+    assert len(set(aliases.values()))==len(aliases)
+    records=[];sequence=0
+    def walk(c,mapping,tr):
+        nonlocal sequence
+        sequence+=1;inst=sequence
+        local={n.cluster_id:mapping.get(n.cluster_id,f'physical_{inst}_{n.cluster_id}') for n in c.each_net()}
+        for dev in c.each_device():
+            kind=dev.device_class().name.upper();assert kind in ('NMOS','PMOS','DP','DN')
+            if kind in ('DP','DN'):
+                assert abs(dev.parameter('A')-12.96)<1e-6
+                xy=tr*dev.trans*db.DPoint(0,0)
+                records.append(dict(model=kind,nets={p:local[dev.net_for_terminal(p).cluster_id] for p in ('A','C')},
+                                    parameters={p:dev.parameter(p) for p in ('A','P')},fingers=1,
+                                    instance=inst,cell=c.name,position_um=[xy.x,xy.y]))
+                continue
+            fingers=1+len(list(dev.each_combined_abstract()))
+            width=dev.parameter('W')/fingers
+            assert any(abs(width-w)<1e-6 for w in (3.4,5.1,6.8,10.2)),(c.name,kind,width,fingers)
+            assert abs(dev.parameter('L')-1)<1e-6,(c.name,'unexpected combined length')
+            xy=tr*dev.trans*db.DPoint(0,0)
+            params={p:dev.parameter(p)/(fingers if p!='L' else 1) for p in ('W','L','AS','AD','PS','PD')}
+            records.append(dict(model=kind,nets={p:local[dev.net_for_terminal(p).cluster_id] for p in ('D','G','S','B')},
+                                parameters=params,fingers=fingers,instance=inst,cell=c.name,position_um=[xy.x,xy.y]))
+        for sub in c.each_subcircuit():
+            child=sub.circuit_ref()
+            pins={child.net_for_pin(p.id()).cluster_id:local[sub.net_for_pin(p.id()).cluster_id] for p in child.each_pin()}
+            walk(child,pins,tr*sub.trans)
+    walk(core,aliases,db.DCplxTrans())
+    assert {'vdd','vss','clk','reset','sdi','we','sdo'} <=set(aliases.values())
+    return records,dict(gds_sha256=result['gds_sha256'],lvsdb_sha256=sha(folder/'checks/sram512_macro.lvsdb'),
+                        mos_groups=sum(r['model'] in ('NMOS','PMOS') for r in records),
+                        physical_fingers=sum(r['fingers'] for r in records if r['model'] in ('NMOS','PMOS')),
+                        model_counts=dict(Counter(r['model'] for r in records)),source=str(folder))
+
+def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale=None,recheck=False):
+    work=WORK/'analog'/name;work.mkdir(parents=True,exist_ok=True)
+    records,provenance=devices(folder);write_json(work/'physical_devices.json',records)
+    case=scenario(period=period)
+    extra=[];wire_nodes=[];rc_info=None
+    if rc_scale is not None:
+        from wire_rc import add_rc
+        records,extra,wire_nodes,rc_info=add_rc(folder,records,rc_scale)
+        write_json(work/'wire_rc.json',rc_info)
+    lines=['* Physically extracted 512-bit SRAM',f'.include {PDK}/libs.tech/spice/models/ip62_models']
+    for i,r in enumerate(records):
+        if r['model'] in ('DP','DN'):
+            # Same default 3.6 x 3.6 um diode and m=1 as the dev Xschem symbol.
+            lines.append(f'Dphysical{i} {r["nets"]["A"]} {r["nets"]["C"]} {r["model"]} m=1')
+            continue
+        suffix={'W':'u','L':'u','AS':'p','AD':'p','PS':'u','PD':'u'}
+        pars=' '.join(f'{p}={val:.12g}{suffix[p]}' for p,val in r['parameters'].items())
+        lines.append(f'XM{i} '+' '.join(r['nets'][p] for p in ('D','G','S','B'))+f" {r['model']} {pars} m={r['fingers']}")
+    lines=[re.sub(r'(?i)\bvss\b','0',line) for line in lines]
+    lines+=['VVDD vdd 0 5']
+    for n,events in case['events'].items():lines.append(f'V{n} {n} 0 {pwl(events)}')
+    if rc_scale is None:
+        for prefix,count,value in [('BL',32,'70f'),('BLB',32,'70f'),('WL',16,'200f'),('WL_R',16,'200f')]:
+            for i in range(count):lines.append(f'Cwire_{prefix}{i} {prefix}{i} 0 {value}')
+        lines +=['Cwire_Y Y 0 180f','Cwire_YB YB 0 180f']
+    lines +=extra+['Cout SDO 0 10p']
+    ctl=control(case).replace('save ','save i(VVDD) '+' '.join(f'v({n})' for n in wire_nodes)+' ',1)
+    ctl='\n'.join(s for s in ctl.splitlines() if not s.startswith('plot '))
+    ctl=ctl.replace('.endc','quit\n.endc')
+    deck='\n'.join(lines+[ctl,'.end'])+'\n'
+    deck=deck.replace('VVDD vdd 0 5',f'VVDD vdd 0 {vdd}').replace('VSUP=5',f'VSUP={vdd}').replace('.temp 27',f'.temp {temp}')
+    path=work/'test.spice'
+    start=time.monotonic();print('ngspice',name,provenance['physical_fingers'],'physical MOS',flush=True)
+    if recheck:
+        assert path.read_text()==deck,'Electrical deck differs; a fresh simulation is required.'
+        log=(work/'simulation.log').read_text()
+    else:
+        path.write_text(deck)
+        _,log=run(['ngspice','-b',path],work,'simulation.log')
+    notices=simulation_diagnostics(log)
+    result=verify(work/'sram512_tb.raw',case,vdd)
+    if rc_scale is not None:
+        from wire_rc import verify_rc
+        rc_checks=verify_rc(work/'sram512_tb.raw',case,vdd)
+        result.update(rc_checks=rc_checks,passed=result['passed'] and rc_checks['passed'])
+        result['failure_count']+=rc_checks['failure_count']
+        result['checks']+=rc_checks['checks']
+    result.update(name=name,physical_extraction=provenance,period_ns=period,voltage_v=vdd,temperature_c=temp,
+                  elapsed_seconds=round(time.monotonic()-start,2),deck_sha256=sha(path),
+                  reused_waveform=recheck,model_notices=notices,
+                  interconnect=rc_summary(rc_info,work/'wire_rc.json') if rc_info else
+                  'Extra lumped C only; wire resistance and distributed RC not yet included')
+    t,w=load_raw(work/'sram512_tb.raw');current=-w['i(vvdd)']
+    dt=np.diff(t)
+    result['supply_current_a']={'max':float(current.max()),
+        'time_mean':float(np.sum((current[1:]+current[:-1])*.5*dt)/(t[-1]-t[0])),
+        'rms':float(np.sqrt(np.sum((current[1:]**2+current[:-1]**2)*.5*dt)/(t[-1]-t[0])))}
+    write_json(work/'result.json',result);write_json(REPORTS/(name+'.json'),result)
+    print(name,result['passed'],result['failure_count'],result['checks'],flush=True)
+    return result
+
+if __name__=='__main__':
+    ap=argparse.ArgumentParser();ap.add_argument('folder',type=Path);ap.add_argument('--name',default='postlayout_nominal');ap.add_argument('--rc-scale',type=float)
+    ap.add_argument('--vdd',type=float,default=5);ap.add_argument('--temperature',type=float,default=27)
+    ap.add_argument('--period',type=float,default=1000);ap.add_argument('--recheck',action='store_true');a=ap.parse_args()
+    result=simulate(a.folder.resolve(),a.name,period=a.period,vdd=a.vdd,temp=a.temperature,rc_scale=a.rc_scale,recheck=a.recheck)
+    raise SystemExit(0 if result['passed'] else 1)

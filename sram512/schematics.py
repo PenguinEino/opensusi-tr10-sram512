@@ -11,7 +11,7 @@ class Sheet(base.Sheet):
         super().__init__();self.dirs={};self.port_names=set()
     def device(self,kind,name,x,y,nets,attrs=''):
         std=(LIB/'TR-1um_5_stdcell'/(kind+'.sym')).exists()
-        mos=kind in ('MN','MP')
+        mos=kind in ('MN','MP','DP','DN')
         sym=(LIB/'TR-1um_5_stdcell' if std else LIB/'TR-1umLIB' if mos else ROOT)/(kind+'.sym')
         self.comp(('TR-1um_5_stdcell/' if std else 'TR-1umLIB/' if mos else '')+kind+'.sym',x,y,'name=x'+name+(' '+attrs if attrs else ''))
         for m in re.finditer(r'B 5 ([-\d.]+) ([-\d.]+) ([-\d.]+) ([-\d.]+) \{name=(\w+) dir=(\w+)\}',sym.read_text()):
@@ -227,6 +227,9 @@ def top(tb=False):
     outmap={n+z:n+z for n in FRAME for z in ('','B')}
     outmap.update({n:n for n in ('CLK','RESET','SDI','WE','SDO','SOUT','PREB','SAE','WL_EN','WRITE_EN')})
     s.device('sram512_controller','ctrl',0,2040,outmap)
+    s.text('INPUT GATE ANTENNA CLAMPS | pad / ESD network connects at chip integration',-1100,760,.28)
+    for i,n in enumerate(('CLK','RESET','SDI','WE')):
+        s.device('sram512_input_clamp','input_'+n.lower(),-1100+i*420,980,dict(IN=n,VDD='VDD',VSS='VSS'))
     if not tb:
         for i,n in enumerate(ports):s.named_port(n,-1100,1400+i*140,'inout' if n.startswith('V') else 'out' if n=='SDO' else 'in')
     s.text('Common lines Y / YB feed the shared write pulldown and 7T sense amplifier',1000,3270,.34)
@@ -270,6 +273,8 @@ def macro():
     symbol('sram512_macro',['CLK','RESET','SDI','WE'],['SDO'])
 
 def main():
+    from layout_inputs import schematic as input_schematic
+    input_schematic()
     for b in blocks():logic_sheet(b)
     bitcell_array();column_cell();controller();top();top(True);macro()
     path=netlist(ROOT/'sram512.sch',WORK/'schematic')

@@ -55,7 +55,7 @@
     },
     "verilog_sha256": "5a202ce1b3dabf40b6944805b8eab48fad0bcb86ee43b6c44a40f04dc29a6bf1"
   },
-  "schematic_netlist_sha256": "2b71ecc51d9c25afa9bb488bafd9e88f281a7bd0d215bfc922e38ab28215f019",
+  "schematic_netlist_sha256": "effc9ec02bdf3195200f165705175c30919b6adc05a728c41bc6b84c7edc2513",
   "rtl_sha256": "0ffcbe75ee14add1c278654d6f8e401861fbcb094339d0dc53fe086b914b1e1f",
   "passed": true,
   "simulation": "PASS: 9270 operations, 4644 reads, 4626 writes, 167013 clocks, 334063 gate/RTL/decode checks; 512 addresses; March C-; 18 reset phases\n/home/ishi-kai/sram/tb/tb_sram512.sv:119: $finish called at 10021003000 (1ps)"

@@ -30,7 +30,15 @@ def scenario(period=1000,edge=5,addresses=None):
     events['RESET']=[(0,0),(edge,1),(.75*period,1),(.75*period+edge,0)]
     return dict(period_ns=period,edge_ns=edge,operations=operations,events=events,stop_ns=(2+18*len(operations))*period)
 
-def pwl(events):return 'PWL('+' '.join(f"{t:g}n 'VSUP*{v}'" for t,v in events)+')'
+def spice_time(ns):
+    # Use seconds with sufficient precision. Scientific notation followed by
+    # a suffix (e.g. 1.23457e+06n) is not a portable SPICE time literal, and
+    # six significant digits collapse 5 ns edges in millisecond-long tests.
+    return f'{ns * 1e-9:.12e}'
+
+def pwl(events):
+    assert all(b[0] > a[0] for a,b in zip(events,events[1:])), 'PWL times must increase'
+    return 'PWL('+' '.join(f"{spice_time(t)} 'VSUP*{v}'" for t,v in events)+')'
 
 def vectors(case):
     nets=['VDD','CLK','RESET','SDI','WE','SDO','PREB','SAE','WL_EN','WRITE_EN','DIN','PD_Y','PD_YB','Y','YB','SOUT','SOUTB']
@@ -43,14 +51,14 @@ def vectors(case):
 def control(case):
     lines=['.param VSUP=5 CBLWIRE=70f CWLWIRE=200f CYWIRE=180f CSDO=10p',
            '.temp 27','.control','save '+' '.join('v('+n+')' for n in vectors(case)),
-           f'tran 5n {case["stop_ns"]}n 0 20n','let failures=0']
+           f'tran 5n {spice_time(case["stop_ns"])} 0 20n','let failures=0']
     last_read=0
     for i,op in enumerate(case['operations']):
         if not op['write']:last_read=op['data']
         ns=op['e0']+7.8*case['period_ns']
         for j,(n,b) in enumerate([(f'xarray.xr{op["row"]}c{op["col"]}.Q',op['data']),('SDO',last_read)]):
             m=f'check_{i}_{j}'
-            lines += [f'meas tran {m} find v({n}) at={ns:g}n',
+            lines += [f'meas tran {m} find v({n}) at={spice_time(ns)}',
                 f'if {m} {"<" if b else ">"} {0.9 if b else 0.1} * v(VDD)[0]',
                 ' let failures=failures+1','end']
     lines += ['if failures=0',f"echo 'PASS: {len(case['operations'])} accesses; stored cell and SDO checks'",'else',
@@ -164,13 +172,12 @@ def simulate(name='nominal',vdd=5,temp=27,bl='70f',wl='200f',y='180f',sdo='10p',
     else:
         path.write_text(deck);print('ngspice',name,flush=True)
         _,log=run(['ngspice','-b',path],work,'simulation.log')
-    if re.search(r'(?im)^error|^warning|timestep too small|doanalyses:|not enough memory',log):
-        raise RuntimeError(f'{work}/simulation.log\n{log[-1500:]}')
+    notices=simulation_diagnostics(log)
     result=verify(work/'sram512_tb.raw',case,vdd)
     result.update(name=name,voltage_v=vdd,temperature_c=temp,period_ns=period,extra_wire_loads={'BL':bl,'WL':wl,'Y':y},
         output_load=sdo,edge_ns=edge,vth_shift_v={'NMOS':vthmn,'PMOS':vthmp},
         elapsed_seconds=round(time.monotonic()-start,2),input_sha256=sha(path),electrical_sha256=key,
-        reused_waveform=reuse)
+        reused_waveform=reuse,model_notices=notices)
     write_json(work/'result.json',result);write_json(REPORTS/f'analog_{name}.json',result)
     print(name,result['passed'],result['failure_count'],result['elapsed_seconds'],flush=True)
     return result

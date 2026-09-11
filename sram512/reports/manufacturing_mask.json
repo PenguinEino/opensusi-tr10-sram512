@@ -1,7 +1,9 @@
 {
-  "top": "sram512_macro",
-  "gds_sha256": "ed805adb64e4d5fe7ab323934d04ffab32dd944637720a5f622d8122dbfc9c92",
-  "reference_sha256": "4f6c68710d1c5565ce389628e1475cd106974293acba9ece2f5427f4ecb48503",
+  "passed": true,
+  "items": 0,
+  "categories": {},
+  "drawing_sha256": "ed805adb64e4d5fe7ab323934d04ffab32dd944637720a5f622d8122dbfc9c92",
+  "mask_sha256": "5fdf6e8e66eb424a06767b815095bcbd6e56b35df79dcccc2ac02f9a88a0f31a",
   "pdk": {
     "profile": "dev",
     "pdk_directory": "/home/ishi-kai/sram/.pdk/dev/TR-1um",
@@ -41,41 +43,7 @@
       "libs.tech/klayout/tech/lvs/run.lvs": "b9c776230ab5afe9ddd2dccee5996c49acae5db0fc6ba5cd375dd6be1d36a6f0"
     }
   },
-  "drc": {
-    "passed": true,
-    "items": 0,
-    "categories": {}
-  },
-  "lvs": {
-    "passed": true,
-    "circuit_pairs": [
-      "Match",
-      "Match",
-      "Match",
-      "Match",
-      "Match",
-      "Match",
-      "Match",
-      "Match",
-      "Match",
-      "Match",
-      "Match",
-      "Match",
-      "Match",
-      "Match"
-    ],
-    "errors": []
-  },
-  "m1_junction_repairs": [
-    {
-      "net": "RA2",
-      "box_nm": "(1746750,58600;1750350,61900)"
-    },
-    {
-      "net": "RA2",
-      "box_nm": "(1747100,58300;1750000,62200)"
-    }
-  ],
-  "bbox_um": "(3.8,-1.7;1794.7,716.7)",
-  "router_passed": true
+  "source": "/home/ishi-kai/sram/build/sram512/extracted_sources/ed805adb64e4d5fe7ab323934d04ffab32dd944637720a5f622d8122dbfc9c92",
+  "waiver_regions": 0,
+  "scope": "Official MDP and complete IP62 mask DRC of the core; package/pad integration is separate."
 }

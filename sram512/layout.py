@@ -13,11 +13,11 @@ def lvs_reference():
     text=(WORK/'schematic/sram512.spice').read_text()
     return re.sub(r'(?im)^X(\S+)(\s+\S+\s+\S+\s+\S+\s+\S+\s+(?:NMOS|PMOS)\b)',r'M\1\2',text)
 
-def build(height=600,poly_rows=False):
+def build(height=600,poly_rows=False,row_clamps=False):
     extra=round((height-600)/5.5)*5.5
     driver_y=110+round(extra/11)*5.5
     dy=82.5+round(extra/33)*5.5
-    work=WORK/(('layout/top' if height==600 else f'layout/top_h{height}')+('_poly' if poly_rows else ''));work.mkdir(parents=True,exist_ok=True)
+    work=WORK/(('layout/top' if height==600 else f'layout/top_h{height}')+('_poly' if poly_rows else '')+('_rowclamps' if row_clamps else ''));work.mkdir(parents=True,exist_ok=True)
     # Reuse identical verified AND2 leaves already present inside the bank.
     l=db.Layout();l.read(str(WORK/'layout/bank/bank.gds'));l.technology_name='TR-1um'
     src=db.Layout();src.read(str(WORK/'library/access/library.gds'))
@@ -27,6 +27,12 @@ def build(height=600,poly_rows=False):
         c=l.cell(kind)
         if c is None:c=l.create_cell(kind);c.copy_tree(src.cell(kind))
         lib[kind]=c
+    source=db.Layout();source.read(str(WORK/'layout/input_clamp/cell.gds'))
+    clamp=l.create_cell('sram512_input_clamp');clamp.copy_tree(source.cell(clamp.name))
+    lib[clamp.name.upper()]=clamp
+    if row_clamps:
+        parts += [dict(name='input_'+n.lower(),kind=clamp.name,
+                       nets={'IN':n.lower(),'VDD':'vdd','VSS':'vss'}) for n in ('CLK','RESET','SDI','WE')]
     s=db.Layout();s.read(str(WORK/'layout/sense/shared.gds'))
     shared=l.create_cell('sram512_shared');shared.copy_tree(s.cell('sram512_shared'))
     bank=l.cell('sram512_bank');top=l.create_cell('sram512');d=pc.Drawing(l,top)
@@ -48,10 +54,11 @@ def build(height=600,poly_rows=False):
     def place(p,x,y,mirror=False):
         c=lib[p['kind'].upper()];tr=trans(x,y,mirror)
         top.insert(db.CellInstArray(c.cell_index(),tr));placed.add(p['name'])
-        router.add_extracted(c,WORK/f'library/access/{c.name}/{c.name}.lvsdb',tr,p['nets'],p['name'])
+        checks=WORK/'layout/input_clamp/checks/sram512_input_clamp.lvsdb' if c==clamp else WORK/f'library/access/{c.name}/{c.name}.lvsdb'
+        router.add_extracted(c,checks,tr,p['nets'],p['name'])
         placements.append(dict(instance=p['name'],kind=c.name,x=x,y=y,mirror=mirror))
         for n in set(p['nets'].values()):anchors[n].append((x+(c.dbbox().width()-12.6)/2,y+(-27.5 if mirror else 27.5)))
-    def width(p):return lib[p['kind'].upper()].dbbox().width()-12.6
+    def width(p):return 33 if p['kind']==clamp.name else lib[p['kind'].upper()].dbbox().width()-12.6
     for b in range(2):
         for row in range(16):
             p=byname[f'xrow__xdriver{row}' if b==0 else f'xrow__xdriver_right{row}']
@@ -60,6 +67,12 @@ def build(height=600,poly_rows=False):
     router.add_extracted(shared,WORK/'layout/sense/checks/sram512_shared.lvsdb',tr,
         {n:n for n in physical_labels(shared,l)},'sense')
     placements.append(dict(instance='sense',kind=shared.name,x=1177,y=110,mirror=False))
+    for i,n in enumerate(() if row_clamps else ('CLK','RESET','SDI','WE')):
+        x=1149.5+49.5*i;y=220;tr=trans(x,y)
+        top.insert(db.CellInstArray(clamp.cell_index(),tr))
+        router.add_extracted(clamp,WORK/'layout/input_clamp/checks/sram512_input_clamp.lvsdb',tr,
+                             {'in':n,'vdd':'VDD','vss':'VSS'},'input_'+n.lower())
+        placements.append(dict(instance='input_'+n.lower(),kind=clamp.name,x=x,y=y,mirror=False))
     frame=[p for p in parts if '__xframe__' in p['name']]
     colpre=[p for p in parts if p['name'].startswith('xcol_decode__') and p['name'] not in placed]
     x=16.5
@@ -127,13 +140,13 @@ def build(height=600,poly_rows=False):
     return l,top,router,work
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--place-only',action='store_true');p.add_argument('--iterations',type=int,default=100);p.add_argument('--height',type=int,default=600);p.add_argument('--poly-rows',action='store_true');a=p.parse_args()
-    l,top,r,work=build(a.height,a.poly_rows)
+    p=argparse.ArgumentParser();p.add_argument('--place-only',action='store_true');p.add_argument('--iterations',type=int,default=100);p.add_argument('--height',type=int,default=600);p.add_argument('--poly-rows',action='store_true');p.add_argument('--row-clamps',action='store_true');a=p.parse_args()
+    l,top,r,work=build(a.height,a.poly_rows,a.row_clamps)
     if a.place_only:return
     success=r.route(work/'routing',a.iterations)
     top=named_macro(l,top,work)
     result=verify_and_repair(l,top,work);result.update(bbox_um=str(top.dbbox()),router_passed=success)
-    report=('layout' if a.height==600 else f'layout_h{a.height}')+('_poly' if a.poly_rows else '')+'.json'
+    report=('layout' if a.height==600 else f'layout_h{a.height}')+('_poly' if a.poly_rows else '')+('_rowclamps' if a.row_clamps else '')+'.json'
     write_json(REPORTS/report,result);print(result['drc'],result['lvs'],flush=True)
     if not success or not all(result[k]['passed'] for k in ('drc','lvs')):raise SystemExit(1)
 

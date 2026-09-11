@@ -46,7 +46,7 @@ def named_macro(layout,core,work,array_y=147):
 def reference(work):
     from schematics import macro
     macro()
-    source=netlist(ROOT/'sram512_macro.sch',work/'schematic')
+    source=netlist(ROOT/'sram512_macro.sch',work/'schematic',lvs=True)
     text=source.read_text()
     return re.sub(r'(?im)^X(\S+)(\s+\S+\s+\S+\s+\S+\s+\S+\s+(?:NMOS|PMOS)\b)',r'M\1\2',text)
 

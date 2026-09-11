@@ -30,7 +30,30 @@ def run(cmd, work, log, check=True):
         raise RuntimeError(f'{work/log}: exit {p.returncode}\n{text[-2000:]}')
     return p.returncode, text
 
-def netlist(schematic, work, subckt=True, erc=True):
+def simulation_diagnostics(log):
+    """Keep dev diode model diagnostics visible; reject all other warnings.
+
+    ngspice does not implement the published diode IMAX/IMELT limit fields.
+    The original model file is still included verbatim. Normal I/V and C/V
+    are simulated; damage limits and ESD qualification are not simulated.
+    """
+    notices=[]
+    def diode_notice(match):
+        block=match[0]
+        model=re.search(r'(?i)\.model (dn|dp) d ',block)
+        params=re.findall(r'unrecognized parameter \((\w+)\) - ignored',block)
+        if model and params==['imax','imelt']:
+            notices.append(dict(model=model[1].upper(),unsupported_parameters=params,
+                                consequence='Diode current/melting limit flags are not implemented by ngspice.'))
+            return ''
+        return block
+    remaining=re.sub(r'(?m)^Warning: Model issue on line \d+ :\n  \.model [^\n]+\n(?:unrecognized parameter \([^\n]+\) - ignored\n)+',diode_notice,log)
+    if re.search(r'(?im)^error|^warning|timestep too small|doanalyses:|not enough memory|unrecognized parameter',remaining):
+        lines=[line for line in remaining.splitlines() if re.search(r'error|warning|ignored|timestep too small|doanalyses:',line,re.I)]
+        raise RuntimeError('Unexpected ngspice diagnostic:\n'+'\n'.join(lines)[:3000])
+    return notices
+
+def netlist(schematic, work, subckt=True, erc=True, lvs=False):
     schematic = Path(schematic).resolve(); work = Path(work).resolve()
     work.mkdir(parents=True, exist_ok=True)
     paths = [schematic.parent, ROOT, Path('/usr/local/share/xschem/xschem_library'),
@@ -38,7 +61,7 @@ def netlist(schematic, work, subckt=True, erc=True):
              LIB/'TR-1umLIB', LIB/'TR-1um_5_stdcell']
     rc = work/'xschemrc'
     rc.write_text('set XSCHEM_LIBRARY_PATH {'+':'.join(map(str, paths))+'}\n'
-        +f'set LIB {{{PDK}/libs.tech/spice/models}}\nset lvs_netlist 0\n'
+        +f'set LIB {{{PDK}/libs.tech/spice/models}}\nset lvs_netlist {int(lvs)}\n'
         +f'set top_is_subckt {int(subckt)}\nset spiceprefix 1\n')
     command='set result [xschem netlist]; puts [xschem get infowindow_text]; exit $result'
     _, log = run(['xschem','-r','-x','--rcfile',rc,'-s','--command',command,
