@@ -133,4 +133,6 @@ DINは各周期の5〜6 nsと15〜16 nsに切り替え、以後対象データ�
 
 確定した7ピン・シリアル入力仕様は [SEQUENCER_DESIGN.md](SEQUENCER_DESIGN.md) に記載しています。外部CLKで受信から読み書き完了まで進める単一カウンタ方式で、非同期RESETを採用します。
 
-以前の並列入力・START受付・同期RESETのシーケンサーと専用TB、保持レジスタ、専用検証スクリプト・操作一覧は削除しました。新仕様のRTL・回路図・専用TBは未作成です。現時点の統合検証基準は、上記の `sram_tb_array_write_control.sch` です。
+以前の並列入力・START受付・同期RESETのシーケンサーと専用TB、保持レジスタ、専用検証スクリプト・操作一覧は削除しました。新仕様のRTLとデジタルTBは実装・検証済みです。`python3 scripts/verify_rtl.py` で2×2・16×16・32×32・4×8・8×16を自動確認できます。`--waves`を付けると2×2のVCDも保存します。構成・操作方法・結果は [rtl/README.md](rtl/README.md) を参照してください。
+
+新制御のスタセル回路図とSPICE統合TBは未作成です。アナログ回路の統合検証基準は、上記の `sram_tb_array_write_control.sch` です。

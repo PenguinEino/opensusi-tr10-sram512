@@ -14,3 +14,6 @@
 /simulation/sequencer_waveforms.txt
 /sequencer_waveforms.txt
 /sram_tb_sequencer.raw
+
+# Digital RTL simulation executables, logs and optional VCD waveforms
+/build/rtl/
