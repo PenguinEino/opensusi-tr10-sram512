@@ -499,7 +499,7 @@
   },
   {
     "top": "AND4_X1",
-    "gds_sha256": "77fd740f7f50024aef9a993c03aced5124b246a534bbb4a28454d86ce5db8daa",
+    "gds_sha256": "7d975910bfadc4151fc079207989a798f9540a68d024adf73c9c08b3a75838c2",
     "reference_sha256": "49f8664610652a02f2751bf0b8dd379802d5db4d742f7e03f3564475badf3343",
     "pdk": {
       "profile": "dev",
@@ -552,72 +552,68 @@
       ],
       "errors": []
     },
-    "access": {
-      "implementation": "NAND4 + INV_X1",
-      "same_schematic_transistor_count": 10,
-      "nand4_access": [
-        {
-          "pin": "c",
-          "access_um": [
-            16.5,
-            22.0
-          ],
-          "added_edges": 1
-        },
-        {
-          "pin": "d",
-          "access_um": [
-            16.5,
-            33.0
-          ],
-          "added_edges": 1
-        },
-        {
-          "pin": "a",
-          "access_um": [
-            11.0,
-            16.5
-          ],
-          "added_edges": 1
-        },
-        {
-          "pin": "b",
-          "access_um": [
-            11.0,
-            27.5
-          ],
-          "added_edges": 1
-        },
-        {
-          "pin": "y",
-          "access_um": [
-            22.0,
-            27.5
-          ],
-          "added_edges": 1
-        },
-        {
-          "pin": "gnd",
-          "access_um": [
-            5.5,
-            0.0
-          ],
-          "added_edges": 11
-        },
-        {
-          "pin": "vdd",
-          "access_um": [
-            22.0,
-            49.5
-          ],
-          "added_edges": 7
-        }
-      ]
-    }
+    "access": [
+      {
+        "pin": "a",
+        "access_um": [
+          5.5,
+          49.5
+        ],
+        "added_edges": 53
+      },
+      {
+        "pin": "b",
+        "access_um": [
+          11.0,
+          5.5
+        ],
+        "added_edges": 53
+      },
+      {
+        "pin": "c",
+        "access_um": [
+          16.5,
+          22.0
+        ],
+        "added_edges": 1
+      },
+      {
+        "pin": "d",
+        "access_um": [
+          16.5,
+          33.0
+        ],
+        "added_edges": 1
+      },
+      {
+        "pin": "y",
+        "access_um": [
+          27.5,
+          11.0
+        ],
+        "added_edges": 1
+      },
+      {
+        "pin": "gnd",
+        "access_um": [
+          16.5,
+          0.0
+        ],
+        "added_edges": 11
+      },
+      {
+        "pin": "vdd",
+        "access_um": [
+          22.0,
+          55.0
+        ],
+        "added_edges": 11
+      }
+    ]
   },
   {
     "top": "OR2",
-    "gds_sha256": "64987f4861eab946a13f19613aded29b89dddd131f27cc4061a7a7ffc57be9de",
+    "gds_sha256": "6000e1812ab4702db8c1690828430111bff9ab8ea31f788460508525d5461cd8",
     "reference_sha256": "03bc1d71ae2e2c55f31e560b66cdec08841803ad9af92c170a46f19b04f02152",
     "pdk": {
       "profile": "dev",
@@ -715,7 +711,7 @@
   },
   {
     "top": "OR3",
-    "gds_sha256": "f62ecd5d501dfc604618f55d1cec9c8b789e78c251b519722d386b042009bd1a",
+    "gds_sha256": "a813a27dc8f66a04d3564767528ca7e768b7844854fb951967558efa7d9d16e7",
     "reference_sha256": "0564d059738b604175bddba0e527dd561a3276bc8065cf9bc99dc1128db94f72",
     "pdk": {
       "profile": "dev",
@@ -821,7 +817,7 @@
   },
   {
     "top": "OR4",
-    "gds_sha256": "1bd4ea8ef9a6f5a51921f31324c0b970896b8f960b4cdf7e1e1d8603d51b1503",
+    "gds_sha256": "bc257c3d84a61e491d6ab6314bcf14f45ea3d59193995527a9aca7bf09009858",
     "reference_sha256": "e82bb5ce00361363a93ecddbf4b36c7c3b1babbbceb4ba16a0e2cede852e99b8",
     "pdk": {
       "profile": "dev",
@@ -935,7 +931,7 @@
   },
   {
     "top": "XOR2",
-    "gds_sha256": "48b99f4420e7643a4587966bd2c492800b435b474c0c24ea5f4d09b9ad8ad09f",
+    "gds_sha256": "3e89ffd07e80e64d7835ab4d76279b311989ccc4a7f6bacc3666398273ff7662",
     "reference_sha256": "1347488b27584b040300cdafbf1eabf2cfa1f6d45904d7eee5b0751036d0405e",
     "pdk": {
       "profile": "dev",
@@ -1033,7 +1029,7 @@
   },
   {
     "top": "MUX2",
-    "gds_sha256": "a3fef403596d63ffa032621994523788b83e4283561f589b00a90f0b2c80d05f",
+    "gds_sha256": "19a6eb96e7d7092a53897ab0ccd94b8c13ffb6cdacb6856d48b4abe1d1d74725",
     "reference_sha256": "44258bac66d265c522e6af5f795b7ce3a597ee688c045386820d679b7d76a19e",
     "pdk": {
       "profile": "dev",
@@ -1139,7 +1135,7 @@
   },
   {
     "top": "DFFR",
-    "gds_sha256": "40f20686f47add2562772d8bc2a74f83f599e24fe2b1be2fb2379b6a0cdf9316",
+    "gds_sha256": "b56c167e1c6ddcf6959f1ac0613c5a03866171dc0995264fd911aa5f8a2c96b3",
     "reference_sha256": "cc0c653bf7309d067bb5005378a9146737a75a5ee1c4a59849a9cc7008804e1a",
     "pdk": {
       "profile": "dev",

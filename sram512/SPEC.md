@@ -36,7 +36,8 @@ RA/CA/DINのFFは受信時だけ更新し、E0〜E7では同じFFで保持する
 したがって使用FFはカウンタ5＋フレーム10＋制御／結果6＝21個。
 CLKをANDで止める回路や、受信後にアドレスを移す第二のFF列はない。
 
-行は2+2 bitプリデコードとNAND3＋INV_X2、列は2+3 bitプリデコードとAND2_X1。
+行は2+2 bitプリデコードと、物理16列ブロックごとのAND3_X1。
+同じ論理行のWLとWL_Rを同時に駆動する。列は2+3 bitプリデコードとAND2_X1。
 列選択はBL/BLBのnMOSペアを同時にONにする。
 `PD_Y = WRITE_EN & DINB`、`PD_YB = WRITE_EN & DIN`。
 DINBはフレームFFのQBから取り出す。

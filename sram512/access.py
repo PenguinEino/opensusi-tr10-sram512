@@ -133,7 +133,21 @@ def main():
             results.append(result);continue
         cell=l.cell(kind);base=WORK/f'library/interfaces/{kind}/{kind}.lvsdb'
         if kind=='AND4_X1':
-            info=composite_and4(cell,l)
+            d=pc.Drawing(l,cell)
+            for points in [[(14.1,50.5),(14.1,60.5)],
+                           [(18.1,50.5),(18.1,52),(19.25,52),(19.25,60.5)],
+                           [(6.1,50.5),(6.1,52.8),(8.25,52.8),(8.25,60.5)],
+                           [(10.1,4.5),(10.1,2.2),(13.75,2.2),(13.75,-5.5)]]:
+                d.wire('GC',points,1);d.contact(*points[-1],'GC')
+            w=WORK/'library/and4_escape_final';w.mkdir(parents=True,exist_ok=True)
+            path=w/'cell.gds';cell.write(str(path))
+            check=verify_layout(path,kind,WORK/f'library/interfaces/{kind}/reference.spice',w)
+            assert all(check[k]['passed'] for k in ('drc','lvs')),check
+            info=access(cell,l,w/(kind+'.lvsdb'))
+            # Also expose C and D above the power rail for horizontal buses.
+            # The existing interior contacts remain connected and unchanged.
+            d.wire('M1',[(14.1,60.5),(14.1,66),(16.5,66)],1.8);d.via(16.5,66)
+            d.wire('M1',[(19.25,60.5),(27.5,60.5)],1.8);d.via(27.5,60.5)
         elif kind=='AND3_X1':
             d=pc.Drawing(l,cell)
             d.wire('GC',[(14.1,50.5),(14.1,60.5)],1)
