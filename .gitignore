@@ -17,3 +17,10 @@
 
 # Digital RTL simulation executables, logs and optional VCD waveforms
 /build/rtl/
+
+# Serial controller schematic generation and transistor verification
+/build/serial_sch/
+/build/serial_spice/
+/simulation/serial_spice_waveforms.txt
+/serial_spice_waveforms.txt
+/sram_tb_serial.raw

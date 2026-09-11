@@ -135,4 +135,26 @@ DINは各周期の5〜6 nsと15〜16 nsに切り替え、以後対象データ�
 
 以前の並列入力・START受付・同期RESETのシーケンサーと専用TB、保持レジスタ、専用検証スクリプト・操作一覧は削除しました。新仕様のRTLとデジタルTBは実装・検証済みです。`python3 scripts/verify_rtl.py` で2×2・16×16・32×32・4×8・8×16を自動確認できます。`--waves`を付けると2×2のVCDも保存します。構成・操作方法・結果は [rtl/README.md](rtl/README.md) を参照してください。
 
-新制御のスタセル回路図とSPICE統合TBは未作成です。アナログ回路の統合検証基準は、上記の `sram_tb_array_write_control.sch` です。
+## シリアル制御＋実スタセル＋2×2 SRAM
+
+[sram_tb_serial.sch](sram_tb_serial.sch) をXschemで開き、Netlist → Simulateで実行します。電圧源はVDD/CLK/RESET/SDI/WEのみで、シリアル入力から実セルの読み書きまで接続したTBです。
+
+制御ブロックの中身は [sram_serial_controller.sch](sram_serial_controller.sch)。全54スタセル・16 DFFRを1枚に配置し、MUXで保持する部分も直接描いています。独自の1 bit保持レジスタシンボルは使用していません。統合TBではxctrlを選択して階層を降りると確認できます。
+
+CLK周期100 ns、立上り・立下り1 ns。最初の受信は250/350/450 ns、E0は550 ns、E6は1,150 ns、E7は1,250 ns。次のCLK（1,350 ns）から次の受信が始まります。
+
+- 各セルに書き込み→読み出しを行い、チェッカーボードと反転パターンで16操作。
+- 2 bit受信したところでCLKを止め、18,030 nsにRESETをHIGHへ。18,160 nsに解除し、18,280 nsから受信を再開。
+- RESET前に保存したセルの読み出しと、追加の書き込み→読み出しで3操作。合計19操作。
+- 書き込みはE2でPDを開始、E3でWLを上げ、E5でWLを下げ、E6でPDを終了。
+- 読み出しはE4でSAEを上げ、E6でSOUTを結果FFへ保持。外部はE7後にSDOを確認。
+
+Xschemからの実行では、セルの保持値とSDOのPASS/FAIL、入力・カウンタ・操作保持値・制御信号・セル内容・SOUT/SDOの波形を表示します。全項目の確認とRTLとの照合は次で行います。
+
+```sh
+python3 scripts/verify_serial_spice.py
+```
+
+ネットリスト・ログ・波形・比較結果はGit対象外の `build/serial_spice/` へ保存します。回路図を再生成・上書きせずに検証します。完了済み波形を再判定する場合は `python3 scripts/verify_serial_spice.py --reuse build/serial_spice`。刺激を変更した場合は回路図のPWLと `scripts/serial_spice_stimulus.py` の両方を合わせます。
+
+5 V・27℃、ローカル線追加10 fF、共通線追加100 fF、SA各出力・SDO追加10 fFでPASS。3,408件のRTL比較と745件の区間判定で、保持・選択・プリチャージ・実WL/PD・SA・受信途中の非同期RESETを確認しました。初期値の `.ic` はありません。最短周期・ばらつき・配線抽出・実パッド負荷は未評価です。
