@@ -8,3 +8,9 @@
 /simulation/*.raw
 /simulation/sram_tb*.spice
 /simulation/sense_amp_7t.spice
+
+# Sequencer verification outputs
+/scripts/__pycache__/
+/simulation/sequencer_waveforms.txt
+/sequencer_waveforms.txt
+/sram_tb_sequencer.raw
