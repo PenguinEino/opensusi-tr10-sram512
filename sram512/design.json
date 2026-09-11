@@ -1288,34 +1288,102 @@
       "name": "sram512_row_decoder",
       "ports": [
         "RA0",
-        "RA0B",
         "RA1",
-        "RA1B",
         "RA2",
-        "RA2B",
         "RA3",
-        "RA3B",
         "WL_EN",
         "WL0",
+        "WL_R0",
         "WL1",
+        "WL_R1",
         "WL2",
+        "WL_R2",
         "WL3",
+        "WL_R3",
         "WL4",
+        "WL_R4",
         "WL5",
+        "WL_R5",
         "WL6",
+        "WL_R6",
         "WL7",
+        "WL_R7",
         "WL8",
+        "WL_R8",
         "WL9",
+        "WL_R9",
         "WL10",
+        "WL_R10",
         "WL11",
+        "WL_R11",
         "WL12",
+        "WL_R12",
         "WL13",
+        "WL_R13",
         "WL14",
+        "WL_R14",
         "WL15",
+        "WL_R15",
         "VDD",
         "VSS"
       ],
       "parts": [
+        {
+          "kind": "INV_X1",
+          "name": "address_b0",
+          "nets": {
+            "VDD": "VDD",
+            "GND": "VSS",
+            "A": "RA0",
+            "Y": "RA0B"
+          },
+          "xy": [
+            -150,
+            0
+          ]
+        },
+        {
+          "kind": "INV_X1",
+          "name": "address_b1",
+          "nets": {
+            "VDD": "VDD",
+            "GND": "VSS",
+            "A": "RA1",
+            "Y": "RA1B"
+          },
+          "xy": [
+            -150,
+            480
+          ]
+        },
+        {
+          "kind": "INV_X1",
+          "name": "address_b2",
+          "nets": {
+            "VDD": "VDD",
+            "GND": "VSS",
+            "A": "RA2",
+            "Y": "RA2B"
+          },
+          "xy": [
+            -150,
+            960
+          ]
+        },
+        {
+          "kind": "INV_X1",
+          "name": "address_b3",
+          "nets": {
+            "VDD": "VDD",
+            "GND": "VSS",
+            "A": "RA3",
+            "Y": "RA3B"
+          },
+          "xy": [
+            -150,
+            1440
+          ]
+        },
         {
           "kind": "AND2_X1",
           "name": "pre0_0",
@@ -1437,225 +1505,239 @@
           ]
         },
         {
-          "kind": "NAND3",
-          "name": "decode0",
-          "nets": {
-            "VDD": "VDD",
-            "GND": "VSS",
-            "A": "R0_0",
-            "B": "R1_0",
-            "C": "WL_EN",
-            "Y": "WL0B"
-          },
-          "xy": [
-            1400,
-            0
-          ]
-        },
-        {
-          "kind": "INV_X2",
+          "kind": "AND3_X1",
           "name": "driver0",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
-            "A": "WL0B",
+            "A": "R0_0",
+            "B": "R1_0",
+            "C": "WL_EN",
             "Y": "WL0"
           },
           "xy": [
-            1780,
+            1400,
             0
           ]
         },
         {
-          "kind": "NAND3",
-          "name": "decode1",
+          "kind": "AND3_X1",
+          "name": "driver_right0",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
-            "A": "R0_1",
+            "A": "R0_0",
             "B": "R1_0",
             "C": "WL_EN",
-            "Y": "WL1B"
+            "Y": "WL_R0"
           },
           "xy": [
-            1400,
-            300
+            1920,
+            100
           ]
         },
         {
-          "kind": "INV_X2",
+          "kind": "AND3_X1",
           "name": "driver1",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
-            "A": "WL1B",
+            "A": "R0_1",
+            "B": "R1_0",
+            "C": "WL_EN",
             "Y": "WL1"
           },
           "xy": [
-            1780,
+            1400,
             300
           ]
         },
         {
-          "kind": "NAND3",
-          "name": "decode2",
+          "kind": "AND3_X1",
+          "name": "driver_right1",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
-            "A": "R0_2",
+            "A": "R0_1",
             "B": "R1_0",
             "C": "WL_EN",
-            "Y": "WL2B"
+            "Y": "WL_R1"
           },
           "xy": [
-            1400,
-            600
+            1920,
+            400
           ]
         },
         {
-          "kind": "INV_X2",
+          "kind": "AND3_X1",
           "name": "driver2",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
-            "A": "WL2B",
+            "A": "R0_2",
+            "B": "R1_0",
+            "C": "WL_EN",
             "Y": "WL2"
           },
           "xy": [
-            1780,
+            1400,
             600
           ]
         },
         {
-          "kind": "NAND3",
-          "name": "decode3",
+          "kind": "AND3_X1",
+          "name": "driver_right2",
+          "nets": {
+            "VDD": "VDD",
+            "GND": "VSS",
+            "A": "R0_2",
+            "B": "R1_0",
+            "C": "WL_EN",
+            "Y": "WL_R2"
+          },
+          "xy": [
+            1920,
+            700
+          ]
+        },
+        {
+          "kind": "AND3_X1",
+          "name": "driver3",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
             "A": "R0_3",
             "B": "R1_0",
             "C": "WL_EN",
-            "Y": "WL3B"
-          },
-          "xy": [
-            1400,
-            900
-          ]
-        },
-        {
-          "kind": "INV_X2",
-          "name": "driver3",
-          "nets": {
-            "VDD": "VDD",
-            "GND": "VSS",
-            "A": "WL3B",
             "Y": "WL3"
           },
           "xy": [
-            1780,
+            1400,
             900
           ]
         },
         {
-          "kind": "NAND3",
-          "name": "decode4",
+          "kind": "AND3_X1",
+          "name": "driver_right3",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
-            "A": "R0_0",
-            "B": "R1_1",
+            "A": "R0_3",
+            "B": "R1_0",
             "C": "WL_EN",
-            "Y": "WL4B"
+            "Y": "WL_R3"
           },
           "xy": [
-            1400,
-            1200
+            1920,
+            1000
           ]
         },
         {
-          "kind": "INV_X2",
+          "kind": "AND3_X1",
           "name": "driver4",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
-            "A": "WL4B",
+            "A": "R0_0",
+            "B": "R1_1",
+            "C": "WL_EN",
             "Y": "WL4"
           },
           "xy": [
-            1780,
+            1400,
             1200
           ]
         },
         {
-          "kind": "NAND3",
-          "name": "decode5",
+          "kind": "AND3_X1",
+          "name": "driver_right4",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
-            "A": "R0_1",
+            "A": "R0_0",
             "B": "R1_1",
             "C": "WL_EN",
-            "Y": "WL5B"
+            "Y": "WL_R4"
           },
           "xy": [
-            1400,
-            1500
+            1920,
+            1300
           ]
         },
         {
-          "kind": "INV_X2",
+          "kind": "AND3_X1",
           "name": "driver5",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
-            "A": "WL5B",
+            "A": "R0_1",
+            "B": "R1_1",
+            "C": "WL_EN",
             "Y": "WL5"
           },
           "xy": [
-            1780,
+            1400,
             1500
           ]
         },
         {
-          "kind": "NAND3",
-          "name": "decode6",
+          "kind": "AND3_X1",
+          "name": "driver_right5",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
-            "A": "R0_2",
+            "A": "R0_1",
             "B": "R1_1",
             "C": "WL_EN",
-            "Y": "WL6B"
+            "Y": "WL_R5"
           },
           "xy": [
-            1400,
-            1800
+            1920,
+            1600
           ]
         },
         {
-          "kind": "INV_X2",
+          "kind": "AND3_X1",
           "name": "driver6",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
-            "A": "WL6B",
+            "A": "R0_2",
+            "B": "R1_1",
+            "C": "WL_EN",
             "Y": "WL6"
           },
           "xy": [
-            1780,
+            1400,
             1800
           ]
         },
         {
-          "kind": "NAND3",
-          "name": "decode7",
+          "kind": "AND3_X1",
+          "name": "driver_right6",
+          "nets": {
+            "VDD": "VDD",
+            "GND": "VSS",
+            "A": "R0_2",
+            "B": "R1_1",
+            "C": "WL_EN",
+            "Y": "WL_R6"
+          },
+          "xy": [
+            1920,
+            1900
+          ]
+        },
+        {
+          "kind": "AND3_X1",
+          "name": "driver7",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
             "A": "R0_3",
             "B": "R1_1",
             "C": "WL_EN",
-            "Y": "WL7B"
+            "Y": "WL7"
           },
           "xy": [
             1400,
@@ -1663,59 +1745,63 @@
           ]
         },
         {
-          "kind": "INV_X2",
-          "name": "driver7",
+          "kind": "AND3_X1",
+          "name": "driver_right7",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
-            "A": "WL7B",
-            "Y": "WL7"
-          },
-          "xy": [
-            1780,
-            2100
-          ]
-        },
-        {
-          "kind": "NAND3",
-          "name": "decode8",
-          "nets": {
-            "VDD": "VDD",
-            "GND": "VSS",
-            "A": "R0_0",
-            "B": "R1_2",
+            "A": "R0_3",
+            "B": "R1_1",
             "C": "WL_EN",
-            "Y": "WL8B"
+            "Y": "WL_R7"
           },
           "xy": [
-            2450,
-            0
+            1920,
+            2200
           ]
         },
         {
-          "kind": "INV_X2",
+          "kind": "AND3_X1",
           "name": "driver8",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
-            "A": "WL8B",
+            "A": "R0_0",
+            "B": "R1_2",
+            "C": "WL_EN",
             "Y": "WL8"
           },
           "xy": [
-            2830,
+            2450,
             0
           ]
         },
         {
-          "kind": "NAND3",
-          "name": "decode9",
+          "kind": "AND3_X1",
+          "name": "driver_right8",
+          "nets": {
+            "VDD": "VDD",
+            "GND": "VSS",
+            "A": "R0_0",
+            "B": "R1_2",
+            "C": "WL_EN",
+            "Y": "WL_R8"
+          },
+          "xy": [
+            2970,
+            100
+          ]
+        },
+        {
+          "kind": "AND3_X1",
+          "name": "driver9",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
             "A": "R0_1",
             "B": "R1_2",
             "C": "WL_EN",
-            "Y": "WL9B"
+            "Y": "WL9"
           },
           "xy": [
             2450,
@@ -1723,29 +1809,31 @@
           ]
         },
         {
-          "kind": "INV_X2",
-          "name": "driver9",
+          "kind": "AND3_X1",
+          "name": "driver_right9",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
-            "A": "WL9B",
-            "Y": "WL9"
+            "A": "R0_1",
+            "B": "R1_2",
+            "C": "WL_EN",
+            "Y": "WL_R9"
           },
           "xy": [
-            2830,
-            300
+            2970,
+            400
           ]
         },
         {
-          "kind": "NAND3",
-          "name": "decode10",
+          "kind": "AND3_X1",
+          "name": "driver10",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
             "A": "R0_2",
             "B": "R1_2",
             "C": "WL_EN",
-            "Y": "WL10B"
+            "Y": "WL10"
           },
           "xy": [
             2450,
@@ -1753,29 +1841,31 @@
           ]
         },
         {
-          "kind": "INV_X2",
-          "name": "driver10",
+          "kind": "AND3_X1",
+          "name": "driver_right10",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
-            "A": "WL10B",
-            "Y": "WL10"
+            "A": "R0_2",
+            "B": "R1_2",
+            "C": "WL_EN",
+            "Y": "WL_R10"
           },
           "xy": [
-            2830,
-            600
+            2970,
+            700
           ]
         },
         {
-          "kind": "NAND3",
-          "name": "decode11",
+          "kind": "AND3_X1",
+          "name": "driver11",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
             "A": "R0_3",
             "B": "R1_2",
             "C": "WL_EN",
-            "Y": "WL11B"
+            "Y": "WL11"
           },
           "xy": [
             2450,
@@ -1783,29 +1873,31 @@
           ]
         },
         {
-          "kind": "INV_X2",
-          "name": "driver11",
+          "kind": "AND3_X1",
+          "name": "driver_right11",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
-            "A": "WL11B",
-            "Y": "WL11"
+            "A": "R0_3",
+            "B": "R1_2",
+            "C": "WL_EN",
+            "Y": "WL_R11"
           },
           "xy": [
-            2830,
-            900
+            2970,
+            1000
           ]
         },
         {
-          "kind": "NAND3",
-          "name": "decode12",
+          "kind": "AND3_X1",
+          "name": "driver12",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
             "A": "R0_0",
             "B": "R1_3",
             "C": "WL_EN",
-            "Y": "WL12B"
+            "Y": "WL12"
           },
           "xy": [
             2450,
@@ -1813,29 +1905,31 @@
           ]
         },
         {
-          "kind": "INV_X2",
-          "name": "driver12",
+          "kind": "AND3_X1",
+          "name": "driver_right12",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
-            "A": "WL12B",
-            "Y": "WL12"
+            "A": "R0_0",
+            "B": "R1_3",
+            "C": "WL_EN",
+            "Y": "WL_R12"
           },
           "xy": [
-            2830,
-            1200
+            2970,
+            1300
           ]
         },
         {
-          "kind": "NAND3",
-          "name": "decode13",
+          "kind": "AND3_X1",
+          "name": "driver13",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
             "A": "R0_1",
             "B": "R1_3",
             "C": "WL_EN",
-            "Y": "WL13B"
+            "Y": "WL13"
           },
           "xy": [
             2450,
@@ -1843,29 +1937,31 @@
           ]
         },
         {
-          "kind": "INV_X2",
-          "name": "driver13",
+          "kind": "AND3_X1",
+          "name": "driver_right13",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
-            "A": "WL13B",
-            "Y": "WL13"
+            "A": "R0_1",
+            "B": "R1_3",
+            "C": "WL_EN",
+            "Y": "WL_R13"
           },
           "xy": [
-            2830,
-            1500
+            2970,
+            1600
           ]
         },
         {
-          "kind": "NAND3",
-          "name": "decode14",
+          "kind": "AND3_X1",
+          "name": "driver14",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
             "A": "R0_2",
             "B": "R1_3",
             "C": "WL_EN",
-            "Y": "WL14B"
+            "Y": "WL14"
           },
           "xy": [
             2450,
@@ -1873,29 +1969,31 @@
           ]
         },
         {
-          "kind": "INV_X2",
-          "name": "driver14",
+          "kind": "AND3_X1",
+          "name": "driver_right14",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
-            "A": "WL14B",
-            "Y": "WL14"
+            "A": "R0_2",
+            "B": "R1_3",
+            "C": "WL_EN",
+            "Y": "WL_R14"
           },
           "xy": [
-            2830,
-            1800
+            2970,
+            1900
           ]
         },
         {
-          "kind": "NAND3",
-          "name": "decode15",
+          "kind": "AND3_X1",
+          "name": "driver15",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
             "A": "R0_3",
             "B": "R1_3",
             "C": "WL_EN",
-            "Y": "WL15B"
+            "Y": "WL15"
           },
           "xy": [
             2450,
@@ -1903,17 +2001,19 @@
           ]
         },
         {
-          "kind": "INV_X2",
-          "name": "driver15",
+          "kind": "AND3_X1",
+          "name": "driver_right15",
           "nets": {
             "VDD": "VDD",
             "GND": "VSS",
-            "A": "WL15B",
-            "Y": "WL15"
+            "A": "R0_3",
+            "B": "R1_3",
+            "C": "WL_EN",
+            "Y": "WL_R15"
           },
           "xy": [
-            2830,
-            2100
+            2970,
+            2200
           ]
         }
       ]
@@ -2644,12 +2744,10 @@
     "AND2_X1": 64,
     "DFFR": 21,
     "XOR2": 4,
-    "AND3_X1": 9,
+    "AND3_X1": 41,
     "MUX2": 12,
     "OR4": 1,
-    "INV_X1": 1,
-    "OR3": 1,
-    "NAND3": 16,
-    "INV_X2": 16
+    "INV_X1": 5,
+    "OR3": 1
   }
 }

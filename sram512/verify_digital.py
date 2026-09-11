@@ -33,7 +33,7 @@ def connectivity(defs):
     assert len(actual)==512
     for r in range(16):
         for c in range(32):
-            assert actual[f'r{r}c{c}']==dict(wl=f'wl{r}',bl=f'bl{c}',blb=f'blb{c}',vdd='vdd',vss='vss'),(r,c)
+            assert actual[f'r{r}c{c}']==dict(wl=f'wl{r}' if c<16 else f'wl_r{r}',bl=f'bl{c}',blb=f'blb{c}',vdd='vdd',vss='vss'),(r,c)
     results.append({'block':'sram512_array','cells':512,'checked_pin_connections':2560,'passed':True})
     return results
 
@@ -66,7 +66,7 @@ def verilog(defs):
         'module sram512_digital_gates(input wire CLK, RESET, SDI, WE, SOUT,',
         'output wire SDO, PREB, SAE, WL_EN, WRITE_EN, DIN, PD_Y, PD_YB,',
         'output wire [3:0] RA, output wire [4:0] CA, COUNT,',
-        'output wire [15:0] WL, output wire [31:0] COL);']
+        'output wire [15:0] WL, WL_R, output wire [31:0] COL);']
     lines += ['reg '+','.join(identifier(n) for n in sorted(regnets))+';',
               'wire '+','.join(identifier(n) for n in sorted(nets-regnets))+';']
     for n in ('CLK','RESET','SDI','WE','SOUT'):lines.append(f'assign {identifier(n.lower())}={n};')
@@ -89,7 +89,7 @@ def verilog(defs):
     for n in ('SDO','PREB','SAE','WL_EN','WRITE_EN','DIN','PD_Y','PD_YB'):
         assert n.lower() in nets,n
         lines.append(f'assign {n}={identifier(n.lower())};')
-    for port,prefix,n in [('RA','ra',4),('CA','ca',5),('WL','wl',16),('COL','col',32),('COUNT','xctrl__xphase__c',5)]:
+    for port,prefix,n in [('RA','ra',4),('CA','ca',5),('WL','wl',16),('WL_R','wl_r',16),('COL','col',32),('COUNT','xctrl__xphase__c',5)]:
         lines.append(f'assign {port}='+'{'+','.join(identifier(prefix+str(i)) for i in reversed(range(n)))+'};')
     lines+=['endmodule','`default_nettype wire']
     path=ROOT/'rtl/sram512_digital_gates.v';path.write_text('\n'.join(lines)+'\n')

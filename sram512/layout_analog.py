@@ -35,7 +35,7 @@ def column_tile(l):
     pc.fill_metal_notches(l,c)
     return c
 
-def column_bank(l,cols=32,gap=21.2,ground_below_logic=False):
+def column_bank(l,cols=32,gap=21.2,ground_below_logic=False,ground_depth=77.5):
     cell=column_tile(l);top=l.create_cell(f'sram512_columns_{cols}');d=pc.Drawing(l,top)
     cx=lambda c:c*22+(c//16)*gap
     width=cx(cols-1)+22
@@ -62,11 +62,11 @@ def column_bank(l,cols=32,gap=21.2,ground_below_logic=False):
             if active=='AP':
                 if ground_below_logic:
                     dx=1.8 if bx>0 and side==-1 else 0
-                    d.wire('M1',[(spine,y),(spine,-60),(spine+dx,-60),(spine+dx,-77.5)],1.8)
+                    d.wire('M1',[(spine,y),(spine,-60),(spine+dx,-60),(spine+dx,-ground_depth)],1.8)
                 else:
                     d.wire('M1',[(spine,y),(spine,-35)],1.8);d.via(spine,-35)
     if ground_below_logic:
-        d.wire('M1',[(-19.8,-77.5),(width+19.8,-77.5)],3.4);d.label('M1','VSS',-19.8,-77.5)
+        d.wire('M1',[(-19.8,-ground_depth),(width+19.8,-ground_depth)],3.4);d.label('M1','VSS',-19.8,-ground_depth)
     else:
         d.wire('M2',[(-19.8,-35),(width+19.8,-35)],3.4);d.label('M2','VSS',-19.8,-35)
     pc.fill_metal_notches(l,top)

@@ -135,7 +135,9 @@ def main():
         if kind=='AND4_X1':
             info=composite_and4(cell,l)
         elif kind=='AND3_X1':
-            lift_output(cell,l,base)
+            d=pc.Drawing(l,cell)
+            d.wire('GC',[(14.1,50.5),(14.1,60.5)],1)
+            d.contact(14.1,60.5,'GC')
             w=WORK/f'library/metal_escape_base/{kind}';w.mkdir(parents=True,exist_ok=True)
             path=w/'cell.gds';cell.write(str(path))
             check=verify_layout(path,kind,WORK/f'library/interfaces/{kind}/reference.spice',w)

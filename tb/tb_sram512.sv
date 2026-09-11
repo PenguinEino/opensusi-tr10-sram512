@@ -7,7 +7,8 @@ module tb_sram512;
     reg CLK=0, RESET=0, SDI=0, WE=0, SOUT=1'bx;
     wire SDO, PREB, SAE, WL_EN, WRITE_EN, DIN, PD_Y, PD_YB;
     wire [3:0] RA; wire [4:0] CA, COUNT;
-    wire [15:0] WL; wire [31:0] COL;
+    wire [15:0] WL, WL_R; wire [31:0] COL;
+    wire [15:0] ACTIVE_WL=(|COL[31:16]) ? WL_R : WL;
     sram512_digital_gates dut(.*);
 
     wire ref_sdo, ref_preb, ref_sae, ref_wl_en, ref_write_en, ref_din;
@@ -34,16 +35,16 @@ module tb_sram512;
         end
     endfunction
 
-    always @(WL) begin
-        if (previous_wl!=0 && WL==0 && (PD_Y || PD_YB)) begin
+    always @(ACTIVE_WL) begin
+        if (previous_wl!=0 && ACTIVE_WL==0 && (PD_Y || PD_YB)) begin
             if(PD_Y && PD_YB) $fatal(1,"both write pulldowns asserted");
             memory[32*row_index(previous_wl)+col_index(COL)] <= PD_YB;
         end
-        previous_wl=WL;
+        previous_wl=ACTIVE_WL;
     end
     always @(negedge SAE or negedge PREB) if (!SAE) SOUT<=1'bx;
-    always @(posedge SAE) if(WL!=0 && !WRITE_EN)
-        SOUT<=memory[32*row_index(WL)+col_index(COL)];
+    always @(posedge SAE) if(ACTIVE_WL!=0 && !WRITE_EN)
+        SOUT<=memory[32*row_index(ACTIVE_WL)+col_index(COL)];
 
     task check_logic;
         begin
@@ -53,6 +54,7 @@ module tb_sram512;
                 $fatal(1,"gate / RTL mismatch clock %0d count=%0d ref=%0d",clocks,COUNT,reference.count);
             if (COL !== (32'b1 << CA)) $fatal(1,"column decoder address %0d",CA);
             if (WL !== (WL_EN ? (16'b1 << RA) : 16'b0)) $fatal(1,"row decoder address %0d",RA);
+            if (WL_R !== WL) $fatal(1,"two wordline driver blocks disagree");
             if (PD_Y !== (WRITE_EN && !DIN) || PD_YB !== (WRITE_EN && DIN))
                 $fatal(1,"write decode");
         end

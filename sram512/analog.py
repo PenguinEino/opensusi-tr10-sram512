@@ -8,8 +8,8 @@ import argparse,time
 import numpy as np
 from common import *
 
-def scenario(period=1000,edge=5):
-    addresses=[0,31,480,511]
+def scenario(period=1000,edge=5,addresses=None):
+    addresses=[0,31,480,511] if addresses is None else addresses
     operations=[]
     for invert in (0,1):
         for wr in (1,0):
@@ -34,7 +34,7 @@ def pwl(events):return 'PWL('+' '.join(f"{t:g}n 'VSUP*{v}'" for t,v in events)+'
 
 def vectors(case):
     nets=['VDD','CLK','RESET','SDI','WE','SDO','PREB','SAE','WL_EN','WRITE_EN','DIN','PD_Y','PD_YB','Y','YB','SOUT','SOUTB']
-    nets += [f'{p}{i}' for p,n in [('RA',4),('CA',5),('WL',16),('COL',32),('BL',32),('BLB',32)] for i in range(n)]
+    nets += [f'{p}{i}' for p,n in [('RA',4),('CA',5),('WL',16),('WL_R',16),('COL',32),('BL',32),('BLB',32)] for i in range(n)]
     nets += [f'xctrl.xphase.C{i}' for i in range(5)]+['xctrl.CKI','xctrl.RSTI','xctrl.xcontrol.W']
     for r,c in sorted({(op['row'],op['col']) for op in case['operations']}):
         nets += [f'xarray.xr{r}c{c}.{q}' for q in ('Q','QB')]
@@ -53,7 +53,7 @@ def control(case):
             lines += [f'meas tran {m} find v({n}) at={ns:g}n',
                 f'if {m} {"<" if b else ">"} {0.9 if b else 0.1} * v(VDD)[0]',
                 ' let failures=failures+1','end']
-    lines += ['if failures=0',"echo 'PASS: 16 accesses; stored cell and SDO checks'",'else',
+    lines += ['if failures=0',f"echo 'PASS: {len(case['operations'])} accesses; stored cell and SDO checks'",'else',
               "echo 'FAIL: inspect failures and waveforms'",'print failures','end','write sram512_tb.raw',
            "plot v(SDO) v(SOUT) v(SOUTB) title '512 bit: read result is captured at E6'",
            "plot v(Y) v(YB) v(SAE) title 'Shared lines and sense enable'",
@@ -93,9 +93,10 @@ def verify(path,case,vdd=5):
         for p,num,v in [('RA',4,r),('CA',5,c)]:
             for k in range(num):level(f'{p}{k}',(v>>k)&1,e-.1*period,e+7.8*period)
         for rr in range(16):
-            level(f'WL{rr}',0,first+.3*period,e+2.9*period)
-            level(f'WL{rr}',int(rr==r),e+3.3*period,e+4.9*period)
-            level(f'WL{rr}',0,e+5.3*period,e+7.8*period)
+            for prefix in ('WL','WL_R'):
+                level(f'{prefix}{rr}',0,first+.3*period,e+2.9*period)
+                level(f'{prefix}{rr}',int(rr==r),e+3.3*period,e+4.9*period)
+                level(f'{prefix}{rr}',0,e+5.3*period,e+7.8*period)
         for cc in range(32):level(f'COL{cc}',int(cc==c),e+.3*period,e+7.8*period)
         for n in ['PREB']:level(n,0,e+.7*period,e+.9*period);level(n,1,e+1.3*period,e+7.8*period)
         for cc in range(32):
@@ -128,10 +129,10 @@ def verify(path,case,vdd=5):
     return dict(passed=not failures,checks=checks,failure_count=len(failures),failures=failures[:40],
                 read_observations=observations,points=len(t),operations=len(case['operations']))
 
-def simulate(name='nominal',vdd=5,temp=27,bl='70f',wl='200f',y='180f',sdo='10p',period=1000,edge=5,vthmn=0,vthmp=0):
+def simulate(name='nominal',vdd=5,temp=27,bl='70f',wl='200f',y='180f',sdo='10p',period=1000,edge=5,vthmn=0,vthmp=0,addresses=None,solver=None):
     work=WORK/'analog'/name;work.mkdir(parents=True,exist_ok=True)
     source=netlist(ROOT/'sram512_tb.sch',work,subckt=False)
-    deck=re.sub(r'\n\+\s*',' ',source.read_text());case=scenario(period,edge)
+    deck=re.sub(r'\n\+\s*',' ',source.read_text());case=scenario(period,edge,addresses)
     for n,events in case['events'].items():
         deck,count=re.subn(r'(?m)^V'+n+r' \S+ \S+ PWL\([^\n]+\)$',f'V{n} {n} 0 {pwl(events)}',deck)
         assert count==1,(n,count)
@@ -141,6 +142,9 @@ def simulate(name='nominal',vdd=5,temp=27,bl='70f',wl='200f',y='180f',sdo='10p',
     deck=deck.replace('.control',f'.param vthMN={vthmn} vthMP={vthmp}\n.control')
     deck='\n'.join(line for line in deck.splitlines() if not line.startswith('plot '))+'\n'
     deck=deck.replace('.endc','quit\n.endc')
+    if solver is not None:
+        assert solver=='klu'
+        deck=deck.replace('.control','.options klu\n.control')
     def electrical_key(text):
         # Plot/save/GUI measurements do not alter the simulated electrical circuit.
         # Keep the actual transient command, every device/source/parameter, and models.

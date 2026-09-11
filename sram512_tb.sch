@@ -7,331 +7,363 @@ E {}
 T {SRAM512 | 16 x 32 | 7-pin serial interface | 5 V} -1100 -1000 0 0 0.55 0.55 {}
 C {sram512_array.sym} 4000 0 0 0 {name=xarray}
 C {sram512_row_decoder.sym} 300 0 0 0 {name=xrow}
-N 460 -450 780 -450 {lab=WL0}
-C {devices/lab_wire.sym} 620 -450 0 0 {name=l10 lab=WL0}
-N 460 -390 780 -390 {lab=WL1}
-C {devices/lab_wire.sym} 620 -390 0 0 {name=l12 lab=WL1}
-N 460 -330 780 -330 {lab=WL2}
-C {devices/lab_wire.sym} 620 -330 0 0 {name=l14 lab=WL2}
-N 460 -270 780 -270 {lab=WL3}
-C {devices/lab_wire.sym} 620 -270 0 0 {name=l16 lab=WL3}
-N 460 -210 780 -210 {lab=WL4}
-C {devices/lab_wire.sym} 620 -210 0 0 {name=l18 lab=WL4}
-N 460 -150 780 -150 {lab=WL5}
-C {devices/lab_wire.sym} 620 -150 0 0 {name=l20 lab=WL5}
-N 460 -90 780 -90 {lab=WL6}
-C {devices/lab_wire.sym} 620 -90 0 0 {name=l22 lab=WL6}
-N 460 -30 780 -30 {lab=WL7}
-C {devices/lab_wire.sym} 620 -30 0 0 {name=l24 lab=WL7}
-N 460 30 780 30 {lab=WL8}
-C {devices/lab_wire.sym} 620 30 0 0 {name=l26 lab=WL8}
-N 460 90 780 90 {lab=WL9}
-C {devices/lab_wire.sym} 620 90 0 0 {name=l28 lab=WL9}
-N 460 150 780 150 {lab=WL10}
-C {devices/lab_wire.sym} 620 150 0 0 {name=l30 lab=WL10}
-N 460 210 780 210 {lab=WL11}
-C {devices/lab_wire.sym} 620 210 0 0 {name=l32 lab=WL11}
-N 460 270 780 270 {lab=WL12}
-C {devices/lab_wire.sym} 620 270 0 0 {name=l34 lab=WL12}
-N 460 330 780 330 {lab=WL13}
-C {devices/lab_wire.sym} 620 330 0 0 {name=l36 lab=WL13}
-N 460 390 780 390 {lab=WL14}
-C {devices/lab_wire.sym} 620 390 0 0 {name=l38 lab=WL14}
-N 460 450 780 450 {lab=WL15}
-C {devices/lab_wire.sym} 620 450 0 0 {name=l40 lab=WL15}
+N 460 -620 780 -620 {lab=WL0}
+C {devices/lab_wire.sym} 620 -620 0 0 {name=l10 lab=WL0}
+N 460 -580 780 -580 {lab=WL_R0}
+C {devices/lab_wire.sym} 620 -580 0 0 {name=l12 lab=WL_R0}
+N 460 -540 780 -540 {lab=WL1}
+C {devices/lab_wire.sym} 620 -540 0 0 {name=l14 lab=WL1}
+N 460 -500 780 -500 {lab=WL_R1}
+C {devices/lab_wire.sym} 620 -500 0 0 {name=l16 lab=WL_R1}
+N 460 -460 780 -460 {lab=WL2}
+C {devices/lab_wire.sym} 620 -460 0 0 {name=l18 lab=WL2}
+N 460 -420 780 -420 {lab=WL_R2}
+C {devices/lab_wire.sym} 620 -420 0 0 {name=l20 lab=WL_R2}
+N 460 -380 780 -380 {lab=WL3}
+C {devices/lab_wire.sym} 620 -380 0 0 {name=l22 lab=WL3}
+N 460 -340 780 -340 {lab=WL_R3}
+C {devices/lab_wire.sym} 620 -340 0 0 {name=l24 lab=WL_R3}
+N 460 -300 780 -300 {lab=WL4}
+C {devices/lab_wire.sym} 620 -300 0 0 {name=l26 lab=WL4}
+N 460 -260 780 -260 {lab=WL_R4}
+C {devices/lab_wire.sym} 620 -260 0 0 {name=l28 lab=WL_R4}
+N 460 -220 780 -220 {lab=WL5}
+C {devices/lab_wire.sym} 620 -220 0 0 {name=l30 lab=WL5}
+N 460 -180 780 -180 {lab=WL_R5}
+C {devices/lab_wire.sym} 620 -180 0 0 {name=l32 lab=WL_R5}
+N 460 -140 780 -140 {lab=WL6}
+C {devices/lab_wire.sym} 620 -140 0 0 {name=l34 lab=WL6}
+N 460 -100 780 -100 {lab=WL_R6}
+C {devices/lab_wire.sym} 620 -100 0 0 {name=l36 lab=WL_R6}
+N 460 -60 780 -60 {lab=WL7}
+C {devices/lab_wire.sym} 620 -60 0 0 {name=l38 lab=WL7}
+N 460 -20 780 -20 {lab=WL_R7}
+C {devices/lab_wire.sym} 620 -20 0 0 {name=l40 lab=WL_R7}
+N 460 20 780 20 {lab=WL8}
+C {devices/lab_wire.sym} 620 20 0 0 {name=l42 lab=WL8}
+N 460 60 780 60 {lab=WL_R8}
+C {devices/lab_wire.sym} 620 60 0 0 {name=l44 lab=WL_R8}
+N 460 100 780 100 {lab=WL9}
+C {devices/lab_wire.sym} 620 100 0 0 {name=l46 lab=WL9}
+N 460 140 780 140 {lab=WL_R9}
+C {devices/lab_wire.sym} 620 140 0 0 {name=l48 lab=WL_R9}
+N 460 180 780 180 {lab=WL10}
+C {devices/lab_wire.sym} 620 180 0 0 {name=l50 lab=WL10}
+N 460 220 780 220 {lab=WL_R10}
+C {devices/lab_wire.sym} 620 220 0 0 {name=l52 lab=WL_R10}
+N 460 260 780 260 {lab=WL11}
+C {devices/lab_wire.sym} 620 260 0 0 {name=l54 lab=WL11}
+N 460 300 780 300 {lab=WL_R11}
+C {devices/lab_wire.sym} 620 300 0 0 {name=l56 lab=WL_R11}
+N 460 340 780 340 {lab=WL12}
+C {devices/lab_wire.sym} 620 340 0 0 {name=l58 lab=WL12}
+N 460 380 780 380 {lab=WL_R12}
+C {devices/lab_wire.sym} 620 380 0 0 {name=l60 lab=WL_R12}
+N 460 420 780 420 {lab=WL13}
+C {devices/lab_wire.sym} 620 420 0 0 {name=l62 lab=WL13}
+N 460 460 780 460 {lab=WL_R13}
+C {devices/lab_wire.sym} 620 460 0 0 {name=l64 lab=WL_R13}
+N 460 500 780 500 {lab=WL14}
+C {devices/lab_wire.sym} 620 500 0 0 {name=l66 lab=WL14}
+N 460 540 780 540 {lab=WL_R14}
+C {devices/lab_wire.sym} 620 540 0 0 {name=l68 lab=WL_R14}
+N 460 580 780 580 {lab=WL15}
+C {devices/lab_wire.sym} 620 580 0 0 {name=l70 lab=WL15}
+N 460 620 780 620 {lab=WL_R15}
+C {devices/lab_wire.sym} 620 620 0 0 {name=l72 lab=WL_R15}
 C {sram512_column.sym} 900 1300 0 0 {name=xcol0}
 N 850 720 850 1140 {lab=BL0}
-C {devices/lab_wire.sym} 850 940 0 0 {name=l43 lab=BL0}
+C {devices/lab_wire.sym} 850 940 0 0 {name=l75 lab=BL0}
 N 950 720 950 1140 {lab=BLB0}
-C {devices/lab_wire.sym} 950 940 0 0 {name=l45 lab=BLB0}
+C {devices/lab_wire.sym} 950 940 0 0 {name=l77 lab=BLB0}
 N 850 1460 850 1560 {lab=Y}
 N 950 1460 950 1600 {lab=YB}
 C {sram512_column.sym} 1100 1300 0 0 {name=xcol1}
 N 1050 720 1050 1140 {lab=BL1}
-C {devices/lab_wire.sym} 1050 940 0 0 {name=l50 lab=BL1}
+C {devices/lab_wire.sym} 1050 940 0 0 {name=l82 lab=BL1}
 N 1150 720 1150 1140 {lab=BLB1}
-C {devices/lab_wire.sym} 1150 940 0 0 {name=l52 lab=BLB1}
+C {devices/lab_wire.sym} 1150 940 0 0 {name=l84 lab=BLB1}
 N 1050 1460 1050 1560 {lab=Y}
 N 1150 1460 1150 1600 {lab=YB}
 C {sram512_column.sym} 1300 1300 0 0 {name=xcol2}
 N 1250 720 1250 1140 {lab=BL2}
-C {devices/lab_wire.sym} 1250 940 0 0 {name=l57 lab=BL2}
+C {devices/lab_wire.sym} 1250 940 0 0 {name=l89 lab=BL2}
 N 1350 720 1350 1140 {lab=BLB2}
-C {devices/lab_wire.sym} 1350 940 0 0 {name=l59 lab=BLB2}
+C {devices/lab_wire.sym} 1350 940 0 0 {name=l91 lab=BLB2}
 N 1250 1460 1250 1560 {lab=Y}
 N 1350 1460 1350 1600 {lab=YB}
 C {sram512_column.sym} 1500 1300 0 0 {name=xcol3}
 N 1450 720 1450 1140 {lab=BL3}
-C {devices/lab_wire.sym} 1450 940 0 0 {name=l64 lab=BL3}
+C {devices/lab_wire.sym} 1450 940 0 0 {name=l96 lab=BL3}
 N 1550 720 1550 1140 {lab=BLB3}
-C {devices/lab_wire.sym} 1550 940 0 0 {name=l66 lab=BLB3}
+C {devices/lab_wire.sym} 1550 940 0 0 {name=l98 lab=BLB3}
 N 1450 1460 1450 1560 {lab=Y}
 N 1550 1460 1550 1600 {lab=YB}
 C {sram512_column.sym} 1700 1300 0 0 {name=xcol4}
 N 1650 720 1650 1140 {lab=BL4}
-C {devices/lab_wire.sym} 1650 940 0 0 {name=l71 lab=BL4}
+C {devices/lab_wire.sym} 1650 940 0 0 {name=l103 lab=BL4}
 N 1750 720 1750 1140 {lab=BLB4}
-C {devices/lab_wire.sym} 1750 940 0 0 {name=l73 lab=BLB4}
+C {devices/lab_wire.sym} 1750 940 0 0 {name=l105 lab=BLB4}
 N 1650 1460 1650 1560 {lab=Y}
 N 1750 1460 1750 1600 {lab=YB}
 C {sram512_column.sym} 1900 1300 0 0 {name=xcol5}
 N 1850 720 1850 1140 {lab=BL5}
-C {devices/lab_wire.sym} 1850 940 0 0 {name=l78 lab=BL5}
+C {devices/lab_wire.sym} 1850 940 0 0 {name=l110 lab=BL5}
 N 1950 720 1950 1140 {lab=BLB5}
-C {devices/lab_wire.sym} 1950 940 0 0 {name=l80 lab=BLB5}
+C {devices/lab_wire.sym} 1950 940 0 0 {name=l112 lab=BLB5}
 N 1850 1460 1850 1560 {lab=Y}
 N 1950 1460 1950 1600 {lab=YB}
 C {sram512_column.sym} 2100 1300 0 0 {name=xcol6}
 N 2050 720 2050 1140 {lab=BL6}
-C {devices/lab_wire.sym} 2050 940 0 0 {name=l85 lab=BL6}
+C {devices/lab_wire.sym} 2050 940 0 0 {name=l117 lab=BL6}
 N 2150 720 2150 1140 {lab=BLB6}
-C {devices/lab_wire.sym} 2150 940 0 0 {name=l87 lab=BLB6}
+C {devices/lab_wire.sym} 2150 940 0 0 {name=l119 lab=BLB6}
 N 2050 1460 2050 1560 {lab=Y}
 N 2150 1460 2150 1600 {lab=YB}
 C {sram512_column.sym} 2300 1300 0 0 {name=xcol7}
 N 2250 720 2250 1140 {lab=BL7}
-C {devices/lab_wire.sym} 2250 940 0 0 {name=l92 lab=BL7}
+C {devices/lab_wire.sym} 2250 940 0 0 {name=l124 lab=BL7}
 N 2350 720 2350 1140 {lab=BLB7}
-C {devices/lab_wire.sym} 2350 940 0 0 {name=l94 lab=BLB7}
+C {devices/lab_wire.sym} 2350 940 0 0 {name=l126 lab=BLB7}
 N 2250 1460 2250 1560 {lab=Y}
 N 2350 1460 2350 1600 {lab=YB}
 C {sram512_column.sym} 2500 1300 0 0 {name=xcol8}
 N 2450 720 2450 1140 {lab=BL8}
-C {devices/lab_wire.sym} 2450 940 0 0 {name=l99 lab=BL8}
+C {devices/lab_wire.sym} 2450 940 0 0 {name=l131 lab=BL8}
 N 2550 720 2550 1140 {lab=BLB8}
-C {devices/lab_wire.sym} 2550 940 0 0 {name=l101 lab=BLB8}
+C {devices/lab_wire.sym} 2550 940 0 0 {name=l133 lab=BLB8}
 N 2450 1460 2450 1560 {lab=Y}
 N 2550 1460 2550 1600 {lab=YB}
 C {sram512_column.sym} 2700 1300 0 0 {name=xcol9}
 N 2650 720 2650 1140 {lab=BL9}
-C {devices/lab_wire.sym} 2650 940 0 0 {name=l106 lab=BL9}
+C {devices/lab_wire.sym} 2650 940 0 0 {name=l138 lab=BL9}
 N 2750 720 2750 1140 {lab=BLB9}
-C {devices/lab_wire.sym} 2750 940 0 0 {name=l108 lab=BLB9}
+C {devices/lab_wire.sym} 2750 940 0 0 {name=l140 lab=BLB9}
 N 2650 1460 2650 1560 {lab=Y}
 N 2750 1460 2750 1600 {lab=YB}
 C {sram512_column.sym} 2900 1300 0 0 {name=xcol10}
 N 2850 720 2850 1140 {lab=BL10}
-C {devices/lab_wire.sym} 2850 940 0 0 {name=l113 lab=BL10}
+C {devices/lab_wire.sym} 2850 940 0 0 {name=l145 lab=BL10}
 N 2950 720 2950 1140 {lab=BLB10}
-C {devices/lab_wire.sym} 2950 940 0 0 {name=l115 lab=BLB10}
+C {devices/lab_wire.sym} 2950 940 0 0 {name=l147 lab=BLB10}
 N 2850 1460 2850 1560 {lab=Y}
 N 2950 1460 2950 1600 {lab=YB}
 C {sram512_column.sym} 3100 1300 0 0 {name=xcol11}
 N 3050 720 3050 1140 {lab=BL11}
-C {devices/lab_wire.sym} 3050 940 0 0 {name=l120 lab=BL11}
+C {devices/lab_wire.sym} 3050 940 0 0 {name=l152 lab=BL11}
 N 3150 720 3150 1140 {lab=BLB11}
-C {devices/lab_wire.sym} 3150 940 0 0 {name=l122 lab=BLB11}
+C {devices/lab_wire.sym} 3150 940 0 0 {name=l154 lab=BLB11}
 N 3050 1460 3050 1560 {lab=Y}
 N 3150 1460 3150 1600 {lab=YB}
 C {sram512_column.sym} 3300 1300 0 0 {name=xcol12}
 N 3250 720 3250 1140 {lab=BL12}
-C {devices/lab_wire.sym} 3250 940 0 0 {name=l127 lab=BL12}
+C {devices/lab_wire.sym} 3250 940 0 0 {name=l159 lab=BL12}
 N 3350 720 3350 1140 {lab=BLB12}
-C {devices/lab_wire.sym} 3350 940 0 0 {name=l129 lab=BLB12}
+C {devices/lab_wire.sym} 3350 940 0 0 {name=l161 lab=BLB12}
 N 3250 1460 3250 1560 {lab=Y}
 N 3350 1460 3350 1600 {lab=YB}
 C {sram512_column.sym} 3500 1300 0 0 {name=xcol13}
 N 3450 720 3450 1140 {lab=BL13}
-C {devices/lab_wire.sym} 3450 940 0 0 {name=l134 lab=BL13}
+C {devices/lab_wire.sym} 3450 940 0 0 {name=l166 lab=BL13}
 N 3550 720 3550 1140 {lab=BLB13}
-C {devices/lab_wire.sym} 3550 940 0 0 {name=l136 lab=BLB13}
+C {devices/lab_wire.sym} 3550 940 0 0 {name=l168 lab=BLB13}
 N 3450 1460 3450 1560 {lab=Y}
 N 3550 1460 3550 1600 {lab=YB}
 C {sram512_column.sym} 3700 1300 0 0 {name=xcol14}
 N 3650 720 3650 1140 {lab=BL14}
-C {devices/lab_wire.sym} 3650 940 0 0 {name=l141 lab=BL14}
+C {devices/lab_wire.sym} 3650 940 0 0 {name=l173 lab=BL14}
 N 3750 720 3750 1140 {lab=BLB14}
-C {devices/lab_wire.sym} 3750 940 0 0 {name=l143 lab=BLB14}
+C {devices/lab_wire.sym} 3750 940 0 0 {name=l175 lab=BLB14}
 N 3650 1460 3650 1560 {lab=Y}
 N 3750 1460 3750 1600 {lab=YB}
 C {sram512_column.sym} 3900 1300 0 0 {name=xcol15}
 N 3850 720 3850 1140 {lab=BL15}
-C {devices/lab_wire.sym} 3850 940 0 0 {name=l148 lab=BL15}
+C {devices/lab_wire.sym} 3850 940 0 0 {name=l180 lab=BL15}
 N 3950 720 3950 1140 {lab=BLB15}
-C {devices/lab_wire.sym} 3950 940 0 0 {name=l150 lab=BLB15}
+C {devices/lab_wire.sym} 3950 940 0 0 {name=l182 lab=BLB15}
 N 3850 1460 3850 1560 {lab=Y}
 N 3950 1460 3950 1600 {lab=YB}
 C {sram512_column.sym} 4100 1300 0 0 {name=xcol16}
 N 4050 720 4050 1140 {lab=BL16}
-C {devices/lab_wire.sym} 4050 940 0 0 {name=l155 lab=BL16}
+C {devices/lab_wire.sym} 4050 940 0 0 {name=l187 lab=BL16}
 N 4150 720 4150 1140 {lab=BLB16}
-C {devices/lab_wire.sym} 4150 940 0 0 {name=l157 lab=BLB16}
+C {devices/lab_wire.sym} 4150 940 0 0 {name=l189 lab=BLB16}
 N 4050 1460 4050 1560 {lab=Y}
 N 4150 1460 4150 1600 {lab=YB}
 C {sram512_column.sym} 4300 1300 0 0 {name=xcol17}
 N 4250 720 4250 1140 {lab=BL17}
-C {devices/lab_wire.sym} 4250 940 0 0 {name=l162 lab=BL17}
+C {devices/lab_wire.sym} 4250 940 0 0 {name=l194 lab=BL17}
 N 4350 720 4350 1140 {lab=BLB17}
-C {devices/lab_wire.sym} 4350 940 0 0 {name=l164 lab=BLB17}
+C {devices/lab_wire.sym} 4350 940 0 0 {name=l196 lab=BLB17}
 N 4250 1460 4250 1560 {lab=Y}
 N 4350 1460 4350 1600 {lab=YB}
 C {sram512_column.sym} 4500 1300 0 0 {name=xcol18}
 N 4450 720 4450 1140 {lab=BL18}
-C {devices/lab_wire.sym} 4450 940 0 0 {name=l169 lab=BL18}
+C {devices/lab_wire.sym} 4450 940 0 0 {name=l201 lab=BL18}
 N 4550 720 4550 1140 {lab=BLB18}
-C {devices/lab_wire.sym} 4550 940 0 0 {name=l171 lab=BLB18}
+C {devices/lab_wire.sym} 4550 940 0 0 {name=l203 lab=BLB18}
 N 4450 1460 4450 1560 {lab=Y}
 N 4550 1460 4550 1600 {lab=YB}
 C {sram512_column.sym} 4700 1300 0 0 {name=xcol19}
 N 4650 720 4650 1140 {lab=BL19}
-C {devices/lab_wire.sym} 4650 940 0 0 {name=l176 lab=BL19}
+C {devices/lab_wire.sym} 4650 940 0 0 {name=l208 lab=BL19}
 N 4750 720 4750 1140 {lab=BLB19}
-C {devices/lab_wire.sym} 4750 940 0 0 {name=l178 lab=BLB19}
+C {devices/lab_wire.sym} 4750 940 0 0 {name=l210 lab=BLB19}
 N 4650 1460 4650 1560 {lab=Y}
 N 4750 1460 4750 1600 {lab=YB}
 C {sram512_column.sym} 4900 1300 0 0 {name=xcol20}
 N 4850 720 4850 1140 {lab=BL20}
-C {devices/lab_wire.sym} 4850 940 0 0 {name=l183 lab=BL20}
+C {devices/lab_wire.sym} 4850 940 0 0 {name=l215 lab=BL20}
 N 4950 720 4950 1140 {lab=BLB20}
-C {devices/lab_wire.sym} 4950 940 0 0 {name=l185 lab=BLB20}
+C {devices/lab_wire.sym} 4950 940 0 0 {name=l217 lab=BLB20}
 N 4850 1460 4850 1560 {lab=Y}
 N 4950 1460 4950 1600 {lab=YB}
 C {sram512_column.sym} 5100 1300 0 0 {name=xcol21}
 N 5050 720 5050 1140 {lab=BL21}
-C {devices/lab_wire.sym} 5050 940 0 0 {name=l190 lab=BL21}
+C {devices/lab_wire.sym} 5050 940 0 0 {name=l222 lab=BL21}
 N 5150 720 5150 1140 {lab=BLB21}
-C {devices/lab_wire.sym} 5150 940 0 0 {name=l192 lab=BLB21}
+C {devices/lab_wire.sym} 5150 940 0 0 {name=l224 lab=BLB21}
 N 5050 1460 5050 1560 {lab=Y}
 N 5150 1460 5150 1600 {lab=YB}
 C {sram512_column.sym} 5300 1300 0 0 {name=xcol22}
 N 5250 720 5250 1140 {lab=BL22}
-C {devices/lab_wire.sym} 5250 940 0 0 {name=l197 lab=BL22}
+C {devices/lab_wire.sym} 5250 940 0 0 {name=l229 lab=BL22}
 N 5350 720 5350 1140 {lab=BLB22}
-C {devices/lab_wire.sym} 5350 940 0 0 {name=l199 lab=BLB22}
+C {devices/lab_wire.sym} 5350 940 0 0 {name=l231 lab=BLB22}
 N 5250 1460 5250 1560 {lab=Y}
 N 5350 1460 5350 1600 {lab=YB}
 C {sram512_column.sym} 5500 1300 0 0 {name=xcol23}
 N 5450 720 5450 1140 {lab=BL23}
-C {devices/lab_wire.sym} 5450 940 0 0 {name=l204 lab=BL23}
+C {devices/lab_wire.sym} 5450 940 0 0 {name=l236 lab=BL23}
 N 5550 720 5550 1140 {lab=BLB23}
-C {devices/lab_wire.sym} 5550 940 0 0 {name=l206 lab=BLB23}
+C {devices/lab_wire.sym} 5550 940 0 0 {name=l238 lab=BLB23}
 N 5450 1460 5450 1560 {lab=Y}
 N 5550 1460 5550 1600 {lab=YB}
 C {sram512_column.sym} 5700 1300 0 0 {name=xcol24}
 N 5650 720 5650 1140 {lab=BL24}
-C {devices/lab_wire.sym} 5650 940 0 0 {name=l211 lab=BL24}
+C {devices/lab_wire.sym} 5650 940 0 0 {name=l243 lab=BL24}
 N 5750 720 5750 1140 {lab=BLB24}
-C {devices/lab_wire.sym} 5750 940 0 0 {name=l213 lab=BLB24}
+C {devices/lab_wire.sym} 5750 940 0 0 {name=l245 lab=BLB24}
 N 5650 1460 5650 1560 {lab=Y}
 N 5750 1460 5750 1600 {lab=YB}
 C {sram512_column.sym} 5900 1300 0 0 {name=xcol25}
 N 5850 720 5850 1140 {lab=BL25}
-C {devices/lab_wire.sym} 5850 940 0 0 {name=l218 lab=BL25}
+C {devices/lab_wire.sym} 5850 940 0 0 {name=l250 lab=BL25}
 N 5950 720 5950 1140 {lab=BLB25}
-C {devices/lab_wire.sym} 5950 940 0 0 {name=l220 lab=BLB25}
+C {devices/lab_wire.sym} 5950 940 0 0 {name=l252 lab=BLB25}
 N 5850 1460 5850 1560 {lab=Y}
 N 5950 1460 5950 1600 {lab=YB}
 C {sram512_column.sym} 6100 1300 0 0 {name=xcol26}
 N 6050 720 6050 1140 {lab=BL26}
-C {devices/lab_wire.sym} 6050 940 0 0 {name=l225 lab=BL26}
+C {devices/lab_wire.sym} 6050 940 0 0 {name=l257 lab=BL26}
 N 6150 720 6150 1140 {lab=BLB26}
-C {devices/lab_wire.sym} 6150 940 0 0 {name=l227 lab=BLB26}
+C {devices/lab_wire.sym} 6150 940 0 0 {name=l259 lab=BLB26}
 N 6050 1460 6050 1560 {lab=Y}
 N 6150 1460 6150 1600 {lab=YB}
 C {sram512_column.sym} 6300 1300 0 0 {name=xcol27}
 N 6250 720 6250 1140 {lab=BL27}
-C {devices/lab_wire.sym} 6250 940 0 0 {name=l232 lab=BL27}
+C {devices/lab_wire.sym} 6250 940 0 0 {name=l264 lab=BL27}
 N 6350 720 6350 1140 {lab=BLB27}
-C {devices/lab_wire.sym} 6350 940 0 0 {name=l234 lab=BLB27}
+C {devices/lab_wire.sym} 6350 940 0 0 {name=l266 lab=BLB27}
 N 6250 1460 6250 1560 {lab=Y}
 N 6350 1460 6350 1600 {lab=YB}
 C {sram512_column.sym} 6500 1300 0 0 {name=xcol28}
 N 6450 720 6450 1140 {lab=BL28}
-C {devices/lab_wire.sym} 6450 940 0 0 {name=l239 lab=BL28}
+C {devices/lab_wire.sym} 6450 940 0 0 {name=l271 lab=BL28}
 N 6550 720 6550 1140 {lab=BLB28}
-C {devices/lab_wire.sym} 6550 940 0 0 {name=l241 lab=BLB28}
+C {devices/lab_wire.sym} 6550 940 0 0 {name=l273 lab=BLB28}
 N 6450 1460 6450 1560 {lab=Y}
 N 6550 1460 6550 1600 {lab=YB}
 C {sram512_column.sym} 6700 1300 0 0 {name=xcol29}
 N 6650 720 6650 1140 {lab=BL29}
-C {devices/lab_wire.sym} 6650 940 0 0 {name=l246 lab=BL29}
+C {devices/lab_wire.sym} 6650 940 0 0 {name=l278 lab=BL29}
 N 6750 720 6750 1140 {lab=BLB29}
-C {devices/lab_wire.sym} 6750 940 0 0 {name=l248 lab=BLB29}
+C {devices/lab_wire.sym} 6750 940 0 0 {name=l280 lab=BLB29}
 N 6650 1460 6650 1560 {lab=Y}
 N 6750 1460 6750 1600 {lab=YB}
 C {sram512_column.sym} 6900 1300 0 0 {name=xcol30}
 N 6850 720 6850 1140 {lab=BL30}
-C {devices/lab_wire.sym} 6850 940 0 0 {name=l253 lab=BL30}
+C {devices/lab_wire.sym} 6850 940 0 0 {name=l285 lab=BL30}
 N 6950 720 6950 1140 {lab=BLB30}
-C {devices/lab_wire.sym} 6950 940 0 0 {name=l255 lab=BLB30}
+C {devices/lab_wire.sym} 6950 940 0 0 {name=l287 lab=BLB30}
 N 6850 1460 6850 1560 {lab=Y}
 N 6950 1460 6950 1600 {lab=YB}
 C {sram512_column.sym} 7100 1300 0 0 {name=xcol31}
 N 7050 720 7050 1140 {lab=BL31}
-C {devices/lab_wire.sym} 7050 940 0 0 {name=l260 lab=BL31}
+C {devices/lab_wire.sym} 7050 940 0 0 {name=l292 lab=BL31}
 N 7150 720 7150 1140 {lab=BLB31}
-C {devices/lab_wire.sym} 7150 940 0 0 {name=l262 lab=BLB31}
+C {devices/lab_wire.sym} 7150 940 0 0 {name=l294 lab=BLB31}
 N 7050 1460 7050 1560 {lab=Y}
 N 7150 1460 7150 1600 {lab=YB}
 N 800 1560 7300 1560 {lab=Y}
-C {devices/lab_wire.sym} 800 1560 0 0 {name=l266 lab=Y}
+C {devices/lab_wire.sym} 800 1560 0 0 {name=l298 lab=Y}
 N 800 1600 7300 1600 {lab=YB}
-C {devices/lab_wire.sym} 800 1600 0 0 {name=l268 lab=YB}
+C {devices/lab_wire.sym} 800 1600 0 0 {name=l300 lab=YB}
 C {sram512_col_decoder.sym} 4000 2140 0 0 {name=xcol_decode}
 N 900 1960 900 1460 {lab=COL0}
-C {devices/lab_wire.sym} 900 1850 0 0 {name=l271 lab=COL0}
+C {devices/lab_wire.sym} 900 1850 0 0 {name=l303 lab=COL0}
 N 1100 1960 1100 1460 {lab=COL1}
-C {devices/lab_wire.sym} 1100 1850 0 0 {name=l273 lab=COL1}
+C {devices/lab_wire.sym} 1100 1850 0 0 {name=l305 lab=COL1}
 N 1300 1960 1300 1460 {lab=COL2}
-C {devices/lab_wire.sym} 1300 1850 0 0 {name=l275 lab=COL2}
+C {devices/lab_wire.sym} 1300 1850 0 0 {name=l307 lab=COL2}
 N 1500 1960 1500 1460 {lab=COL3}
-C {devices/lab_wire.sym} 1500 1850 0 0 {name=l277 lab=COL3}
+C {devices/lab_wire.sym} 1500 1850 0 0 {name=l309 lab=COL3}
 N 1700 1960 1700 1460 {lab=COL4}
-C {devices/lab_wire.sym} 1700 1850 0 0 {name=l279 lab=COL4}
+C {devices/lab_wire.sym} 1700 1850 0 0 {name=l311 lab=COL4}
 N 1900 1960 1900 1460 {lab=COL5}
-C {devices/lab_wire.sym} 1900 1850 0 0 {name=l281 lab=COL5}
+C {devices/lab_wire.sym} 1900 1850 0 0 {name=l313 lab=COL5}
 N 2100 1960 2100 1460 {lab=COL6}
-C {devices/lab_wire.sym} 2100 1850 0 0 {name=l283 lab=COL6}
+C {devices/lab_wire.sym} 2100 1850 0 0 {name=l315 lab=COL6}
 N 2300 1960 2300 1460 {lab=COL7}
-C {devices/lab_wire.sym} 2300 1850 0 0 {name=l285 lab=COL7}
+C {devices/lab_wire.sym} 2300 1850 0 0 {name=l317 lab=COL7}
 N 2500 1960 2500 1460 {lab=COL8}
-C {devices/lab_wire.sym} 2500 1850 0 0 {name=l287 lab=COL8}
+C {devices/lab_wire.sym} 2500 1850 0 0 {name=l319 lab=COL8}
 N 2700 1960 2700 1460 {lab=COL9}
-C {devices/lab_wire.sym} 2700 1850 0 0 {name=l289 lab=COL9}
+C {devices/lab_wire.sym} 2700 1850 0 0 {name=l321 lab=COL9}
 N 2900 1960 2900 1460 {lab=COL10}
-C {devices/lab_wire.sym} 2900 1850 0 0 {name=l291 lab=COL10}
+C {devices/lab_wire.sym} 2900 1850 0 0 {name=l323 lab=COL10}
 N 3100 1960 3100 1460 {lab=COL11}
-C {devices/lab_wire.sym} 3100 1850 0 0 {name=l293 lab=COL11}
+C {devices/lab_wire.sym} 3100 1850 0 0 {name=l325 lab=COL11}
 N 3300 1960 3300 1460 {lab=COL12}
-C {devices/lab_wire.sym} 3300 1850 0 0 {name=l295 lab=COL12}
+C {devices/lab_wire.sym} 3300 1850 0 0 {name=l327 lab=COL12}
 N 3500 1960 3500 1460 {lab=COL13}
-C {devices/lab_wire.sym} 3500 1850 0 0 {name=l297 lab=COL13}
+C {devices/lab_wire.sym} 3500 1850 0 0 {name=l329 lab=COL13}
 N 3700 1960 3700 1460 {lab=COL14}
-C {devices/lab_wire.sym} 3700 1850 0 0 {name=l299 lab=COL14}
+C {devices/lab_wire.sym} 3700 1850 0 0 {name=l331 lab=COL14}
 N 3900 1960 3900 1460 {lab=COL15}
-C {devices/lab_wire.sym} 3900 1850 0 0 {name=l301 lab=COL15}
+C {devices/lab_wire.sym} 3900 1850 0 0 {name=l333 lab=COL15}
 N 4100 1960 4100 1460 {lab=COL16}
-C {devices/lab_wire.sym} 4100 1850 0 0 {name=l303 lab=COL16}
+C {devices/lab_wire.sym} 4100 1850 0 0 {name=l335 lab=COL16}
 N 4300 1960 4300 1460 {lab=COL17}
-C {devices/lab_wire.sym} 4300 1850 0 0 {name=l305 lab=COL17}
+C {devices/lab_wire.sym} 4300 1850 0 0 {name=l337 lab=COL17}
 N 4500 1960 4500 1460 {lab=COL18}
-C {devices/lab_wire.sym} 4500 1850 0 0 {name=l307 lab=COL18}
+C {devices/lab_wire.sym} 4500 1850 0 0 {name=l339 lab=COL18}
 N 4700 1960 4700 1460 {lab=COL19}
-C {devices/lab_wire.sym} 4700 1850 0 0 {name=l309 lab=COL19}
+C {devices/lab_wire.sym} 4700 1850 0 0 {name=l341 lab=COL19}
 N 4900 1960 4900 1460 {lab=COL20}
-C {devices/lab_wire.sym} 4900 1850 0 0 {name=l311 lab=COL20}
+C {devices/lab_wire.sym} 4900 1850 0 0 {name=l343 lab=COL20}
 N 5100 1960 5100 1460 {lab=COL21}
-C {devices/lab_wire.sym} 5100 1850 0 0 {name=l313 lab=COL21}
+C {devices/lab_wire.sym} 5100 1850 0 0 {name=l345 lab=COL21}
 N 5300 1960 5300 1460 {lab=COL22}
-C {devices/lab_wire.sym} 5300 1850 0 0 {name=l315 lab=COL22}
+C {devices/lab_wire.sym} 5300 1850 0 0 {name=l347 lab=COL22}
 N 5500 1960 5500 1460 {lab=COL23}
-C {devices/lab_wire.sym} 5500 1850 0 0 {name=l317 lab=COL23}
+C {devices/lab_wire.sym} 5500 1850 0 0 {name=l349 lab=COL23}
 N 5700 1960 5700 1460 {lab=COL24}
-C {devices/lab_wire.sym} 5700 1850 0 0 {name=l319 lab=COL24}
+C {devices/lab_wire.sym} 5700 1850 0 0 {name=l351 lab=COL24}
 N 5900 1960 5900 1460 {lab=COL25}
-C {devices/lab_wire.sym} 5900 1850 0 0 {name=l321 lab=COL25}
+C {devices/lab_wire.sym} 5900 1850 0 0 {name=l353 lab=COL25}
 N 6100 1960 6100 1460 {lab=COL26}
-C {devices/lab_wire.sym} 6100 1850 0 0 {name=l323 lab=COL26}
+C {devices/lab_wire.sym} 6100 1850 0 0 {name=l355 lab=COL26}
 N 6300 1960 6300 1460 {lab=COL27}
-C {devices/lab_wire.sym} 6300 1850 0 0 {name=l325 lab=COL27}
+C {devices/lab_wire.sym} 6300 1850 0 0 {name=l357 lab=COL27}
 N 6500 1960 6500 1460 {lab=COL28}
-C {devices/lab_wire.sym} 6500 1850 0 0 {name=l327 lab=COL28}
+C {devices/lab_wire.sym} 6500 1850 0 0 {name=l359 lab=COL28}
 N 6700 1960 6700 1460 {lab=COL29}
-C {devices/lab_wire.sym} 6700 1850 0 0 {name=l329 lab=COL29}
+C {devices/lab_wire.sym} 6700 1850 0 0 {name=l361 lab=COL29}
 N 6900 1960 6900 1460 {lab=COL30}
-C {devices/lab_wire.sym} 6900 1850 0 0 {name=l331 lab=COL30}
+C {devices/lab_wire.sym} 6900 1850 0 0 {name=l363 lab=COL30}
 N 7100 1960 7100 1460 {lab=COL31}
-C {devices/lab_wire.sym} 7100 1850 0 0 {name=l333 lab=COL31}
+C {devices/lab_wire.sym} 7100 1850 0 0 {name=l365 lab=COL31}
 C {sense_amp_7t.sym} 5600 2730 0 0 {name=xsense}
 N 5450 2670 5360 2670 {lab=Y}
 N 5360 2670 5360 1560 {lab=Y}
@@ -345,7 +377,7 @@ N 2440 2910 2620 2910 {lab=Y}
 N 2620 2910 2620 1560 {lab=Y}
 C {TR-1um_5_stdcell/AND2_X1.sym} 1950 2940 0 0 {name=xwrite_data0}
 N 2060 2940 2400 2940 {lab=PD_Y}
-C {devices/lab_wire.sym} 2200 2940 0 0 {name=l347 lab=PD_Y}
+C {devices/lab_wire.sym} 2200 2940 0 0 {name=l379 lab=PD_Y}
 C {TR-1umLIB/MP.sym} 3700 2500 0 0 {name=xpc_YB model=PMOS w=10.2u l=1u m=1 spiceprefix=X}
 C {TR-1umLIB/MN.sym} 3700 2940 0 0 {name=xwrite_YB model=NMOS w=3.4u l=1u m=1 spiceprefix=X}
 N 3740 2530 3860 2530 {lab=YB}
@@ -354,286 +386,334 @@ N 3740 2910 3920 2910 {lab=YB}
 N 3920 2910 3920 1600 {lab=YB}
 C {TR-1um_5_stdcell/AND2_X1.sym} 3250 2940 0 0 {name=xwrite_data1}
 N 3360 2940 3700 2940 {lab=PD_YB}
-C {devices/lab_wire.sym} 3500 2940 0 0 {name=l356 lab=PD_YB}
+C {devices/lab_wire.sym} 3500 2940 0 0 {name=l388 lab=PD_YB}
 C {sram512_controller.sym} 0 2040 0 0 {name=xctrl}
 T {Common lines Y / YB feed the shared write pulldown and 7T sense amplifier} 1000 3270 0 0 0.34 0.34 {}
 T {E0 precharge; E1 release; E2 write drive; E3 WL; E4 SAE; E5 WL off; E6 capture; E7 end} 1000 3340 0 0 0.3 0.3 {}
 C {devices/vsource.sym} -1100 3900 0 0 {name=VVDD value="'VSUP'"}
-C {devices/lab_pin.sym} -1100 3870 0 0 {name=l361 lab=VDD}
-C {devices/lab_pin.sym} -1100 3930 0 0 {name=l362 lab=0}
+C {devices/lab_pin.sym} -1100 3870 0 0 {name=l393 lab=VDD}
+C {devices/lab_pin.sym} -1100 3930 0 0 {name=l394 lab=0}
 T {VDD stimulus} -1200 3720 0 0 0.3 0.3 {}
 C {devices/vsource.sym} -500 3900 0 0 {name=VCLK value="PWL(0n 'VSUP*0' 2000n 'VSUP*0' 2005n 'VSUP*1' 2500n 'VSUP*1' 2505n 'VSUP*0' 3000n 'VSUP*0' 3005n 'VSUP*1' 3500n 'VSUP*1' 3505n 'VSUP*0' 4000n 'VSUP*0' 4005n 'VSUP*1' 4500n 'VSUP*1' 4505n 'VSUP*0' 5000n 'VSUP*0' 5005n 'VSUP*1' 5500n 'VSUP*1' 5505n 'VSUP*0' 6000n 'VSUP*0' 6005n 'VSUP*1' 6500n 'VSUP*1' 6505n 'VSUP*0' 7000n 'VSUP*0' 7005n 'VSUP*1' 7500n 'VSUP*1' 7505n 'VSUP*0' 8000n 'VSUP*0' 8005n 'VSUP*1' 8500n 'VSUP*1' 8505n 'VSUP*0' 9000n 'VSUP*0' 9005n 'VSUP*1' 9500n 'VSUP*1' 9505n 'VSUP*0' 10000n 'VSUP*0' 10005n 'VSUP*1' 10500n 'VSUP*1' 10505n 'VSUP*0' 11000n 'VSUP*0' 11005n 'VSUP*1' 11500n 'VSUP*1' 11505n 'VSUP*0' 12000n 'VSUP*0' 12005n 'VSUP*1' 12500n 'VSUP*1' 12505n 'VSUP*0' 13000n 'VSUP*0' 13005n 'VSUP*1' 13500n 'VSUP*1' 13505n 'VSUP*0' 14000n 'VSUP*0' 14005n 'VSUP*1' 14500n 'VSUP*1' 14505n 'VSUP*0' 15000n 'VSUP*0' 15005n 'VSUP*1' 15500n 'VSUP*1' 15505n 'VSUP*0' 16000n 'VSUP*0' 16005n 'VSUP*1' 16500n 'VSUP*1' 16505n 'VSUP*0' 17000n 'VSUP*0' 17005n 'VSUP*1' 17500n 'VSUP*1' 17505n 'VSUP*0' 18000n 'VSUP*0' 18005n 'VSUP*1' 18500n 'VSUP*1' 18505n 'VSUP*0' 19000n 'VSUP*0' 19005n 'VSUP*1' 19500n 'VSUP*1' 19505n 'VSUP*0' 20000n 'VSUP*0' 20005n 'VSUP*1' 20500n 'VSUP*1' 20505n 'VSUP*0' 21000n 'VSUP*0' 21005n 'VSUP*1' 21500n 'VSUP*1' 21505n 'VSUP*0' 22000n 'VSUP*0' 22005n 'VSUP*1' 22500n 'VSUP*1' 22505n 'VSUP*0' 23000n 'VSUP*0' 23005n 'VSUP*1' 23500n 'VSUP*1' 23505n 'VSUP*0' 24000n 'VSUP*0' 24005n 'VSUP*1' 24500n 'VSUP*1' 24505n 'VSUP*0' 25000n 'VSUP*0' 25005n 'VSUP*1' 25500n 'VSUP*1' 25505n 'VSUP*0' 26000n 'VSUP*0' 26005n 'VSUP*1' 26500n 'VSUP*1' 26505n 'VSUP*0' 27000n 'VSUP*0' 27005n 'VSUP*1' 27500n 'VSUP*1' 27505n 'VSUP*0' 28000n 'VSUP*0' 28005n 'VSUP*1' 28500n 'VSUP*1' 28505n 'VSUP*0' 29000n 'VSUP*0' 29005n 'VSUP*1' 29500n 'VSUP*1' 29505n 'VSUP*0' 30000n 'VSUP*0' 30005n 'VSUP*1' 30500n 'VSUP*1' 30505n 'VSUP*0' 31000n 'VSUP*0' 31005n 'VSUP*1' 31500n 'VSUP*1' 31505n 'VSUP*0' 32000n 'VSUP*0' 32005n 'VSUP*1' 32500n 'VSUP*1' 32505n 'VSUP*0' 33000n 'VSUP*0' 33005n 'VSUP*1' 33500n 'VSUP*1' 33505n 'VSUP*0' 34000n 'VSUP*0' 34005n 'VSUP*1' 34500n 'VSUP*1' 34505n 'VSUP*0' 35000n 'VSUP*0' 35005n 'VSUP*1' 35500n 'VSUP*1' 35505n 'VSUP*0' 36000n 'VSUP*0' 36005n 'VSUP*1' 36500n 'VSUP*1' 36505n 'VSUP*0' 37000n 'VSUP*0' 37005n 'VSUP*1' 37500n 'VSUP*1' 37505n 'VSUP*0' 38000n 'VSUP*0' 38005n 'VSUP*1' 38500n 'VSUP*1' 38505n 'VSUP*0' 39000n 'VSUP*0' 39005n 'VSUP*1' 39500n 'VSUP*1' 39505n 'VSUP*0' 40000n 'VSUP*0' 40005n 'VSUP*1' 40500n 'VSUP*1' 40505n 'VSUP*0' 41000n 'VSUP*0' 41005n 'VSUP*1' 41500n 'VSUP*1' 41505n 'VSUP*0' 42000n 'VSUP*0' 42005n 'VSUP*1' 42500n 'VSUP*1' 42505n 'VSUP*0' 43000n 'VSUP*0' 43005n 'VSUP*1' 43500n 'VSUP*1' 43505n 'VSUP*0' 44000n 'VSUP*0' 44005n 'VSUP*1' 44500n 'VSUP*1' 44505n 'VSUP*0' 45000n 'VSUP*0' 45005n 'VSUP*1' 45500n 'VSUP*1' 45505n 'VSUP*0' 46000n 'VSUP*0' 46005n 'VSUP*1' 46500n 'VSUP*1' 46505n 'VSUP*0' 47000n 'VSUP*0' 47005n 'VSUP*1' 47500n 'VSUP*1' 47505n 'VSUP*0' 48000n 'VSUP*0' 48005n 'VSUP*1' 48500n 'VSUP*1' 48505n 'VSUP*0' 49000n 'VSUP*0' 49005n 'VSUP*1' 49500n 'VSUP*1' 49505n 'VSUP*0' 50000n 'VSUP*0' 50005n 'VSUP*1' 50500n 'VSUP*1' 50505n 'VSUP*0' 51000n 'VSUP*0' 51005n 'VSUP*1' 51500n 'VSUP*1' 51505n 'VSUP*0' 52000n 'VSUP*0' 52005n 'VSUP*1' 52500n 'VSUP*1' 52505n 'VSUP*0' 53000n 'VSUP*0' 53005n 'VSUP*1' 53500n 'VSUP*1' 53505n 'VSUP*0' 54000n 'VSUP*0' 54005n 'VSUP*1' 54500n 'VSUP*1' 54505n 'VSUP*0' 55000n 'VSUP*0' 55005n 'VSUP*1' 55500n 'VSUP*1' 55505n 'VSUP*0' 56000n 'VSUP*0' 56005n 'VSUP*1' 56500n 'VSUP*1' 56505n 'VSUP*0' 57000n 'VSUP*0' 57005n 'VSUP*1' 57500n 'VSUP*1' 57505n 'VSUP*0' 58000n 'VSUP*0' 58005n 'VSUP*1' 58500n 'VSUP*1' 58505n 'VSUP*0' 59000n 'VSUP*0' 59005n 'VSUP*1' 59500n 'VSUP*1' 59505n 'VSUP*0' 60000n 'VSUP*0' 60005n 'VSUP*1' 60500n 'VSUP*1' 60505n 'VSUP*0' 61000n 'VSUP*0' 61005n 'VSUP*1' 61500n 'VSUP*1' 61505n 'VSUP*0' 62000n 'VSUP*0' 62005n 'VSUP*1' 62500n 'VSUP*1' 62505n 'VSUP*0' 63000n 'VSUP*0' 63005n 'VSUP*1' 63500n 'VSUP*1' 63505n 'VSUP*0' 64000n 'VSUP*0' 64005n 'VSUP*1' 64500n 'VSUP*1' 64505n 'VSUP*0' 65000n 'VSUP*0' 65005n 'VSUP*1' 65500n 'VSUP*1' 65505n 'VSUP*0' 66000n 'VSUP*0' 66005n 'VSUP*1' 66500n 'VSUP*1' 66505n 'VSUP*0' 67000n 'VSUP*0' 67005n 'VSUP*1' 67500n 'VSUP*1' 67505n 'VSUP*0' 68000n 'VSUP*0' 68005n 'VSUP*1' 68500n 'VSUP*1' 68505n 'VSUP*0' 69000n 'VSUP*0' 69005n 'VSUP*1' 69500n 'VSUP*1' 69505n 'VSUP*0' 70000n 'VSUP*0' 70005n 'VSUP*1' 70500n 'VSUP*1' 70505n 'VSUP*0' 71000n 'VSUP*0' 71005n 'VSUP*1' 71500n 'VSUP*1' 71505n 'VSUP*0' 72000n 'VSUP*0' 72005n 'VSUP*1' 72500n 'VSUP*1' 72505n 'VSUP*0' 73000n 'VSUP*0' 73005n 'VSUP*1' 73500n 'VSUP*1' 73505n 'VSUP*0' 74000n 'VSUP*0' 74005n 'VSUP*1' 74500n 'VSUP*1' 74505n 'VSUP*0' 75000n 'VSUP*0' 75005n 'VSUP*1' 75500n 'VSUP*1' 75505n 'VSUP*0' 76000n 'VSUP*0' 76005n 'VSUP*1' 76500n 'VSUP*1' 76505n 'VSUP*0' 77000n 'VSUP*0' 77005n 'VSUP*1' 77500n 'VSUP*1' 77505n 'VSUP*0' 78000n 'VSUP*0' 78005n 'VSUP*1' 78500n 'VSUP*1' 78505n 'VSUP*0' 79000n 'VSUP*0' 79005n 'VSUP*1' 79500n 'VSUP*1' 79505n 'VSUP*0' 80000n 'VSUP*0' 80005n 'VSUP*1' 80500n 'VSUP*1' 80505n 'VSUP*0' 81000n 'VSUP*0' 81005n 'VSUP*1' 81500n 'VSUP*1' 81505n 'VSUP*0' 82000n 'VSUP*0' 82005n 'VSUP*1' 82500n 'VSUP*1' 82505n 'VSUP*0' 83000n 'VSUP*0' 83005n 'VSUP*1' 83500n 'VSUP*1' 83505n 'VSUP*0' 84000n 'VSUP*0' 84005n 'VSUP*1' 84500n 'VSUP*1' 84505n 'VSUP*0' 85000n 'VSUP*0' 85005n 'VSUP*1' 85500n 'VSUP*1' 85505n 'VSUP*0' 86000n 'VSUP*0' 86005n 'VSUP*1' 86500n 'VSUP*1' 86505n 'VSUP*0' 87000n 'VSUP*0' 87005n 'VSUP*1' 87500n 'VSUP*1' 87505n 'VSUP*0' 88000n 'VSUP*0' 88005n 'VSUP*1' 88500n 'VSUP*1' 88505n 'VSUP*0' 89000n 'VSUP*0' 89005n 'VSUP*1' 89500n 'VSUP*1' 89505n 'VSUP*0' 90000n 'VSUP*0' 90005n 'VSUP*1' 90500n 'VSUP*1' 90505n 'VSUP*0' 91000n 'VSUP*0' 91005n 'VSUP*1' 91500n 'VSUP*1' 91505n 'VSUP*0' 92000n 'VSUP*0' 92005n 'VSUP*1' 92500n 'VSUP*1' 92505n 'VSUP*0' 93000n 'VSUP*0' 93005n 'VSUP*1' 93500n 'VSUP*1' 93505n 'VSUP*0' 94000n 'VSUP*0' 94005n 'VSUP*1' 94500n 'VSUP*1' 94505n 'VSUP*0' 95000n 'VSUP*0' 95005n 'VSUP*1' 95500n 'VSUP*1' 95505n 'VSUP*0' 96000n 'VSUP*0' 96005n 'VSUP*1' 96500n 'VSUP*1' 96505n 'VSUP*0' 97000n 'VSUP*0' 97005n 'VSUP*1' 97500n 'VSUP*1' 97505n 'VSUP*0' 98000n 'VSUP*0' 98005n 'VSUP*1' 98500n 'VSUP*1' 98505n 'VSUP*0' 99000n 'VSUP*0' 99005n 'VSUP*1' 99500n 'VSUP*1' 99505n 'VSUP*0' 100000n 'VSUP*0' 100005n 'VSUP*1' 100500n 'VSUP*1' 100505n 'VSUP*0' 101000n 'VSUP*0' 101005n 'VSUP*1' 101500n 'VSUP*1' 101505n 'VSUP*0' 102000n 'VSUP*0' 102005n 'VSUP*1' 102500n 'VSUP*1' 102505n 'VSUP*0' 103000n 'VSUP*0' 103005n 'VSUP*1' 103500n 'VSUP*1' 103505n 'VSUP*0' 104000n 'VSUP*0' 104005n 'VSUP*1' 104500n 'VSUP*1' 104505n 'VSUP*0' 105000n 'VSUP*0' 105005n 'VSUP*1' 105500n 'VSUP*1' 105505n 'VSUP*0' 106000n 'VSUP*0' 106005n 'VSUP*1' 106500n 'VSUP*1' 106505n 'VSUP*0' 107000n 'VSUP*0' 107005n 'VSUP*1' 107500n 'VSUP*1' 107505n 'VSUP*0' 108000n 'VSUP*0' 108005n 'VSUP*1' 108500n 'VSUP*1' 108505n 'VSUP*0' 109000n 'VSUP*0' 109005n 'VSUP*1' 109500n 'VSUP*1' 109505n 'VSUP*0' 110000n 'VSUP*0' 110005n 'VSUP*1' 110500n 'VSUP*1' 110505n 'VSUP*0' 111000n 'VSUP*0' 111005n 'VSUP*1' 111500n 'VSUP*1' 111505n 'VSUP*0' 112000n 'VSUP*0' 112005n 'VSUP*1' 112500n 'VSUP*1' 112505n 'VSUP*0' 113000n 'VSUP*0' 113005n 'VSUP*1' 113500n 'VSUP*1' 113505n 'VSUP*0' 114000n 'VSUP*0' 114005n 'VSUP*1' 114500n 'VSUP*1' 114505n 'VSUP*0' 115000n 'VSUP*0' 115005n 'VSUP*1' 115500n 'VSUP*1' 115505n 'VSUP*0' 116000n 'VSUP*0' 116005n 'VSUP*1' 116500n 'VSUP*1' 116505n 'VSUP*0' 117000n 'VSUP*0' 117005n 'VSUP*1' 117500n 'VSUP*1' 117505n 'VSUP*0' 118000n 'VSUP*0' 118005n 'VSUP*1' 118500n 'VSUP*1' 118505n 'VSUP*0' 119000n 'VSUP*0' 119005n 'VSUP*1' 119500n 'VSUP*1' 119505n 'VSUP*0' 120000n 'VSUP*0' 120005n 'VSUP*1' 120500n 'VSUP*1' 120505n 'VSUP*0' 121000n 'VSUP*0' 121005n 'VSUP*1' 121500n 'VSUP*1' 121505n 'VSUP*0' 122000n 'VSUP*0' 122005n 'VSUP*1' 122500n 'VSUP*1' 122505n 'VSUP*0' 123000n 'VSUP*0' 123005n 'VSUP*1' 123500n 'VSUP*1' 123505n 'VSUP*0' 124000n 'VSUP*0' 124005n 'VSUP*1' 124500n 'VSUP*1' 124505n 'VSUP*0' 125000n 'VSUP*0' 125005n 'VSUP*1' 125500n 'VSUP*1' 125505n 'VSUP*0' 126000n 'VSUP*0' 126005n 'VSUP*1' 126500n 'VSUP*1' 126505n 'VSUP*0' 127000n 'VSUP*0' 127005n 'VSUP*1' 127500n 'VSUP*1' 127505n 'VSUP*0' 128000n 'VSUP*0' 128005n 'VSUP*1' 128500n 'VSUP*1' 128505n 'VSUP*0' 129000n 'VSUP*0' 129005n 'VSUP*1' 129500n 'VSUP*1' 129505n 'VSUP*0' 130000n 'VSUP*0' 130005n 'VSUP*1' 130500n 'VSUP*1' 130505n 'VSUP*0' 131000n 'VSUP*0' 131005n 'VSUP*1' 131500n 'VSUP*1' 131505n 'VSUP*0' 132000n 'VSUP*0' 132005n 'VSUP*1' 132500n 'VSUP*1' 132505n 'VSUP*0' 133000n 'VSUP*0' 133005n 'VSUP*1' 133500n 'VSUP*1' 133505n 'VSUP*0' 134000n 'VSUP*0' 134005n 'VSUP*1' 134500n 'VSUP*1' 134505n 'VSUP*0' 135000n 'VSUP*0' 135005n 'VSUP*1' 135500n 'VSUP*1' 135505n 'VSUP*0' 136000n 'VSUP*0' 136005n 'VSUP*1' 136500n 'VSUP*1' 136505n 'VSUP*0' 137000n 'VSUP*0' 137005n 'VSUP*1' 137500n 'VSUP*1' 137505n 'VSUP*0' 138000n 'VSUP*0' 138005n 'VSUP*1' 138500n 'VSUP*1' 138505n 'VSUP*0' 139000n 'VSUP*0' 139005n 'VSUP*1' 139500n 'VSUP*1' 139505n 'VSUP*0' 140000n 'VSUP*0' 140005n 'VSUP*1' 140500n 'VSUP*1' 140505n 'VSUP*0' 141000n 'VSUP*0' 141005n 'VSUP*1' 141500n 'VSUP*1' 141505n 'VSUP*0' 142000n 'VSUP*0' 142005n 'VSUP*1' 142500n 'VSUP*1' 142505n 'VSUP*0' 143000n 'VSUP*0' 143005n 'VSUP*1' 143500n 'VSUP*1' 143505n 'VSUP*0' 144000n 'VSUP*0' 144005n 'VSUP*1' 144500n 'VSUP*1' 144505n 'VSUP*0' 145000n 'VSUP*0' 145005n 'VSUP*1' 145500n 'VSUP*1' 145505n 'VSUP*0' 146000n 'VSUP*0' 146005n 'VSUP*1' 146500n 'VSUP*1' 146505n 'VSUP*0' 147000n 'VSUP*0' 147005n 'VSUP*1' 147500n 'VSUP*1' 147505n 'VSUP*0' 148000n 'VSUP*0' 148005n 'VSUP*1' 148500n 'VSUP*1' 148505n 'VSUP*0' 149000n 'VSUP*0' 149005n 'VSUP*1' 149500n 'VSUP*1' 149505n 'VSUP*0' 150000n 'VSUP*0' 150005n 'VSUP*1' 150500n 'VSUP*1' 150505n 'VSUP*0' 151000n 'VSUP*0' 151005n 'VSUP*1' 151500n 'VSUP*1' 151505n 'VSUP*0' 152000n 'VSUP*0' 152005n 'VSUP*1' 152500n 'VSUP*1' 152505n 'VSUP*0' 153000n 'VSUP*0' 153005n 'VSUP*1' 153500n 'VSUP*1' 153505n 'VSUP*0' 154000n 'VSUP*0' 154005n 'VSUP*1' 154500n 'VSUP*1' 154505n 'VSUP*0' 155000n 'VSUP*0' 155005n 'VSUP*1' 155500n 'VSUP*1' 155505n 'VSUP*0' 156000n 'VSUP*0' 156005n 'VSUP*1' 156500n 'VSUP*1' 156505n 'VSUP*0' 157000n 'VSUP*0' 157005n 'VSUP*1' 157500n 'VSUP*1' 157505n 'VSUP*0' 158000n 'VSUP*0' 158005n 'VSUP*1' 158500n 'VSUP*1' 158505n 'VSUP*0' 159000n 'VSUP*0' 159005n 'VSUP*1' 159500n 'VSUP*1' 159505n 'VSUP*0' 160000n 'VSUP*0' 160005n 'VSUP*1' 160500n 'VSUP*1' 160505n 'VSUP*0' 161000n 'VSUP*0' 161005n 'VSUP*1' 161500n 'VSUP*1' 161505n 'VSUP*0' 162000n 'VSUP*0' 162005n 'VSUP*1' 162500n 'VSUP*1' 162505n 'VSUP*0' 163000n 'VSUP*0' 163005n 'VSUP*1' 163500n 'VSUP*1' 163505n 'VSUP*0' 164000n 'VSUP*0' 164005n 'VSUP*1' 164500n 'VSUP*1' 164505n 'VSUP*0' 165000n 'VSUP*0' 165005n 'VSUP*1' 165500n 'VSUP*1' 165505n 'VSUP*0' 166000n 'VSUP*0' 166005n 'VSUP*1' 166500n 'VSUP*1' 166505n 'VSUP*0' 167000n 'VSUP*0' 167005n 'VSUP*1' 167500n 'VSUP*1' 167505n 'VSUP*0' 168000n 'VSUP*0' 168005n 'VSUP*1' 168500n 'VSUP*1' 168505n 'VSUP*0' 169000n 'VSUP*0' 169005n 'VSUP*1' 169500n 'VSUP*1' 169505n 'VSUP*0' 170000n 'VSUP*0' 170005n 'VSUP*1' 170500n 'VSUP*1' 170505n 'VSUP*0' 171000n 'VSUP*0' 171005n 'VSUP*1' 171500n 'VSUP*1' 171505n 'VSUP*0' 172000n 'VSUP*0' 172005n 'VSUP*1' 172500n 'VSUP*1' 172505n 'VSUP*0' 173000n 'VSUP*0' 173005n 'VSUP*1' 173500n 'VSUP*1' 173505n 'VSUP*0' 174000n 'VSUP*0' 174005n 'VSUP*1' 174500n 'VSUP*1' 174505n 'VSUP*0' 175000n 'VSUP*0' 175005n 'VSUP*1' 175500n 'VSUP*1' 175505n 'VSUP*0' 176000n 'VSUP*0' 176005n 'VSUP*1' 176500n 'VSUP*1' 176505n 'VSUP*0' 177000n 'VSUP*0' 177005n 'VSUP*1' 177500n 'VSUP*1' 177505n 'VSUP*0' 178000n 'VSUP*0' 178005n 'VSUP*1' 178500n 'VSUP*1' 178505n 'VSUP*0' 179000n 'VSUP*0' 179005n 'VSUP*1' 179500n 'VSUP*1' 179505n 'VSUP*0' 180000n 'VSUP*0' 180005n 'VSUP*1' 180500n 'VSUP*1' 180505n 'VSUP*0' 181000n 'VSUP*0' 181005n 'VSUP*1' 181500n 'VSUP*1' 181505n 'VSUP*0' 182000n 'VSUP*0' 182005n 'VSUP*1' 182500n 'VSUP*1' 182505n 'VSUP*0' 183000n 'VSUP*0' 183005n 'VSUP*1' 183500n 'VSUP*1' 183505n 'VSUP*0' 184000n 'VSUP*0' 184005n 'VSUP*1' 184500n 'VSUP*1' 184505n 'VSUP*0' 185000n 'VSUP*0' 185005n 'VSUP*1' 185500n 'VSUP*1' 185505n 'VSUP*0' 186000n 'VSUP*0' 186005n 'VSUP*1' 186500n 'VSUP*1' 186505n 'VSUP*0' 187000n 'VSUP*0' 187005n 'VSUP*1' 187500n 'VSUP*1' 187505n 'VSUP*0' 188000n 'VSUP*0' 188005n 'VSUP*1' 188500n 'VSUP*1' 188505n 'VSUP*0' 189000n 'VSUP*0' 189005n 'VSUP*1' 189500n 'VSUP*1' 189505n 'VSUP*0' 190000n 'VSUP*0' 190005n 'VSUP*1' 190500n 'VSUP*1' 190505n 'VSUP*0' 191000n 'VSUP*0' 191005n 'VSUP*1' 191500n 'VSUP*1' 191505n 'VSUP*0' 192000n 'VSUP*0' 192005n 'VSUP*1' 192500n 'VSUP*1' 192505n 'VSUP*0' 193000n 'VSUP*0' 193005n 'VSUP*1' 193500n 'VSUP*1' 193505n 'VSUP*0' 194000n 'VSUP*0' 194005n 'VSUP*1' 194500n 'VSUP*1' 194505n 'VSUP*0' 195000n 'VSUP*0' 195005n 'VSUP*1' 195500n 'VSUP*1' 195505n 'VSUP*0' 196000n 'VSUP*0' 196005n 'VSUP*1' 196500n 'VSUP*1' 196505n 'VSUP*0' 197000n 'VSUP*0' 197005n 'VSUP*1' 197500n 'VSUP*1' 197505n 'VSUP*0' 198000n 'VSUP*0' 198005n 'VSUP*1' 198500n 'VSUP*1' 198505n 'VSUP*0' 199000n 'VSUP*0' 199005n 'VSUP*1' 199500n 'VSUP*1' 199505n 'VSUP*0' 200000n 'VSUP*0' 200005n 'VSUP*1' 200500n 'VSUP*1' 200505n 'VSUP*0' 201000n 'VSUP*0' 201005n 'VSUP*1' 201500n 'VSUP*1' 201505n 'VSUP*0' 202000n 'VSUP*0' 202005n 'VSUP*1' 202500n 'VSUP*1' 202505n 'VSUP*0' 203000n 'VSUP*0' 203005n 'VSUP*1' 203500n 'VSUP*1' 203505n 'VSUP*0' 204000n 'VSUP*0' 204005n 'VSUP*1' 204500n 'VSUP*1' 204505n 'VSUP*0' 205000n 'VSUP*0' 205005n 'VSUP*1' 205500n 'VSUP*1' 205505n 'VSUP*0' 206000n 'VSUP*0' 206005n 'VSUP*1' 206500n 'VSUP*1' 206505n 'VSUP*0' 207000n 'VSUP*0' 207005n 'VSUP*1' 207500n 'VSUP*1' 207505n 'VSUP*0' 208000n 'VSUP*0' 208005n 'VSUP*1' 208500n 'VSUP*1' 208505n 'VSUP*0' 209000n 'VSUP*0' 209005n 'VSUP*1' 209500n 'VSUP*1' 209505n 'VSUP*0' 210000n 'VSUP*0' 210005n 'VSUP*1' 210500n 'VSUP*1' 210505n 'VSUP*0' 211000n 'VSUP*0' 211005n 'VSUP*1' 211500n 'VSUP*1' 211505n 'VSUP*0' 212000n 'VSUP*0' 212005n 'VSUP*1' 212500n 'VSUP*1' 212505n 'VSUP*0' 213000n 'VSUP*0' 213005n 'VSUP*1' 213500n 'VSUP*1' 213505n 'VSUP*0' 214000n 'VSUP*0' 214005n 'VSUP*1' 214500n 'VSUP*1' 214505n 'VSUP*0' 215000n 'VSUP*0' 215005n 'VSUP*1' 215500n 'VSUP*1' 215505n 'VSUP*0' 216000n 'VSUP*0' 216005n 'VSUP*1' 216500n 'VSUP*1' 216505n 'VSUP*0' 217000n 'VSUP*0' 217005n 'VSUP*1' 217500n 'VSUP*1' 217505n 'VSUP*0' 218000n 'VSUP*0' 218005n 'VSUP*1' 218500n 'VSUP*1' 218505n 'VSUP*0' 219000n 'VSUP*0' 219005n 'VSUP*1' 219500n 'VSUP*1' 219505n 'VSUP*0' 220000n 'VSUP*0' 220005n 'VSUP*1' 220500n 'VSUP*1' 220505n 'VSUP*0' 221000n 'VSUP*0' 221005n 'VSUP*1' 221500n 'VSUP*1' 221505n 'VSUP*0' 222000n 'VSUP*0' 222005n 'VSUP*1' 222500n 'VSUP*1' 222505n 'VSUP*0' 223000n 'VSUP*0' 223005n 'VSUP*1' 223500n 'VSUP*1' 223505n 'VSUP*0' 224000n 'VSUP*0' 224005n 'VSUP*1' 224500n 'VSUP*1' 224505n 'VSUP*0' 225000n 'VSUP*0' 225005n 'VSUP*1' 225500n 'VSUP*1' 225505n 'VSUP*0' 226000n 'VSUP*0' 226005n 'VSUP*1' 226500n 'VSUP*1' 226505n 'VSUP*0' 227000n 'VSUP*0' 227005n 'VSUP*1' 227500n 'VSUP*1' 227505n 'VSUP*0' 228000n 'VSUP*0' 228005n 'VSUP*1' 228500n 'VSUP*1' 228505n 'VSUP*0' 229000n 'VSUP*0' 229005n 'VSUP*1' 229500n 'VSUP*1' 229505n 'VSUP*0' 230000n 'VSUP*0' 230005n 'VSUP*1' 230500n 'VSUP*1' 230505n 'VSUP*0' 231000n 'VSUP*0' 231005n 'VSUP*1' 231500n 'VSUP*1' 231505n 'VSUP*0' 232000n 'VSUP*0' 232005n 'VSUP*1' 232500n 'VSUP*1' 232505n 'VSUP*0' 233000n 'VSUP*0' 233005n 'VSUP*1' 233500n 'VSUP*1' 233505n 'VSUP*0' 234000n 'VSUP*0' 234005n 'VSUP*1' 234500n 'VSUP*1' 234505n 'VSUP*0' 235000n 'VSUP*0' 235005n 'VSUP*1' 235500n 'VSUP*1' 235505n 'VSUP*0' 236000n 'VSUP*0' 236005n 'VSUP*1' 236500n 'VSUP*1' 236505n 'VSUP*0' 237000n 'VSUP*0' 237005n 'VSUP*1' 237500n 'VSUP*1' 237505n 'VSUP*0' 238000n 'VSUP*0' 238005n 'VSUP*1' 238500n 'VSUP*1' 238505n 'VSUP*0' 239000n 'VSUP*0' 239005n 'VSUP*1' 239500n 'VSUP*1' 239505n 'VSUP*0' 240000n 'VSUP*0' 240005n 'VSUP*1' 240500n 'VSUP*1' 240505n 'VSUP*0' 241000n 'VSUP*0' 241005n 'VSUP*1' 241500n 'VSUP*1' 241505n 'VSUP*0' 242000n 'VSUP*0' 242005n 'VSUP*1' 242500n 'VSUP*1' 242505n 'VSUP*0' 243000n 'VSUP*0' 243005n 'VSUP*1' 243500n 'VSUP*1' 243505n 'VSUP*0' 244000n 'VSUP*0' 244005n 'VSUP*1' 244500n 'VSUP*1' 244505n 'VSUP*0' 245000n 'VSUP*0' 245005n 'VSUP*1' 245500n 'VSUP*1' 245505n 'VSUP*0' 246000n 'VSUP*0' 246005n 'VSUP*1' 246500n 'VSUP*1' 246505n 'VSUP*0' 247000n 'VSUP*0' 247005n 'VSUP*1' 247500n 'VSUP*1' 247505n 'VSUP*0' 248000n 'VSUP*0' 248005n 'VSUP*1' 248500n 'VSUP*1' 248505n 'VSUP*0' 249000n 'VSUP*0' 249005n 'VSUP*1' 249500n 'VSUP*1' 249505n 'VSUP*0' 250000n 'VSUP*0' 250005n 'VSUP*1' 250500n 'VSUP*1' 250505n 'VSUP*0' 251000n 'VSUP*0' 251005n 'VSUP*1' 251500n 'VSUP*1' 251505n 'VSUP*0' 252000n 'VSUP*0' 252005n 'VSUP*1' 252500n 'VSUP*1' 252505n 'VSUP*0' 253000n 'VSUP*0' 253005n 'VSUP*1' 253500n 'VSUP*1' 253505n 'VSUP*0' 254000n 'VSUP*0' 254005n 'VSUP*1' 254500n 'VSUP*1' 254505n 'VSUP*0' 255000n 'VSUP*0' 255005n 'VSUP*1' 255500n 'VSUP*1' 255505n 'VSUP*0' 256000n 'VSUP*0' 256005n 'VSUP*1' 256500n 'VSUP*1' 256505n 'VSUP*0' 257000n 'VSUP*0' 257005n 'VSUP*1' 257500n 'VSUP*1' 257505n 'VSUP*0' 258000n 'VSUP*0' 258005n 'VSUP*1' 258500n 'VSUP*1' 258505n 'VSUP*0' 259000n 'VSUP*0' 259005n 'VSUP*1' 259500n 'VSUP*1' 259505n 'VSUP*0' 260000n 'VSUP*0' 260005n 'VSUP*1' 260500n 'VSUP*1' 260505n 'VSUP*0' 261000n 'VSUP*0' 261005n 'VSUP*1' 261500n 'VSUP*1' 261505n 'VSUP*0' 262000n 'VSUP*0' 262005n 'VSUP*1' 262500n 'VSUP*1' 262505n 'VSUP*0' 263000n 'VSUP*0' 263005n 'VSUP*1' 263500n 'VSUP*1' 263505n 'VSUP*0' 264000n 'VSUP*0' 264005n 'VSUP*1' 264500n 'VSUP*1' 264505n 'VSUP*0' 265000n 'VSUP*0' 265005n 'VSUP*1' 265500n 'VSUP*1' 265505n 'VSUP*0' 266000n 'VSUP*0' 266005n 'VSUP*1' 266500n 'VSUP*1' 266505n 'VSUP*0' 267000n 'VSUP*0' 267005n 'VSUP*1' 267500n 'VSUP*1' 267505n 'VSUP*0' 268000n 'VSUP*0' 268005n 'VSUP*1' 268500n 'VSUP*1' 268505n 'VSUP*0' 269000n 'VSUP*0' 269005n 'VSUP*1' 269500n 'VSUP*1' 269505n 'VSUP*0' 270000n 'VSUP*0' 270005n 'VSUP*1' 270500n 'VSUP*1' 270505n 'VSUP*0' 271000n 'VSUP*0' 271005n 'VSUP*1' 271500n 'VSUP*1' 271505n 'VSUP*0' 272000n 'VSUP*0' 272005n 'VSUP*1' 272500n 'VSUP*1' 272505n 'VSUP*0' 273000n 'VSUP*0' 273005n 'VSUP*1' 273500n 'VSUP*1' 273505n 'VSUP*0' 274000n 'VSUP*0' 274005n 'VSUP*1' 274500n 'VSUP*1' 274505n 'VSUP*0' 275000n 'VSUP*0' 275005n 'VSUP*1' 275500n 'VSUP*1' 275505n 'VSUP*0' 276000n 'VSUP*0' 276005n 'VSUP*1' 276500n 'VSUP*1' 276505n 'VSUP*0' 277000n 'VSUP*0' 277005n 'VSUP*1' 277500n 'VSUP*1' 277505n 'VSUP*0' 278000n 'VSUP*0' 278005n 'VSUP*1' 278500n 'VSUP*1' 278505n 'VSUP*0' 279000n 'VSUP*0' 279005n 'VSUP*1' 279500n 'VSUP*1' 279505n 'VSUP*0' 280000n 'VSUP*0' 280005n 'VSUP*1' 280500n 'VSUP*1' 280505n 'VSUP*0' 281000n 'VSUP*0' 281005n 'VSUP*1' 281500n 'VSUP*1' 281505n 'VSUP*0' 282000n 'VSUP*0' 282005n 'VSUP*1' 282500n 'VSUP*1' 282505n 'VSUP*0' 283000n 'VSUP*0' 283005n 'VSUP*1' 283500n 'VSUP*1' 283505n 'VSUP*0' 284000n 'VSUP*0' 284005n 'VSUP*1' 284500n 'VSUP*1' 284505n 'VSUP*0' 285000n 'VSUP*0' 285005n 'VSUP*1' 285500n 'VSUP*1' 285505n 'VSUP*0' 286000n 'VSUP*0' 286005n 'VSUP*1' 286500n 'VSUP*1' 286505n 'VSUP*0' 287000n 'VSUP*0' 287005n 'VSUP*1' 287500n 'VSUP*1' 287505n 'VSUP*0' 288000n 'VSUP*0' 288005n 'VSUP*1' 288500n 'VSUP*1' 288505n 'VSUP*0' 289000n 'VSUP*0' 289005n 'VSUP*1' 289500n 'VSUP*1' 289505n 'VSUP*0')"}
-C {devices/lab_pin.sym} -500 3870 0 0 {name=l365 lab=CLK}
-C {devices/lab_pin.sym} -500 3930 0 0 {name=l366 lab=0}
+C {devices/lab_pin.sym} -500 3870 0 0 {name=l397 lab=CLK}
+C {devices/lab_pin.sym} -500 3930 0 0 {name=l398 lab=0}
 T {CLK stimulus} -600 3720 0 0 0.3 0.3 {}
 C {devices/vsource.sym} 100 3900 0 0 {name=VRESET value="PWL(0n 'VSUP*0' 5n 'VSUP*1' 750n 'VSUP*1' 755n 'VSUP*0')"}
-C {devices/lab_pin.sym} 100 3870 0 0 {name=l369 lab=RESET}
-C {devices/lab_pin.sym} 100 3930 0 0 {name=l370 lab=0}
+C {devices/lab_pin.sym} 100 3870 0 0 {name=l401 lab=RESET}
+C {devices/lab_pin.sym} 100 3930 0 0 {name=l402 lab=0}
 T {RESET stimulus} 0 3720 0 0 0.3 0.3 {}
 C {devices/vsource.sym} 700 3900 0 0 {name=VSDI value="PWL(0n 'VSUP*0' 1750n 'VSUP*0' 1755n 'VSUP*0' 2750n 'VSUP*0' 2755n 'VSUP*0' 3750n 'VSUP*0' 3755n 'VSUP*0' 4750n 'VSUP*0' 4755n 'VSUP*0' 5750n 'VSUP*0' 5755n 'VSUP*0' 6750n 'VSUP*0' 6755n 'VSUP*0' 7750n 'VSUP*0' 7755n 'VSUP*0' 8750n 'VSUP*0' 8755n 'VSUP*0' 9750n 'VSUP*0' 9755n 'VSUP*0' 10750n 'VSUP*0' 10755n 'VSUP*0' 11750n 'VSUP*0' 11755n 'VSUP*0' 12750n 'VSUP*0' 12755n 'VSUP*1' 13750n 'VSUP*1' 13755n 'VSUP*0' 14750n 'VSUP*0' 14755n 'VSUP*1' 15750n 'VSUP*1' 15755n 'VSUP*0' 16750n 'VSUP*0' 16755n 'VSUP*1' 17750n 'VSUP*1' 17755n 'VSUP*0' 18750n 'VSUP*0' 18755n 'VSUP*1' 19750n 'VSUP*1' 19755n 'VSUP*0' 20750n 'VSUP*0' 20755n 'VSUP*0' 21750n 'VSUP*0' 21755n 'VSUP*0' 22750n 'VSUP*0' 22755n 'VSUP*0' 23750n 'VSUP*0' 23755n 'VSUP*1' 24750n 'VSUP*1' 24755n 'VSUP*1' 25750n 'VSUP*1' 25755n 'VSUP*1' 26750n 'VSUP*1' 26755n 'VSUP*1' 27750n 'VSUP*1' 27755n 'VSUP*1' 28750n 'VSUP*1' 28755n 'VSUP*1' 29750n 'VSUP*1' 29755n 'VSUP*0' 30750n 'VSUP*0' 30755n 'VSUP*1' 31750n 'VSUP*1' 31755n 'VSUP*0' 32750n 'VSUP*0' 32755n 'VSUP*1' 33750n 'VSUP*1' 33755n 'VSUP*0' 34750n 'VSUP*0' 34755n 'VSUP*1' 35750n 'VSUP*1' 35755n 'VSUP*0' 36750n 'VSUP*0' 36755n 'VSUP*1' 37750n 'VSUP*1' 37755n 'VSUP*1' 38750n 'VSUP*1' 38755n 'VSUP*1' 39750n 'VSUP*1' 39755n 'VSUP*1' 40750n 'VSUP*1' 40755n 'VSUP*1' 41750n 'VSUP*1' 41755n 'VSUP*0' 42750n 'VSUP*0' 42755n 'VSUP*0' 43750n 'VSUP*0' 43755n 'VSUP*0' 44750n 'VSUP*0' 44755n 'VSUP*0' 45750n 'VSUP*0' 45755n 'VSUP*0' 46750n 'VSUP*0' 46755n 'VSUP*1' 47750n 'VSUP*1' 47755n 'VSUP*0' 48750n 'VSUP*0' 48755n 'VSUP*1' 49750n 'VSUP*1' 49755n 'VSUP*0' 50750n 'VSUP*0' 50755n 'VSUP*1' 51750n 'VSUP*1' 51755n 'VSUP*0' 52750n 'VSUP*0' 52755n 'VSUP*1' 53750n 'VSUP*1' 53755n 'VSUP*0' 54750n 'VSUP*0' 54755n 'VSUP*1' 55750n 'VSUP*1' 55755n 'VSUP*1' 56750n 'VSUP*1' 56755n 'VSUP*1' 57750n 'VSUP*1' 57755n 'VSUP*1' 58750n 'VSUP*1' 58755n 'VSUP*1' 59750n 'VSUP*1' 59755n 'VSUP*1' 60750n 'VSUP*1' 60755n 'VSUP*1' 61750n 'VSUP*1' 61755n 'VSUP*1' 62750n 'VSUP*1' 62755n 'VSUP*1' 63750n 'VSUP*1' 63755n 'VSUP*1' 64750n 'VSUP*1' 64755n 'VSUP*0' 65750n 'VSUP*0' 65755n 'VSUP*0' 66750n 'VSUP*0' 66755n 'VSUP*1' 67750n 'VSUP*1' 67755n 'VSUP*0' 68750n 'VSUP*0' 68755n 'VSUP*1' 69750n 'VSUP*1' 69755n 'VSUP*0' 70750n 'VSUP*0' 70755n 'VSUP*1' 71750n 'VSUP*1' 71755n 'VSUP*0' 72750n 'VSUP*0' 72755n 'VSUP*1' 73750n 'VSUP*1' 73755n 'VSUP*0' 74750n 'VSUP*0' 74755n 'VSUP*0' 75750n 'VSUP*0' 75755n 'VSUP*0' 76750n 'VSUP*0' 76755n 'VSUP*0' 77750n 'VSUP*0' 77755n 'VSUP*0' 78750n 'VSUP*0' 78755n 'VSUP*0' 79750n 'VSUP*0' 79755n 'VSUP*0' 80750n 'VSUP*0' 80755n 'VSUP*0' 81750n 'VSUP*0' 81755n 'VSUP*0' 82750n 'VSUP*0' 82755n 'VSUP*0' 83750n 'VSUP*0' 83755n 'VSUP*0' 84750n 'VSUP*0' 84755n 'VSUP*1' 85750n 'VSUP*1' 85755n 'VSUP*0' 86750n 'VSUP*0' 86755n 'VSUP*1' 87750n 'VSUP*1' 87755n 'VSUP*0' 88750n 'VSUP*0' 88755n 'VSUP*1' 89750n 'VSUP*1' 89755n 'VSUP*0' 90750n 'VSUP*0' 90755n 'VSUP*1' 91750n 'VSUP*1' 91755n 'VSUP*0' 92750n 'VSUP*0' 92755n 'VSUP*0' 93750n 'VSUP*0' 93755n 'VSUP*0' 94750n 'VSUP*0' 94755n 'VSUP*0' 95750n 'VSUP*0' 95755n 'VSUP*1' 96750n 'VSUP*1' 96755n 'VSUP*1' 97750n 'VSUP*1' 97755n 'VSUP*1' 98750n 'VSUP*1' 98755n 'VSUP*1' 99750n 'VSUP*1' 99755n 'VSUP*1' 100750n 'VSUP*1' 100755n 'VSUP*0' 101750n 'VSUP*0' 101755n 'VSUP*0' 102750n 'VSUP*0' 102755n 'VSUP*1' 103750n 'VSUP*1' 103755n 'VSUP*0' 104750n 'VSUP*0' 104755n 'VSUP*1' 105750n 'VSUP*1' 105755n 'VSUP*0' 106750n 'VSUP*0' 106755n 'VSUP*1' 107750n 'VSUP*1' 107755n 'VSUP*0' 108750n 'VSUP*0' 108755n 'VSUP*1' 109750n 'VSUP*1' 109755n 'VSUP*1' 110750n 'VSUP*1' 110755n 'VSUP*1' 111750n 'VSUP*1' 111755n 'VSUP*1' 112750n 'VSUP*1' 112755n 'VSUP*1' 113750n 'VSUP*1' 113755n 'VSUP*0' 114750n 'VSUP*0' 114755n 'VSUP*0' 115750n 'VSUP*0' 115755n 'VSUP*0' 116750n 'VSUP*0' 116755n 'VSUP*0' 117750n 'VSUP*0' 117755n 'VSUP*0' 118750n 'VSUP*0' 118755n 'VSUP*0' 119750n 'VSUP*0' 119755n 'VSUP*0' 120750n 'VSUP*0' 120755n 'VSUP*1' 121750n 'VSUP*1' 121755n 'VSUP*0' 122750n 'VSUP*0' 122755n 'VSUP*1' 123750n 'VSUP*1' 123755n 'VSUP*0' 124750n 'VSUP*0' 124755n 'VSUP*1' 125750n 'VSUP*1' 125755n 'VSUP*0' 126750n 'VSUP*0' 126755n 'VSUP*1' 127750n 'VSUP*1' 127755n 'VSUP*1' 128750n 'VSUP*1' 128755n 'VSUP*1' 129750n 'VSUP*1' 129755n 'VSUP*1' 130750n 'VSUP*1' 130755n 'VSUP*1' 131750n 'VSUP*1' 131755n 'VSUP*1' 132750n 'VSUP*1' 132755n 'VSUP*1' 133750n 'VSUP*1' 133755n 'VSUP*1' 134750n 'VSUP*1' 134755n 'VSUP*1' 135750n 'VSUP*1' 135755n 'VSUP*1' 136750n 'VSUP*1' 136755n 'VSUP*0' 137750n 'VSUP*0' 137755n 'VSUP*0' 138750n 'VSUP*0' 138755n 'VSUP*1' 139750n 'VSUP*1' 139755n 'VSUP*0' 140750n 'VSUP*0' 140755n 'VSUP*1' 141750n 'VSUP*1' 141755n 'VSUP*0' 142750n 'VSUP*0' 142755n 'VSUP*1' 143750n 'VSUP*1' 143755n 'VSUP*0' 144750n 'VSUP*0' 144755n 'VSUP*1' 145750n 'VSUP*1' 145755n 'VSUP*0' 146750n 'VSUP*0' 146755n 'VSUP*0' 147750n 'VSUP*0' 147755n 'VSUP*0' 148750n 'VSUP*0' 148755n 'VSUP*0' 149750n 'VSUP*0' 149755n 'VSUP*0' 150750n 'VSUP*0' 150755n 'VSUP*0' 151750n 'VSUP*0' 151755n 'VSUP*0' 152750n 'VSUP*0' 152755n 'VSUP*0' 153750n 'VSUP*0' 153755n 'VSUP*0' 154750n 'VSUP*0' 154755n 'VSUP*1' 155750n 'VSUP*1' 155755n 'VSUP*0' 156750n 'VSUP*0' 156755n 'VSUP*1' 157750n 'VSUP*1' 157755n 'VSUP*0' 158750n 'VSUP*0' 158755n 'VSUP*1' 159750n 'VSUP*1' 159755n 'VSUP*0' 160750n 'VSUP*0' 160755n 'VSUP*1' 161750n 'VSUP*1' 161755n 'VSUP*0' 162750n 'VSUP*0' 162755n 'VSUP*1' 163750n 'VSUP*1' 163755n 'VSUP*0' 164750n 'VSUP*0' 164755n 'VSUP*0' 165750n 'VSUP*0' 165755n 'VSUP*0' 166750n 'VSUP*0' 166755n 'VSUP*0' 167750n 'VSUP*0' 167755n 'VSUP*1' 168750n 'VSUP*1' 168755n 'VSUP*1' 169750n 'VSUP*1' 169755n 'VSUP*1' 170750n 'VSUP*1' 170755n 'VSUP*1' 171750n 'VSUP*1' 171755n 'VSUP*1' 172750n 'VSUP*1' 172755n 'VSUP*0' 173750n 'VSUP*0' 173755n 'VSUP*0' 174750n 'VSUP*0' 174755n 'VSUP*1' 175750n 'VSUP*1' 175755n 'VSUP*0' 176750n 'VSUP*0' 176755n 'VSUP*1' 177750n 'VSUP*1' 177755n 'VSUP*0' 178750n 'VSUP*0' 178755n 'VSUP*1' 179750n 'VSUP*1' 179755n 'VSUP*0' 180750n 'VSUP*0' 180755n 'VSUP*1' 181750n 'VSUP*1' 181755n 'VSUP*1' 182750n 'VSUP*1' 182755n 'VSUP*1' 183750n 'VSUP*1' 183755n 'VSUP*1' 184750n 'VSUP*1' 184755n 'VSUP*1' 185750n 'VSUP*1' 185755n 'VSUP*0' 186750n 'VSUP*0' 186755n 'VSUP*0' 187750n 'VSUP*0' 187755n 'VSUP*0' 188750n 'VSUP*0' 188755n 'VSUP*0' 189750n 'VSUP*0' 189755n 'VSUP*0' 190750n 'VSUP*0' 190755n 'VSUP*0' 191750n 'VSUP*0' 191755n 'VSUP*0' 192750n 'VSUP*0' 192755n 'VSUP*1' 193750n 'VSUP*1' 193755n 'VSUP*0' 194750n 'VSUP*0' 194755n 'VSUP*1' 195750n 'VSUP*1' 195755n 'VSUP*0' 196750n 'VSUP*0' 196755n 'VSUP*1' 197750n 'VSUP*1' 197755n 'VSUP*0' 198750n 'VSUP*0' 198755n 'VSUP*1' 199750n 'VSUP*1' 199755n 'VSUP*1' 200750n 'VSUP*1' 200755n 'VSUP*1' 201750n 'VSUP*1' 201755n 'VSUP*1' 202750n 'VSUP*1' 202755n 'VSUP*1' 203750n 'VSUP*1' 203755n 'VSUP*1' 204750n 'VSUP*1' 204755n 'VSUP*1' 205750n 'VSUP*1' 205755n 'VSUP*1' 206750n 'VSUP*1' 206755n 'VSUP*1' 207750n 'VSUP*1' 207755n 'VSUP*1' 208750n 'VSUP*1' 208755n 'VSUP*1' 209750n 'VSUP*1' 209755n 'VSUP*0' 210750n 'VSUP*0' 210755n 'VSUP*1' 211750n 'VSUP*1' 211755n 'VSUP*0' 212750n 'VSUP*0' 212755n 'VSUP*1' 213750n 'VSUP*1' 213755n 'VSUP*0' 214750n 'VSUP*0' 214755n 'VSUP*1' 215750n 'VSUP*1' 215755n 'VSUP*0' 216750n 'VSUP*0' 216755n 'VSUP*1' 217750n 'VSUP*1' 217755n 'VSUP*0' 218750n 'VSUP*0' 218755n 'VSUP*0' 219750n 'VSUP*0' 219755n 'VSUP*0' 220750n 'VSUP*0' 220755n 'VSUP*0' 221750n 'VSUP*0' 221755n 'VSUP*0' 222750n 'VSUP*0' 222755n 'VSUP*0' 223750n 'VSUP*0' 223755n 'VSUP*0' 224750n 'VSUP*0' 224755n 'VSUP*0' 225750n 'VSUP*0' 225755n 'VSUP*0' 226750n 'VSUP*0' 226755n 'VSUP*0' 227750n 'VSUP*0' 227755n 'VSUP*0' 228750n 'VSUP*0' 228755n 'VSUP*1' 229750n 'VSUP*1' 229755n 'VSUP*0' 230750n 'VSUP*0' 230755n 'VSUP*1' 231750n 'VSUP*1' 231755n 'VSUP*0' 232750n 'VSUP*0' 232755n 'VSUP*1' 233750n 'VSUP*1' 233755n 'VSUP*0' 234750n 'VSUP*0' 234755n 'VSUP*1' 235750n 'VSUP*1' 235755n 'VSUP*0' 236750n 'VSUP*0' 236755n 'VSUP*0' 237750n 'VSUP*0' 237755n 'VSUP*0' 238750n 'VSUP*0' 238755n 'VSUP*0' 239750n 'VSUP*0' 239755n 'VSUP*1' 240750n 'VSUP*1' 240755n 'VSUP*1' 241750n 'VSUP*1' 241755n 'VSUP*1' 242750n 'VSUP*1' 242755n 'VSUP*1' 243750n 'VSUP*1' 243755n 'VSUP*1' 244750n 'VSUP*1' 244755n 'VSUP*0' 245750n 'VSUP*0' 245755n 'VSUP*0' 246750n 'VSUP*0' 246755n 'VSUP*1' 247750n 'VSUP*1' 247755n 'VSUP*0' 248750n 'VSUP*0' 248755n 'VSUP*1' 249750n 'VSUP*1' 249755n 'VSUP*0' 250750n 'VSUP*0' 250755n 'VSUP*1' 251750n 'VSUP*1' 251755n 'VSUP*0' 252750n 'VSUP*0' 252755n 'VSUP*1' 253750n 'VSUP*1' 253755n 'VSUP*1' 254750n 'VSUP*1' 254755n 'VSUP*1' 255750n 'VSUP*1' 255755n 'VSUP*1' 256750n 'VSUP*1' 256755n 'VSUP*1' 257750n 'VSUP*1' 257755n 'VSUP*0' 258750n 'VSUP*0' 258755n 'VSUP*0' 259750n 'VSUP*0' 259755n 'VSUP*0' 260750n 'VSUP*0' 260755n 'VSUP*0' 261750n 'VSUP*0' 261755n 'VSUP*0' 262750n 'VSUP*0' 262755n 'VSUP*0' 263750n 'VSUP*0' 263755n 'VSUP*0' 264750n 'VSUP*0' 264755n 'VSUP*1' 265750n 'VSUP*1' 265755n 'VSUP*0' 266750n 'VSUP*0' 266755n 'VSUP*1' 267750n 'VSUP*1' 267755n 'VSUP*0' 268750n 'VSUP*0' 268755n 'VSUP*1' 269750n 'VSUP*1' 269755n 'VSUP*0' 270750n 'VSUP*0' 270755n 'VSUP*1' 271750n 'VSUP*1' 271755n 'VSUP*1' 272750n 'VSUP*1' 272755n 'VSUP*1' 273750n 'VSUP*1' 273755n 'VSUP*1' 274750n 'VSUP*1' 274755n 'VSUP*1' 275750n 'VSUP*1' 275755n 'VSUP*1' 276750n 'VSUP*1' 276755n 'VSUP*1' 277750n 'VSUP*1' 277755n 'VSUP*1' 278750n 'VSUP*1' 278755n 'VSUP*1' 279750n 'VSUP*1' 279755n 'VSUP*1' 280750n 'VSUP*1' 280755n 'VSUP*0' 281750n 'VSUP*0' 281755n 'VSUP*0' 282750n 'VSUP*0' 282755n 'VSUP*1' 283750n 'VSUP*1' 283755n 'VSUP*0' 284750n 'VSUP*0' 284755n 'VSUP*1' 285750n 'VSUP*1' 285755n 'VSUP*0' 286750n 'VSUP*0' 286755n 'VSUP*1' 287750n 'VSUP*1' 287755n 'VSUP*0' 288750n 'VSUP*0' 288755n 'VSUP*1')"}
-C {devices/lab_pin.sym} 700 3870 0 0 {name=l373 lab=SDI}
-C {devices/lab_pin.sym} 700 3930 0 0 {name=l374 lab=0}
+C {devices/lab_pin.sym} 700 3870 0 0 {name=l405 lab=SDI}
+C {devices/lab_pin.sym} 700 3930 0 0 {name=l406 lab=0}
 T {SDI stimulus} 600 3720 0 0 0.3 0.3 {}
 C {devices/vsource.sym} 1300 3900 0 0 {name=VWE value="PWL(0n 'VSUP*0' 1700n 'VSUP*0' 1705n 'VSUP*1' 12300n 'VSUP*1' 12305n 'VSUP*0' 19700n 'VSUP*0' 19705n 'VSUP*1' 30300n 'VSUP*1' 30305n 'VSUP*0' 37700n 'VSUP*0' 37705n 'VSUP*1' 48300n 'VSUP*1' 48305n 'VSUP*0' 55700n 'VSUP*0' 55705n 'VSUP*1' 66300n 'VSUP*1' 66305n 'VSUP*0' 73700n 'VSUP*0' 73705n 'VSUP*0' 84300n 'VSUP*0' 84305n 'VSUP*1' 91700n 'VSUP*1' 91705n 'VSUP*0' 102300n 'VSUP*0' 102305n 'VSUP*1' 109700n 'VSUP*1' 109705n 'VSUP*0' 120300n 'VSUP*0' 120305n 'VSUP*1' 127700n 'VSUP*1' 127705n 'VSUP*0' 138300n 'VSUP*0' 138305n 'VSUP*1' 145700n 'VSUP*1' 145705n 'VSUP*1' 156300n 'VSUP*1' 156305n 'VSUP*0' 163700n 'VSUP*0' 163705n 'VSUP*1' 174300n 'VSUP*1' 174305n 'VSUP*0' 181700n 'VSUP*0' 181705n 'VSUP*1' 192300n 'VSUP*1' 192305n 'VSUP*0' 199700n 'VSUP*0' 199705n 'VSUP*1' 210300n 'VSUP*1' 210305n 'VSUP*0' 217700n 'VSUP*0' 217705n 'VSUP*0' 228300n 'VSUP*0' 228305n 'VSUP*1' 235700n 'VSUP*1' 235705n 'VSUP*0' 246300n 'VSUP*0' 246305n 'VSUP*1' 253700n 'VSUP*1' 253705n 'VSUP*0' 264300n 'VSUP*0' 264305n 'VSUP*1' 271700n 'VSUP*1' 271705n 'VSUP*0' 282300n 'VSUP*0' 282305n 'VSUP*1')"}
-C {devices/lab_pin.sym} 1300 3870 0 0 {name=l377 lab=WE}
-C {devices/lab_pin.sym} 1300 3930 0 0 {name=l378 lab=0}
+C {devices/lab_pin.sym} 1300 3870 0 0 {name=l409 lab=WE}
+C {devices/lab_pin.sym} 1300 3930 0 0 {name=l410 lab=0}
 T {WE stimulus} 1200 3720 0 0 0.3 0.3 {}
 C {devices/gnd.sym} -1100 4050 0 0 {name=g0 lab=0}
 T {SIMULATION-ONLY EXTRA WIRE LOADS (MOS intrinsic capacitance is already present)} 2200 3690 0 0 0.34 0.34 {}
 C {devices/capa.sym} 2300 3910 0 0 {name=CLOAD_BL0 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 2300 3880 0 0 {name=l383 lab=BL0}
-C {devices/lab_pin.sym} 2300 3940 0 0 {name=l384 lab=0}
+C {devices/lab_pin.sym} 2300 3880 0 0 {name=l415 lab=BL0}
+C {devices/lab_pin.sym} 2300 3940 0 0 {name=l416 lab=0}
 C {devices/capa.sym} 2600 3910 0 0 {name=CLOAD_BLB0 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 2600 3880 0 0 {name=l386 lab=BLB0}
-C {devices/lab_pin.sym} 2600 3940 0 0 {name=l387 lab=0}
+C {devices/lab_pin.sym} 2600 3880 0 0 {name=l418 lab=BLB0}
+C {devices/lab_pin.sym} 2600 3940 0 0 {name=l419 lab=0}
 C {devices/capa.sym} 2900 3910 0 0 {name=CLOAD_BL1 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 2900 3880 0 0 {name=l389 lab=BL1}
-C {devices/lab_pin.sym} 2900 3940 0 0 {name=l390 lab=0}
+C {devices/lab_pin.sym} 2900 3880 0 0 {name=l421 lab=BL1}
+C {devices/lab_pin.sym} 2900 3940 0 0 {name=l422 lab=0}
 C {devices/capa.sym} 3200 3910 0 0 {name=CLOAD_BLB1 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 3200 3880 0 0 {name=l392 lab=BLB1}
-C {devices/lab_pin.sym} 3200 3940 0 0 {name=l393 lab=0}
+C {devices/lab_pin.sym} 3200 3880 0 0 {name=l424 lab=BLB1}
+C {devices/lab_pin.sym} 3200 3940 0 0 {name=l425 lab=0}
 C {devices/capa.sym} 3500 3910 0 0 {name=CLOAD_BL2 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 3500 3880 0 0 {name=l395 lab=BL2}
-C {devices/lab_pin.sym} 3500 3940 0 0 {name=l396 lab=0}
+C {devices/lab_pin.sym} 3500 3880 0 0 {name=l427 lab=BL2}
+C {devices/lab_pin.sym} 3500 3940 0 0 {name=l428 lab=0}
 C {devices/capa.sym} 3800 3910 0 0 {name=CLOAD_BLB2 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 3800 3880 0 0 {name=l398 lab=BLB2}
-C {devices/lab_pin.sym} 3800 3940 0 0 {name=l399 lab=0}
+C {devices/lab_pin.sym} 3800 3880 0 0 {name=l430 lab=BLB2}
+C {devices/lab_pin.sym} 3800 3940 0 0 {name=l431 lab=0}
 C {devices/capa.sym} 4100 3910 0 0 {name=CLOAD_BL3 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 4100 3880 0 0 {name=l401 lab=BL3}
-C {devices/lab_pin.sym} 4100 3940 0 0 {name=l402 lab=0}
+C {devices/lab_pin.sym} 4100 3880 0 0 {name=l433 lab=BL3}
+C {devices/lab_pin.sym} 4100 3940 0 0 {name=l434 lab=0}
 C {devices/capa.sym} 4400 3910 0 0 {name=CLOAD_BLB3 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 4400 3880 0 0 {name=l404 lab=BLB3}
-C {devices/lab_pin.sym} 4400 3940 0 0 {name=l405 lab=0}
+C {devices/lab_pin.sym} 4400 3880 0 0 {name=l436 lab=BLB3}
+C {devices/lab_pin.sym} 4400 3940 0 0 {name=l437 lab=0}
 C {devices/capa.sym} 4700 3910 0 0 {name=CLOAD_BL4 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 4700 3880 0 0 {name=l407 lab=BL4}
-C {devices/lab_pin.sym} 4700 3940 0 0 {name=l408 lab=0}
+C {devices/lab_pin.sym} 4700 3880 0 0 {name=l439 lab=BL4}
+C {devices/lab_pin.sym} 4700 3940 0 0 {name=l440 lab=0}
 C {devices/capa.sym} 5000 3910 0 0 {name=CLOAD_BLB4 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 5000 3880 0 0 {name=l410 lab=BLB4}
-C {devices/lab_pin.sym} 5000 3940 0 0 {name=l411 lab=0}
+C {devices/lab_pin.sym} 5000 3880 0 0 {name=l442 lab=BLB4}
+C {devices/lab_pin.sym} 5000 3940 0 0 {name=l443 lab=0}
 C {devices/capa.sym} 5300 3910 0 0 {name=CLOAD_BL5 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 5300 3880 0 0 {name=l413 lab=BL5}
-C {devices/lab_pin.sym} 5300 3940 0 0 {name=l414 lab=0}
+C {devices/lab_pin.sym} 5300 3880 0 0 {name=l445 lab=BL5}
+C {devices/lab_pin.sym} 5300 3940 0 0 {name=l446 lab=0}
 C {devices/capa.sym} 5600 3910 0 0 {name=CLOAD_BLB5 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 5600 3880 0 0 {name=l416 lab=BLB5}
-C {devices/lab_pin.sym} 5600 3940 0 0 {name=l417 lab=0}
+C {devices/lab_pin.sym} 5600 3880 0 0 {name=l448 lab=BLB5}
+C {devices/lab_pin.sym} 5600 3940 0 0 {name=l449 lab=0}
 C {devices/capa.sym} 5900 3910 0 0 {name=CLOAD_BL6 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 5900 3880 0 0 {name=l419 lab=BL6}
-C {devices/lab_pin.sym} 5900 3940 0 0 {name=l420 lab=0}
+C {devices/lab_pin.sym} 5900 3880 0 0 {name=l451 lab=BL6}
+C {devices/lab_pin.sym} 5900 3940 0 0 {name=l452 lab=0}
 C {devices/capa.sym} 6200 3910 0 0 {name=CLOAD_BLB6 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 6200 3880 0 0 {name=l422 lab=BLB6}
-C {devices/lab_pin.sym} 6200 3940 0 0 {name=l423 lab=0}
+C {devices/lab_pin.sym} 6200 3880 0 0 {name=l454 lab=BLB6}
+C {devices/lab_pin.sym} 6200 3940 0 0 {name=l455 lab=0}
 C {devices/capa.sym} 6500 3910 0 0 {name=CLOAD_BL7 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 6500 3880 0 0 {name=l425 lab=BL7}
-C {devices/lab_pin.sym} 6500 3940 0 0 {name=l426 lab=0}
+C {devices/lab_pin.sym} 6500 3880 0 0 {name=l457 lab=BL7}
+C {devices/lab_pin.sym} 6500 3940 0 0 {name=l458 lab=0}
 C {devices/capa.sym} 6800 3910 0 0 {name=CLOAD_BLB7 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 6800 3880 0 0 {name=l428 lab=BLB7}
-C {devices/lab_pin.sym} 6800 3940 0 0 {name=l429 lab=0}
+C {devices/lab_pin.sym} 6800 3880 0 0 {name=l460 lab=BLB7}
+C {devices/lab_pin.sym} 6800 3940 0 0 {name=l461 lab=0}
 C {devices/capa.sym} 2300 4140 0 0 {name=CLOAD_BL8 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 2300 4110 0 0 {name=l431 lab=BL8}
-C {devices/lab_pin.sym} 2300 4170 0 0 {name=l432 lab=0}
+C {devices/lab_pin.sym} 2300 4110 0 0 {name=l463 lab=BL8}
+C {devices/lab_pin.sym} 2300 4170 0 0 {name=l464 lab=0}
 C {devices/capa.sym} 2600 4140 0 0 {name=CLOAD_BLB8 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 2600 4110 0 0 {name=l434 lab=BLB8}
-C {devices/lab_pin.sym} 2600 4170 0 0 {name=l435 lab=0}
+C {devices/lab_pin.sym} 2600 4110 0 0 {name=l466 lab=BLB8}
+C {devices/lab_pin.sym} 2600 4170 0 0 {name=l467 lab=0}
 C {devices/capa.sym} 2900 4140 0 0 {name=CLOAD_BL9 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 2900 4110 0 0 {name=l437 lab=BL9}
-C {devices/lab_pin.sym} 2900 4170 0 0 {name=l438 lab=0}
+C {devices/lab_pin.sym} 2900 4110 0 0 {name=l469 lab=BL9}
+C {devices/lab_pin.sym} 2900 4170 0 0 {name=l470 lab=0}
 C {devices/capa.sym} 3200 4140 0 0 {name=CLOAD_BLB9 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 3200 4110 0 0 {name=l440 lab=BLB9}
-C {devices/lab_pin.sym} 3200 4170 0 0 {name=l441 lab=0}
+C {devices/lab_pin.sym} 3200 4110 0 0 {name=l472 lab=BLB9}
+C {devices/lab_pin.sym} 3200 4170 0 0 {name=l473 lab=0}
 C {devices/capa.sym} 3500 4140 0 0 {name=CLOAD_BL10 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 3500 4110 0 0 {name=l443 lab=BL10}
-C {devices/lab_pin.sym} 3500 4170 0 0 {name=l444 lab=0}
+C {devices/lab_pin.sym} 3500 4110 0 0 {name=l475 lab=BL10}
+C {devices/lab_pin.sym} 3500 4170 0 0 {name=l476 lab=0}
 C {devices/capa.sym} 3800 4140 0 0 {name=CLOAD_BLB10 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 3800 4110 0 0 {name=l446 lab=BLB10}
-C {devices/lab_pin.sym} 3800 4170 0 0 {name=l447 lab=0}
+C {devices/lab_pin.sym} 3800 4110 0 0 {name=l478 lab=BLB10}
+C {devices/lab_pin.sym} 3800 4170 0 0 {name=l479 lab=0}
 C {devices/capa.sym} 4100 4140 0 0 {name=CLOAD_BL11 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 4100 4110 0 0 {name=l449 lab=BL11}
-C {devices/lab_pin.sym} 4100 4170 0 0 {name=l450 lab=0}
+C {devices/lab_pin.sym} 4100 4110 0 0 {name=l481 lab=BL11}
+C {devices/lab_pin.sym} 4100 4170 0 0 {name=l482 lab=0}
 C {devices/capa.sym} 4400 4140 0 0 {name=CLOAD_BLB11 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 4400 4110 0 0 {name=l452 lab=BLB11}
-C {devices/lab_pin.sym} 4400 4170 0 0 {name=l453 lab=0}
+C {devices/lab_pin.sym} 4400 4110 0 0 {name=l484 lab=BLB11}
+C {devices/lab_pin.sym} 4400 4170 0 0 {name=l485 lab=0}
 C {devices/capa.sym} 4700 4140 0 0 {name=CLOAD_BL12 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 4700 4110 0 0 {name=l455 lab=BL12}
-C {devices/lab_pin.sym} 4700 4170 0 0 {name=l456 lab=0}
+C {devices/lab_pin.sym} 4700 4110 0 0 {name=l487 lab=BL12}
+C {devices/lab_pin.sym} 4700 4170 0 0 {name=l488 lab=0}
 C {devices/capa.sym} 5000 4140 0 0 {name=CLOAD_BLB12 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 5000 4110 0 0 {name=l458 lab=BLB12}
-C {devices/lab_pin.sym} 5000 4170 0 0 {name=l459 lab=0}
+C {devices/lab_pin.sym} 5000 4110 0 0 {name=l490 lab=BLB12}
+C {devices/lab_pin.sym} 5000 4170 0 0 {name=l491 lab=0}
 C {devices/capa.sym} 5300 4140 0 0 {name=CLOAD_BL13 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 5300 4110 0 0 {name=l461 lab=BL13}
-C {devices/lab_pin.sym} 5300 4170 0 0 {name=l462 lab=0}
+C {devices/lab_pin.sym} 5300 4110 0 0 {name=l493 lab=BL13}
+C {devices/lab_pin.sym} 5300 4170 0 0 {name=l494 lab=0}
 C {devices/capa.sym} 5600 4140 0 0 {name=CLOAD_BLB13 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 5600 4110 0 0 {name=l464 lab=BLB13}
-C {devices/lab_pin.sym} 5600 4170 0 0 {name=l465 lab=0}
+C {devices/lab_pin.sym} 5600 4110 0 0 {name=l496 lab=BLB13}
+C {devices/lab_pin.sym} 5600 4170 0 0 {name=l497 lab=0}
 C {devices/capa.sym} 5900 4140 0 0 {name=CLOAD_BL14 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 5900 4110 0 0 {name=l467 lab=BL14}
-C {devices/lab_pin.sym} 5900 4170 0 0 {name=l468 lab=0}
+C {devices/lab_pin.sym} 5900 4110 0 0 {name=l499 lab=BL14}
+C {devices/lab_pin.sym} 5900 4170 0 0 {name=l500 lab=0}
 C {devices/capa.sym} 6200 4140 0 0 {name=CLOAD_BLB14 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 6200 4110 0 0 {name=l470 lab=BLB14}
-C {devices/lab_pin.sym} 6200 4170 0 0 {name=l471 lab=0}
+C {devices/lab_pin.sym} 6200 4110 0 0 {name=l502 lab=BLB14}
+C {devices/lab_pin.sym} 6200 4170 0 0 {name=l503 lab=0}
 C {devices/capa.sym} 6500 4140 0 0 {name=CLOAD_BL15 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 6500 4110 0 0 {name=l473 lab=BL15}
-C {devices/lab_pin.sym} 6500 4170 0 0 {name=l474 lab=0}
+C {devices/lab_pin.sym} 6500 4110 0 0 {name=l505 lab=BL15}
+C {devices/lab_pin.sym} 6500 4170 0 0 {name=l506 lab=0}
 C {devices/capa.sym} 6800 4140 0 0 {name=CLOAD_BLB15 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 6800 4110 0 0 {name=l476 lab=BLB15}
-C {devices/lab_pin.sym} 6800 4170 0 0 {name=l477 lab=0}
+C {devices/lab_pin.sym} 6800 4110 0 0 {name=l508 lab=BLB15}
+C {devices/lab_pin.sym} 6800 4170 0 0 {name=l509 lab=0}
 C {devices/capa.sym} 2300 4370 0 0 {name=CLOAD_BL16 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 2300 4340 0 0 {name=l479 lab=BL16}
-C {devices/lab_pin.sym} 2300 4400 0 0 {name=l480 lab=0}
+C {devices/lab_pin.sym} 2300 4340 0 0 {name=l511 lab=BL16}
+C {devices/lab_pin.sym} 2300 4400 0 0 {name=l512 lab=0}
 C {devices/capa.sym} 2600 4370 0 0 {name=CLOAD_BLB16 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 2600 4340 0 0 {name=l482 lab=BLB16}
-C {devices/lab_pin.sym} 2600 4400 0 0 {name=l483 lab=0}
+C {devices/lab_pin.sym} 2600 4340 0 0 {name=l514 lab=BLB16}
+C {devices/lab_pin.sym} 2600 4400 0 0 {name=l515 lab=0}
 C {devices/capa.sym} 2900 4370 0 0 {name=CLOAD_BL17 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 2900 4340 0 0 {name=l485 lab=BL17}
-C {devices/lab_pin.sym} 2900 4400 0 0 {name=l486 lab=0}
+C {devices/lab_pin.sym} 2900 4340 0 0 {name=l517 lab=BL17}
+C {devices/lab_pin.sym} 2900 4400 0 0 {name=l518 lab=0}
 C {devices/capa.sym} 3200 4370 0 0 {name=CLOAD_BLB17 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 3200 4340 0 0 {name=l488 lab=BLB17}
-C {devices/lab_pin.sym} 3200 4400 0 0 {name=l489 lab=0}
+C {devices/lab_pin.sym} 3200 4340 0 0 {name=l520 lab=BLB17}
+C {devices/lab_pin.sym} 3200 4400 0 0 {name=l521 lab=0}
 C {devices/capa.sym} 3500 4370 0 0 {name=CLOAD_BL18 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 3500 4340 0 0 {name=l491 lab=BL18}
-C {devices/lab_pin.sym} 3500 4400 0 0 {name=l492 lab=0}
+C {devices/lab_pin.sym} 3500 4340 0 0 {name=l523 lab=BL18}
+C {devices/lab_pin.sym} 3500 4400 0 0 {name=l524 lab=0}
 C {devices/capa.sym} 3800 4370 0 0 {name=CLOAD_BLB18 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 3800 4340 0 0 {name=l494 lab=BLB18}
-C {devices/lab_pin.sym} 3800 4400 0 0 {name=l495 lab=0}
+C {devices/lab_pin.sym} 3800 4340 0 0 {name=l526 lab=BLB18}
+C {devices/lab_pin.sym} 3800 4400 0 0 {name=l527 lab=0}
 C {devices/capa.sym} 4100 4370 0 0 {name=CLOAD_BL19 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 4100 4340 0 0 {name=l497 lab=BL19}
-C {devices/lab_pin.sym} 4100 4400 0 0 {name=l498 lab=0}
+C {devices/lab_pin.sym} 4100 4340 0 0 {name=l529 lab=BL19}
+C {devices/lab_pin.sym} 4100 4400 0 0 {name=l530 lab=0}
 C {devices/capa.sym} 4400 4370 0 0 {name=CLOAD_BLB19 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 4400 4340 0 0 {name=l500 lab=BLB19}
-C {devices/lab_pin.sym} 4400 4400 0 0 {name=l501 lab=0}
+C {devices/lab_pin.sym} 4400 4340 0 0 {name=l532 lab=BLB19}
+C {devices/lab_pin.sym} 4400 4400 0 0 {name=l533 lab=0}
 C {devices/capa.sym} 4700 4370 0 0 {name=CLOAD_BL20 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 4700 4340 0 0 {name=l503 lab=BL20}
-C {devices/lab_pin.sym} 4700 4400 0 0 {name=l504 lab=0}
+C {devices/lab_pin.sym} 4700 4340 0 0 {name=l535 lab=BL20}
+C {devices/lab_pin.sym} 4700 4400 0 0 {name=l536 lab=0}
 C {devices/capa.sym} 5000 4370 0 0 {name=CLOAD_BLB20 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 5000 4340 0 0 {name=l506 lab=BLB20}
-C {devices/lab_pin.sym} 5000 4400 0 0 {name=l507 lab=0}
+C {devices/lab_pin.sym} 5000 4340 0 0 {name=l538 lab=BLB20}
+C {devices/lab_pin.sym} 5000 4400 0 0 {name=l539 lab=0}
 C {devices/capa.sym} 5300 4370 0 0 {name=CLOAD_BL21 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 5300 4340 0 0 {name=l509 lab=BL21}
-C {devices/lab_pin.sym} 5300 4400 0 0 {name=l510 lab=0}
+C {devices/lab_pin.sym} 5300 4340 0 0 {name=l541 lab=BL21}
+C {devices/lab_pin.sym} 5300 4400 0 0 {name=l542 lab=0}
 C {devices/capa.sym} 5600 4370 0 0 {name=CLOAD_BLB21 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 5600 4340 0 0 {name=l512 lab=BLB21}
-C {devices/lab_pin.sym} 5600 4400 0 0 {name=l513 lab=0}
+C {devices/lab_pin.sym} 5600 4340 0 0 {name=l544 lab=BLB21}
+C {devices/lab_pin.sym} 5600 4400 0 0 {name=l545 lab=0}
 C {devices/capa.sym} 5900 4370 0 0 {name=CLOAD_BL22 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 5900 4340 0 0 {name=l515 lab=BL22}
-C {devices/lab_pin.sym} 5900 4400 0 0 {name=l516 lab=0}
+C {devices/lab_pin.sym} 5900 4340 0 0 {name=l547 lab=BL22}
+C {devices/lab_pin.sym} 5900 4400 0 0 {name=l548 lab=0}
 C {devices/capa.sym} 6200 4370 0 0 {name=CLOAD_BLB22 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 6200 4340 0 0 {name=l518 lab=BLB22}
-C {devices/lab_pin.sym} 6200 4400 0 0 {name=l519 lab=0}
+C {devices/lab_pin.sym} 6200 4340 0 0 {name=l550 lab=BLB22}
+C {devices/lab_pin.sym} 6200 4400 0 0 {name=l551 lab=0}
 C {devices/capa.sym} 6500 4370 0 0 {name=CLOAD_BL23 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 6500 4340 0 0 {name=l521 lab=BL23}
-C {devices/lab_pin.sym} 6500 4400 0 0 {name=l522 lab=0}
+C {devices/lab_pin.sym} 6500 4340 0 0 {name=l553 lab=BL23}
+C {devices/lab_pin.sym} 6500 4400 0 0 {name=l554 lab=0}
 C {devices/capa.sym} 6800 4370 0 0 {name=CLOAD_BLB23 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 6800 4340 0 0 {name=l524 lab=BLB23}
-C {devices/lab_pin.sym} 6800 4400 0 0 {name=l525 lab=0}
+C {devices/lab_pin.sym} 6800 4340 0 0 {name=l556 lab=BLB23}
+C {devices/lab_pin.sym} 6800 4400 0 0 {name=l557 lab=0}
 C {devices/capa.sym} 2300 4600 0 0 {name=CLOAD_BL24 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 2300 4570 0 0 {name=l527 lab=BL24}
-C {devices/lab_pin.sym} 2300 4630 0 0 {name=l528 lab=0}
+C {devices/lab_pin.sym} 2300 4570 0 0 {name=l559 lab=BL24}
+C {devices/lab_pin.sym} 2300 4630 0 0 {name=l560 lab=0}
 C {devices/capa.sym} 2600 4600 0 0 {name=CLOAD_BLB24 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 2600 4570 0 0 {name=l530 lab=BLB24}
-C {devices/lab_pin.sym} 2600 4630 0 0 {name=l531 lab=0}
+C {devices/lab_pin.sym} 2600 4570 0 0 {name=l562 lab=BLB24}
+C {devices/lab_pin.sym} 2600 4630 0 0 {name=l563 lab=0}
 C {devices/capa.sym} 2900 4600 0 0 {name=CLOAD_BL25 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 2900 4570 0 0 {name=l533 lab=BL25}
-C {devices/lab_pin.sym} 2900 4630 0 0 {name=l534 lab=0}
+C {devices/lab_pin.sym} 2900 4570 0 0 {name=l565 lab=BL25}
+C {devices/lab_pin.sym} 2900 4630 0 0 {name=l566 lab=0}
 C {devices/capa.sym} 3200 4600 0 0 {name=CLOAD_BLB25 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 3200 4570 0 0 {name=l536 lab=BLB25}
-C {devices/lab_pin.sym} 3200 4630 0 0 {name=l537 lab=0}
+C {devices/lab_pin.sym} 3200 4570 0 0 {name=l568 lab=BLB25}
+C {devices/lab_pin.sym} 3200 4630 0 0 {name=l569 lab=0}
 C {devices/capa.sym} 3500 4600 0 0 {name=CLOAD_BL26 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 3500 4570 0 0 {name=l539 lab=BL26}
-C {devices/lab_pin.sym} 3500 4630 0 0 {name=l540 lab=0}
+C {devices/lab_pin.sym} 3500 4570 0 0 {name=l571 lab=BL26}
+C {devices/lab_pin.sym} 3500 4630 0 0 {name=l572 lab=0}
 C {devices/capa.sym} 3800 4600 0 0 {name=CLOAD_BLB26 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 3800 4570 0 0 {name=l542 lab=BLB26}
-C {devices/lab_pin.sym} 3800 4630 0 0 {name=l543 lab=0}
+C {devices/lab_pin.sym} 3800 4570 0 0 {name=l574 lab=BLB26}
+C {devices/lab_pin.sym} 3800 4630 0 0 {name=l575 lab=0}
 C {devices/capa.sym} 4100 4600 0 0 {name=CLOAD_BL27 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 4100 4570 0 0 {name=l545 lab=BL27}
-C {devices/lab_pin.sym} 4100 4630 0 0 {name=l546 lab=0}
+C {devices/lab_pin.sym} 4100 4570 0 0 {name=l577 lab=BL27}
+C {devices/lab_pin.sym} 4100 4630 0 0 {name=l578 lab=0}
 C {devices/capa.sym} 4400 4600 0 0 {name=CLOAD_BLB27 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 4400 4570 0 0 {name=l548 lab=BLB27}
-C {devices/lab_pin.sym} 4400 4630 0 0 {name=l549 lab=0}
+C {devices/lab_pin.sym} 4400 4570 0 0 {name=l580 lab=BLB27}
+C {devices/lab_pin.sym} 4400 4630 0 0 {name=l581 lab=0}
 C {devices/capa.sym} 4700 4600 0 0 {name=CLOAD_BL28 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 4700 4570 0 0 {name=l551 lab=BL28}
-C {devices/lab_pin.sym} 4700 4630 0 0 {name=l552 lab=0}
+C {devices/lab_pin.sym} 4700 4570 0 0 {name=l583 lab=BL28}
+C {devices/lab_pin.sym} 4700 4630 0 0 {name=l584 lab=0}
 C {devices/capa.sym} 5000 4600 0 0 {name=CLOAD_BLB28 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 5000 4570 0 0 {name=l554 lab=BLB28}
-C {devices/lab_pin.sym} 5000 4630 0 0 {name=l555 lab=0}
+C {devices/lab_pin.sym} 5000 4570 0 0 {name=l586 lab=BLB28}
+C {devices/lab_pin.sym} 5000 4630 0 0 {name=l587 lab=0}
 C {devices/capa.sym} 5300 4600 0 0 {name=CLOAD_BL29 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 5300 4570 0 0 {name=l557 lab=BL29}
-C {devices/lab_pin.sym} 5300 4630 0 0 {name=l558 lab=0}
+C {devices/lab_pin.sym} 5300 4570 0 0 {name=l589 lab=BL29}
+C {devices/lab_pin.sym} 5300 4630 0 0 {name=l590 lab=0}
 C {devices/capa.sym} 5600 4600 0 0 {name=CLOAD_BLB29 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 5600 4570 0 0 {name=l560 lab=BLB29}
-C {devices/lab_pin.sym} 5600 4630 0 0 {name=l561 lab=0}
+C {devices/lab_pin.sym} 5600 4570 0 0 {name=l592 lab=BLB29}
+C {devices/lab_pin.sym} 5600 4630 0 0 {name=l593 lab=0}
 C {devices/capa.sym} 5900 4600 0 0 {name=CLOAD_BL30 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 5900 4570 0 0 {name=l563 lab=BL30}
-C {devices/lab_pin.sym} 5900 4630 0 0 {name=l564 lab=0}
+C {devices/lab_pin.sym} 5900 4570 0 0 {name=l595 lab=BL30}
+C {devices/lab_pin.sym} 5900 4630 0 0 {name=l596 lab=0}
 C {devices/capa.sym} 6200 4600 0 0 {name=CLOAD_BLB30 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 6200 4570 0 0 {name=l566 lab=BLB30}
-C {devices/lab_pin.sym} 6200 4630 0 0 {name=l567 lab=0}
+C {devices/lab_pin.sym} 6200 4570 0 0 {name=l598 lab=BLB30}
+C {devices/lab_pin.sym} 6200 4630 0 0 {name=l599 lab=0}
 C {devices/capa.sym} 6500 4600 0 0 {name=CLOAD_BL31 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 6500 4570 0 0 {name=l569 lab=BL31}
-C {devices/lab_pin.sym} 6500 4630 0 0 {name=l570 lab=0}
+C {devices/lab_pin.sym} 6500 4570 0 0 {name=l601 lab=BL31}
+C {devices/lab_pin.sym} 6500 4630 0 0 {name=l602 lab=0}
 C {devices/capa.sym} 6800 4600 0 0 {name=CLOAD_BLB31 value="'CBLWIRE'"}
-C {devices/lab_pin.sym} 6800 4570 0 0 {name=l572 lab=BLB31}
-C {devices/lab_pin.sym} 6800 4630 0 0 {name=l573 lab=0}
+C {devices/lab_pin.sym} 6800 4570 0 0 {name=l604 lab=BLB31}
+C {devices/lab_pin.sym} 6800 4630 0 0 {name=l605 lab=0}
 C {devices/capa.sym} 2300 4830 0 0 {name=CLOAD_WL0 value="'CWLWIRE'"}
-C {devices/lab_pin.sym} 2300 4800 0 0 {name=l575 lab=WL0}
-C {devices/lab_pin.sym} 2300 4860 0 0 {name=l576 lab=0}
-C {devices/capa.sym} 2600 4830 0 0 {name=CLOAD_WL1 value="'CWLWIRE'"}
-C {devices/lab_pin.sym} 2600 4800 0 0 {name=l578 lab=WL1}
-C {devices/lab_pin.sym} 2600 4860 0 0 {name=l579 lab=0}
-C {devices/capa.sym} 2900 4830 0 0 {name=CLOAD_WL2 value="'CWLWIRE'"}
-C {devices/lab_pin.sym} 2900 4800 0 0 {name=l581 lab=WL2}
-C {devices/lab_pin.sym} 2900 4860 0 0 {name=l582 lab=0}
-C {devices/capa.sym} 3200 4830 0 0 {name=CLOAD_WL3 value="'CWLWIRE'"}
-C {devices/lab_pin.sym} 3200 4800 0 0 {name=l584 lab=WL3}
-C {devices/lab_pin.sym} 3200 4860 0 0 {name=l585 lab=0}
-C {devices/capa.sym} 3500 4830 0 0 {name=CLOAD_WL4 value="'CWLWIRE'"}
-C {devices/lab_pin.sym} 3500 4800 0 0 {name=l587 lab=WL4}
-C {devices/lab_pin.sym} 3500 4860 0 0 {name=l588 lab=0}
-C {devices/capa.sym} 3800 4830 0 0 {name=CLOAD_WL5 value="'CWLWIRE'"}
-C {devices/lab_pin.sym} 3800 4800 0 0 {name=l590 lab=WL5}
-C {devices/lab_pin.sym} 3800 4860 0 0 {name=l591 lab=0}
-C {devices/capa.sym} 4100 4830 0 0 {name=CLOAD_WL6 value="'CWLWIRE'"}
-C {devices/lab_pin.sym} 4100 4800 0 0 {name=l593 lab=WL6}
-C {devices/lab_pin.sym} 4100 4860 0 0 {name=l594 lab=0}
-C {devices/capa.sym} 4400 4830 0 0 {name=CLOAD_WL7 value="'CWLWIRE'"}
-C {devices/lab_pin.sym} 4400 4800 0 0 {name=l596 lab=WL7}
-C {devices/lab_pin.sym} 4400 4860 0 0 {name=l597 lab=0}
-C {devices/capa.sym} 4700 4830 0 0 {name=CLOAD_WL8 value="'CWLWIRE'"}
-C {devices/lab_pin.sym} 4700 4800 0 0 {name=l599 lab=WL8}
-C {devices/lab_pin.sym} 4700 4860 0 0 {name=l600 lab=0}
-C {devices/capa.sym} 5000 4830 0 0 {name=CLOAD_WL9 value="'CWLWIRE'"}
-C {devices/lab_pin.sym} 5000 4800 0 0 {name=l602 lab=WL9}
-C {devices/lab_pin.sym} 5000 4860 0 0 {name=l603 lab=0}
-C {devices/capa.sym} 5300 4830 0 0 {name=CLOAD_WL10 value="'CWLWIRE'"}
-C {devices/lab_pin.sym} 5300 4800 0 0 {name=l605 lab=WL10}
-C {devices/lab_pin.sym} 5300 4860 0 0 {name=l606 lab=0}
-C {devices/capa.sym} 5600 4830 0 0 {name=CLOAD_WL11 value="'CWLWIRE'"}
-C {devices/lab_pin.sym} 5600 4800 0 0 {name=l608 lab=WL11}
-C {devices/lab_pin.sym} 5600 4860 0 0 {name=l609 lab=0}
-C {devices/capa.sym} 5900 4830 0 0 {name=CLOAD_WL12 value="'CWLWIRE'"}
-C {devices/lab_pin.sym} 5900 4800 0 0 {name=l611 lab=WL12}
-C {devices/lab_pin.sym} 5900 4860 0 0 {name=l612 lab=0}
-C {devices/capa.sym} 6200 4830 0 0 {name=CLOAD_WL13 value="'CWLWIRE'"}
-C {devices/lab_pin.sym} 6200 4800 0 0 {name=l614 lab=WL13}
-C {devices/lab_pin.sym} 6200 4860 0 0 {name=l615 lab=0}
-C {devices/capa.sym} 6500 4830 0 0 {name=CLOAD_WL14 value="'CWLWIRE'"}
-C {devices/lab_pin.sym} 6500 4800 0 0 {name=l617 lab=WL14}
-C {devices/lab_pin.sym} 6500 4860 0 0 {name=l618 lab=0}
-C {devices/capa.sym} 6800 4830 0 0 {name=CLOAD_WL15 value="'CWLWIRE'"}
-C {devices/lab_pin.sym} 6800 4800 0 0 {name=l620 lab=WL15}
-C {devices/lab_pin.sym} 6800 4860 0 0 {name=l621 lab=0}
-C {devices/capa.sym} 2300 5060 0 0 {name=CLOAD_Y value="'CYWIRE'"}
-C {devices/lab_pin.sym} 2300 5030 0 0 {name=l623 lab=Y}
-C {devices/lab_pin.sym} 2300 5090 0 0 {name=l624 lab=0}
-C {devices/capa.sym} 2600 5060 0 0 {name=CLOAD_YB value="'CYWIRE'"}
-C {devices/lab_pin.sym} 2600 5030 0 0 {name=l626 lab=YB}
-C {devices/lab_pin.sym} 2600 5090 0 0 {name=l627 lab=0}
-C {devices/capa.sym} 2900 5060 0 0 {name=CLOAD_SDO value="'CSDO'"}
-C {devices/lab_pin.sym} 2900 5030 0 0 {name=l629 lab=SDO}
-C {devices/lab_pin.sym} 2900 5090 0 0 {name=l630 lab=0}
+C {devices/lab_pin.sym} 2300 4800 0 0 {name=l607 lab=WL0}
+C {devices/lab_pin.sym} 2300 4860 0 0 {name=l608 lab=0}
+C {devices/capa.sym} 2600 4830 0 0 {name=CLOAD_WL_R0 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 2600 4800 0 0 {name=l610 lab=WL_R0}
+C {devices/lab_pin.sym} 2600 4860 0 0 {name=l611 lab=0}
+C {devices/capa.sym} 2900 4830 0 0 {name=CLOAD_WL1 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 2900 4800 0 0 {name=l613 lab=WL1}
+C {devices/lab_pin.sym} 2900 4860 0 0 {name=l614 lab=0}
+C {devices/capa.sym} 3200 4830 0 0 {name=CLOAD_WL_R1 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 3200 4800 0 0 {name=l616 lab=WL_R1}
+C {devices/lab_pin.sym} 3200 4860 0 0 {name=l617 lab=0}
+C {devices/capa.sym} 3500 4830 0 0 {name=CLOAD_WL2 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 3500 4800 0 0 {name=l619 lab=WL2}
+C {devices/lab_pin.sym} 3500 4860 0 0 {name=l620 lab=0}
+C {devices/capa.sym} 3800 4830 0 0 {name=CLOAD_WL_R2 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 3800 4800 0 0 {name=l622 lab=WL_R2}
+C {devices/lab_pin.sym} 3800 4860 0 0 {name=l623 lab=0}
+C {devices/capa.sym} 4100 4830 0 0 {name=CLOAD_WL3 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 4100 4800 0 0 {name=l625 lab=WL3}
+C {devices/lab_pin.sym} 4100 4860 0 0 {name=l626 lab=0}
+C {devices/capa.sym} 4400 4830 0 0 {name=CLOAD_WL_R3 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 4400 4800 0 0 {name=l628 lab=WL_R3}
+C {devices/lab_pin.sym} 4400 4860 0 0 {name=l629 lab=0}
+C {devices/capa.sym} 4700 4830 0 0 {name=CLOAD_WL4 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 4700 4800 0 0 {name=l631 lab=WL4}
+C {devices/lab_pin.sym} 4700 4860 0 0 {name=l632 lab=0}
+C {devices/capa.sym} 5000 4830 0 0 {name=CLOAD_WL_R4 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 5000 4800 0 0 {name=l634 lab=WL_R4}
+C {devices/lab_pin.sym} 5000 4860 0 0 {name=l635 lab=0}
+C {devices/capa.sym} 5300 4830 0 0 {name=CLOAD_WL5 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 5300 4800 0 0 {name=l637 lab=WL5}
+C {devices/lab_pin.sym} 5300 4860 0 0 {name=l638 lab=0}
+C {devices/capa.sym} 5600 4830 0 0 {name=CLOAD_WL_R5 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 5600 4800 0 0 {name=l640 lab=WL_R5}
+C {devices/lab_pin.sym} 5600 4860 0 0 {name=l641 lab=0}
+C {devices/capa.sym} 5900 4830 0 0 {name=CLOAD_WL6 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 5900 4800 0 0 {name=l643 lab=WL6}
+C {devices/lab_pin.sym} 5900 4860 0 0 {name=l644 lab=0}
+C {devices/capa.sym} 6200 4830 0 0 {name=CLOAD_WL_R6 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 6200 4800 0 0 {name=l646 lab=WL_R6}
+C {devices/lab_pin.sym} 6200 4860 0 0 {name=l647 lab=0}
+C {devices/capa.sym} 6500 4830 0 0 {name=CLOAD_WL7 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 6500 4800 0 0 {name=l649 lab=WL7}
+C {devices/lab_pin.sym} 6500 4860 0 0 {name=l650 lab=0}
+C {devices/capa.sym} 6800 4830 0 0 {name=CLOAD_WL_R7 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 6800 4800 0 0 {name=l652 lab=WL_R7}
+C {devices/lab_pin.sym} 6800 4860 0 0 {name=l653 lab=0}
+C {devices/capa.sym} 2300 5060 0 0 {name=CLOAD_WL8 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 2300 5030 0 0 {name=l655 lab=WL8}
+C {devices/lab_pin.sym} 2300 5090 0 0 {name=l656 lab=0}
+C {devices/capa.sym} 2600 5060 0 0 {name=CLOAD_WL_R8 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 2600 5030 0 0 {name=l658 lab=WL_R8}
+C {devices/lab_pin.sym} 2600 5090 0 0 {name=l659 lab=0}
+C {devices/capa.sym} 2900 5060 0 0 {name=CLOAD_WL9 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 2900 5030 0 0 {name=l661 lab=WL9}
+C {devices/lab_pin.sym} 2900 5090 0 0 {name=l662 lab=0}
+C {devices/capa.sym} 3200 5060 0 0 {name=CLOAD_WL_R9 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 3200 5030 0 0 {name=l664 lab=WL_R9}
+C {devices/lab_pin.sym} 3200 5090 0 0 {name=l665 lab=0}
+C {devices/capa.sym} 3500 5060 0 0 {name=CLOAD_WL10 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 3500 5030 0 0 {name=l667 lab=WL10}
+C {devices/lab_pin.sym} 3500 5090 0 0 {name=l668 lab=0}
+C {devices/capa.sym} 3800 5060 0 0 {name=CLOAD_WL_R10 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 3800 5030 0 0 {name=l670 lab=WL_R10}
+C {devices/lab_pin.sym} 3800 5090 0 0 {name=l671 lab=0}
+C {devices/capa.sym} 4100 5060 0 0 {name=CLOAD_WL11 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 4100 5030 0 0 {name=l673 lab=WL11}
+C {devices/lab_pin.sym} 4100 5090 0 0 {name=l674 lab=0}
+C {devices/capa.sym} 4400 5060 0 0 {name=CLOAD_WL_R11 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 4400 5030 0 0 {name=l676 lab=WL_R11}
+C {devices/lab_pin.sym} 4400 5090 0 0 {name=l677 lab=0}
+C {devices/capa.sym} 4700 5060 0 0 {name=CLOAD_WL12 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 4700 5030 0 0 {name=l679 lab=WL12}
+C {devices/lab_pin.sym} 4700 5090 0 0 {name=l680 lab=0}
+C {devices/capa.sym} 5000 5060 0 0 {name=CLOAD_WL_R12 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 5000 5030 0 0 {name=l682 lab=WL_R12}
+C {devices/lab_pin.sym} 5000 5090 0 0 {name=l683 lab=0}
+C {devices/capa.sym} 5300 5060 0 0 {name=CLOAD_WL13 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 5300 5030 0 0 {name=l685 lab=WL13}
+C {devices/lab_pin.sym} 5300 5090 0 0 {name=l686 lab=0}
+C {devices/capa.sym} 5600 5060 0 0 {name=CLOAD_WL_R13 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 5600 5030 0 0 {name=l688 lab=WL_R13}
+C {devices/lab_pin.sym} 5600 5090 0 0 {name=l689 lab=0}
+C {devices/capa.sym} 5900 5060 0 0 {name=CLOAD_WL14 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 5900 5030 0 0 {name=l691 lab=WL14}
+C {devices/lab_pin.sym} 5900 5090 0 0 {name=l692 lab=0}
+C {devices/capa.sym} 6200 5060 0 0 {name=CLOAD_WL_R14 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 6200 5030 0 0 {name=l694 lab=WL_R14}
+C {devices/lab_pin.sym} 6200 5090 0 0 {name=l695 lab=0}
+C {devices/capa.sym} 6500 5060 0 0 {name=CLOAD_WL15 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 6500 5030 0 0 {name=l697 lab=WL15}
+C {devices/lab_pin.sym} 6500 5090 0 0 {name=l698 lab=0}
+C {devices/capa.sym} 6800 5060 0 0 {name=CLOAD_WL_R15 value="'CWLWIRE'"}
+C {devices/lab_pin.sym} 6800 5030 0 0 {name=l700 lab=WL_R15}
+C {devices/lab_pin.sym} 6800 5090 0 0 {name=l701 lab=0}
+C {devices/capa.sym} 2300 5290 0 0 {name=CLOAD_Y value="'CYWIRE'"}
+C {devices/lab_pin.sym} 2300 5260 0 0 {name=l703 lab=Y}
+C {devices/lab_pin.sym} 2300 5320 0 0 {name=l704 lab=0}
+C {devices/capa.sym} 2600 5290 0 0 {name=CLOAD_YB value="'CYWIRE'"}
+C {devices/lab_pin.sym} 2600 5260 0 0 {name=l706 lab=YB}
+C {devices/lab_pin.sym} 2600 5320 0 0 {name=l707 lab=0}
+C {devices/capa.sym} 2900 5290 0 0 {name=CLOAD_SDO value="'CSDO'"}
+C {devices/lab_pin.sym} 2900 5260 0 0 {name=l709 lab=SDO}
+C {devices/lab_pin.sym} 2900 5320 0 0 {name=l710 lab=0}
 C {devices/code.sym} -1100 4330 0 0 {name=MODELS only_toplevel=true format="tcleval( @value )" value=".include $::LIB/ip62_models"}
 C {devices/code.sym} -550 4330 0 0 {name=SIMULATION only_toplevel=true value=".param VSUP=5 CBLWIRE=70f CWLWIRE=200f CYWIRE=180f CSDO=10p
 .temp 27
 .control
-save v(VDD) v(CLK) v(RESET) v(SDI) v(WE) v(SDO) v(PREB) v(SAE) v(WL_EN) v(WRITE_EN) v(DIN) v(PD_Y) v(PD_YB) v(Y) v(YB) v(SOUT) v(SOUTB) v(RA0) v(RA1) v(RA2) v(RA3) v(CA0) v(CA1) v(CA2) v(CA3) v(CA4) v(WL0) v(WL1) v(WL2) v(WL3) v(WL4) v(WL5) v(WL6) v(WL7) v(WL8) v(WL9) v(WL10) v(WL11) v(WL12) v(WL13) v(WL14) v(WL15) v(COL0) v(COL1) v(COL2) v(COL3) v(COL4) v(COL5) v(COL6) v(COL7) v(COL8) v(COL9) v(COL10) v(COL11) v(COL12) v(COL13) v(COL14) v(COL15) v(COL16) v(COL17) v(COL18) v(COL19) v(COL20) v(COL21) v(COL22) v(COL23) v(COL24) v(COL25) v(COL26) v(COL27) v(COL28) v(COL29) v(COL30) v(COL31) v(BL0) v(BL1) v(BL2) v(BL3) v(BL4) v(BL5) v(BL6) v(BL7) v(BL8) v(BL9) v(BL10) v(BL11) v(BL12) v(BL13) v(BL14) v(BL15) v(BL16) v(BL17) v(BL18) v(BL19) v(BL20) v(BL21) v(BL22) v(BL23) v(BL24) v(BL25) v(BL26) v(BL27) v(BL28) v(BL29) v(BL30) v(BL31) v(BLB0) v(BLB1) v(BLB2) v(BLB3) v(BLB4) v(BLB5) v(BLB6) v(BLB7) v(BLB8) v(BLB9) v(BLB10) v(BLB11) v(BLB12) v(BLB13) v(BLB14) v(BLB15) v(BLB16) v(BLB17) v(BLB18) v(BLB19) v(BLB20) v(BLB21) v(BLB22) v(BLB23) v(BLB24) v(BLB25) v(BLB26) v(BLB27) v(BLB28) v(BLB29) v(BLB30) v(BLB31) v(xctrl.xphase.C0) v(xctrl.xphase.C1) v(xctrl.xphase.C2) v(xctrl.xphase.C3) v(xctrl.xphase.C4) v(xctrl.CKI) v(xctrl.RSTI) v(xctrl.xcontrol.W) v(xarray.xr0c0.Q) v(xarray.xr0c0.QB) v(xarray.xr0c31.Q) v(xarray.xr0c31.QB) v(xarray.xr15c0.Q) v(xarray.xr15c0.QB) v(xarray.xr15c31.Q) v(xarray.xr15c31.QB)
+save v(VDD) v(CLK) v(RESET) v(SDI) v(WE) v(SDO) v(PREB) v(SAE) v(WL_EN) v(WRITE_EN) v(DIN) v(PD_Y) v(PD_YB) v(Y) v(YB) v(SOUT) v(SOUTB) v(RA0) v(RA1) v(RA2) v(RA3) v(CA0) v(CA1) v(CA2) v(CA3) v(CA4) v(WL0) v(WL1) v(WL2) v(WL3) v(WL4) v(WL5) v(WL6) v(WL7) v(WL8) v(WL9) v(WL10) v(WL11) v(WL12) v(WL13) v(WL14) v(WL15) v(WL_R0) v(WL_R1) v(WL_R2) v(WL_R3) v(WL_R4) v(WL_R5) v(WL_R6) v(WL_R7) v(WL_R8) v(WL_R9) v(WL_R10) v(WL_R11) v(WL_R12) v(WL_R13) v(WL_R14) v(WL_R15) v(COL0) v(COL1) v(COL2) v(COL3) v(COL4) v(COL5) v(COL6) v(COL7) v(COL8) v(COL9) v(COL10) v(COL11) v(COL12) v(COL13) v(COL14) v(COL15) v(COL16) v(COL17) v(COL18) v(COL19) v(COL20) v(COL21) v(COL22) v(COL23) v(COL24) v(COL25) v(COL26) v(COL27) v(COL28) v(COL29) v(COL30) v(COL31) v(BL0) v(BL1) v(BL2) v(BL3) v(BL4) v(BL5) v(BL6) v(BL7) v(BL8) v(BL9) v(BL10) v(BL11) v(BL12) v(BL13) v(BL14) v(BL15) v(BL16) v(BL17) v(BL18) v(BL19) v(BL20) v(BL21) v(BL22) v(BL23) v(BL24) v(BL25) v(BL26) v(BL27) v(BL28) v(BL29) v(BL30) v(BL31) v(BLB0) v(BLB1) v(BLB2) v(BLB3) v(BLB4) v(BLB5) v(BLB6) v(BLB7) v(BLB8) v(BLB9) v(BLB10) v(BLB11) v(BLB12) v(BLB13) v(BLB14) v(BLB15) v(BLB16) v(BLB17) v(BLB18) v(BLB19) v(BLB20) v(BLB21) v(BLB22) v(BLB23) v(BLB24) v(BLB25) v(BLB26) v(BLB27) v(BLB28) v(BLB29) v(BLB30) v(BLB31) v(xctrl.xphase.C0) v(xctrl.xphase.C1) v(xctrl.xphase.C2) v(xctrl.xphase.C3) v(xctrl.xphase.C4) v(xctrl.CKI) v(xctrl.RSTI) v(xctrl.xcontrol.W) v(xarray.xr0c0.Q) v(xarray.xr0c0.QB) v(xarray.xr0c31.Q) v(xarray.xr0c31.QB) v(xarray.xr15c0.Q) v(xarray.xr15c0.QB) v(xarray.xr15c31.Q) v(xarray.xr15c31.QB)
 tran 5n 290000n 0 20n
 let failures=0
 meas tran check_0_0 find v(xarray.xr0c0.Q) at=19800n
@@ -792,181 +872,181 @@ T {218 us: R row 0, column 0 = 1} -1100 5290 0 0 0.28 0.28 {}
 T {236 us: R row 0, column 31 = 0} -1100 5350 0 0 0.28 0.28 {}
 T {254 us: R row 15, column 0 = 0} -1100 5410 0 0 0.28 0.28 {}
 T {272 us: R row 15, column 31 = 1} -1100 5470 0 0 0.28 0.28 {}
-C {devices/lab_pin.sym} 3800 -720 0 0 {name=l650 lab=VDD}
-C {devices/lab_pin.sym} 4200 -720 0 0 {name=l651 lab=0}
-C {devices/lab_pin.sym} 140 -240 0 0 {name=l652 lab=RA0}
-C {devices/lab_pin.sym} 140 -180 0 0 {name=l653 lab=RA0B}
-C {devices/lab_pin.sym} 140 -120 0 0 {name=l654 lab=RA1}
-C {devices/lab_pin.sym} 140 -60 0 0 {name=l655 lab=RA1B}
-C {devices/lab_pin.sym} 140 0 0 0 {name=l656 lab=RA2}
-C {devices/lab_pin.sym} 140 60 0 0 {name=l657 lab=RA2B}
-C {devices/lab_pin.sym} 140 120 0 0 {name=l658 lab=RA3}
-C {devices/lab_pin.sym} 140 180 0 0 {name=l659 lab=RA3B}
-C {devices/lab_pin.sym} 140 240 0 0 {name=l660 lab=WL_EN}
-C {devices/lab_pin.sym} 300 -550 0 0 {name=l661 lab=VDD}
-C {devices/lab_pin.sym} 300 550 0 0 {name=l662 lab=0}
-C {devices/lab_pin.sym} 800 1250 0 0 {name=l663 lab=PREB}
-C {devices/lab_pin.sym} 900 1140 0 0 {name=l664 lab=VDD}
-C {devices/lab_pin.sym} 1000 1350 0 0 {name=l665 lab=0}
-C {devices/lab_pin.sym} 1000 1250 0 0 {name=l666 lab=PREB}
-C {devices/lab_pin.sym} 1100 1140 0 0 {name=l667 lab=VDD}
-C {devices/lab_pin.sym} 1200 1350 0 0 {name=l668 lab=0}
-C {devices/lab_pin.sym} 1200 1250 0 0 {name=l669 lab=PREB}
-C {devices/lab_pin.sym} 1300 1140 0 0 {name=l670 lab=VDD}
-C {devices/lab_pin.sym} 1400 1350 0 0 {name=l671 lab=0}
-C {devices/lab_pin.sym} 1400 1250 0 0 {name=l672 lab=PREB}
-C {devices/lab_pin.sym} 1500 1140 0 0 {name=l673 lab=VDD}
-C {devices/lab_pin.sym} 1600 1350 0 0 {name=l674 lab=0}
-C {devices/lab_pin.sym} 1600 1250 0 0 {name=l675 lab=PREB}
-C {devices/lab_pin.sym} 1700 1140 0 0 {name=l676 lab=VDD}
-C {devices/lab_pin.sym} 1800 1350 0 0 {name=l677 lab=0}
-C {devices/lab_pin.sym} 1800 1250 0 0 {name=l678 lab=PREB}
-C {devices/lab_pin.sym} 1900 1140 0 0 {name=l679 lab=VDD}
-C {devices/lab_pin.sym} 2000 1350 0 0 {name=l680 lab=0}
-C {devices/lab_pin.sym} 2000 1250 0 0 {name=l681 lab=PREB}
-C {devices/lab_pin.sym} 2100 1140 0 0 {name=l682 lab=VDD}
-C {devices/lab_pin.sym} 2200 1350 0 0 {name=l683 lab=0}
-C {devices/lab_pin.sym} 2200 1250 0 0 {name=l684 lab=PREB}
-C {devices/lab_pin.sym} 2300 1140 0 0 {name=l685 lab=VDD}
-C {devices/lab_pin.sym} 2400 1350 0 0 {name=l686 lab=0}
-C {devices/lab_pin.sym} 2400 1250 0 0 {name=l687 lab=PREB}
-C {devices/lab_pin.sym} 2500 1140 0 0 {name=l688 lab=VDD}
-C {devices/lab_pin.sym} 2600 1350 0 0 {name=l689 lab=0}
-C {devices/lab_pin.sym} 2600 1250 0 0 {name=l690 lab=PREB}
-C {devices/lab_pin.sym} 2700 1140 0 0 {name=l691 lab=VDD}
-C {devices/lab_pin.sym} 2800 1350 0 0 {name=l692 lab=0}
-C {devices/lab_pin.sym} 2800 1250 0 0 {name=l693 lab=PREB}
-C {devices/lab_pin.sym} 2900 1140 0 0 {name=l694 lab=VDD}
-C {devices/lab_pin.sym} 3000 1350 0 0 {name=l695 lab=0}
-C {devices/lab_pin.sym} 3000 1250 0 0 {name=l696 lab=PREB}
-C {devices/lab_pin.sym} 3100 1140 0 0 {name=l697 lab=VDD}
-C {devices/lab_pin.sym} 3200 1350 0 0 {name=l698 lab=0}
-C {devices/lab_pin.sym} 3200 1250 0 0 {name=l699 lab=PREB}
-C {devices/lab_pin.sym} 3300 1140 0 0 {name=l700 lab=VDD}
-C {devices/lab_pin.sym} 3400 1350 0 0 {name=l701 lab=0}
-C {devices/lab_pin.sym} 3400 1250 0 0 {name=l702 lab=PREB}
-C {devices/lab_pin.sym} 3500 1140 0 0 {name=l703 lab=VDD}
-C {devices/lab_pin.sym} 3600 1350 0 0 {name=l704 lab=0}
-C {devices/lab_pin.sym} 3600 1250 0 0 {name=l705 lab=PREB}
-C {devices/lab_pin.sym} 3700 1140 0 0 {name=l706 lab=VDD}
-C {devices/lab_pin.sym} 3800 1350 0 0 {name=l707 lab=0}
-C {devices/lab_pin.sym} 3800 1250 0 0 {name=l708 lab=PREB}
-C {devices/lab_pin.sym} 3900 1140 0 0 {name=l709 lab=VDD}
-C {devices/lab_pin.sym} 4000 1350 0 0 {name=l710 lab=0}
-C {devices/lab_pin.sym} 4000 1250 0 0 {name=l711 lab=PREB}
-C {devices/lab_pin.sym} 4100 1140 0 0 {name=l712 lab=VDD}
-C {devices/lab_pin.sym} 4200 1350 0 0 {name=l713 lab=0}
-C {devices/lab_pin.sym} 4200 1250 0 0 {name=l714 lab=PREB}
-C {devices/lab_pin.sym} 4300 1140 0 0 {name=l715 lab=VDD}
-C {devices/lab_pin.sym} 4400 1350 0 0 {name=l716 lab=0}
-C {devices/lab_pin.sym} 4400 1250 0 0 {name=l717 lab=PREB}
-C {devices/lab_pin.sym} 4500 1140 0 0 {name=l718 lab=VDD}
-C {devices/lab_pin.sym} 4600 1350 0 0 {name=l719 lab=0}
-C {devices/lab_pin.sym} 4600 1250 0 0 {name=l720 lab=PREB}
-C {devices/lab_pin.sym} 4700 1140 0 0 {name=l721 lab=VDD}
-C {devices/lab_pin.sym} 4800 1350 0 0 {name=l722 lab=0}
-C {devices/lab_pin.sym} 4800 1250 0 0 {name=l723 lab=PREB}
-C {devices/lab_pin.sym} 4900 1140 0 0 {name=l724 lab=VDD}
-C {devices/lab_pin.sym} 5000 1350 0 0 {name=l725 lab=0}
-C {devices/lab_pin.sym} 5000 1250 0 0 {name=l726 lab=PREB}
-C {devices/lab_pin.sym} 5100 1140 0 0 {name=l727 lab=VDD}
-C {devices/lab_pin.sym} 5200 1350 0 0 {name=l728 lab=0}
-C {devices/lab_pin.sym} 5200 1250 0 0 {name=l729 lab=PREB}
-C {devices/lab_pin.sym} 5300 1140 0 0 {name=l730 lab=VDD}
-C {devices/lab_pin.sym} 5400 1350 0 0 {name=l731 lab=0}
-C {devices/lab_pin.sym} 5400 1250 0 0 {name=l732 lab=PREB}
-C {devices/lab_pin.sym} 5500 1140 0 0 {name=l733 lab=VDD}
-C {devices/lab_pin.sym} 5600 1350 0 0 {name=l734 lab=0}
-C {devices/lab_pin.sym} 5600 1250 0 0 {name=l735 lab=PREB}
-C {devices/lab_pin.sym} 5700 1140 0 0 {name=l736 lab=VDD}
-C {devices/lab_pin.sym} 5800 1350 0 0 {name=l737 lab=0}
-C {devices/lab_pin.sym} 5800 1250 0 0 {name=l738 lab=PREB}
-C {devices/lab_pin.sym} 5900 1140 0 0 {name=l739 lab=VDD}
-C {devices/lab_pin.sym} 6000 1350 0 0 {name=l740 lab=0}
-C {devices/lab_pin.sym} 6000 1250 0 0 {name=l741 lab=PREB}
-C {devices/lab_pin.sym} 6100 1140 0 0 {name=l742 lab=VDD}
-C {devices/lab_pin.sym} 6200 1350 0 0 {name=l743 lab=0}
-C {devices/lab_pin.sym} 6200 1250 0 0 {name=l744 lab=PREB}
-C {devices/lab_pin.sym} 6300 1140 0 0 {name=l745 lab=VDD}
-C {devices/lab_pin.sym} 6400 1350 0 0 {name=l746 lab=0}
-C {devices/lab_pin.sym} 6400 1250 0 0 {name=l747 lab=PREB}
-C {devices/lab_pin.sym} 6500 1140 0 0 {name=l748 lab=VDD}
-C {devices/lab_pin.sym} 6600 1350 0 0 {name=l749 lab=0}
-C {devices/lab_pin.sym} 6600 1250 0 0 {name=l750 lab=PREB}
-C {devices/lab_pin.sym} 6700 1140 0 0 {name=l751 lab=VDD}
-C {devices/lab_pin.sym} 6800 1350 0 0 {name=l752 lab=0}
-C {devices/lab_pin.sym} 6800 1250 0 0 {name=l753 lab=PREB}
-C {devices/lab_pin.sym} 6900 1140 0 0 {name=l754 lab=VDD}
-C {devices/lab_pin.sym} 7000 1350 0 0 {name=l755 lab=0}
-C {devices/lab_pin.sym} 7000 1250 0 0 {name=l756 lab=PREB}
-C {devices/lab_pin.sym} 7100 1140 0 0 {name=l757 lab=VDD}
-C {devices/lab_pin.sym} 7200 1350 0 0 {name=l758 lab=0}
-C {devices/lab_pin.sym} 780 2020 0 0 {name=l759 lab=CA0}
-C {devices/lab_pin.sym} 780 2045 0 0 {name=l760 lab=CA0B}
-C {devices/lab_pin.sym} 780 2070 0 0 {name=l761 lab=CA1}
-C {devices/lab_pin.sym} 780 2095 0 0 {name=l762 lab=CA1B}
-C {devices/lab_pin.sym} 780 2120 0 0 {name=l763 lab=CA2}
-C {devices/lab_pin.sym} 780 2145 0 0 {name=l764 lab=CA2B}
-C {devices/lab_pin.sym} 780 2170 0 0 {name=l765 lab=CA3}
-C {devices/lab_pin.sym} 780 2195 0 0 {name=l766 lab=CA3B}
-C {devices/lab_pin.sym} 780 2220 0 0 {name=l767 lab=CA4}
-C {devices/lab_pin.sym} 780 2245 0 0 {name=l768 lab=CA4B}
-C {devices/lab_pin.sym} 4000 1960 0 0 {name=l769 lab=VDD}
-C {devices/lab_pin.sym} 4000 2320 0 0 {name=l770 lab=0}
-C {devices/lab_pin.sym} 5450 2790 0 0 {name=l771 lab=SAE}
-C {devices/lab_pin.sym} 5750 2670 2 0 {name=l772 lab=SOUT}
-C {devices/lab_pin.sym} 5750 2730 2 0 {name=l773 lab=SOUTB}
-C {devices/noconn.sym} 5750 2730 0 0 {name=nc774}
-C {devices/lab_pin.sym} 5600 2610 0 0 {name=l775 lab=VDD}
-C {devices/lab_pin.sym} 5600 2850 0 0 {name=l776 lab=0}
-C {devices/lab_pin.sym} 2400 2500 0 0 {name=l777 lab=PREB}
-C {devices/lab_pin.sym} 2440 2470 0 0 {name=l778 lab=VDD}
-C {devices/lab_pin.sym} 2440 2500 0 0 {name=l779 lab=VDD}
-C {devices/lab_pin.sym} 2440 2970 0 0 {name=l780 lab=0}
-C {devices/lab_pin.sym} 2440 2940 0 0 {name=l781 lab=0}
-C {devices/lab_pin.sym} 1980 2880 0 0 {name=l782 lab=VDD}
-C {devices/lab_pin.sym} 1930 2920 0 0 {name=l783 lab=DINB}
-C {devices/lab_pin.sym} 1930 2960 0 0 {name=l784 lab=WRITE_EN}
-C {devices/lab_pin.sym} 1980 3000 0 0 {name=l785 lab=0}
-C {devices/lab_pin.sym} 3700 2500 0 0 {name=l786 lab=PREB}
-C {devices/lab_pin.sym} 3740 2470 0 0 {name=l787 lab=VDD}
-C {devices/lab_pin.sym} 3740 2500 0 0 {name=l788 lab=VDD}
-C {devices/lab_pin.sym} 3740 2970 0 0 {name=l789 lab=0}
-C {devices/lab_pin.sym} 3740 2940 0 0 {name=l790 lab=0}
-C {devices/lab_pin.sym} 3280 2880 0 0 {name=l791 lab=VDD}
-C {devices/lab_pin.sym} 3230 2920 0 0 {name=l792 lab=DIN}
-C {devices/lab_pin.sym} 3230 2960 0 0 {name=l793 lab=WRITE_EN}
-C {devices/lab_pin.sym} 3280 3000 0 0 {name=l794 lab=0}
-C {devices/lab_pin.sym} -160 1920 0 0 {name=l795 lab=CLK}
-C {devices/lab_pin.sym} -160 1980 0 0 {name=l796 lab=RESET}
-C {devices/lab_pin.sym} -160 2040 0 0 {name=l797 lab=SDI}
-C {devices/lab_pin.sym} -160 2100 0 0 {name=l798 lab=WE}
-C {devices/lab_pin.sym} -160 2160 0 0 {name=l799 lab=SOUT}
-C {devices/lab_pin.sym} 160 1320 2 0 {name=l800 lab=DIN}
-C {devices/lab_pin.sym} 160 1380 2 0 {name=l801 lab=DINB}
-C {devices/lab_pin.sym} 160 1440 2 0 {name=l802 lab=CA0}
-C {devices/lab_pin.sym} 160 1500 2 0 {name=l803 lab=CA0B}
-C {devices/lab_pin.sym} 160 1560 2 0 {name=l804 lab=CA1}
-C {devices/lab_pin.sym} 160 1620 2 0 {name=l805 lab=CA1B}
-C {devices/lab_pin.sym} 160 1680 2 0 {name=l806 lab=CA2}
-C {devices/lab_pin.sym} 160 1740 2 0 {name=l807 lab=CA2B}
-C {devices/lab_pin.sym} 160 1800 2 0 {name=l808 lab=CA3}
-C {devices/lab_pin.sym} 160 1860 2 0 {name=l809 lab=CA3B}
-C {devices/lab_pin.sym} 160 1920 2 0 {name=l810 lab=CA4}
-C {devices/lab_pin.sym} 160 1980 2 0 {name=l811 lab=CA4B}
-C {devices/lab_pin.sym} 160 2040 2 0 {name=l812 lab=RA0}
-C {devices/lab_pin.sym} 160 2100 2 0 {name=l813 lab=RA0B}
-C {devices/lab_pin.sym} 160 2160 2 0 {name=l814 lab=RA1}
-C {devices/lab_pin.sym} 160 2220 2 0 {name=l815 lab=RA1B}
-C {devices/lab_pin.sym} 160 2280 2 0 {name=l816 lab=RA2}
-C {devices/lab_pin.sym} 160 2340 2 0 {name=l817 lab=RA2B}
-C {devices/lab_pin.sym} 160 2400 2 0 {name=l818 lab=RA3}
-C {devices/lab_pin.sym} 160 2460 2 0 {name=l819 lab=RA3B}
-C {devices/lab_pin.sym} 160 2520 2 0 {name=l820 lab=PREB}
-C {devices/lab_pin.sym} 160 2580 2 0 {name=l821 lab=SAE}
-C {devices/lab_pin.sym} 160 2640 2 0 {name=l822 lab=WL_EN}
-C {devices/lab_pin.sym} 160 2700 2 0 {name=l823 lab=WRITE_EN}
-C {devices/lab_pin.sym} 160 2760 2 0 {name=l824 lab=SDO}
-C {devices/noconn.sym} 160 2760 0 0 {name=nc825}
-C {devices/lab_pin.sym} 0 1220 0 0 {name=l826 lab=VDD}
-C {devices/lab_pin.sym} 0 2860 0 0 {name=l827 lab=0}
+C {devices/lab_pin.sym} 3800 -720 0 0 {name=l730 lab=VDD}
+C {devices/lab_pin.sym} 4200 -720 0 0 {name=l731 lab=0}
+C {devices/lab_pin.sym} 140 -80 0 0 {name=l732 lab=RA0}
+C {devices/lab_pin.sym} 140 -40 0 0 {name=l733 lab=RA1}
+C {devices/lab_pin.sym} 140 0 0 0 {name=l734 lab=RA2}
+C {devices/lab_pin.sym} 140 40 0 0 {name=l735 lab=RA3}
+C {devices/lab_pin.sym} 140 80 0 0 {name=l736 lab=WL_EN}
+C {devices/lab_pin.sym} 300 -720 0 0 {name=l737 lab=VDD}
+C {devices/lab_pin.sym} 300 720 0 0 {name=l738 lab=0}
+C {devices/lab_pin.sym} 800 1250 0 0 {name=l739 lab=PREB}
+C {devices/lab_pin.sym} 900 1140 0 0 {name=l740 lab=VDD}
+C {devices/lab_pin.sym} 1000 1350 0 0 {name=l741 lab=0}
+C {devices/lab_pin.sym} 1000 1250 0 0 {name=l742 lab=PREB}
+C {devices/lab_pin.sym} 1100 1140 0 0 {name=l743 lab=VDD}
+C {devices/lab_pin.sym} 1200 1350 0 0 {name=l744 lab=0}
+C {devices/lab_pin.sym} 1200 1250 0 0 {name=l745 lab=PREB}
+C {devices/lab_pin.sym} 1300 1140 0 0 {name=l746 lab=VDD}
+C {devices/lab_pin.sym} 1400 1350 0 0 {name=l747 lab=0}
+C {devices/lab_pin.sym} 1400 1250 0 0 {name=l748 lab=PREB}
+C {devices/lab_pin.sym} 1500 1140 0 0 {name=l749 lab=VDD}
+C {devices/lab_pin.sym} 1600 1350 0 0 {name=l750 lab=0}
+C {devices/lab_pin.sym} 1600 1250 0 0 {name=l751 lab=PREB}
+C {devices/lab_pin.sym} 1700 1140 0 0 {name=l752 lab=VDD}
+C {devices/lab_pin.sym} 1800 1350 0 0 {name=l753 lab=0}
+C {devices/lab_pin.sym} 1800 1250 0 0 {name=l754 lab=PREB}
+C {devices/lab_pin.sym} 1900 1140 0 0 {name=l755 lab=VDD}
+C {devices/lab_pin.sym} 2000 1350 0 0 {name=l756 lab=0}
+C {devices/lab_pin.sym} 2000 1250 0 0 {name=l757 lab=PREB}
+C {devices/lab_pin.sym} 2100 1140 0 0 {name=l758 lab=VDD}
+C {devices/lab_pin.sym} 2200 1350 0 0 {name=l759 lab=0}
+C {devices/lab_pin.sym} 2200 1250 0 0 {name=l760 lab=PREB}
+C {devices/lab_pin.sym} 2300 1140 0 0 {name=l761 lab=VDD}
+C {devices/lab_pin.sym} 2400 1350 0 0 {name=l762 lab=0}
+C {devices/lab_pin.sym} 2400 1250 0 0 {name=l763 lab=PREB}
+C {devices/lab_pin.sym} 2500 1140 0 0 {name=l764 lab=VDD}
+C {devices/lab_pin.sym} 2600 1350 0 0 {name=l765 lab=0}
+C {devices/lab_pin.sym} 2600 1250 0 0 {name=l766 lab=PREB}
+C {devices/lab_pin.sym} 2700 1140 0 0 {name=l767 lab=VDD}
+C {devices/lab_pin.sym} 2800 1350 0 0 {name=l768 lab=0}
+C {devices/lab_pin.sym} 2800 1250 0 0 {name=l769 lab=PREB}
+C {devices/lab_pin.sym} 2900 1140 0 0 {name=l770 lab=VDD}
+C {devices/lab_pin.sym} 3000 1350 0 0 {name=l771 lab=0}
+C {devices/lab_pin.sym} 3000 1250 0 0 {name=l772 lab=PREB}
+C {devices/lab_pin.sym} 3100 1140 0 0 {name=l773 lab=VDD}
+C {devices/lab_pin.sym} 3200 1350 0 0 {name=l774 lab=0}
+C {devices/lab_pin.sym} 3200 1250 0 0 {name=l775 lab=PREB}
+C {devices/lab_pin.sym} 3300 1140 0 0 {name=l776 lab=VDD}
+C {devices/lab_pin.sym} 3400 1350 0 0 {name=l777 lab=0}
+C {devices/lab_pin.sym} 3400 1250 0 0 {name=l778 lab=PREB}
+C {devices/lab_pin.sym} 3500 1140 0 0 {name=l779 lab=VDD}
+C {devices/lab_pin.sym} 3600 1350 0 0 {name=l780 lab=0}
+C {devices/lab_pin.sym} 3600 1250 0 0 {name=l781 lab=PREB}
+C {devices/lab_pin.sym} 3700 1140 0 0 {name=l782 lab=VDD}
+C {devices/lab_pin.sym} 3800 1350 0 0 {name=l783 lab=0}
+C {devices/lab_pin.sym} 3800 1250 0 0 {name=l784 lab=PREB}
+C {devices/lab_pin.sym} 3900 1140 0 0 {name=l785 lab=VDD}
+C {devices/lab_pin.sym} 4000 1350 0 0 {name=l786 lab=0}
+C {devices/lab_pin.sym} 4000 1250 0 0 {name=l787 lab=PREB}
+C {devices/lab_pin.sym} 4100 1140 0 0 {name=l788 lab=VDD}
+C {devices/lab_pin.sym} 4200 1350 0 0 {name=l789 lab=0}
+C {devices/lab_pin.sym} 4200 1250 0 0 {name=l790 lab=PREB}
+C {devices/lab_pin.sym} 4300 1140 0 0 {name=l791 lab=VDD}
+C {devices/lab_pin.sym} 4400 1350 0 0 {name=l792 lab=0}
+C {devices/lab_pin.sym} 4400 1250 0 0 {name=l793 lab=PREB}
+C {devices/lab_pin.sym} 4500 1140 0 0 {name=l794 lab=VDD}
+C {devices/lab_pin.sym} 4600 1350 0 0 {name=l795 lab=0}
+C {devices/lab_pin.sym} 4600 1250 0 0 {name=l796 lab=PREB}
+C {devices/lab_pin.sym} 4700 1140 0 0 {name=l797 lab=VDD}
+C {devices/lab_pin.sym} 4800 1350 0 0 {name=l798 lab=0}
+C {devices/lab_pin.sym} 4800 1250 0 0 {name=l799 lab=PREB}
+C {devices/lab_pin.sym} 4900 1140 0 0 {name=l800 lab=VDD}
+C {devices/lab_pin.sym} 5000 1350 0 0 {name=l801 lab=0}
+C {devices/lab_pin.sym} 5000 1250 0 0 {name=l802 lab=PREB}
+C {devices/lab_pin.sym} 5100 1140 0 0 {name=l803 lab=VDD}
+C {devices/lab_pin.sym} 5200 1350 0 0 {name=l804 lab=0}
+C {devices/lab_pin.sym} 5200 1250 0 0 {name=l805 lab=PREB}
+C {devices/lab_pin.sym} 5300 1140 0 0 {name=l806 lab=VDD}
+C {devices/lab_pin.sym} 5400 1350 0 0 {name=l807 lab=0}
+C {devices/lab_pin.sym} 5400 1250 0 0 {name=l808 lab=PREB}
+C {devices/lab_pin.sym} 5500 1140 0 0 {name=l809 lab=VDD}
+C {devices/lab_pin.sym} 5600 1350 0 0 {name=l810 lab=0}
+C {devices/lab_pin.sym} 5600 1250 0 0 {name=l811 lab=PREB}
+C {devices/lab_pin.sym} 5700 1140 0 0 {name=l812 lab=VDD}
+C {devices/lab_pin.sym} 5800 1350 0 0 {name=l813 lab=0}
+C {devices/lab_pin.sym} 5800 1250 0 0 {name=l814 lab=PREB}
+C {devices/lab_pin.sym} 5900 1140 0 0 {name=l815 lab=VDD}
+C {devices/lab_pin.sym} 6000 1350 0 0 {name=l816 lab=0}
+C {devices/lab_pin.sym} 6000 1250 0 0 {name=l817 lab=PREB}
+C {devices/lab_pin.sym} 6100 1140 0 0 {name=l818 lab=VDD}
+C {devices/lab_pin.sym} 6200 1350 0 0 {name=l819 lab=0}
+C {devices/lab_pin.sym} 6200 1250 0 0 {name=l820 lab=PREB}
+C {devices/lab_pin.sym} 6300 1140 0 0 {name=l821 lab=VDD}
+C {devices/lab_pin.sym} 6400 1350 0 0 {name=l822 lab=0}
+C {devices/lab_pin.sym} 6400 1250 0 0 {name=l823 lab=PREB}
+C {devices/lab_pin.sym} 6500 1140 0 0 {name=l824 lab=VDD}
+C {devices/lab_pin.sym} 6600 1350 0 0 {name=l825 lab=0}
+C {devices/lab_pin.sym} 6600 1250 0 0 {name=l826 lab=PREB}
+C {devices/lab_pin.sym} 6700 1140 0 0 {name=l827 lab=VDD}
+C {devices/lab_pin.sym} 6800 1350 0 0 {name=l828 lab=0}
+C {devices/lab_pin.sym} 6800 1250 0 0 {name=l829 lab=PREB}
+C {devices/lab_pin.sym} 6900 1140 0 0 {name=l830 lab=VDD}
+C {devices/lab_pin.sym} 7000 1350 0 0 {name=l831 lab=0}
+C {devices/lab_pin.sym} 7000 1250 0 0 {name=l832 lab=PREB}
+C {devices/lab_pin.sym} 7100 1140 0 0 {name=l833 lab=VDD}
+C {devices/lab_pin.sym} 7200 1350 0 0 {name=l834 lab=0}
+C {devices/lab_pin.sym} 780 2020 0 0 {name=l835 lab=CA0}
+C {devices/lab_pin.sym} 780 2045 0 0 {name=l836 lab=CA0B}
+C {devices/lab_pin.sym} 780 2070 0 0 {name=l837 lab=CA1}
+C {devices/lab_pin.sym} 780 2095 0 0 {name=l838 lab=CA1B}
+C {devices/lab_pin.sym} 780 2120 0 0 {name=l839 lab=CA2}
+C {devices/lab_pin.sym} 780 2145 0 0 {name=l840 lab=CA2B}
+C {devices/lab_pin.sym} 780 2170 0 0 {name=l841 lab=CA3}
+C {devices/lab_pin.sym} 780 2195 0 0 {name=l842 lab=CA3B}
+C {devices/lab_pin.sym} 780 2220 0 0 {name=l843 lab=CA4}
+C {devices/lab_pin.sym} 780 2245 0 0 {name=l844 lab=CA4B}
+C {devices/lab_pin.sym} 4000 1960 0 0 {name=l845 lab=VDD}
+C {devices/lab_pin.sym} 4000 2320 0 0 {name=l846 lab=0}
+C {devices/lab_pin.sym} 5450 2790 0 0 {name=l847 lab=SAE}
+C {devices/lab_pin.sym} 5750 2670 2 0 {name=l848 lab=SOUT}
+C {devices/lab_pin.sym} 5750 2730 2 0 {name=l849 lab=SOUTB}
+C {devices/noconn.sym} 5750 2730 0 0 {name=nc850}
+C {devices/lab_pin.sym} 5600 2610 0 0 {name=l851 lab=VDD}
+C {devices/lab_pin.sym} 5600 2850 0 0 {name=l852 lab=0}
+C {devices/lab_pin.sym} 2400 2500 0 0 {name=l853 lab=PREB}
+C {devices/lab_pin.sym} 2440 2470 0 0 {name=l854 lab=VDD}
+C {devices/lab_pin.sym} 2440 2500 0 0 {name=l855 lab=VDD}
+C {devices/lab_pin.sym} 2440 2970 0 0 {name=l856 lab=0}
+C {devices/lab_pin.sym} 2440 2940 0 0 {name=l857 lab=0}
+C {devices/lab_pin.sym} 1980 2880 0 0 {name=l858 lab=VDD}
+C {devices/lab_pin.sym} 1930 2920 0 0 {name=l859 lab=DINB}
+C {devices/lab_pin.sym} 1930 2960 0 0 {name=l860 lab=WRITE_EN}
+C {devices/lab_pin.sym} 1980 3000 0 0 {name=l861 lab=0}
+C {devices/lab_pin.sym} 3700 2500 0 0 {name=l862 lab=PREB}
+C {devices/lab_pin.sym} 3740 2470 0 0 {name=l863 lab=VDD}
+C {devices/lab_pin.sym} 3740 2500 0 0 {name=l864 lab=VDD}
+C {devices/lab_pin.sym} 3740 2970 0 0 {name=l865 lab=0}
+C {devices/lab_pin.sym} 3740 2940 0 0 {name=l866 lab=0}
+C {devices/lab_pin.sym} 3280 2880 0 0 {name=l867 lab=VDD}
+C {devices/lab_pin.sym} 3230 2920 0 0 {name=l868 lab=DIN}
+C {devices/lab_pin.sym} 3230 2960 0 0 {name=l869 lab=WRITE_EN}
+C {devices/lab_pin.sym} 3280 3000 0 0 {name=l870 lab=0}
+C {devices/lab_pin.sym} -160 1920 0 0 {name=l871 lab=CLK}
+C {devices/lab_pin.sym} -160 1980 0 0 {name=l872 lab=RESET}
+C {devices/lab_pin.sym} -160 2040 0 0 {name=l873 lab=SDI}
+C {devices/lab_pin.sym} -160 2100 0 0 {name=l874 lab=WE}
+C {devices/lab_pin.sym} -160 2160 0 0 {name=l875 lab=SOUT}
+C {devices/lab_pin.sym} 160 1320 2 0 {name=l876 lab=DIN}
+C {devices/lab_pin.sym} 160 1380 2 0 {name=l877 lab=DINB}
+C {devices/lab_pin.sym} 160 1440 2 0 {name=l878 lab=CA0}
+C {devices/lab_pin.sym} 160 1500 2 0 {name=l879 lab=CA0B}
+C {devices/lab_pin.sym} 160 1560 2 0 {name=l880 lab=CA1}
+C {devices/lab_pin.sym} 160 1620 2 0 {name=l881 lab=CA1B}
+C {devices/lab_pin.sym} 160 1680 2 0 {name=l882 lab=CA2}
+C {devices/lab_pin.sym} 160 1740 2 0 {name=l883 lab=CA2B}
+C {devices/lab_pin.sym} 160 1800 2 0 {name=l884 lab=CA3}
+C {devices/lab_pin.sym} 160 1860 2 0 {name=l885 lab=CA3B}
+C {devices/lab_pin.sym} 160 1920 2 0 {name=l886 lab=CA4}
+C {devices/lab_pin.sym} 160 1980 2 0 {name=l887 lab=CA4B}
+C {devices/lab_pin.sym} 160 2040 2 0 {name=l888 lab=RA0}
+C {devices/lab_pin.sym} 160 2100 2 0 {name=l889 lab=RA0B}
+C {devices/noconn.sym} 160 2100 0 0 {name=nc890}
+C {devices/lab_pin.sym} 160 2160 2 0 {name=l891 lab=RA1}
+C {devices/lab_pin.sym} 160 2220 2 0 {name=l892 lab=RA1B}
+C {devices/noconn.sym} 160 2220 0 0 {name=nc893}
+C {devices/lab_pin.sym} 160 2280 2 0 {name=l894 lab=RA2}
+C {devices/lab_pin.sym} 160 2340 2 0 {name=l895 lab=RA2B}
+C {devices/noconn.sym} 160 2340 0 0 {name=nc896}
+C {devices/lab_pin.sym} 160 2400 2 0 {name=l897 lab=RA3}
+C {devices/lab_pin.sym} 160 2460 2 0 {name=l898 lab=RA3B}
+C {devices/noconn.sym} 160 2460 0 0 {name=nc899}
+C {devices/lab_pin.sym} 160 2520 2 0 {name=l900 lab=PREB}
+C {devices/lab_pin.sym} 160 2580 2 0 {name=l901 lab=SAE}
+C {devices/lab_pin.sym} 160 2640 2 0 {name=l902 lab=WL_EN}
+C {devices/lab_pin.sym} 160 2700 2 0 {name=l903 lab=WRITE_EN}
+C {devices/lab_pin.sym} 160 2760 2 0 {name=l904 lab=SDO}
+C {devices/noconn.sym} 160 2760 0 0 {name=nc905}
+C {devices/lab_pin.sym} 0 1220 0 0 {name=l906 lab=VDD}
+C {devices/lab_pin.sym} 0 2860 0 0 {name=l907 lab=0}

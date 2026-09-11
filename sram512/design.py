@@ -90,17 +90,20 @@ def control():
     return b
 
 def row():
-    b=Block('sram512_row_decoder',[f'RA{i}{s}' for i in range(4) for s in ('','B')]+['WL_EN'],[f'WL{i}' for i in range(16)])
-    b.notes=[('4-to-16 ROW DECODER: 2+2 predecode, NAND3 + INV_X2 per wordline',-180,-330),
+    b=Block('sram512_row_decoder',[f'RA{i}' for i in range(4)]+['WL_EN'],[f'{p}{i}' for i in range(16) for p in ('WL','WL_R')])
+    b.notes=[('4-to-16 ROW DECODER: 2+2 predecode, AND3_X1 per 16-cell wordline',-180,-330),
              ('WL_EN=0 keeps every WL LOW; row address is fixed before the access window',-180,-260)]
+    for i in range(4):b.add('INV_X1',f'address_b{i}',-150,i*480,A=f'RA{i}',Y=f'RA{i}B')
+    b.notes.append(('Address complements are generated locally: four long RA wires across the macro.',-180,2710))
     for g in range(2):
         for value in range(4):
             b.logic('AND',f'pre{g}_{value}',[f'RA{2*g+j}'+('' if value>>j&1 else 'B') for j in range(2)],
                     f'R{g}_{value}',350,g*1300+value*250)
     for r in range(16):
         x=1400+(r//8)*1050;y=(r%8)*300
-        b.add('NAND3',f'decode{r}',x,y,A=f'R0_{r%4}',B=f'R1_{r//4}',C='WL_EN',Y=f'WL{r}B')
-        b.add('INV_X2',f'driver{r}',x+380,y,A=f'WL{r}B',Y=f'WL{r}')
+        b.add('AND3_X1',f'driver{r}',x,y,A=f'R0_{r%4}',B=f'R1_{r//4}',C='WL_EN',Y=f'WL{r}')
+        b.add('AND3_X1',f'driver_right{r}',x+520,y+100,A=f'R0_{r%4}',B=f'R1_{r//4}',C='WL_EN',Y=f'WL_R{r}')
+    b.notes.append(('Two 16-column physical blocks: each selected row has one driver per block.',-180,2780))
     return b
 
 def column():
