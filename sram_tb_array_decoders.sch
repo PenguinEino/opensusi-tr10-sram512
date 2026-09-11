@@ -282,7 +282,7 @@ T {7T SENSE AMPLIFIER} 1030 1160 0 0 0.3 0.3 {}
 T {SAE=0: track/reset; SAE=1: isolate/regenerate} 1000 1670 0 0 0.27 0.27 {}
 T {CBL=10f per local line / CY=100f per common line / outputs=10f} -180 1720 0 0 0.27 0.27 {}
 T {Assumed learning loads, not extracted parasitics.} -180 1760 0 0 0.27 0.27 {}
-T {IDEAL CONTROLS: edit PWL sources with q (RA / WL_EN and CA / COL_EN drive real decoders; PD / PRE / SAE ideal)} -120 1830 0 0 0.3 0.3 {}
+T {IDEAL CONTROLS: edit PWL sources with q (RA / WL_EN drive row decoder; CA selects one column continuously)} -120 1830 0 0 0.3 0.3 {}
 C {devices/vsource.sym} 0 1970 0 0 {name=VVDD
 value="5"
 savecurrent=false
@@ -318,13 +318,6 @@ hide_texts=true}
 C {devices/lab_pin.sym} 2080 1940 2 0 {name=l203 lab=RA}
 C {devices/gnd.sym} 2080 2000 0 0 {name=gs4 lab=GND}
 T {PWL} 2130 1970 0 0 0.25 0.25 {}
-C {devices/vsource.sym} 0 2200 0 0 {name=VCOL_EN
-value="PWL(0n 0 45n 0 46n 5 170n 5 171n 0 245n 0 246n 5 370n 5 371n 0 445n 0 446n 5 570n 5 571n 0 645n 0 646n 5 770n 5 771n 0 845n 0 846n 5 970n 5 971n 0 1045n 0 1046n 5 1170n 5 1171n 0 1245n 0 1246n 5 1370n 5 1371n 0 1445n 0 1446n 5 1570n 5 1571n 0 1645n 0 1646n 5 1770n 5 1771n 0 1845n 0 1846n 5 1970n 5 1971n 0 2045n 0 2046n 5 2170n 5 2171n 0 2245n 0 2246n 5 2370n 5 2371n 0 2445n 0 2446n 5 2570n 5 2571n 0 2645n 0 2646n 5 2770n 5 2771n 0 2845n 0 2846n 5 2970n 5 2971n 0 3045n 0 3046n 5 3170n 5 3171n 0 3200n 0)"
-savecurrent=false
-hide_texts=true}
-C {devices/lab_pin.sym} 0 2170 2 0 {name=l207 lab=COL_EN}
-C {devices/gnd.sym} 0 2230 0 0 {name=gs5 lab=GND}
-T {PWL} 50 2200 0 0 0.25 0.25 {}
 C {devices/vsource.sym} 520 2200 0 0 {name=VCA
 value="PWL(0n 0 5n 0 6n 5 15n 5 16n 0 205n 0 206n 0 215n 0 216n 5 405n 5 406n 5 415n 5 416n 0 605n 0 606n 0 615n 0 616n 5 805n 5 806n 5 815n 5 816n 0 1005n 0 1006n 0 1015n 0 1016n 5 1205n 5 1206n 5 1215n 5 1216n 0 1405n 0 1406n 0 1415n 0 1416n 5 1605n 5 1606n 5 1615n 5 1616n 0 1805n 0 1806n 0 1815n 0 1816n 5 2005n 5 2006n 5 2015n 5 2016n 0 2205n 0 2206n 0 2215n 0 2216n 5 2405n 5 2406n 5 2415n 5 2416n 0 2605n 0 2606n 0 2615n 0 2616n 5 2805n 5 2806n 5 2815n 5 2816n 0 3005n 0 3006n 0 3015n 0 3016n 5 3200n 5)"
 savecurrent=false
@@ -372,17 +365,17 @@ T {2800: R row 1, col 0 = 0} 2200 340 0 0 0.27 0.27 {}
 T {3000: R row 1, col 1 = 1} 2200 376 0 0 0.27 0.27 {}
 T {} 2200 412 0 0 0.27 0.27 {}
 T {WITHIN EACH CYCLE (relative ns)} 2200 448 0 0 0.27 0.27 {}
-T {0 - 40: all local bitlines precharge; WL/COL LOW} 2200 484 0 0 0.27 0.27 {}
+T {0 - 40: local/common precharge; all WL LOW} 2200 484 0 0 0.27 0.27 {}
 T {Y/YB precharge every cycle; SAE LOW only on read} 2200 520 0 0 0.27 0.27 {}
 T {40 - 41: precharge OFF} 2200 556 0 0 0.27 0.27 {}
-T {45 - 46: COL_EN rises; selected COL follows} 2200 592 0 0 0.27 0.27 {}
+T {5 - 16: CA switches; settle before precharge ends} 2200 592 0 0 0.27 0.27 {}
 T {Write: 50 - 51 pull-down ON} 2200 628 0 0 0.27 0.27 {}
 T {70 - 71: WL_EN rises; WL follows after gate delay} 2200 664 0 0 0.27 0.27 {}
 T {Read: 90 - 91 SAE rises} 2200 700 0 0 0.27 0.27 {}
 T {140 - 141: WL_EN falls; WL follows after gate delay} 2200 736 0 0 0.27 0.27 {}
 T {Read: 150 check SOUT / SOUTB} 2200 772 0 0 0.27 0.27 {}
 T {Write: 155 - 156 pull-down OFF} 2200 808 0 0 0.27 0.27 {}
-T {170 - 171: COL_EN falls; COL follows} 2200 844 0 0 0.27 0.27 {}
+T {Column remains selected until CA changes} 2200 844 0 0 0.27 0.27 {}
 T {190: verify all four Q / QB pairs} 2200 880 0 0 0.27 0.27 {}
 T {} 2200 916 0 0 0.27 0.27 {}
 T {Other column on selected row is half-selected.} 2200 952 0 0 0.27 0.27 {}
@@ -1913,486 +1906,518 @@ if active_15_1 < 4.5
 end
 meas tran rise_delay_15 trig v(WL_EN) val=2.5 rise=1 td=3069n targ v(WL1) val=2.5 rise=1 td=3069n
 meas tran fall_delay_15 trig v(WL_EN) val=2.5 fall=1 td=3139n targ v(WL1) val=2.5 fall=1 td=3139n
-meas tran col_off_0_0 max v(COL0) from=2n to=44n
-if col_off_0_0 > 0.5
+meas tran col_stable_0_0 min v(COL0) from=25n to=199n
+if col_stable_0_0 < 4.5
  let failures = failures + 1
 end
-meas tran col_release_0_0 max v(COL0) from=180n to=199n
-if col_release_0_0 > 0.5
+meas tran col_stable_0_1 max v(COL1) from=25n to=199n
+if col_stable_0_1 > 0.5
  let failures = failures + 1
 end
-meas tran col_active_0_0 min v(COL0) from=50n to=169n
-if col_active_0_0 < 4.5
+meas tran pre_0_BL0 find v(BL0) at=39n
+if pre_0_BL0 < 4.5
  let failures = failures + 1
 end
-meas tran col_off_0_1 max v(COL1) from=2n to=44n
-if col_off_0_1 > 0.5
+meas tran pre_0_BLB0 find v(BLB0) at=39n
+if pre_0_BLB0 < 4.5
  let failures = failures + 1
 end
-meas tran col_release_0_1 max v(COL1) from=180n to=199n
-if col_release_0_1 > 0.5
+meas tran pre_0_BL1 find v(BL1) at=39n
+if pre_0_BL1 < 4.5
  let failures = failures + 1
 end
-meas tran col_active_0_1 max v(COL1) from=50n to=169n
-if col_active_0_1 > 0.5
+meas tran pre_0_BLB1 find v(BLB1) at=39n
+if pre_0_BLB1 < 4.5
  let failures = failures + 1
 end
-meas tran col_unselected_0_1 max v(COL1) from=2n to=199n
-if col_unselected_0_1 > 0.5
+meas tran pre_0_Y find v(Y) at=39n
+if pre_0_Y < 4.5
  let failures = failures + 1
 end
-meas tran col_rise_delay_0 trig v(COL_EN) val=2.5 rise=1 td=44n targ v(COL0) val=2.5 rise=1 td=44n
-meas tran col_fall_delay_0 trig v(COL_EN) val=2.5 fall=1 td=169n targ v(COL0) val=2.5 fall=1 td=169n
-meas tran col_off_1_0 max v(COL0) from=202n to=244n
-if col_off_1_0 > 0.5
+meas tran pre_0_YB find v(YB) at=39n
+if pre_0_YB < 4.5
  let failures = failures + 1
 end
-meas tran col_release_1_0 max v(COL0) from=380n to=399n
-if col_release_1_0 > 0.5
+meas tran col_stable_1_0 max v(COL0) from=225n to=399n
+if col_stable_1_0 > 0.5
  let failures = failures + 1
 end
-meas tran col_active_1_0 max v(COL0) from=250n to=369n
-if col_active_1_0 > 0.5
+meas tran col_stable_1_1 min v(COL1) from=225n to=399n
+if col_stable_1_1 < 4.5
  let failures = failures + 1
 end
-meas tran col_unselected_1_0 max v(COL0) from=202n to=399n
-if col_unselected_1_0 > 0.5
+meas tran pre_1_BL0 find v(BL0) at=239n
+if pre_1_BL0 < 4.5
  let failures = failures + 1
 end
-meas tran col_off_1_1 max v(COL1) from=202n to=244n
-if col_off_1_1 > 0.5
+meas tran pre_1_BLB0 find v(BLB0) at=239n
+if pre_1_BLB0 < 4.5
  let failures = failures + 1
 end
-meas tran col_release_1_1 max v(COL1) from=380n to=399n
-if col_release_1_1 > 0.5
+meas tran pre_1_BL1 find v(BL1) at=239n
+if pre_1_BL1 < 4.5
  let failures = failures + 1
 end
-meas tran col_active_1_1 min v(COL1) from=250n to=369n
-if col_active_1_1 < 4.5
+meas tran pre_1_BLB1 find v(BLB1) at=239n
+if pre_1_BLB1 < 4.5
  let failures = failures + 1
 end
-meas tran col_rise_delay_1 trig v(COL_EN) val=2.5 rise=1 td=244n targ v(COL1) val=2.5 rise=1 td=244n
-meas tran col_fall_delay_1 trig v(COL_EN) val=2.5 fall=1 td=369n targ v(COL1) val=2.5 fall=1 td=369n
-meas tran col_off_2_0 max v(COL0) from=402n to=444n
-if col_off_2_0 > 0.5
+meas tran pre_1_Y find v(Y) at=239n
+if pre_1_Y < 4.5
  let failures = failures + 1
 end
-meas tran col_release_2_0 max v(COL0) from=580n to=599n
-if col_release_2_0 > 0.5
+meas tran pre_1_YB find v(YB) at=239n
+if pre_1_YB < 4.5
  let failures = failures + 1
 end
-meas tran col_active_2_0 min v(COL0) from=450n to=569n
-if col_active_2_0 < 4.5
+meas tran col_stable_2_0 min v(COL0) from=425n to=599n
+if col_stable_2_0 < 4.5
  let failures = failures + 1
 end
-meas tran col_off_2_1 max v(COL1) from=402n to=444n
-if col_off_2_1 > 0.5
+meas tran col_stable_2_1 max v(COL1) from=425n to=599n
+if col_stable_2_1 > 0.5
  let failures = failures + 1
 end
-meas tran col_release_2_1 max v(COL1) from=580n to=599n
-if col_release_2_1 > 0.5
+meas tran pre_2_BL0 find v(BL0) at=439n
+if pre_2_BL0 < 4.5
  let failures = failures + 1
 end
-meas tran col_active_2_1 max v(COL1) from=450n to=569n
-if col_active_2_1 > 0.5
+meas tran pre_2_BLB0 find v(BLB0) at=439n
+if pre_2_BLB0 < 4.5
  let failures = failures + 1
 end
-meas tran col_unselected_2_1 max v(COL1) from=402n to=599n
-if col_unselected_2_1 > 0.5
+meas tran pre_2_BL1 find v(BL1) at=439n
+if pre_2_BL1 < 4.5
  let failures = failures + 1
 end
-meas tran col_rise_delay_2 trig v(COL_EN) val=2.5 rise=1 td=444n targ v(COL0) val=2.5 rise=1 td=444n
-meas tran col_fall_delay_2 trig v(COL_EN) val=2.5 fall=1 td=569n targ v(COL0) val=2.5 fall=1 td=569n
-meas tran col_off_3_0 max v(COL0) from=602n to=644n
-if col_off_3_0 > 0.5
+meas tran pre_2_BLB1 find v(BLB1) at=439n
+if pre_2_BLB1 < 4.5
  let failures = failures + 1
 end
-meas tran col_release_3_0 max v(COL0) from=780n to=799n
-if col_release_3_0 > 0.5
+meas tran pre_2_Y find v(Y) at=439n
+if pre_2_Y < 4.5
  let failures = failures + 1
 end
-meas tran col_active_3_0 max v(COL0) from=650n to=769n
-if col_active_3_0 > 0.5
+meas tran pre_2_YB find v(YB) at=439n
+if pre_2_YB < 4.5
  let failures = failures + 1
 end
-meas tran col_unselected_3_0 max v(COL0) from=602n to=799n
-if col_unselected_3_0 > 0.5
+meas tran col_stable_3_0 max v(COL0) from=625n to=799n
+if col_stable_3_0 > 0.5
  let failures = failures + 1
 end
-meas tran col_off_3_1 max v(COL1) from=602n to=644n
-if col_off_3_1 > 0.5
+meas tran col_stable_3_1 min v(COL1) from=625n to=799n
+if col_stable_3_1 < 4.5
  let failures = failures + 1
 end
-meas tran col_release_3_1 max v(COL1) from=780n to=799n
-if col_release_3_1 > 0.5
+meas tran pre_3_BL0 find v(BL0) at=639n
+if pre_3_BL0 < 4.5
  let failures = failures + 1
 end
-meas tran col_active_3_1 min v(COL1) from=650n to=769n
-if col_active_3_1 < 4.5
+meas tran pre_3_BLB0 find v(BLB0) at=639n
+if pre_3_BLB0 < 4.5
  let failures = failures + 1
 end
-meas tran col_rise_delay_3 trig v(COL_EN) val=2.5 rise=1 td=644n targ v(COL1) val=2.5 rise=1 td=644n
-meas tran col_fall_delay_3 trig v(COL_EN) val=2.5 fall=1 td=769n targ v(COL1) val=2.5 fall=1 td=769n
-meas tran col_off_4_0 max v(COL0) from=802n to=844n
-if col_off_4_0 > 0.5
+meas tran pre_3_BL1 find v(BL1) at=639n
+if pre_3_BL1 < 4.5
  let failures = failures + 1
 end
-meas tran col_release_4_0 max v(COL0) from=980n to=999n
-if col_release_4_0 > 0.5
+meas tran pre_3_BLB1 find v(BLB1) at=639n
+if pre_3_BLB1 < 4.5
  let failures = failures + 1
 end
-meas tran col_active_4_0 min v(COL0) from=850n to=969n
-if col_active_4_0 < 4.5
+meas tran pre_3_Y find v(Y) at=639n
+if pre_3_Y < 4.5
  let failures = failures + 1
 end
-meas tran col_off_4_1 max v(COL1) from=802n to=844n
-if col_off_4_1 > 0.5
+meas tran pre_3_YB find v(YB) at=639n
+if pre_3_YB < 4.5
  let failures = failures + 1
 end
-meas tran col_release_4_1 max v(COL1) from=980n to=999n
-if col_release_4_1 > 0.5
+meas tran col_stable_4_0 min v(COL0) from=825n to=999n
+if col_stable_4_0 < 4.5
  let failures = failures + 1
 end
-meas tran col_active_4_1 max v(COL1) from=850n to=969n
-if col_active_4_1 > 0.5
+meas tran col_stable_4_1 max v(COL1) from=825n to=999n
+if col_stable_4_1 > 0.5
  let failures = failures + 1
 end
-meas tran col_unselected_4_1 max v(COL1) from=802n to=999n
-if col_unselected_4_1 > 0.5
+meas tran pre_4_BL0 find v(BL0) at=839n
+if pre_4_BL0 < 4.5
  let failures = failures + 1
 end
-meas tran col_rise_delay_4 trig v(COL_EN) val=2.5 rise=1 td=844n targ v(COL0) val=2.5 rise=1 td=844n
-meas tran col_fall_delay_4 trig v(COL_EN) val=2.5 fall=1 td=969n targ v(COL0) val=2.5 fall=1 td=969n
-meas tran col_off_5_0 max v(COL0) from=1002n to=1044n
-if col_off_5_0 > 0.5
+meas tran pre_4_BLB0 find v(BLB0) at=839n
+if pre_4_BLB0 < 4.5
  let failures = failures + 1
 end
-meas tran col_release_5_0 max v(COL0) from=1180n to=1199n
-if col_release_5_0 > 0.5
+meas tran pre_4_BL1 find v(BL1) at=839n
+if pre_4_BL1 < 4.5
  let failures = failures + 1
 end
-meas tran col_active_5_0 max v(COL0) from=1050n to=1169n
-if col_active_5_0 > 0.5
+meas tran pre_4_BLB1 find v(BLB1) at=839n
+if pre_4_BLB1 < 4.5
  let failures = failures + 1
 end
-meas tran col_unselected_5_0 max v(COL0) from=1002n to=1199n
-if col_unselected_5_0 > 0.5
+meas tran pre_4_Y find v(Y) at=839n
+if pre_4_Y < 4.5
  let failures = failures + 1
 end
-meas tran col_off_5_1 max v(COL1) from=1002n to=1044n
-if col_off_5_1 > 0.5
+meas tran pre_4_YB find v(YB) at=839n
+if pre_4_YB < 4.5
  let failures = failures + 1
 end
-meas tran col_release_5_1 max v(COL1) from=1180n to=1199n
-if col_release_5_1 > 0.5
+meas tran col_stable_5_0 max v(COL0) from=1025n to=1199n
+if col_stable_5_0 > 0.5
  let failures = failures + 1
 end
-meas tran col_active_5_1 min v(COL1) from=1050n to=1169n
-if col_active_5_1 < 4.5
+meas tran col_stable_5_1 min v(COL1) from=1025n to=1199n
+if col_stable_5_1 < 4.5
  let failures = failures + 1
 end
-meas tran col_rise_delay_5 trig v(COL_EN) val=2.5 rise=1 td=1044n targ v(COL1) val=2.5 rise=1 td=1044n
-meas tran col_fall_delay_5 trig v(COL_EN) val=2.5 fall=1 td=1169n targ v(COL1) val=2.5 fall=1 td=1169n
-meas tran col_off_6_0 max v(COL0) from=1202n to=1244n
-if col_off_6_0 > 0.5
+meas tran pre_5_BL0 find v(BL0) at=1039n
+if pre_5_BL0 < 4.5
  let failures = failures + 1
 end
-meas tran col_release_6_0 max v(COL0) from=1380n to=1399n
-if col_release_6_0 > 0.5
+meas tran pre_5_BLB0 find v(BLB0) at=1039n
+if pre_5_BLB0 < 4.5
  let failures = failures + 1
 end
-meas tran col_active_6_0 min v(COL0) from=1250n to=1369n
-if col_active_6_0 < 4.5
+meas tran pre_5_BL1 find v(BL1) at=1039n
+if pre_5_BL1 < 4.5
  let failures = failures + 1
 end
-meas tran col_off_6_1 max v(COL1) from=1202n to=1244n
-if col_off_6_1 > 0.5
+meas tran pre_5_BLB1 find v(BLB1) at=1039n
+if pre_5_BLB1 < 4.5
  let failures = failures + 1
 end
-meas tran col_release_6_1 max v(COL1) from=1380n to=1399n
-if col_release_6_1 > 0.5
+meas tran pre_5_Y find v(Y) at=1039n
+if pre_5_Y < 4.5
  let failures = failures + 1
 end
-meas tran col_active_6_1 max v(COL1) from=1250n to=1369n
-if col_active_6_1 > 0.5
+meas tran pre_5_YB find v(YB) at=1039n
+if pre_5_YB < 4.5
  let failures = failures + 1
 end
-meas tran col_unselected_6_1 max v(COL1) from=1202n to=1399n
-if col_unselected_6_1 > 0.5
+meas tran col_stable_6_0 min v(COL0) from=1225n to=1399n
+if col_stable_6_0 < 4.5
  let failures = failures + 1
 end
-meas tran col_rise_delay_6 trig v(COL_EN) val=2.5 rise=1 td=1244n targ v(COL0) val=2.5 rise=1 td=1244n
-meas tran col_fall_delay_6 trig v(COL_EN) val=2.5 fall=1 td=1369n targ v(COL0) val=2.5 fall=1 td=1369n
-meas tran col_off_7_0 max v(COL0) from=1402n to=1444n
-if col_off_7_0 > 0.5
+meas tran col_stable_6_1 max v(COL1) from=1225n to=1399n
+if col_stable_6_1 > 0.5
  let failures = failures + 1
 end
-meas tran col_release_7_0 max v(COL0) from=1580n to=1599n
-if col_release_7_0 > 0.5
+meas tran pre_6_BL0 find v(BL0) at=1239n
+if pre_6_BL0 < 4.5
  let failures = failures + 1
 end
-meas tran col_active_7_0 max v(COL0) from=1450n to=1569n
-if col_active_7_0 > 0.5
+meas tran pre_6_BLB0 find v(BLB0) at=1239n
+if pre_6_BLB0 < 4.5
  let failures = failures + 1
 end
-meas tran col_unselected_7_0 max v(COL0) from=1402n to=1599n
-if col_unselected_7_0 > 0.5
+meas tran pre_6_BL1 find v(BL1) at=1239n
+if pre_6_BL1 < 4.5
  let failures = failures + 1
 end
-meas tran col_off_7_1 max v(COL1) from=1402n to=1444n
-if col_off_7_1 > 0.5
+meas tran pre_6_BLB1 find v(BLB1) at=1239n
+if pre_6_BLB1 < 4.5
  let failures = failures + 1
 end
-meas tran col_release_7_1 max v(COL1) from=1580n to=1599n
-if col_release_7_1 > 0.5
+meas tran pre_6_Y find v(Y) at=1239n
+if pre_6_Y < 4.5
  let failures = failures + 1
 end
-meas tran col_active_7_1 min v(COL1) from=1450n to=1569n
-if col_active_7_1 < 4.5
+meas tran pre_6_YB find v(YB) at=1239n
+if pre_6_YB < 4.5
  let failures = failures + 1
 end
-meas tran col_rise_delay_7 trig v(COL_EN) val=2.5 rise=1 td=1444n targ v(COL1) val=2.5 rise=1 td=1444n
-meas tran col_fall_delay_7 trig v(COL_EN) val=2.5 fall=1 td=1569n targ v(COL1) val=2.5 fall=1 td=1569n
-meas tran col_off_8_0 max v(COL0) from=1602n to=1644n
-if col_off_8_0 > 0.5
+meas tran col_stable_7_0 max v(COL0) from=1425n to=1599n
+if col_stable_7_0 > 0.5
  let failures = failures + 1
 end
-meas tran col_release_8_0 max v(COL0) from=1780n to=1799n
-if col_release_8_0 > 0.5
+meas tran col_stable_7_1 min v(COL1) from=1425n to=1599n
+if col_stable_7_1 < 4.5
  let failures = failures + 1
 end
-meas tran col_active_8_0 min v(COL0) from=1650n to=1769n
-if col_active_8_0 < 4.5
+meas tran pre_7_BL0 find v(BL0) at=1439n
+if pre_7_BL0 < 4.5
  let failures = failures + 1
 end
-meas tran col_off_8_1 max v(COL1) from=1602n to=1644n
-if col_off_8_1 > 0.5
+meas tran pre_7_BLB0 find v(BLB0) at=1439n
+if pre_7_BLB0 < 4.5
  let failures = failures + 1
 end
-meas tran col_release_8_1 max v(COL1) from=1780n to=1799n
-if col_release_8_1 > 0.5
+meas tran pre_7_BL1 find v(BL1) at=1439n
+if pre_7_BL1 < 4.5
  let failures = failures + 1
 end
-meas tran col_active_8_1 max v(COL1) from=1650n to=1769n
-if col_active_8_1 > 0.5
+meas tran pre_7_BLB1 find v(BLB1) at=1439n
+if pre_7_BLB1 < 4.5
  let failures = failures + 1
 end
-meas tran col_unselected_8_1 max v(COL1) from=1602n to=1799n
-if col_unselected_8_1 > 0.5
+meas tran pre_7_Y find v(Y) at=1439n
+if pre_7_Y < 4.5
  let failures = failures + 1
 end
-meas tran col_rise_delay_8 trig v(COL_EN) val=2.5 rise=1 td=1644n targ v(COL0) val=2.5 rise=1 td=1644n
-meas tran col_fall_delay_8 trig v(COL_EN) val=2.5 fall=1 td=1769n targ v(COL0) val=2.5 fall=1 td=1769n
-meas tran col_off_9_0 max v(COL0) from=1802n to=1844n
-if col_off_9_0 > 0.5
+meas tran pre_7_YB find v(YB) at=1439n
+if pre_7_YB < 4.5
  let failures = failures + 1
 end
-meas tran col_release_9_0 max v(COL0) from=1980n to=1999n
-if col_release_9_0 > 0.5
+meas tran col_stable_8_0 min v(COL0) from=1625n to=1799n
+if col_stable_8_0 < 4.5
  let failures = failures + 1
 end
-meas tran col_active_9_0 max v(COL0) from=1850n to=1969n
-if col_active_9_0 > 0.5
+meas tran col_stable_8_1 max v(COL1) from=1625n to=1799n
+if col_stable_8_1 > 0.5
  let failures = failures + 1
 end
-meas tran col_unselected_9_0 max v(COL0) from=1802n to=1999n
-if col_unselected_9_0 > 0.5
+meas tran pre_8_BL0 find v(BL0) at=1639n
+if pre_8_BL0 < 4.5
  let failures = failures + 1
 end
-meas tran col_off_9_1 max v(COL1) from=1802n to=1844n
-if col_off_9_1 > 0.5
+meas tran pre_8_BLB0 find v(BLB0) at=1639n
+if pre_8_BLB0 < 4.5
  let failures = failures + 1
 end
-meas tran col_release_9_1 max v(COL1) from=1980n to=1999n
-if col_release_9_1 > 0.5
+meas tran pre_8_BL1 find v(BL1) at=1639n
+if pre_8_BL1 < 4.5
  let failures = failures + 1
 end
-meas tran col_active_9_1 min v(COL1) from=1850n to=1969n
-if col_active_9_1 < 4.5
+meas tran pre_8_BLB1 find v(BLB1) at=1639n
+if pre_8_BLB1 < 4.5
  let failures = failures + 1
 end
-meas tran col_rise_delay_9 trig v(COL_EN) val=2.5 rise=1 td=1844n targ v(COL1) val=2.5 rise=1 td=1844n
-meas tran col_fall_delay_9 trig v(COL_EN) val=2.5 fall=1 td=1969n targ v(COL1) val=2.5 fall=1 td=1969n
-meas tran col_off_10_0 max v(COL0) from=2002n to=2044n
-if col_off_10_0 > 0.5
+meas tran pre_8_Y find v(Y) at=1639n
+if pre_8_Y < 4.5
  let failures = failures + 1
 end
-meas tran col_release_10_0 max v(COL0) from=2180n to=2199n
-if col_release_10_0 > 0.5
+meas tran pre_8_YB find v(YB) at=1639n
+if pre_8_YB < 4.5
  let failures = failures + 1
 end
-meas tran col_active_10_0 min v(COL0) from=2050n to=2169n
-if col_active_10_0 < 4.5
+meas tran col_stable_9_0 max v(COL0) from=1825n to=1999n
+if col_stable_9_0 > 0.5
  let failures = failures + 1
 end
-meas tran col_off_10_1 max v(COL1) from=2002n to=2044n
-if col_off_10_1 > 0.5
+meas tran col_stable_9_1 min v(COL1) from=1825n to=1999n
+if col_stable_9_1 < 4.5
  let failures = failures + 1
 end
-meas tran col_release_10_1 max v(COL1) from=2180n to=2199n
-if col_release_10_1 > 0.5
+meas tran pre_9_BL0 find v(BL0) at=1839n
+if pre_9_BL0 < 4.5
  let failures = failures + 1
 end
-meas tran col_active_10_1 max v(COL1) from=2050n to=2169n
-if col_active_10_1 > 0.5
+meas tran pre_9_BLB0 find v(BLB0) at=1839n
+if pre_9_BLB0 < 4.5
  let failures = failures + 1
 end
-meas tran col_unselected_10_1 max v(COL1) from=2002n to=2199n
-if col_unselected_10_1 > 0.5
+meas tran pre_9_BL1 find v(BL1) at=1839n
+if pre_9_BL1 < 4.5
  let failures = failures + 1
 end
-meas tran col_rise_delay_10 trig v(COL_EN) val=2.5 rise=1 td=2044n targ v(COL0) val=2.5 rise=1 td=2044n
-meas tran col_fall_delay_10 trig v(COL_EN) val=2.5 fall=1 td=2169n targ v(COL0) val=2.5 fall=1 td=2169n
-meas tran col_off_11_0 max v(COL0) from=2202n to=2244n
-if col_off_11_0 > 0.5
+meas tran pre_9_BLB1 find v(BLB1) at=1839n
+if pre_9_BLB1 < 4.5
  let failures = failures + 1
 end
-meas tran col_release_11_0 max v(COL0) from=2380n to=2399n
-if col_release_11_0 > 0.5
+meas tran pre_9_Y find v(Y) at=1839n
+if pre_9_Y < 4.5
  let failures = failures + 1
 end
-meas tran col_active_11_0 max v(COL0) from=2250n to=2369n
-if col_active_11_0 > 0.5
+meas tran pre_9_YB find v(YB) at=1839n
+if pre_9_YB < 4.5
  let failures = failures + 1
 end
-meas tran col_unselected_11_0 max v(COL0) from=2202n to=2399n
-if col_unselected_11_0 > 0.5
+meas tran col_stable_10_0 min v(COL0) from=2025n to=2199n
+if col_stable_10_0 < 4.5
  let failures = failures + 1
 end
-meas tran col_off_11_1 max v(COL1) from=2202n to=2244n
-if col_off_11_1 > 0.5
+meas tran col_stable_10_1 max v(COL1) from=2025n to=2199n
+if col_stable_10_1 > 0.5
  let failures = failures + 1
 end
-meas tran col_release_11_1 max v(COL1) from=2380n to=2399n
-if col_release_11_1 > 0.5
+meas tran pre_10_BL0 find v(BL0) at=2039n
+if pre_10_BL0 < 4.5
  let failures = failures + 1
 end
-meas tran col_active_11_1 min v(COL1) from=2250n to=2369n
-if col_active_11_1 < 4.5
+meas tran pre_10_BLB0 find v(BLB0) at=2039n
+if pre_10_BLB0 < 4.5
  let failures = failures + 1
 end
-meas tran col_rise_delay_11 trig v(COL_EN) val=2.5 rise=1 td=2244n targ v(COL1) val=2.5 rise=1 td=2244n
-meas tran col_fall_delay_11 trig v(COL_EN) val=2.5 fall=1 td=2369n targ v(COL1) val=2.5 fall=1 td=2369n
-meas tran col_off_12_0 max v(COL0) from=2402n to=2444n
-if col_off_12_0 > 0.5
+meas tran pre_10_BL1 find v(BL1) at=2039n
+if pre_10_BL1 < 4.5
  let failures = failures + 1
 end
-meas tran col_release_12_0 max v(COL0) from=2580n to=2599n
-if col_release_12_0 > 0.5
+meas tran pre_10_BLB1 find v(BLB1) at=2039n
+if pre_10_BLB1 < 4.5
  let failures = failures + 1
 end
-meas tran col_active_12_0 min v(COL0) from=2450n to=2569n
-if col_active_12_0 < 4.5
+meas tran pre_10_Y find v(Y) at=2039n
+if pre_10_Y < 4.5
  let failures = failures + 1
 end
-meas tran col_off_12_1 max v(COL1) from=2402n to=2444n
-if col_off_12_1 > 0.5
+meas tran pre_10_YB find v(YB) at=2039n
+if pre_10_YB < 4.5
  let failures = failures + 1
 end
-meas tran col_release_12_1 max v(COL1) from=2580n to=2599n
-if col_release_12_1 > 0.5
+meas tran col_stable_11_0 max v(COL0) from=2225n to=2399n
+if col_stable_11_0 > 0.5
  let failures = failures + 1
 end
-meas tran col_active_12_1 max v(COL1) from=2450n to=2569n
-if col_active_12_1 > 0.5
+meas tran col_stable_11_1 min v(COL1) from=2225n to=2399n
+if col_stable_11_1 < 4.5
  let failures = failures + 1
 end
-meas tran col_unselected_12_1 max v(COL1) from=2402n to=2599n
-if col_unselected_12_1 > 0.5
+meas tran pre_11_BL0 find v(BL0) at=2239n
+if pre_11_BL0 < 4.5
  let failures = failures + 1
 end
-meas tran col_rise_delay_12 trig v(COL_EN) val=2.5 rise=1 td=2444n targ v(COL0) val=2.5 rise=1 td=2444n
-meas tran col_fall_delay_12 trig v(COL_EN) val=2.5 fall=1 td=2569n targ v(COL0) val=2.5 fall=1 td=2569n
-meas tran col_off_13_0 max v(COL0) from=2602n to=2644n
-if col_off_13_0 > 0.5
+meas tran pre_11_BLB0 find v(BLB0) at=2239n
+if pre_11_BLB0 < 4.5
  let failures = failures + 1
 end
-meas tran col_release_13_0 max v(COL0) from=2780n to=2799n
-if col_release_13_0 > 0.5
+meas tran pre_11_BL1 find v(BL1) at=2239n
+if pre_11_BL1 < 4.5
  let failures = failures + 1
 end
-meas tran col_active_13_0 max v(COL0) from=2650n to=2769n
-if col_active_13_0 > 0.5
+meas tran pre_11_BLB1 find v(BLB1) at=2239n
+if pre_11_BLB1 < 4.5
  let failures = failures + 1
 end
-meas tran col_unselected_13_0 max v(COL0) from=2602n to=2799n
-if col_unselected_13_0 > 0.5
+meas tran pre_11_Y find v(Y) at=2239n
+if pre_11_Y < 4.5
  let failures = failures + 1
 end
-meas tran col_off_13_1 max v(COL1) from=2602n to=2644n
-if col_off_13_1 > 0.5
+meas tran pre_11_YB find v(YB) at=2239n
+if pre_11_YB < 4.5
  let failures = failures + 1
 end
-meas tran col_release_13_1 max v(COL1) from=2780n to=2799n
-if col_release_13_1 > 0.5
+meas tran col_stable_12_0 min v(COL0) from=2425n to=2599n
+if col_stable_12_0 < 4.5
  let failures = failures + 1
 end
-meas tran col_active_13_1 min v(COL1) from=2650n to=2769n
-if col_active_13_1 < 4.5
+meas tran col_stable_12_1 max v(COL1) from=2425n to=2599n
+if col_stable_12_1 > 0.5
  let failures = failures + 1
 end
-meas tran col_rise_delay_13 trig v(COL_EN) val=2.5 rise=1 td=2644n targ v(COL1) val=2.5 rise=1 td=2644n
-meas tran col_fall_delay_13 trig v(COL_EN) val=2.5 fall=1 td=2769n targ v(COL1) val=2.5 fall=1 td=2769n
-meas tran col_off_14_0 max v(COL0) from=2802n to=2844n
-if col_off_14_0 > 0.5
+meas tran pre_12_BL0 find v(BL0) at=2439n
+if pre_12_BL0 < 4.5
  let failures = failures + 1
 end
-meas tran col_release_14_0 max v(COL0) from=2980n to=2999n
-if col_release_14_0 > 0.5
+meas tran pre_12_BLB0 find v(BLB0) at=2439n
+if pre_12_BLB0 < 4.5
  let failures = failures + 1
 end
-meas tran col_active_14_0 min v(COL0) from=2850n to=2969n
-if col_active_14_0 < 4.5
+meas tran pre_12_BL1 find v(BL1) at=2439n
+if pre_12_BL1 < 4.5
  let failures = failures + 1
 end
-meas tran col_off_14_1 max v(COL1) from=2802n to=2844n
-if col_off_14_1 > 0.5
+meas tran pre_12_BLB1 find v(BLB1) at=2439n
+if pre_12_BLB1 < 4.5
  let failures = failures + 1
 end
-meas tran col_release_14_1 max v(COL1) from=2980n to=2999n
-if col_release_14_1 > 0.5
+meas tran pre_12_Y find v(Y) at=2439n
+if pre_12_Y < 4.5
  let failures = failures + 1
 end
-meas tran col_active_14_1 max v(COL1) from=2850n to=2969n
-if col_active_14_1 > 0.5
+meas tran pre_12_YB find v(YB) at=2439n
+if pre_12_YB < 4.5
  let failures = failures + 1
 end
-meas tran col_unselected_14_1 max v(COL1) from=2802n to=2999n
-if col_unselected_14_1 > 0.5
+meas tran col_stable_13_0 max v(COL0) from=2625n to=2799n
+if col_stable_13_0 > 0.5
  let failures = failures + 1
 end
-meas tran col_rise_delay_14 trig v(COL_EN) val=2.5 rise=1 td=2844n targ v(COL0) val=2.5 rise=1 td=2844n
-meas tran col_fall_delay_14 trig v(COL_EN) val=2.5 fall=1 td=2969n targ v(COL0) val=2.5 fall=1 td=2969n
-meas tran col_off_15_0 max v(COL0) from=3002n to=3044n
-if col_off_15_0 > 0.5
+meas tran col_stable_13_1 min v(COL1) from=2625n to=2799n
+if col_stable_13_1 < 4.5
  let failures = failures + 1
 end
-meas tran col_release_15_0 max v(COL0) from=3180n to=3199n
-if col_release_15_0 > 0.5
+meas tran pre_13_BL0 find v(BL0) at=2639n
+if pre_13_BL0 < 4.5
  let failures = failures + 1
 end
-meas tran col_active_15_0 max v(COL0) from=3050n to=3169n
-if col_active_15_0 > 0.5
+meas tran pre_13_BLB0 find v(BLB0) at=2639n
+if pre_13_BLB0 < 4.5
  let failures = failures + 1
 end
-meas tran col_unselected_15_0 max v(COL0) from=3002n to=3199n
-if col_unselected_15_0 > 0.5
+meas tran pre_13_BL1 find v(BL1) at=2639n
+if pre_13_BL1 < 4.5
  let failures = failures + 1
 end
-meas tran col_off_15_1 max v(COL1) from=3002n to=3044n
-if col_off_15_1 > 0.5
+meas tran pre_13_BLB1 find v(BLB1) at=2639n
+if pre_13_BLB1 < 4.5
  let failures = failures + 1
 end
-meas tran col_release_15_1 max v(COL1) from=3180n to=3199n
-if col_release_15_1 > 0.5
+meas tran pre_13_Y find v(Y) at=2639n
+if pre_13_Y < 4.5
  let failures = failures + 1
 end
-meas tran col_active_15_1 min v(COL1) from=3050n to=3169n
-if col_active_15_1 < 4.5
+meas tran pre_13_YB find v(YB) at=2639n
+if pre_13_YB < 4.5
  let failures = failures + 1
 end
-meas tran col_rise_delay_15 trig v(COL_EN) val=2.5 rise=1 td=3044n targ v(COL1) val=2.5 rise=1 td=3044n
-meas tran col_fall_delay_15 trig v(COL_EN) val=2.5 fall=1 td=3169n targ v(COL1) val=2.5 fall=1 td=3169n
+meas tran col_stable_14_0 min v(COL0) from=2825n to=2999n
+if col_stable_14_0 < 4.5
+ let failures = failures + 1
+end
+meas tran col_stable_14_1 max v(COL1) from=2825n to=2999n
+if col_stable_14_1 > 0.5
+ let failures = failures + 1
+end
+meas tran pre_14_BL0 find v(BL0) at=2839n
+if pre_14_BL0 < 4.5
+ let failures = failures + 1
+end
+meas tran pre_14_BLB0 find v(BLB0) at=2839n
+if pre_14_BLB0 < 4.5
+ let failures = failures + 1
+end
+meas tran pre_14_BL1 find v(BL1) at=2839n
+if pre_14_BL1 < 4.5
+ let failures = failures + 1
+end
+meas tran pre_14_BLB1 find v(BLB1) at=2839n
+if pre_14_BLB1 < 4.5
+ let failures = failures + 1
+end
+meas tran pre_14_Y find v(Y) at=2839n
+if pre_14_Y < 4.5
+ let failures = failures + 1
+end
+meas tran pre_14_YB find v(YB) at=2839n
+if pre_14_YB < 4.5
+ let failures = failures + 1
+end
+meas tran col_stable_15_0 max v(COL0) from=3025n to=3199n
+if col_stable_15_0 > 0.5
+ let failures = failures + 1
+end
+meas tran col_stable_15_1 min v(COL1) from=3025n to=3199n
+if col_stable_15_1 < 4.5
+ let failures = failures + 1
+end
+meas tran pre_15_BL0 find v(BL0) at=3039n
+if pre_15_BL0 < 4.5
+ let failures = failures + 1
+end
+meas tran pre_15_BLB0 find v(BLB0) at=3039n
+if pre_15_BLB0 < 4.5
+ let failures = failures + 1
+end
+meas tran pre_15_BL1 find v(BL1) at=3039n
+if pre_15_BL1 < 4.5
+ let failures = failures + 1
+end
+meas tran pre_15_BLB1 find v(BLB1) at=3039n
+if pre_15_BLB1 < 4.5
+ let failures = failures + 1
+end
+meas tran pre_15_Y find v(Y) at=3039n
+if pre_15_Y < 4.5
+ let failures = failures + 1
+end
+meas tran pre_15_YB find v(YB) at=3039n
+if pre_15_YB < 4.5
+ let failures = failures + 1
+end
 if failures = 0
  echo PASS: row and column decoder selection, mux writes, sensed reads, reset and retention
 else
@@ -2416,8 +2441,8 @@ let PD_YB_T = v(PD_YB)/5+0
 plot PREB_T YPREB_T WL0_T WL1_T COL0_T COL1_T PD_Y_T PD_YB_T SAE_T title 'CONTROLS: PREB16 YPREB14 COL0/1=12/10 WL0/1=8/6 SAE4 PD_Y/YB=2/0'
 plot v(RA) v(WL_EN) v(WL0) v(WL1) xlimit 0 400n title 'ROW DECODER: disabled address changes then one selected WL'
 plot v(WL_EN) v(xrow.WL0_B) v(WL0) xlimit 65n 85n title 'ROW DRIVER: NAND output and actual WL'
-plot v(CA) v(COL_EN) v(COL0) v(COL1) xlimit 0 400n title 'COLUMN DECODER: address changes while disabled; one column selected'
-plot v(COL_EN) v(xcol.COL0_B) v(COL0) xlimit 40n 55n title 'COLUMN DRIVER: NAND output and actual mux gate'
+plot v(CA) v(COL0) v(COL1) xlimit 0 400n title 'COLUMN DECODER: always one selected after CA settles'
+plot v(CA) v(COL0) v(COL1) v(Y) v(YB) xlimit 200n 245n title 'ADDRESS CHANGE: all WL LOW; bitlines recharged before access'
 .endc"}
 C {devices/netlist_options.sym} 2250 1900 0 0 {name=NETLIST_OPTIONS
 lvs_netlist=false
@@ -2436,7 +2461,6 @@ T {ROW SELECT | RA changes only with WL_EN LOW} -780 180 0 0 0.3 0.3 {}
 
 C {col_decoder_1to2.sym} -500 980 0 0 {name=xcol}
 C {devices/lab_pin.sym} -680 940 0 0 {name=col_ca lab=CA}
-C {devices/lab_pin.sym} -680 1020 0 0 {name=col_en lab=COL_EN}
 C {devices/lab_pin.sym} -500 780 0 0 {name=col_vdd lab=VDD}
 C {devices/gnd.sym} -500 1180 0 0 {name=col_gnd lab=GND}
 N -320 850 -200 850 {lab=COL0}
@@ -2447,6 +2471,6 @@ N -150 900 -150 1120 {lab=COL1}
 N -150 900 680 900 {lab=COL1}
 N 680 770 680 900 {lab=COL1}
 N 680 770 700 770 {lab=COL1}
-T {COLUMN SELECT | CA changes only with COL_EN LOW} -800 1250 0 0 0.27 0.27 {}
+T {COLUMN SELECT | switch CA with WL LOW and PD OFF} -800 1250 0 0 0.27 0.27 {}
 C {devices/lab_pin.sym} -200 850 2 0 {name=col0_label lab=COL0}
 C {devices/lab_pin.sym} -150 1120 2 0 {name=col1_label lab=COL1}

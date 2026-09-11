@@ -5,43 +5,26 @@ V {}
 S {}
 F {}
 E {}
-T {COLUMN DECODER 1-to-2 | PDK standard cells} -100 -130 0 0 0.3 0.3 {}
-T {COL0 = !CA & COL_EN     COL1 = CA & COL_EN} -100 -80 0 0 0.3 0.3 {}
-C {TR-1um_5_stdcell/INV_X1.sym} 100 80 0 0 {name=xca_inv}
-C {devices/lab_pin.sym} 130 40 2 0 {name=l10 lab=VDD}
-C {devices/lab_pin.sym} 130 120 2 0 {name=l11 lab=VSS}
-C {TR-1um_5_stdcell/NAND2.sym} 350 100 0 0 {name=xdec0}
-C {devices/lab_pin.sym} 380 40 2 0 {name=l13 lab=VDD}
-C {devices/lab_pin.sym} 380 160 2 0 {name=l14 lab=VSS}
-C {TR-1um_5_stdcell/INV_X1.sym} 650 100 0 0 {name=xdrv0}
-C {devices/lab_pin.sym} 680 60 2 0 {name=l16 lab=VDD}
-C {devices/lab_pin.sym} 680 140 2 0 {name=l17 lab=VSS}
-C {TR-1um_5_stdcell/NAND2.sym} 350 400 0 0 {name=xdec1}
-C {devices/lab_pin.sym} 380 340 2 0 {name=l19 lab=VDD}
-C {devices/lab_pin.sym} 380 460 2 0 {name=l20 lab=VSS}
-C {TR-1um_5_stdcell/INV_X1.sym} 650 400 0 0 {name=xdrv1}
-C {devices/lab_pin.sym} 680 360 2 0 {name=l22 lab=VDD}
-C {devices/lab_pin.sym} 680 440 2 0 {name=l23 lab=VSS}
-N -100 80 80 80 {lab=CA}
-N -40 80 -40 380 {lab=CA}
-N -40 380 330 380 {lab=CA}
-N 200 80 330 80 {lab=CA_B}
-C {devices/lab_pin.sym} 250 80 2 0 {name=l28 lab=CA_B}
-N -100 540 280 540 {lab=COL_EN}
-N 280 120 280 540 {lab=COL_EN}
-N 280 120 330 120 {lab=COL_EN}
-N 280 420 330 420 {lab=COL_EN}
-N 480 100 630 100 {lab=COL0_B}
-C {devices/lab_pin.sym} 550 100 2 0 {name=l34 lab=COL0_B}
-N 750 100 900 100 {lab=COL0}
-N 480 400 630 400 {lab=COL1_B}
-C {devices/lab_pin.sym} 550 400 2 0 {name=l37 lab=COL1_B}
-N 750 400 900 400 {lab=COL1}
-C {devices/ipin.sym} -100 80 0 0 {name=pCA lab=CA}
-C {devices/ipin.sym} -100 540 0 0 {name=pCOL_EN lab=COL_EN}
-C {devices/opin.sym} 900 100 0 0 {name=pCOL0 lab=COL0}
-C {devices/opin.sym} 900 400 0 0 {name=pCOL1 lab=COL1}
-C {devices/iopin.sym} 850 -40 0 0 {name=pVDD lab=VDD}
-C {devices/iopin.sym} 850 540 0 0 {name=pVSS lab=VSS}
-T {Change CA only while COL_EN=0; allow address and decoder to settle.} -100 640 0 0 0.3 0.3 {}
-T {Output INV_X1 drives the actual column-select load. No ideal COL driver.} -100 690 0 0 0.3 0.3 {}
+T {COLUMN DECODER 1-to-2 | always selected} -100 -130 0 0 0.3 0.3 {}
+T {COL0 = !CA     COL1 = CA} -100 -80 0 0 0.3 0.3 {}
+C {TR-1um_5_stdcell/INV_X1.sym} 250 100 0 0 {name=xca_inv}
+C {devices/ipin.sym} -100 100 0 0 {name=pCA lab=CA}
+N -100 100 230 100 {lab=CA}
+N 400 100 400 260 {lab=COL0}
+N 150 260 400 260 {lab=COL0}
+N 150 260 150 350 {lab=COL0}
+N 150 350 230 350 {lab=COL0}
+C {TR-1um_5_stdcell/INV_X1.sym} 250 350 0 0 {name=xcol1_drv}
+C {devices/lab_pin.sym} 280 310 2 0 {name=drv_vdd lab=VDD}
+C {devices/lab_pin.sym} 280 390 2 0 {name=drv_vss lab=VSS}
+N 350 350 550 350 {lab=COL1}
+N 350 100 550 100 {lab=COL0}
+C {devices/opin.sym} 550 100 0 0 {name=pCOL0 lab=COL0}
+C {devices/opin.sym} 550 350 0 0 {name=pCOL1 lab=COL1}
+C {devices/iopin.sym} 280 -10 0 0 {name=pVDD lab=VDD}
+N 280 -10 280 60 {lab=VDD}
+C {devices/iopin.sym} 280 230 0 0 {name=pVSS lab=VSS}
+N 280 140 280 230 {lab=VSS}
+T {Change CA only after all WL are LOW and write pull-downs are OFF.} -100 440 0 0 0.27 0.27 {}
+T {Then finish local/common precharge before accessing the next cell.} -100 490 0 0 0.27 0.27 {}
+T {Two INV_X1 stages: COL0=!CA; COL1=!COL0. Both mux controls have real drivers.} -100 540 0 0 0.27 0.27 {}
