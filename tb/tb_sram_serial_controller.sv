@@ -94,7 +94,7 @@ module tb_sram_serial_controller;
     task automatic check_reset;
         check(dut.count === 0 && dut.shift_reg === 0, "reset receive state");
         check(RA === 0 && CA === 0 && DIN === 0 && dut.W === 0,
-              "reset access registers");
+              "reset frame outputs and write mode");
         check(dut.PC_ON === 0 && dut.TRACK === 0, "reset inverted controls");
         check(SDO === 0, "reset read result");
         check_controls(4'b1001);
@@ -140,19 +140,31 @@ module tb_sram_serial_controller;
     task automatic send_frame(input integer address, input logic value,
                               input logic pause_midway);
         reg [N-1:0] frame;
-        reg [ADDRESS_BITS+1:0] old_command;
-        integer bit_index;
+        reg [N-1:0] received;
+        reg old_mode;
+        reg receive_memory [0:3];
+        integer bit_index, k;
         frame = {ADDRESS_BITS'(address), value};
-        old_command = {RA, CA, DIN, dut.W};
+        received = {RA, CA, DIN};
+        old_mode = dut.W;
+        if (DEPTH == 4)
+            for (k = 0; k < 4; k = k+1)
+                receive_memory[k] = array_model.memory[k];
         check(dut.count === 0, "frame starts at count=0");
         for (bit_index = N-1; bit_index >= 0; bit_index = bit_index-1) begin
             // Deliberately unrelated WE during reception: only E0 samples it.
             tick(frame[bit_index], bit_index % 2);
+            received = {received[N-2:0], frame[bit_index]};
             check(dut.count == N-bit_index, "receive count");
-            check({RA, CA, DIN, dut.W} === old_command,
-                  "shift bits must not reach access registers during reception");
+            check({RA, CA, DIN} === received,
+                  "frame outputs follow each received bit");
+            check(dut.W === old_mode, "reception must not sample WE");
             check(SDO === last_read, "receive preserves SDO");
             check_controls(4'b1001);
+            if (DEPTH == 4)
+                for (k = 0; k < 4; k = k+1)
+                    check(array_model.memory[k] === receive_memory[k],
+                          "shifting addresses must not alter any cell");
             if (pause_midway && bit_index == N-2)
                 pause_clock();
         end

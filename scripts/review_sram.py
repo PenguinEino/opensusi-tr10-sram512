@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Reproduce the bounded 2026-09-11 schematic review experiments.
+"""Run the bounded schematic review experiments on the current controller.
+
+Updated for the shared receive/access FF bank on 2026-09-12. The earlier
+2026-09-11 results document the previous double-bank circuit.
 
 First run verify_serial_spice.py to netlist the current schematics. This script
 reads that netlist and creates diagnostic copies; it never edits schematics or
@@ -34,7 +37,7 @@ def subcircuits(netlist):
 
 
 def controller_truth(netlist):
-    """Enumerate all 16 storage bits and SDI/WE/SOUT: 524,288 assignments.
+    """Enumerate all 13 storage bits and SDI/WE/SOUT: 65,536 assignments.
 
     DFFR is an ideal positive-edge FF with active-HIGH asynchronous reset;
     combinational standard cells are evaluated by their named Boolean function.
@@ -47,14 +50,14 @@ def controller_truth(netlist):
             words = line.lower().split()
             cells.append((words[0], words[-1], dict(zip(subs[words[-1]][0], words[1:-1]))))
     ffs = [c for c in cells if c[1] == 'dffr']
-    assert len(ffs) == 16
-    assignments = np.arange(1 << 19, dtype=np.uint32)
+    assert len(ffs) == 13
+    assignments = np.arange(1 << (len(ffs)+3), dtype=np.uint32)
     values = {'vdd': np.ones(len(assignments), dtype=bool),
               'vss': np.zeros(len(assignments), dtype=bool)}
     for bit, (_, _, ports) in enumerate(ffs):
         values[ports['q']] = (assignments >> bit & 1).astype(bool)
         values[ports['qb']] = ~values[ports['q']]
-    for bit, name in enumerate(('sdi', 'we', 'sout'), 16):
+    for bit, name in enumerate(('sdi', 'we', 'sout'), len(ffs)):
         values[name] = (assignments >> bit & 1).astype(bool)
     pending = [c for c in cells if c[1] != 'dffr']
     while pending:
@@ -84,12 +87,9 @@ def controller_truth(netlist):
     rx, e0 = count < 3, count == 3
     expected = {f'c{i}': (expected_count >> i & 1).astype(bool) for i in range(4)}
     expected.update({
-        'sr0': np.where(rx, values['sdi'], values['sr0']),
-        'sr1': np.where(rx, values['sr0'], values['sr1']),
-        'sr2': np.where(rx, values['sr1'], values['sr2']),
-        'din': np.where(e0, values['sr0'], values['din']),
-        'ca': np.where(e0, values['sr1'], values['ca']),
-        'ra': np.where(e0, values['sr2'], values['ra']),
+        'din': np.where(rx, values['sdi'], values['din']),
+        'ca': np.where(rx, values['din'], values['ca']),
+        'ra': np.where(rx, values['ca'], values['ra']),
         'w': np.where(e0, values['we'], values['w']),
         'pc_on': e0,
         'wl_en': (count == 6) | (count == 7),
@@ -103,7 +103,7 @@ def controller_truth(netlist):
     assert all(p['rst'] == 'reset' and p['ck'] == 'clk' for _, _, p in ffs)
     assert next(p for _, _, p in ffs if p['q'] == 'pc_on')['qb'] == 'preb'
     assert next(p for _, _, p in ffs if p['q'] == 'track')['qb'] == 'sae'
-    return {'assignments': len(assignments), 'next_state_bit_comparisons': len(assignments)*16,
+    return {'assignments': len(assignments), 'next_state_bit_comparisons': len(assignments)*len(ffs),
             'failures': failures, 'reset_clock_and_inverted_output_connections': 'pass'}
 
 
@@ -131,11 +131,11 @@ def analyze(path, vdd=5):
             errors.append(dict(category=category, net=name, bit=int(bit), start_ns=a,
                                end_ns=b, min_v=lo, max_v=hi))
 
-    # Same independently simulated RTL as the baseline; all 16 state bits.
+    # Same independently simulated RTL as the baseline; all 13 state bits.
     for line in (BASE / 'rtl_reference.tsv').read_text().splitlines()[1:]:
         fields = line.split(); a = float(fields[0]); count = int(fields[1]); shift = int(fields[2])
         for i in range(4): level(f'xctrl.C{i}', count >> i & 1, a, category='controller')
-        for i in range(3): level(f'xctrl.SR{i}', shift >> i & 1, a, category='controller')
+        for i,n in enumerate(('DIN','CA','RA')): level(n, shift >> i & 1, a, category='controller')
         for n, b in zip(('RA','CA','DIN','xctrl.W','PREB','WRITE_EN','WL_EN','SAE','SDO'), fields[3:]):
             level(n, int(b), a, category='sdo' if n == 'SDO' else 'controller')
     for i, op in enumerate(scenario()['operations']):

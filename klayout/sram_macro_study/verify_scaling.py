@@ -47,7 +47,8 @@ def logic_test(rb,cb):
     lines.append(f'sram_serial_controller #(.ROW_BITS({rb}),.COL_BITS({cb})) reference('+','.join(ports)+');')
     def vector(prefix,count):return '{'+','.join(f'{prefix}{i}' for i in reversed(range(count)))+'}'
     checks=[(vector('RA',rb),'ref_ra'),(vector('CA',cb),'ref_ca'),
-            (vector('C',k),'reference.count'),(vector('SR',n),'reference.shift_reg')]
+            (vector('C',k),'reference.count'),
+            ('{'+','.join(reversed(meta['shift_nets']))+'}','reference.shift_reg')]
     checks +=[(o,'ref_'+o.lower()) for o in outputs]+[('W','reference.W')]
     lines+=['integer cycle; integer seed=271828;', 'task check; begin']
     for lhs,rhs in checks:

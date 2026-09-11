@@ -1,12 +1,12 @@
 # シリアルSRAM制御のVerilog
 
-[確定仕様](../SEQUENCER_DESIGN.md)の制御部をRTLとして記述し、デジタルシミュレーションで検証する。自動論理合成、Xschem回路図の作成、トランジスタモデルでのシミュレーション、配置配線はこの段階では行わない。
+[確定仕様](../SEQUENCER_DESIGN.md)の制御部をRTLとして記述し、デジタルシミュレーションで検証する。このディレクトリは論理仕様とデジタル検証を扱う。2×2のXschem回路図・SPICE統合検証は別途実装済み。自動論理合成と周辺回路の配置配線は行っていない。
 
 ## ファイルと読む順序
 
 | ファイル | 内容 |
 |---|---|
-| [sram_serial_controller.v](sram_serial_controller.v) | 実装対象の制御RTL。最初に読む。単一カウンタ・シフトレジスタ・アクセス用FF・制御出力FF・読み出し結果FF |
+| [sram_serial_controller.v](sram_serial_controller.v) | 実装対象の制御RTL。最初に読む。単一カウンタ・受信兼アクセス保持シフトレジスタ・WE保持FF・制御出力FF・読み出し結果FF |
 | [sram_functional_model.v](../tb/sram_functional_model.v) | TB専用のSRAM＋センスアンプ動作モデル。制御出力に応じて1 bitを書き込み・読み出す |
 | [tb_sram_serial_controller.sv](../tb/tb_sram_serial_controller.sv) | 外部ピンからの操作、状態表の照合、期待メモリとの比較、RESETなどの自動テスト |
 | [verify_rtl.py](../scripts/verify_rtl.py) | Icarus Verilogでコンパイル・実行する入口 |
@@ -19,14 +19,14 @@
 
 `count`は次のCLK立上りで実行する手順番号。立上り直前の値で処理を決める。
 
-- `count < N`：1 bit受信する。アクセス用アドレスは保持する。
-- `count == N`：E0。受信済みの全bitと外部WEを保持し、プリチャージを始める。
+- `count < N`：1 bit受信する。RA/CA/DINはそのシフト結果に従って変わる。WL・書き込みはOFF。
+- `count == N`：E0。受信段の全bitは保持を継続。外部WEをWへ取り込み、プリチャージを始める。
 - その後の `case` のE1〜E7：設計書の各手順と1対1で対応する。
 - E7の立上り後にcount=0となり、次の立上りが次の受信になる。
 
 `<=`はFF更新のノンブロッキング代入。同じ立上りの処理では更新前の値を読む。E0の `TRACK <= ~WE` は今回の読み書きを反映するためで、古いWは使わない。
 
-PC_ON、TRACK、WRITE_EN、WL_ENは全てFFに保持する値。各CLKでまず非アクセス値を指定し、該当する手順だけ値を変更する。RA/CA/DIN/W/READ_DATA/shift_regは更新する手順以外では保持する。
+PC_ON、TRACK、WRITE_EN、WL_ENは全てFFに保持する値。各CLKでまず非アクセス値を指定し、該当する手順だけ値を変更する。shift_regは受信時だけ更新し、RA/CA/DINはその出力を直接使う。WはE0、READ_DATAは読み出しE6でだけ更新する。RA/CA/DIN専用の第2保持段はない。
 
 RESETで全保持値を0へ戻す。PREB/YPREBはPC_ONの反転、SAEはTRACKの反転なので、外へはHIGHが出る。スタセル化時にはDFFRのQBを使える表現になっている。
 
@@ -56,7 +56,7 @@ python3 scripts/verify_rtl.py --row-bits 1 --col-bits 1 --waves
 
 ## テストが確認すること
 
-- 受信順、受信中のアドレス保持、E0でのWE取り込み、E0〜E7中のSDI/WE変更の無視。
+- 受信順、受信中のRA/CA/DINの更新とアクセス停止・セル保持、E0でのWE取り込み、E0〜E7中のSDI/WE変更の無視。
 - 各手順の制御値、カウンタ更新、1操作がN+8立上りで完了すること。
 - 全セルに0と1を書き、逆順の読み出しと混在操作でSDOを照合すること。期待値は外部から要求したアドレスとデータから作り、DUTのアドレスを流用しない。
 - SDOが読み出しE6でだけ更新し、それ以外の手順で保持されること。
@@ -70,15 +70,15 @@ python3 scripts/verify_rtl.py --row-bits 1 --col-bits 1 --waves
 
 ## 検証結果と限界
 
-2026-09-11、Icarus Verilog 12.0で以下がPASS。
+2026-09-12、保持段共有後にIcarus Verilog 12.0で以下がPASS。
 
 | 構成 | 完了操作数 | 自動判定数 | CLKなしRESETの試験回数 |
 |---|---:|---:|---:|
-| 2×2 | 184 | 19,304 | 22 |
-| 16×16 | 1,198 | 162,627 | 28 |
-| 32×32 | 4,272 | 630,400 | 30 |
-| 4×8 | 299 | 35,577 | 25 |
-| 8×16 | 685 | 89,064 | 27 |
+| 2×2 | 184 | 22,304 | 22 |
+| 16×16 | 1,198 | 173,553 | 28 |
+| 32×32 | 4,272 | 677,568 | 30 |
+| 4×8 | 299 | 37,467 | 25 |
+| 8×16 | 685 | 94,672 | 27 |
 
 モデルはCLKやcountを参照せず、WL_ENの立下り時にWRITE_ENがHIGHなら書き込み、WL_ENがHIGHでWRITE_ENがLOWのときのSAE立上りで読み出す。書き込み内容をWL立下りで確定するのはデジタル検証用の近似であり、実セルの反転時刻を表していない。
 

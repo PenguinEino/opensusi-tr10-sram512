@@ -85,7 +85,7 @@ def verify(work,case):
     for line in ref[1:]:
         fields=line.split();t=float(fields[0]);count=int(fields[1]);shift=int(fields[2])
         for i in range(4):level(f'xctrl.C{i}',(count>>i)&1,t,tag='RTL counter')
-        for i in range(3):level(f'xctrl.SR{i}',(shift>>i)&1,t,tag='RTL shift')
+        for i,n in enumerate(['DIN','CA','RA']):level(n,(shift>>i)&1,t,tag='RTL shared frame')
         for n,b in zip(['RA','CA','DIN','xctrl.W','PREB','WRITE_EN','WL_EN','SAE','SDO'],fields[3:]):
             if b not in ['0','1']:raise RuntimeError(f'unknown RTL expectation: {line}')
             level(n,int(b),t,tag='RTL')
@@ -94,8 +94,17 @@ def verify(work,case):
     for i,op in enumerate(case['operations']):
         a=op['e0'];first=op['first'];row=op['row'];col=op['col'];wr=op['write'];bit=op['data'];tag=f'op{i}'
         if first>case['reset_at'] and i==16:last_read=0
-        for n,b in [('RA',row),('CA',col),('DIN',bit if wr else 0),('xctrl.W',wr)]:
-            level(n,b,a+35,a+795,tag=tag+' command hold')
+        for n,b in [('RA',row),('CA',col),('DIN',bit if wr else 0)]:
+            level(n,b,a-65,a+795,tag=tag+' frame hold after last RX')
+        level('xctrl.W',wr,a+35,a+795,tag=tag+' mode hold')
+        # Address and data now shift while the array is connected. Check all
+        # known cells throughout RX, including the cell about to be rewritten.
+        for n in ['WL0','WL1','PD_Y','PD_YB']:
+            level(n,0,first-10,a-10,tag=tag+' RX disabled')
+        level('SAE',1,first-10,a-10,tag=tag+' RX sense isolated')
+        for (r,c),b in known.items():
+            level(f'Q{r}{c}',b,first-10,a-10,rails=False,tag=tag+' RX retained cell')
+            level(f'QB{r}{c}',1-b,first-10,a-10,rails=False,tag=tag+' RX retained cell')
         # Whole inactive windows include state changes and the CLK falling edge.
         for n in ['WL_EN',f'WL{row}']:
             level(n,0,first+35,a+299,tag=tag+' before WL')
@@ -128,7 +137,7 @@ def verify(work,case):
             last_read=bit;level('SDO',bit,a+635,a+795,tag=tag+' captured result')
     # Both RESET assertions initialize with CLK stopped; SRAM retains valid bits.
     for start,end in [(35,245),(case['reset_at']+35,case['reset_at']+245)]:
-        for n in ['RA','CA','DIN','xctrl.W','SDO','WL_EN','WRITE_EN','WL0','WL1','PD_Y','PD_YB']+[f'xctrl.C{i}' for i in range(4)]+[f'xctrl.SR{i}' for i in range(3)]:level(n,0,start,end,tag='async RESET')
+        for n in ['RA','CA','DIN','xctrl.W','SDO','WL_EN','WRITE_EN','WL0','WL1','PD_Y','PD_YB']+[f'xctrl.C{i}' for i in range(4)]:level(n,0,start,end,tag='async RESET')
         for n in ['PREB','SAE']:level(n,1,start,end,tag='async RESET')
     if errors:
         (work/'failures.txt').write_text('\n'.join(errors)+'\n')

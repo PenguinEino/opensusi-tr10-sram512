@@ -155,7 +155,8 @@ def negative_decoder(bits, row=False):
 
 
 def main():
-    circuit, meta, groups = digital(4, 6)
+    # Keep the pre-change baseline so the historical savings remain reproducible.
+    circuit, meta, groups = digital(4, 6, share_frame=False)
     # Restrict reference evaluation to controller, without addressing/data outputs.
     controller_parts = sum(groups['controller'].values())
     circuit.parts = circuit.parts[:controller_parts]

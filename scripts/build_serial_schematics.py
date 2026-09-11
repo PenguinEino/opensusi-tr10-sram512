@@ -75,7 +75,7 @@ class Sheet:
 
 def controller():
     s=Sheet()
-    s.text('SERIAL SRAM CONTROLLER | 2 x 2 | 16 DFFR | asynchronous RESET',-180,-420,.48)
+    s.text('SERIAL SRAM CONTROLLER | 2 x 2 | 13 DFFR | asynchronous RESET',-180,-420,.48)
     s.text('CLK steps through RX0 / RX1 / RX2 / E0 ... E7. All gates below are real PDK cells.',-180,-355,.3)
     s.text('A  /  MODULO-11 COUNTER',-180,-250,.36)
     # Counter: count+1 for 0..9; zero for 10..15.
@@ -167,7 +167,7 @@ def controller():
     for x,n in [(4180,'CLK'),(4240,'RESET')]:
         s.wire([(x,-80),(x,1490)],n);s.label(x,-80,n,onwire=True)
 
-    def enabled_register(name, x, y, data, q, enable, qb=None):
+    def enabled_register(name, x, y, data, q, enable, qb=None, output=False):
         # Y aligned to D, and a visible loop back from Q to MUX A.
         mx=name+'_mux';ff=name+'_ff'
         s.gate('MUX2',mx,x+100,y,A=q,B=data,S=enable,Y=name+'_D')
@@ -176,16 +176,18 @@ def controller():
         s.gate('DFFR',ff,x+400,y+30,**nets)
         s.link(mx,'Y',ff,'D',label=True)
         s.link(ff,'Q',mx,'A',via=[(x+550,y),(x+550,y-120),(x+20,y-120),(x+20,y-20)])
-        s.lead(ff,'Q',[(x+620,y)])
+        s.lead(ff,'Q',[(x+620,y)],not output)
+        if output:s.port(q,x+620,y,'out')
         s.lead(ff,'CK',[(x+340,y+40),(x+340,y+130)],False)
         s.lead(ff,'RST',[(x+400,y+180)],False)
         s.lead(mx,'S',[(x+120,y+230)],False)
         return mx,ff
 
-    s.text('D  /  RECEIVE: SDI -> SR0 -> SR1 -> SR2  (each MUX holds when RX=0)',-180,1990,.34)
+    s.text('D  /  SHARED FRAME: SDI -> DIN -> CA -> RA  (MUX holds when RX=0)',-180,1990,.34)
     shifts=[]
+    frame=['DIN','CA','RA']
     for i in range(3):
-        x=900*i;mx,ff=enabled_register(f'xshift{i}',x,2250,'SDI' if i==0 else f'SR{i-1}',f'SR{i}','RX')
+        x=900*i;mx,ff=enabled_register(f'xshift{i}',x,2250,'SDI' if i==0 else frame[i-1],frame[i],'RX',output=True)
         shifts.append((mx,ff))
         s.text(['After RX2: DIN','After RX2: CA','After RX2: RA'][i],x+300,2170,.23)
     s.lead(shifts[0][0],'B',[(-150,2270)],False);s.port('SDI',-150,2270)
@@ -194,17 +196,15 @@ def controller():
     for dy,n in [(130,'CLK'),(180,'RESET'),(230,'RX')]:
         s.wire([(-150,2250+dy),(2540,2250+dy)],n);s.label(-150,2250+dy,n,onwire=True)
 
-    s.text('E  /  ACCESS HOLD: sample SR0 / SR1 / SR2 / WE at E0 only',-180,2660,.34)
-    for i,(data,q,qb) in enumerate([('SR0','DIN',None),('SR1','CA',None),('SR2','RA',None),('WE','W','W_B')]):
-        x=900*i;mx,ff=enabled_register(f'xcmd{i}',x,2920,data,q,'E0',qb)
-        if i<3:
-            s.link(shifts[i][1],'Q',mx,'B',via=[(x+670,2250),(x+670,2690),(x-80,2690),(x-80,2940)])
-            s.port(q,x+620,2920,'out')
-        else:
-            s.lead(mx,'B',[(x-150,2940)],False);s.port('WE',x-150,2940)
-        s.text(q+' held during shifting and E1..E7',x+100,3280,.24)
+    s.text('During RX: RA / CA / DIN shift; WL and write are OFF; SAE=1 isolates the SA.',-180,2660,.27)
+    s.text('After RX2: the complete address and data stay fixed through E0..E7.',-180,2730,.27)
+    s.text('E0 samples WE and precharges bitlines. No second address/data register bank.',-180,2800,.27)
+    s.text('E  /  WRITE MODE: sample WE at E0 only',2830,2660,.3)
+    mx,ff=enabled_register('xcmd3',2700,2920,'WE','W','E0','W_B')
+    s.lead(mx,'B',[(2550,2940)],False);s.port('WE',2550,2940)
+    s.text('W held during shifting and E1..E7',2800,3280,.24)
     for dy,n in [(130,'CLK'),(180,'RESET'),(230,'E0')]:
-        s.wire([(-150,2920+dy),(3510,2920+dy)],n);s.label(-150,2920+dy,n,onwire=True)
+        s.wire([(2550,2920+dy),(3510,2920+dy)],n);s.label(2550,2920+dy,n,onwire=True)
 
     s.text('F  /  READ RESULT: capture at read E6; hold through writes',2830,1990,.3)
     s.gate('AND2_X1','xread_capture',2750,2130,A='E6',B='W_B',Y='READ_CAPTURE')
@@ -216,7 +216,7 @@ def controller():
     s.text('All MUX: S=0 -> A (feedback); S=1 -> B (new data).',-180,3430,.28)
     s.text('RST pins connect directly to RESET. Q resets LOW; QB resets HIGH. No custom bit-register symbols.',-180,3490,.28)
     s.text('NC: intentionally no circuit load; named nets remain available for waveform probes.',-180,3550,.25)
-    s.port('VDD',4720,2900,'inout');s.port('VSS',4720,3040,'inout')
+    s.port('VDD',3930,2910,'inout');s.port('VSS',3930,3050,'inout')
     s.finish()
     return s
 
@@ -227,7 +227,7 @@ def controller_symbol():
            'K {type=subcircuit\nformat="@name @pinlist @symname"\ntemplate="name=xctrl"\n}',
            f'P 4 5 {-width} {-height} {width} {-height} {width} {height} {-width} {height} {-width} {-height} {{}}',
            'T {SERIAL CONTROLLER} -250 -340 0 0 0.3 0.3 {}',
-           'T {2 x 2 / 16 DFFR} -250 -295 0 0 0.25 0.25 {}',
+           'T {2 x 2 / 13 DFFR} -250 -295 0 0 0.25 0.25 {}',
            'T {RX0 RX1 RX2 -> E0 ... E7} -250 300 0 0 0.23 0.23 {}',
            'T {@name} 190 -400 0 0 0.22 0.22 {}']
     pins={}
@@ -299,7 +299,7 @@ def testbench(pins):
     s.text('SOUT returns to result FF -> SDO',-300,2720,.27)
     notes=['ONE OPERATION = 11 rising edges / CLK=100 ns',
            'RX0: RA / RX1: CA / RX2: DIN (read: dummy 0)',
-           'E0: latch frame + WE; precharge; read SA reset',
+           'E0: frame held; latch WE; precharge; read SA reset',
            'E1: precharge OFF', 'E2: write pull-down ON (write only)',
            'E3: WL_EN HIGH', 'E4: SAE HIGH / sense decision',
            'E5: WL_EN LOW / write pull-down stays ON',
@@ -308,7 +308,7 @@ def testbench(pins):
            '', 'Startup RESET: no CLK until 250 ns.',
            '16 checkerboard writes/reads, then partial RX reset.',
            'Read old cell after reset, then another write/read.',
-           'SDI and WE change during access; held command must not.',
+           'RX shifts RA/CA/DIN; E0..E7 holds. WE sampled at E0.',
            'No .ic: only written SRAM cells have expected contents.',
            'Q/QB NC markers: waveform probes, no circuit load.',
            '', 'CONTROL INTERNALS: descend into xctrl (e).',
@@ -321,7 +321,7 @@ def testbench(pins):
              'WL0','WL1','COL0','COL1','PD_Y','PD_YB','BL0','BLB0','BL1','BLB1','Y','YB','SOUT','SOUTB']
     signals += ['Q'+str(r)+str(c) for r in range(2) for c in range(2)]
     signals += ['QB'+str(r)+str(c) for r in range(2) for c in range(2)]
-    signals += ['xctrl.'+n for n in ['C0','C1','C2','C3','SR0','SR1','SR2','W','RX','E0','E1','E2','E3','E4','E5','E6','E7']]
+    signals += ['xctrl.'+n for n in ['C0','C1','C2','C3','W','RX','E0','E1','E2','E3','E4','E5','E6','E7']]
     control=['.param CBL=10f CY=100f','.control','save '+' '.join('v('+n+')' for n in signals),
              f'tran 0.5n {case["stop"]}n','let failures = 0']
     for i,o in enumerate(case['operations']):
@@ -339,7 +339,7 @@ def testbench(pins):
                 'write sram_tb_serial.raw',
                 "plot v(CLK) v(SDI) v(WE) xlimit 180n 1500n title 'SERIAL INPUT: RX at 250 / 350 / 450 ns, E0 at 550 ns'",
                 "plot count xlimit 180n 2550n title 'COUNT: 0..10; pre-edge count names the action'",
-                "plot v(RA) v(CA) v(DIN) v(xctrl.W) xlimit 180n 2550n title 'HELD COMMAND: updates at E0, stable during RX and E1..E7'",
+                "plot v(RA) v(CA) v(DIN) v(xctrl.W) xlimit 180n 2550n title 'FRAME: RA/CA/DIN shift during RX; hold E0..E7; W samples WE at E0'",
                 "plot v(SOUT) v(SDO) title 'READ RESULT: SDO captures SOUT at E6 and holds through writes'",
                 "plot v(Q00) v(Q01) v(Q10) v(Q11) title 'STORED CELLS: written by serial commands, no initial-value forcing'"]
     for i,n in enumerate(['PREB','WRITE_EN','WL_EN','SAE']):control.append(f'let {n}_T = v({n})/5+{6-2*i}')

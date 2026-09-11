@@ -24,6 +24,7 @@
 # Serial controller schematic generation and transistor verification
 /build/serial_sch/
 /build/serial_spice/
+/build/shared_frame/
 /simulation/serial_spice_waveforms.txt
 /serial_spice_waveforms.txt
 /sram_tb_serial.raw

@@ -391,7 +391,7 @@ T {EXTERNAL INPUTS ONLY} -2140 1960 0 0 0.28 0.28 {}
 T {SOUT returns to result FF -> SDO} -300 2720 0 0 0.27 0.27 {}
 T {ONE OPERATION = 11 rising edges / CLK=100 ns} 2230 -200 0 0 0.27 0.27 {}
 T {RX0: RA / RX1: CA / RX2: DIN (read: dummy 0)} 2230 -152 0 0 0.27 0.27 {}
-T {E0: latch frame + WE; precharge; read SA reset} 2230 -104 0 0 0.27 0.27 {}
+T {E0: frame held; latch WE; precharge; read SA reset} 2230 -104 0 0 0.27 0.27 {}
 T {E1: precharge OFF} 2230 -56 0 0 0.27 0.27 {}
 T {E2: write pull-down ON (write only)} 2230 -8 0 0 0.27 0.27 {}
 T {E3: WL_EN HIGH} 2230 40 0 0 0.27 0.27 {}
@@ -403,7 +403,7 @@ T {} 2230 280 0 0 0.27 0.27 {}
 T {Startup RESET: no CLK until 250 ns.} 2230 328 0 0 0.27 0.27 {}
 T {16 checkerboard writes/reads, then partial RX reset.} 2230 376 0 0 0.27 0.27 {}
 T {Read old cell after reset, then another write/read.} 2230 424 0 0 0.27 0.27 {}
-T {SDI and WE change during access; held command must not.} 2230 472 0 0 0.27 0.27 {}
+T {RX shifts RA/CA/DIN; E0..E7 holds. WE sampled at E0.} 2230 472 0 0 0.27 0.27 {}
 T {No .ic: only written SRAM cells have expected contents.} 2230 520 0 0 0.27 0.27 {}
 T {Q/QB NC markers: waveform probes, no circuit load.} 2230 568 0 0 0.27 0.27 {}
 T {} 2230 616 0 0 0.27 0.27 {}
@@ -437,7 +437,7 @@ C {devices/code.sym} 2590 1870 0 0 {name=SIMULATION
 only_toplevel=true
 value=".param CBL=10f CY=100f
 .control
-save v(CLK) v(RESET) v(SDI) v(WE) v(SDO) v(RA) v(CA) v(DIN) v(PREB) v(WL_EN) v(WRITE_EN) v(SAE) v(WL0) v(WL1) v(COL0) v(COL1) v(PD_Y) v(PD_YB) v(BL0) v(BLB0) v(BL1) v(BLB1) v(Y) v(YB) v(SOUT) v(SOUTB) v(Q00) v(Q01) v(Q10) v(Q11) v(QB00) v(QB01) v(QB10) v(QB11) v(xctrl.C0) v(xctrl.C1) v(xctrl.C2) v(xctrl.C3) v(xctrl.SR0) v(xctrl.SR1) v(xctrl.SR2) v(xctrl.W) v(xctrl.RX) v(xctrl.E0) v(xctrl.E1) v(xctrl.E2) v(xctrl.E3) v(xctrl.E4) v(xctrl.E5) v(xctrl.E6) v(xctrl.E7)
+save v(CLK) v(RESET) v(SDI) v(WE) v(SDO) v(RA) v(CA) v(DIN) v(PREB) v(WL_EN) v(WRITE_EN) v(SAE) v(WL0) v(WL1) v(COL0) v(COL1) v(PD_Y) v(PD_YB) v(BL0) v(BLB0) v(BL1) v(BLB1) v(Y) v(YB) v(SOUT) v(SOUTB) v(Q00) v(Q01) v(Q10) v(Q11) v(QB00) v(QB01) v(QB10) v(QB11) v(xctrl.C0) v(xctrl.C1) v(xctrl.C2) v(xctrl.C3) v(xctrl.W) v(xctrl.RX) v(xctrl.E0) v(xctrl.E1) v(xctrl.E2) v(xctrl.E3) v(xctrl.E4) v(xctrl.E5) v(xctrl.E6) v(xctrl.E7)
 tran 0.5n 21680n
 let failures = 0
 meas tran cell0 find v(Q00) at=1330n
@@ -565,11 +565,11 @@ end
 let count = (v(xctrl.C0)+2*v(xctrl.C1)+4*v(xctrl.C2)+8*v(xctrl.C3))/5
 set wr_singlescale
 set wr_vecnames
-wrdata serial_spice_waveforms.txt v(CLK) v(RESET) v(SDI) v(WE) v(SDO) v(RA) v(CA) v(DIN) v(PREB) v(WL_EN) v(WRITE_EN) v(SAE) v(WL0) v(WL1) v(COL0) v(COL1) v(PD_Y) v(PD_YB) v(BL0) v(BLB0) v(BL1) v(BLB1) v(Y) v(YB) v(SOUT) v(SOUTB) v(Q00) v(Q01) v(Q10) v(Q11) v(QB00) v(QB01) v(QB10) v(QB11) v(xctrl.C0) v(xctrl.C1) v(xctrl.C2) v(xctrl.C3) v(xctrl.SR0) v(xctrl.SR1) v(xctrl.SR2) v(xctrl.W) v(xctrl.RX) v(xctrl.E0) v(xctrl.E1) v(xctrl.E2) v(xctrl.E3) v(xctrl.E4) v(xctrl.E5) v(xctrl.E6) v(xctrl.E7)
+wrdata serial_spice_waveforms.txt v(CLK) v(RESET) v(SDI) v(WE) v(SDO) v(RA) v(CA) v(DIN) v(PREB) v(WL_EN) v(WRITE_EN) v(SAE) v(WL0) v(WL1) v(COL0) v(COL1) v(PD_Y) v(PD_YB) v(BL0) v(BLB0) v(BL1) v(BLB1) v(Y) v(YB) v(SOUT) v(SOUTB) v(Q00) v(Q01) v(Q10) v(Q11) v(QB00) v(QB01) v(QB10) v(QB11) v(xctrl.C0) v(xctrl.C1) v(xctrl.C2) v(xctrl.C3) v(xctrl.W) v(xctrl.RX) v(xctrl.E0) v(xctrl.E1) v(xctrl.E2) v(xctrl.E3) v(xctrl.E4) v(xctrl.E5) v(xctrl.E6) v(xctrl.E7)
 write sram_tb_serial.raw
 plot v(CLK) v(SDI) v(WE) xlimit 180n 1500n title 'SERIAL INPUT: RX at 250 / 350 / 450 ns, E0 at 550 ns'
 plot count xlimit 180n 2550n title 'COUNT: 0..10; pre-edge count names the action'
-plot v(RA) v(CA) v(DIN) v(xctrl.W) xlimit 180n 2550n title 'HELD COMMAND: updates at E0, stable during RX and E1..E7'
+plot v(RA) v(CA) v(DIN) v(xctrl.W) xlimit 180n 2550n title 'FRAME: RA/CA/DIN shift during RX; hold E0..E7; W samples WE at E0'
 plot v(SOUT) v(SDO) title 'READ RESULT: SDO captures SOUT at E6 and holds through writes'
 plot v(Q00) v(Q01) v(Q10) v(Q11) title 'STORED CELLS: written by serial commands, no initial-value forcing'
 let PREB_T = v(PREB)/5+6

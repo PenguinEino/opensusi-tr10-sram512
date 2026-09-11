@@ -393,9 +393,9 @@
     "Further FF/MUX custom-cell estimates cannot be inferred from transistor counts alone."
   ],
   "source_sha256": {
-    "klayout/sram_area_options/analyze.py": "591ab795c018ec1ba6646dd4006ca3f963c3a20116d47d5a66f0136242e1a09e",
+    "klayout/sram_area_options/analyze.py": "7150fcfc0b551bfada3a8cab699e20e48446945408f5413d86516ec033218fe8",
     "klayout/sram_macro_study/estimate_capacity.py": "8565f81c1c15e276dac47fcb98a16ac02309751152c8cb5562f0d62768408552",
-    "klayout/sram_macro_study/macro_model.py": "0484abd1efbf0315042a8a8c60a61ceaeb8c6fcb46ef84ff7e5476510c448373",
+    "klayout/sram_macro_study/macro_model.py": "72b4cbae86dda665d50b0345121a1ad713814edb4a05eb4c8c6a6321302c93ff",
     "build/sram_macro_study/serial/sram_tb_serial.spice": "7c94ae2f0091cf8e573c829253d22022e8355a4a5c35cbb7306f4a242e74b499",
     "/home/ishi-kai/pdk/TR-1um/libs.tech/klayout/libraries/TR-1um_STDCELL.gds": "f43dc2d2cf83e4b6ddb7c54be616386fdbce067b600bbdaa52c259349eafbd51"
   }

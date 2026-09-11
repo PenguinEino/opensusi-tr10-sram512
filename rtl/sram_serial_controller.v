@@ -14,9 +14,9 @@ module sram_serial_controller #(
     input  wire                WE,          // Sampled only at E0
     output wire                SDO,
 
-    output reg [ROW_BITS-1:0]  RA,
-    output reg [COL_BITS-1:0]  CA,
-    output reg                 DIN,
+    output wire [ROW_BITS-1:0] RA,
+    output wire [COL_BITS-1:0] CA,
+    output wire                DIN,
     output wire                PREB,
     output wire                YPREB,
     output reg                 WRITE_EN,
@@ -38,6 +38,12 @@ module sram_serial_controller #(
     reg W;
     reg READ_DATA;
 
+    // One bank serves both reception and access. These outputs shift during
+    // RX (WL/write OFF, SA isolated), then remain fixed throughout E0..E7.
+    assign RA  = shift_reg[N-1:COL_BITS+1];
+    assign CA  = shift_reg[COL_BITS:1];
+    assign DIN = shift_reg[0];
+
     // All stored bits reset to zero. In a DFFR implementation the inverted
     // outputs can use QB; no asynchronous preset-to-one cell is required.
     reg PC_ON;
@@ -51,9 +57,6 @@ module sram_serial_controller #(
         if (RESET) begin
             count      <= 0;
             shift_reg  <= 0;
-            RA         <= 0;
-            CA         <= 0;
-            DIN        <= 0;
             W          <= 0;
             READ_DATA  <= 0;
             PC_ON      <= 0;
@@ -78,10 +81,7 @@ module sram_serial_controller #(
                 shift_reg <= {shift_reg[N-2:0], SDI};
             end else begin
                 case (count)
-                    E0: begin // Capture the complete frame; precharge
-                        RA    <= shift_reg[N-1:COL_BITS+1];
-                        CA    <= shift_reg[COL_BITS:1];
-                        DIN   <= shift_reg[0];
+                    E0: begin // Frame already held; sample WE and precharge
                         W     <= WE;
                         PC_ON <= 1;
                         TRACK <= ~WE; // Use this operation's WE, not old W
