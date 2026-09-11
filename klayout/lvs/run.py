@@ -4,11 +4,14 @@ import argparse
 import os
 from pathlib import Path
 import subprocess
+import sys
 
 import klayout.db as db
 
 ROOT = Path(__file__).resolve().parents[2]
-PDK_LVS = Path('/home/ishi-kai/pdk/TR-1um/libs.tech/klayout/tech/lvs/run.lvs')
+sys.path.insert(0,str(ROOT/'scripts'))
+from pdk_profiles import pdk_path
+PDK_LVS = pdk_path()/'libs.tech/klayout/tech/lvs/run.lvs'
 
 
 def run(layout, output):

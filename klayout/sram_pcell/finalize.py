@@ -3,7 +3,7 @@
 from pathlib import Path
 import hashlib,json,shutil
 from build import make,HERE,ROOT,PDK
-from verify import verify
+from verify import verify,PDK as CHECK_PDK
 
 def main():
     out=ROOT/'build/sram_pcell/final'
@@ -17,8 +17,8 @@ def main():
         (HERE/'verification.json').write_text(json.dumps(reports,indent=2)+'\n')
     assert all(r[k]['passed'] for r in reports for k in ('drc','lvs'))
     paths=[]
-    tech=PDK/'libs.tech/klayout/tech'
     for folder in ('drc','lvs','python/cells'):
+        tech=(PDK if folder=='python/cells' else CHECK_PDK)/'libs.tech/klayout/tech'
         paths.extend(p for p in (tech/folder).rglob('*') if p.is_file() and '__pycache__' not in p.parts)
     paths.extend(out.glob('*.spice'))
     (HERE/'verification_inputs.json').write_text(json.dumps({str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in paths},indent=2)+'\n')

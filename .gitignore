@@ -46,3 +46,9 @@
 # TR-1um PCell SRAM experiments and regenerated simulation data
 /build/sram_pcell/
 /klayout/sram_pcell/__pycache__/
+
+# Isolated, reproducible PDK installs and per-profile verification output
+/.pdk/
+/build/pdk_checks/
+/scripts/__pycache__/
+/scripts/tests/__pycache__/

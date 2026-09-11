@@ -13,6 +13,7 @@ import json
 import os
 import re
 import subprocess
+import sys
 
 import klayout.db as db
 import klayout.rdb as rdb
@@ -21,7 +22,9 @@ from build import reference
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-PDK = Path(os.environ.get('PDK_ROOT','/home/ishi-kai/pdk')) / os.environ.get('PDK','TR-1um')
+sys.path.insert(0,str(ROOT/'scripts'))
+from pdk_profiles import pdk_path
+PDK = pdk_path()
 SHAPES = ((1,1),(2,2),(4,4),(8,8),(16,64))
 
 
@@ -62,14 +65,16 @@ def check(layout, top, kind, out, circuit=None):
     if kind=='drc':
         result=rdb.ReportDatabase();result.load(str(report))
         count=result.num_items()
-        return count==0,{'items':count,'categories':{
+        return count==0,{'pdk_directory':str(PDK),'deck_sha256':hashlib.sha256(deck.read_bytes()).hexdigest(),
+                        'items':count,'categories':{
             c.name():c.num_items() for c in result.each_category() if c.num_items()}}
     result=db.LayoutVsSchematic();result.read(str(report))
     pairs=list(result.xref().each_circuit_pair())
     errors=[e.message for e in result.each_error()]
     ok=('INFO : Congratulations! Netlists match.' in output and pairs and
         all(p.status()==db.NetlistCrossReference.Match for p in pairs) and not errors)
-    return bool(ok),{'circuit_pairs':[str(p.status()) for p in pairs],'errors':errors}
+    return bool(ok),{'pdk_directory':str(PDK),'deck_sha256':hashlib.sha256(deck.read_bytes()).hexdigest(),
+                     'circuit_pairs':[str(p.status()) for p in pairs],'errors':errors}
 
 
 def faults(source,out,circuit):

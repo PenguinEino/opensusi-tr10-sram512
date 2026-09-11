@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Run unchanged TR-1um DRC/LVS on saved PCell layouts."""
 from pathlib import Path
-import argparse,hashlib,json,subprocess
+import argparse,hashlib,json,subprocess,sys
 import klayout.db as db
 import klayout.rdb as rdb
 HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[1]
-PDK=Path('/home/ishi-kai/pdk/TR-1um')
+sys.path.insert(0,str(ROOT/'scripts'))
+from pdk_profiles import pdk_path
+PDK=pdk_path()
 KLAYOUT='/home/ishi-kai/bin/klayout/klayout'
 
 def check(source,top,kind,out):
@@ -25,7 +27,8 @@ def check(source,top,kind,out):
 
 def verify(out,top,verbose=True):
     out=Path(out).resolve();source=out/'pcell.gds'
-    result=dict(top=top,gds_sha256=hashlib.sha256(source.read_bytes()).hexdigest())
+    result=dict(top=top,gds_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),pdk_directory=str(PDK),
+                drc_deck_sha256=hashlib.sha256((PDK/'libs.tech/klayout/tech/drc/run.drc').read_bytes()).hexdigest())
     for kind in ('drc','lvs'):result[kind]=check(source,top,kind,out)
     (out/(top+'.result.json')).write_text(json.dumps(result,indent=2)+'\n')
     if verbose:print(json.dumps(result,indent=2),flush=True)
