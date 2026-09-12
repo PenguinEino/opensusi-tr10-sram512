@@ -8,6 +8,7 @@ mandatory reports and their source hashes to match.
 import argparse
 import ast
 from datetime import datetime, timezone
+from importlib.metadata import version
 import zipfile
 from common import *
 from validation_summary import main as summarize, source_files
@@ -20,6 +21,7 @@ ENTRY_POINTS = ('open', 'verify_saved_layout', 'verify_digital', 'analog',
     'verification_jobs', 'signal_resolution', 'route_waveforms', 'power_wire_audit',
     'save_candidate', 'strengthen_signal_routes', 'reinforce_decoder_routes',
     'widen_decoder_poly', 'live_probe', 'decoder_route_waveforms', 'reset_address_test',
+    'operation_waveforms',
     'export_schematics', 'package')
 
 
@@ -143,6 +145,8 @@ def build(draft=False):
         status='DRAFT' if draft else 'CORE_VERIFIED',
         git_head=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
         source_gds_sha256=digest, pdk_revision=actual_revision, pdk_tree_sha256=lock['tree_sha256'],
+        python_packages={name:version(name) for name in
+            ('numpy','scipy','matplotlib','networkx','shapely','scikit-image','klayout')},
         tools={n:subprocess.check_output(command, text=True, stderr=subprocess.STDOUT).splitlines()[:8]
             for n,command in [('python',[sys.executable,'--version']),
                               ('ngspice',['ngspice','--version']),

@@ -1,6 +1,6 @@
 {
-  "all_required_reports_pass": false,
-  "created_utc": "2026-09-12T16:21:12.738338+00:00",
+  "all_required_reports_pass": true,
+  "created_utc": "2026-09-12T16:49:19.251177+00:00",
   "source_gds_sha256": "56810ad742a73036fb9db5207c75a2fcd63d344833c17da5f6270f1dc128bca1",
   "source_mask_sha256": "cbd3e51a3f9ff9c6f90b93c4c3ca134acf3cb28adb3b495ca357f47e6b280ba4",
   "source_snapshot": {
@@ -211,25 +211,53 @@
       "test": "decoderfix_power_paths_ramp",
       "purpose": "Power ramp followed by 16 accesses, signal and supply R/C",
       "report": "sram512/reports/decoderfix_power_paths_ramp.json",
-      "state": "PENDING"
+      "state": "PASS",
+      "report_sha256": "cb76b765c7ee1342231e74e556111f3157c3030b84d416f9f095ad91ee590e51",
+      "source_matches": true,
+      "required_operations": 16,
+      "scope_complete": true,
+      "required_signal_model_present": true,
+      "checks": 120547,
+      "failure_count": 0
     },
     {
       "test": "decoderfix_pg_rc3_lowhot",
       "purpose": "Combined supply and RC x3, 4.5 V / 85 C, all four corners, 16 accesses",
       "report": "sram512/reports/decoderfix_pg_rc3_lowhot.json",
-      "state": "PENDING"
+      "state": "PASS",
+      "report_sha256": "531d2c34c72563ade3851b7667d3bbf87b704286093e98d5dca0875693c2c374",
+      "source_matches": true,
+      "required_operations": 16,
+      "scope_complete": true,
+      "required_signal_model_present": true,
+      "checks": 120547,
+      "failure_count": 0
     },
     {
       "test": "decoderfix_power_paths_ramp_power_wires",
       "purpose": "Supply-metal mean/RMS current screen over the full nominal sequence",
       "report": "sram512/reports/decoderfix_power_paths_ramp_power_wires.json",
-      "state": "PENDING"
+      "state": "PASS",
+      "report_sha256": "2be643be56e121a4da55f003ea8d483481697b59303eec1c3648a2e08920b26d",
+      "source_matches": true,
+      "required_operations": null,
+      "scope_complete": true,
+      "required_signal_model_present": true,
+      "checks": 13406,
+      "failure_count": 0
     },
     {
       "test": "decoderfix_pg_rc3_lowhot_power_wires",
       "purpose": "Supply-metal mean/RMS current screen over the full RC x3 low/hot sequence",
       "report": "sram512/reports/decoderfix_pg_rc3_lowhot_power_wires.json",
-      "state": "PENDING"
+      "state": "PASS",
+      "report_sha256": "a10d1ca9a42c7536a24d33e4541aaf7e5d81ce24b711271f2b145bc5e915859c",
+      "source_matches": true,
+      "required_operations": null,
+      "scope_complete": true,
+      "required_signal_model_present": true,
+      "checks": 13406,
+      "failure_count": 0
     },
     {
       "test": "decoderfix_operational_hot",
