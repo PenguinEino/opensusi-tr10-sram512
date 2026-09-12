@@ -28,7 +28,7 @@ REQUIRED = [
 
 def source_files():
     todo = [ROOT / 'sram512_macro.sch', ROOT / 'sram512_tb.sch']
-    seen, files = set(), set()
+    seen, files = set(), {ROOT / 'sram512_macro.sym'}
     while todo:
         p = todo.pop()
         if p in seen:

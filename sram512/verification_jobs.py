@@ -10,6 +10,8 @@ from datetime import datetime, timezone
 from common import *
 
 FOLDER = WORK / 'layout/final16x32_pd10p2'
+if not FOLDER.exists():
+    FOLDER = WORK / 'layout/rechecked16x32'
 JOBS = WORK / 'jobs'
 POWER = ['--physical-gate-paths', '--power-sheet', '0.1', '--power-mesh-grid', '0.25',
          '--voltage-envelope', '--startup-ramp-ns', '1000', '--period', '5000',
@@ -56,6 +58,20 @@ def status(name):
     state = json.loads(path.read_text())
     if state['state'] == 'RUNNING' and not running(state):
         state['state'] = 'INTERRUPTED'
+    if state['state'] == 'RUNNING':
+        work = WORK / 'analog' / name
+        log = work / 'simulation.log'
+        deck = work / 'test.spice'
+        if log.exists() and deck.exists():
+            with log.open('rb') as f:
+                f.seek(max(0, log.stat().st_size - 8192))
+                tail = f.read().decode(errors='replace')
+            last = re.findall(r'Reference value\s*:\s*([0-9.eE+\-]+)', tail)
+            stop = re.search(r'(?im)^\.?tran\s+\S+\s+([0-9.eE+\-]+)([munpf]?)\b', deck.read_text())
+            if last and stop:
+                unit = {'':1, 'm':1e-3, 'u':1e-6, 'n':1e-9, 'p':1e-12, 'f':1e-15}
+                state['simulation_time_us'] = float(last[-1]) * 1e6
+                state['simulation_stop_us'] = float(stop[1]) * unit[stop[2].lower()] * 1e6
     return state
 
 
@@ -83,7 +99,10 @@ def start(name):
     work = WORK / 'analog' / name
     report = work / 'result.json'
     if report.exists() and json.loads(report.read_text()).get('passed'):
-        raise RuntimeError(f'{name} already has passing evidence; inspect it instead of overwriting.')
+        from validation_summary import source_gds
+        assert source_gds(json.loads(report.read_text())) == sha(FOLDER / 'sram512.gds'), 'Passing evidence belongs to another GDS; keep it and choose a new case name.'
+        print(name, 'already passed; kept unchanged')
+        return
     if work.exists():
         suffix = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
         work.rename(work.with_name(name + '_interrupted_' + suffix))
@@ -109,4 +128,6 @@ if __name__ == '__main__':
             start(name)
         else:
             s = status(name)
-            print(name, s['state'], s.get('pid'), s.get('finished_utc', ''))
+            progress = (f'{s["simulation_time_us"]:.2f}/{s["simulation_stop_us"]:.2f} us'
+                        if 'simulation_time_us' in s else s.get('finished_utc', ''))
+            print(name, s['state'], s.get('pid'), progress)

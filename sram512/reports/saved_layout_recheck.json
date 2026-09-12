@@ -70,7 +70,7 @@
     "passed": true,
     "source": {
       "gds_sha256": "dee111388a5c4d3131b68772507706706d894248988ab761bf9c4070e9194e61",
-      "lvsdb_sha256": "8f9f770c9f1bbf22f91739074362225e35dead9cf0182e40851ef868a9491884",
+      "lvsdb_sha256": "dc6294d7c871cf559c985b52a718b92e396b228e31a6eb286d48ce33fb04e85b",
       "mos_groups": 4877,
       "physical_fingers": 4953,
       "model_counts": {
@@ -208,7 +208,7 @@
     ],
     "dimension_scope": "Physical masks listed in unmodified run_mdp.drc; all derived recognition layers remain present and fully checked.",
     "drawing_sha256": "dee111388a5c4d3131b68772507706706d894248988ab761bf9c4070e9194e61",
-    "mask_sha256": "ec70e24cf4021772ad65381412a79470c7331aa9622796b5f5f2cd58de384c04",
+    "mask_sha256": "7661bef42b63be5b614f5015e9b23d9dc7b8df16210a866220b0c5a0daa099f2",
     "pdk": {
       "profile": "dev",
       "pdk_directory": "/home/ishi-kai/sram/.pdk/dev/TR-1um",
@@ -253,5 +253,229 @@
     "scope": "Official MDP and complete IP62 mask DRC of the core; package/pad integration is separate."
   },
   "passed": true,
-  "scope": "Saved layout independently checked against the current editable Xschem hierarchy and unmodified dev decks."
+  "scope": "Saved layout independently checked against the current editable Xschem hierarchy and unmodified dev decks.",
+  "saved_mask_comparison": {
+    "passed": true,
+    "saved_mask_sha256": "a74ca4fca3bc09a5c7080910c597d81f6adb7e3ed295a4dda9d0b1c13e69207e",
+    "regenerated_mask_sha256": "7661bef42b63be5b614f5015e9b23d9dc7b8df16210a866220b0c5a0daa099f2",
+    "layers": [
+      {
+        "layer": [
+          3,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          7,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          8,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          9,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          11,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          13,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          19,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          20,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          25,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          26,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          28,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          33,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          35,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          36,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          48,
+          1
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          49,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          140,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          146,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          147,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          150,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          151,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          157,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          158,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          167,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          168,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          177,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      },
+      {
+        "layer": [
+          178,
+          0
+        ],
+        "passed": true,
+        "difference_area_um2": 0.0
+      }
+    ],
+    "scope": "All polygon layers of the delivered mask equal the newly generated, fully DRC-checked mask. GDS timestamps and non-mask text are not polygons."
+  }
 }

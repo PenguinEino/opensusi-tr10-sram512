@@ -1,6 +1,6 @@
 {
   "all_required_reports_pass": false,
-  "created_utc": "2026-09-12T10:08:01.170009+00:00",
+  "created_utc": "2026-09-12T10:26:35.397914+00:00",
   "source_gds_sha256": "dee111388a5c4d3131b68772507706706d894248988ab761bf9c4070e9194e61",
   "source_mask_sha256": "a74ca4fca3bc09a5c7080910c597d81f6adb7e3ed295a4dda9d0b1c13e69207e",
   "source_snapshot": {
@@ -29,6 +29,7 @@
     "sram512_input_clamp.sch": "b3020f2a83899130551816c52cfefd5ccd837f715caa400c0216a7c94908a313",
     "sram512_input_clamp.sym": "3560f412aa459da561265ef1dfe68854af4b811512c0a7f70d25e6b8af523455",
     "sram512_macro.sch": "55acb160a69c60002833d5ea19b4fb14251d455d1a8a2876b66277bb2d644058",
+    "sram512_macro.sym": "7be35ec3192048210ac23fdf2696b726f044d02445630939abcc5990106bf7a6",
     "sram512_phase.sch": "68115d6ed91646ab42a82138c4172ef3ee4c01f32ce42eccd43a2dae7f187be8",
     "sram512_phase.sym": "68b64dddf81fa75cb6b1ba7fea015b55a66b13e0b55b87aaf7bf9827ba835f5c",
     "sram512_row_decoder.sch": "5b4aa32e8db0a71a155b9ac4ef56df1e5e5ad7c6731177203eaffb5dead0bd63",
@@ -81,7 +82,7 @@
       "purpose": "Current schematic / drawing DRC / strict LVS / full mask DRC",
       "report": "sram512/reports/saved_layout_recheck.json",
       "state": "PASS",
-      "report_sha256": "006979e9f4ce6aba8d0bf05ed32a5f2686a8a29847e566297eaa235f2e79709a",
+      "report_sha256": "fd18088ec7ebe8564a38010461e187cc191b8d081105294f5c87bc60652b3dc0",
       "source_matches": true,
       "checks": null,
       "failure_count": 0
@@ -168,14 +169,18 @@
       "test": "pd102_operational_hot",
       "purpose": "20 us supply ramp, 1 ms retention and asynchronous interruptions",
       "report": "sram512/reports/pd102_operational_hot.json",
-      "state": "PENDING"
+      "state": "PASS",
+      "report_sha256": "bb0485e703fa70f2b300124d522bd8537d147b247cf9ec0a2cf455d96dddbd1f",
+      "source_matches": true,
+      "checks": 5429,
+      "failure_count": 0
     },
     {
       "test": "analog_pd102_nominal",
       "purpose": "Schematic MOS sensitivity: nominal",
       "report": "sram512/reports/analog_pd102_nominal.json",
       "state": "PASS",
-      "report_sha256": "28cb5b31dd92c1eb0ebe18b37c0cc5fcca0078fa55d6ea7fe176ed92d5f6e88f",
+      "report_sha256": "168da6995f5409e8428b254f81cdece4032d43cf67be7ea77a797b5964cb8c5d",
       "source_matches": true,
       "checks": 2901,
       "failure_count": 0
@@ -185,7 +190,7 @@
       "purpose": "Schematic MOS sensitivity: low_cold",
       "report": "sram512/reports/analog_pd102_low_cold.json",
       "state": "PASS",
-      "report_sha256": "09897b3aaf8d2e5824eb5c923dcce4e3893b34cb8cb6f5a3df81209e126bcd04",
+      "report_sha256": "3253f074e15e6abd24159299b2b2a608fac584c119f2613b91757ba740f5698f",
       "source_matches": true,
       "checks": 2901,
       "failure_count": 0
@@ -195,7 +200,7 @@
       "purpose": "Schematic MOS sensitivity: low_hot",
       "report": "sram512/reports/analog_pd102_low_hot.json",
       "state": "PASS",
-      "report_sha256": "abad3caeb138c1692deb977902db44e94e1864f0669f7f5412999fe5d4aabfc2",
+      "report_sha256": "657a93acc40517afa6526859646cc938ff772b088b282341fbe662f4272f4e56",
       "source_matches": true,
       "checks": 2901,
       "failure_count": 0
@@ -205,7 +210,7 @@
       "purpose": "Schematic MOS sensitivity: high_cold",
       "report": "sram512/reports/analog_pd102_high_cold.json",
       "state": "PASS",
-      "report_sha256": "98ebc81d59fa13c7a75a17cd3b38674637fafa13115411cf21fea049c16fa390",
+      "report_sha256": "14791d1a35fb70bd8b14f4203fc90fc9b3778af3ea75e56e6a3a0d125b9da055",
       "source_matches": true,
       "checks": 2901,
       "failure_count": 0
@@ -215,7 +220,7 @@
       "purpose": "Schematic MOS sensitivity: high_hot",
       "report": "sram512/reports/analog_pd102_high_hot.json",
       "state": "PASS",
-      "report_sha256": "a07b613848ff980ac18f8eb8c28d2d304680d7ce390a413fc5f2269543c71290",
+      "report_sha256": "67211c525020243a1894ad892bc7e81d6a42b240f87257697bad61b2ad489259",
       "source_matches": true,
       "checks": 2901,
       "failure_count": 0
@@ -225,7 +230,7 @@
       "purpose": "Schematic MOS sensitivity: wire_3x",
       "report": "sram512/reports/analog_pd102_wire_3x.json",
       "state": "PASS",
-      "report_sha256": "d554881b9dc3951bdbd1ae72b452c8d1ad2ab6427de7800a3e80b2c2de0b351d",
+      "report_sha256": "b93bbc009f0c79120700f1005dca509dd2acea7a92b20a042cdf060717664da4",
       "source_matches": true,
       "checks": 2901,
       "failure_count": 0
@@ -235,7 +240,7 @@
       "purpose": "Schematic MOS sensitivity: wire_1p_hot",
       "report": "sram512/reports/analog_pd102_wire_1p_hot.json",
       "state": "PASS",
-      "report_sha256": "273616801d766332d1f6ea7adaa99ee4549a6400fb9b6cc357862513735e9ba4",
+      "report_sha256": "8f590162918a1505a427f71698633a29bbd9a6811308d000673c4b4325c15e33",
       "source_matches": true,
       "checks": 2901,
       "failure_count": 0
@@ -245,7 +250,7 @@
       "purpose": "Schematic MOS sensitivity: vth_slow_n_fast_p",
       "report": "sram512/reports/analog_pd102_vth_slow_n_fast_p.json",
       "state": "PASS",
-      "report_sha256": "93f652fa48fece935f5d412345c5eeed3e7688a7c8d6139da7e5527e41e62311",
+      "report_sha256": "7b5d70821dab8425304979b6c33dcb83d4b54b37b0aa33e474d6a7c168f7c145",
       "source_matches": true,
       "checks": 2901,
       "failure_count": 0
@@ -255,7 +260,7 @@
       "purpose": "Schematic MOS sensitivity: vth_fast_n_slow_p",
       "report": "sram512/reports/analog_pd102_vth_fast_n_slow_p.json",
       "state": "PASS",
-      "report_sha256": "abfa3af8b36b45da1b2e52c1c3a4914278d8f0d0e9131665120ce2db30e0b414",
+      "report_sha256": "70716a67a49b1c9c095b76314de9ff1efe7235ac152eec8c0aa8e4ad3b3e360c",
       "source_matches": true,
       "checks": 2901,
       "failure_count": 0

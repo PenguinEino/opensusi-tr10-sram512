@@ -55,7 +55,7 @@
   ],
   "dimension_scope": "Physical masks listed in unmodified run_mdp.drc; all derived recognition layers remain present and fully checked.",
   "drawing_sha256": "dee111388a5c4d3131b68772507706706d894248988ab761bf9c4070e9194e61",
-  "mask_sha256": "ec70e24cf4021772ad65381412a79470c7331aa9622796b5f5f2cd58de384c04",
+  "mask_sha256": "7661bef42b63be5b614f5015e9b23d9dc7b8df16210a866220b0c5a0daa099f2",
   "pdk": {
     "profile": "dev",
     "pdk_directory": "/home/ishi-kai/sram/.pdk/dev/TR-1um",
