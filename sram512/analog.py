@@ -69,17 +69,26 @@ def control(case):
     return '\n'.join(lines)
 
 def load_raw(path):
-    content=Path(path).read_bytes();header,binary=content.split(b'Binary:\n',1)
-    header=header.decode('ascii');assert 'Flags: real' in header
+    path=Path(path)
+    with path.open('rb') as f:
+        lines=[]
+        while True:
+            line=f.readline()
+            if line==b'Binary:\n':break
+            assert line,'Missing binary waveform header'
+            lines.append(line)
+        offset=f.tell()
+    header=b''.join(lines).decode('ascii');assert 'Flags: real' in header
     nv=int(re.search(r'No. Variables:\s*(\d+)',header)[1]);npnt=int(re.search(r'No. Points:\s*(\d+)',header)[1])
     # Measurements and counters added by the GUI checks are scalar vectors;
     # ngspice writes them without the voltage/time unit field.
     variables=[line.split() for line in header.rsplit('Variables:',1)[1].splitlines() if line.strip()]
     assert [int(v[0]) for v in variables]==list(range(nv))
     names=[v[1].lower() for v in variables]
-    assert len(names)==nv and len(binary)==nv*npnt*8,(len(names),nv,len(binary),npnt)
-    data=np.frombuffer(binary,dtype='<f8').reshape(npnt,nv)
-    assert np.isfinite(data).all()
+    size=path.stat().st_size-offset
+    assert len(names)==nv and size==nv*npnt*8,(len(names),nv,size,npnt)
+    data=np.memmap(path,dtype='<f8',mode='r',offset=offset,shape=(npnt,nv))
+    for first in range(0,npnt,2048):assert np.isfinite(data[first:first+2048]).all()
     return data[:,0]*1e9,{n:data[:,i] for i,n in enumerate(names)}
 
 def verify(path,case,vdd=5):

@@ -82,7 +82,7 @@ def device_lines(records):
         lines.append(f'XM{i} '+' '.join(r['nets'][p] for p in ('D','G','S','B'))+f" {r['model']} {pars} m={r['fingers']}")
     return [re.sub(r'(?i)\bvss\b','0',line) for line in lines]
 
-def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale=None,recheck=False,power_sheet=None):
+def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale=None,recheck=False,power_sheet=None,voltage_envelope=False,power_mesh_grid=None,solver='sparse'):
     work=WORK/'analog'/name;work.mkdir(parents=True,exist_ok=True)
     records,provenance=devices(folder);write_json(work/'physical_devices.json',records)
     case=scenario(period=period)
@@ -92,10 +92,17 @@ def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale
         records,extra,wire_nodes,rc_info=add_rc(folder,records,rc_scale)
         write_json(work/'wire_rc.json',rc_info)
     if power_sheet is not None:
-        from power_rc import add_power_rc
-        records,power_lines,power_nodes,power_info=add_power_rc(folder,records,power_sheet)
+        if power_mesh_grid is None:
+            from power_rc import add_power_rc
+            records,power_lines,power_nodes,power_info=add_power_rc(folder,records,power_sheet)
+        else:
+            from power_mesh import add_power_mesh
+            records,power_lines,power_nodes,power_info=add_power_mesh(folder,records,power_sheet,step_um=power_mesh_grid)
         extra+=power_lines;wire_nodes+=power_nodes
         write_json(work/'power_rc.json',power_info)
+    if voltage_envelope:
+        from electrical_limits import nodes
+        wire_nodes=sorted(set(wire_nodes+nodes(records)))
     lines=device_lines(records)
     lines+=['VVDD vdd 0 5']
     for n,events in case['events'].items():lines.append(f'V{n} {n} 0 {pwl(events)}')
@@ -105,9 +112,17 @@ def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale
         lines +=['Cwire_Y Y 0 180f','Cwire_YB YB 0 180f']
     lines +=extra+['Cout SDO 0 10p']
     ctl=control(case).replace('save ','save i(VVDD) '+' '.join(f'v({n})' for n in wire_nodes)+' ',1)
+    # ngspice's interactive save command has a finite argument count. Split
+    # large observation lists; an overlong save silently falls back to all
+    # circuit nodes after reporting "save: too many args".
+    ctl='\n'.join('\n'.join('save '+' '.join(line.split()[1:][i:i+100])
+            for i in range(0,len(line.split())-1,100)) if line.startswith('save ') else line
+            for line in ctl.splitlines())
     ctl='\n'.join(s for s in ctl.splitlines() if not s.startswith('plot '))
     ctl=ctl.replace('.endc','quit\n.endc')
     deck='\n'.join(lines+[ctl,'.end'])+'\n'
+    assert solver in ('sparse','klu')
+    if solver=='klu':deck=deck.replace('.control','.options klu\n.control',1)
     deck=deck.replace('VVDD vdd 0 5',f'VVDD vdd 0 {vdd}').replace('VSUP=5',f'VSUP={vdd}').replace('.temp 27',f'.temp {temp}')
     path=work/'test.spice'
     start=time.monotonic();print('ngspice',name,provenance['physical_fingers'],'physical MOS',flush=True)
@@ -119,10 +134,16 @@ def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale
         _,log=run(['ngspice','-b',path],work,'simulation.log')
     notices=simulation_diagnostics(log)
     result=verify(work/'sram512_tb.raw',case,vdd)
+    if voltage_envelope:
+        from electrical_limits import verify as verify_limits
+        limits=verify_limits(work/'sram512_tb.raw',records)
+        result.update(voltage_limits=limits,passed=result['passed'] and limits['passed'],
+                      failure_count=result['failure_count']+limits['failure_count'],checks=result['checks']+limits['checks'])
     if power_info is not None:
         from power_rc import verify_power
         result['power_supply_observations']=verify_power(work/'sram512_tb.raw',case,vdd)
         result['power_resistance_model']={k:power_info[k] for k in ('sheet_ohm','via_ohm','scope','source_gds_sha256')}
+        if 'grid_um' in power_info:result['power_resistance_model']['grid_um']=power_info['grid_um']
         result['power_resistance_model']['detailed_parameters_sha256']=sha(work/'power_rc.json')
     if rc_scale is not None:
         from wire_rc import verify_rc
@@ -133,6 +154,7 @@ def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale
     result.update(name=name,physical_extraction=provenance,period_ns=period,voltage_v=vdd,temperature_c=temp,
                   elapsed_seconds=round(time.monotonic()-start,2),deck_sha256=sha(path),
                   reused_waveform=recheck,model_notices=notices,
+                  solver=solver,
                   interconnect=rc_summary(rc_info,work/'wire_rc.json') if rc_info else
                   'Extra lumped C only; wire resistance and distributed RC not yet included')
     t,w=load_raw(work/'sram512_tb.raw');current=-w['i(vvdd)']
@@ -147,6 +169,7 @@ def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale
 if __name__=='__main__':
     ap=argparse.ArgumentParser();ap.add_argument('folder',type=Path);ap.add_argument('--name',default='postlayout_nominal');ap.add_argument('--rc-scale',type=float)
     ap.add_argument('--vdd',type=float,default=5);ap.add_argument('--temperature',type=float,default=27)
-    ap.add_argument('--period',type=float,default=1000);ap.add_argument('--recheck',action='store_true');ap.add_argument('--power-sheet',type=float);a=ap.parse_args()
-    result=simulate(a.folder.resolve(),a.name,period=a.period,vdd=a.vdd,temp=a.temperature,rc_scale=a.rc_scale,recheck=a.recheck,power_sheet=a.power_sheet)
+    ap.add_argument('--period',type=float,default=1000);ap.add_argument('--recheck',action='store_true');ap.add_argument('--power-sheet',type=float);ap.add_argument('--voltage-envelope',action='store_true');ap.add_argument('--power-mesh-grid',type=float);ap.add_argument('--solver',choices=['sparse','klu'],default='sparse');a=ap.parse_args()
+    if a.power_mesh_grid is not None:assert a.power_sheet is not None,'Mesh needs an explicit sheet-resistance assumption.'
+    result=simulate(a.folder.resolve(),a.name,period=a.period,vdd=a.vdd,temp=a.temperature,rc_scale=a.rc_scale,recheck=a.recheck,power_sheet=a.power_sheet,voltage_envelope=a.voltage_envelope,power_mesh_grid=a.power_mesh_grid,solver=a.solver)
     raise SystemExit(0 if result['passed'] else 1)

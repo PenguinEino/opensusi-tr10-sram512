@@ -48,8 +48,8 @@ def simulation_diagnostics(log):
             return ''
         return block
     remaining=re.sub(r'(?m)^Warning: Model issue on line \d+ :\n  \.model [^\n]+\n(?:unrecognized parameter \([^\n]+\) - ignored\n)+',diode_notice,log)
-    if re.search(r'(?im)^error|^warning|timestep too small|doanalyses:|not enough memory|unrecognized parameter',remaining):
-        lines=[line for line in remaining.splitlines() if re.search(r'error|warning|ignored|timestep too small|doanalyses:',line,re.I)]
+    if re.search(r'(?im)^error|^warning|timestep too small|doanalyses:|not enough memory|unrecognized parameter|too many args',remaining):
+        lines=[line for line in remaining.splitlines() if re.search(r'error|warning|ignored|timestep too small|doanalyses:|too many args',line,re.I)]
         raise RuntimeError('Unexpected ngspice diagnostic:\n'+'\n'.join(lines)[:3000])
     return notices
 
