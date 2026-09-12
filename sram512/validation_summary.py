@@ -20,6 +20,8 @@ REQUIRED = [
     ('signalfix_signal_resolution', 'Spatial RC resolution: both circuits PASS and peaks agree', True),
     ('signalfix_power_paths_ramp', 'Power ramp followed by 16 accesses, signal and supply R/C', True),
     ('signalfix_pg_rc3_lowhot', 'Combined supply and RC x3, 4.5 V / 85 C, all four corners, 16 accesses', True),
+    ('signalfix_power_paths_ramp_power_wires', 'Supply-metal mean/RMS current screen over the full nominal sequence', True),
+    ('signalfix_pg_rc3_lowhot_power_wires', 'Supply-metal mean/RMS current screen over the full RC x3 low/hot sequence', True),
     ('signalfix_operational_hot', '20 us supply ramp, 1 ms retention and asynchronous interruptions', True),
 ] + [
     ('analog_pd102_' + n, 'Schematic MOS sensitivity: ' + n, False)
@@ -40,7 +42,27 @@ REQUIRED_OPERATIONS = {
 
 REQUIRE_SIGNAL_MESH = {'signalfix_power_paths_ramp', 'signalfix_pg_rc3_lowhot',
                       'signalfix_mesh4_prefix','signalfix_mesh8_prefix'}
-KNOWN_SIGNAL_DIAGNOSTICS = ('pd102_signal_mesh4_prefix', 'pd102_signal_mesh8_prefix')
+KNOWN_SIGNAL_DIAGNOSTICS = ('pd102_signal_mesh4_prefix', 'pd102_signal_mesh8_prefix',
+                            'signalfix_decoder_voltage_diagnostic')
+WIRE_AUDITS = {'signalfix_'+n+'_power_wires':'signalfix_'+n
+               for n in ('power_paths_ramp','pg_rc3_lowhot')}
+
+
+def wire_audit_complete(name, result):
+    if name not in WIRE_AUDITS:
+        return True
+    source = WIRE_AUDITS[name]
+    path = REPORTS / (source + '.json')
+    if not path.is_file():
+        return False
+    case = json.loads(path.read_text())
+    interval = result.get('interval_ns', [])
+    # These named tests cover 16 full 18-clock operations, following the
+    # initial two-clock delay and supply ramp. A prefix is insufficient.
+    stop = (2 + 18 * REQUIRED_OPERATIONS[source]) * case['period_ns'] + case['startup_ramp_ns']
+    return (case.get('passed') is True and result.get('source_case') == source
+            and result.get('source_case_report_sha256') == sha(path)
+            and len(interval) == 2 and abs(interval[0]) < 1e-6 and abs(interval[1] - stop) < 1e-3)
 
 
 def source_files():
@@ -83,7 +105,7 @@ def main():
         if path.is_file():
             r = json.loads(path.read_text())
             matches = not physical or source_gds(r) == digest
-            complete = name not in REQUIRED_OPERATIONS or r.get('operations') == REQUIRED_OPERATIONS[name]
+            complete = (name not in REQUIRED_OPERATIONS or r.get('operations') == REQUIRED_OPERATIONS[name]) and wire_audit_complete(name, r)
             detailed = name not in REQUIRE_SIGNAL_MESH or (
                 r.get('signal_mesh') is True and r.get('physical_gate_paths') is True
                 and r.get('signal_sections',0)>=4)

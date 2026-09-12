@@ -1,6 +1,6 @@
 {
   "all_required_reports_pass": false,
-  "created_utc": "2026-09-12T12:52:18.243281+00:00",
+  "created_utc": "2026-09-12T13:18:55.805692+00:00",
   "source_gds_sha256": "f32c213db5efaa09449b3c8db709c2b547bae09c6fe011f1eb284dda8342eff2",
   "source_mask_sha256": "c802aa16c5f99d8d7987c04e1b1a401ee9842bab24f6e0cae3737e5e95682959",
   "source_snapshot": {
@@ -120,7 +120,14 @@
       "test": "signalfix_decode_coverage",
       "purpose": "Extracted MOS: every row and column, both data",
       "report": "sram512/reports/signalfix_decode_coverage.json",
-      "state": "PENDING"
+      "state": "PASS",
+      "report_sha256": "812cb2cffcfd298791a9be809986598670a2c8e2c5354c5513794a234ec142bd",
+      "source_matches": true,
+      "required_operations": 136,
+      "scope_complete": true,
+      "required_signal_model_present": true,
+      "checks": 38901,
+      "failure_count": 0
     },
     {
       "test": "signalfix_startup_5n",
@@ -210,6 +217,18 @@
       "test": "signalfix_pg_rc3_lowhot",
       "purpose": "Combined supply and RC x3, 4.5 V / 85 C, all four corners, 16 accesses",
       "report": "sram512/reports/signalfix_pg_rc3_lowhot.json",
+      "state": "PENDING"
+    },
+    {
+      "test": "signalfix_power_paths_ramp_power_wires",
+      "purpose": "Supply-metal mean/RMS current screen over the full nominal sequence",
+      "report": "sram512/reports/signalfix_power_paths_ramp_power_wires.json",
+      "state": "PENDING"
+    },
+    {
+      "test": "signalfix_pg_rc3_lowhot_power_wires",
+      "purpose": "Supply-metal mean/RMS current screen over the full RC x3 low/hot sequence",
+      "report": "sram512/reports/signalfix_pg_rc3_lowhot_power_wires.json",
       "state": "PENDING"
     },
     {
@@ -336,6 +355,13 @@
       "failure_count": 0
     }
   ],
-  "blocking_signal_diagnostics": [],
+  "blocking_signal_diagnostics": [
+    {
+      "test": "signalfix_decoder_voltage_diagnostic",
+      "report_sha256": "50c1bd55b042586f68c634b3ed845db8176b75518c7c90a70e5cf6f34c69be2d",
+      "failure_count": 3,
+      "reason": "Reproduced signal margin / terminal voltage failure on this GDS."
+    }
+  ],
   "scope": "Evidence index for this source snapshot, not a replacement for fresh verification. RC coefficients and global Vth shifts are uncalibrated sensitivity tests; pad/frame integration and statistical yield qualification are outside this core verification."
 }

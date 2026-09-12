@@ -234,7 +234,11 @@ def add_mesh(folder,records,geometry,coefficients,names,scale,sections=4):
 def verify_waveform(path,case,vdd,details):
     """Check every access-gate tap, retaining the existing 90/10% levels."""
     from analog import load_raw
-    t,w=load_raw(path);failures=[];checks=0;period=case['period_ns']
+    t,w=load_raw(path)
+    return verify_samples(t,w,case,vdd,details)
+
+def verify_samples(t,w,case,vdd,details):
+    failures=[];checks=0;period=case['period_ns']
     for name,net in details['nets'].items():
         if not re.fullmatch(r'wl\d+',name):continue
         row=int(name[2:])

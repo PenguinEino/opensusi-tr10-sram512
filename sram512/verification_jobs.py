@@ -9,7 +9,7 @@ import argparse
 from datetime import datetime, timezone
 from common import *
 
-FOLDER = WORK / 'layout/signal_taps16x32_rev6'
+FOLDER = WORK / 'layout/decoder_gcwide16x32_rev3'
 if not FOLDER.exists():FOLDER = WORK / 'layout/rechecked16x32'
 JOBS = WORK / 'jobs'
 POWER = ['--physical-gate-paths', '--power-sheet', '0.1', '--power-mesh-grid', '0.25',
@@ -26,12 +26,15 @@ SIGNAL_POWER = ['--physical-gate-paths','--signal-mesh','--signal-sections','4',
     '--power-sheet','0.1','--power-mesh-grid','0.25','--voltage-envelope',
     '--startup-ramp-ns','1000','--period','5000','--max-step-ns','20',
     '--solver','sparse','--stream']
-CURRENT_CASES = {
+SIGNAL_FIXED_CASES = {
     'signalfix_decode_coverage': ['postlayout.py','--decode-coverage','--solver','klu','--stream'],
     'signalfix_operational_hot': ['operational_tests.py','--solver','klu','--pivrel','0.1','--stream'],
     'signalfix_power_paths_ramp': ['postlayout.py','--rc-scale','1']+SIGNAL_POWER,
     'signalfix_pg_rc3_lowhot': ['postlayout.py','--rc-scale','3','--vdd','4.5','--temperature','85']+SIGNAL_POWER,
 }
+CASES.update(SIGNAL_FIXED_CASES)
+CURRENT_CASES = {name.replace('signalfix_','decoderfix_',1):args
+                 for name,args in SIGNAL_FIXED_CASES.items()}
 CASES.update(CURRENT_CASES)
 
 

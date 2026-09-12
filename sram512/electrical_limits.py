@@ -6,7 +6,11 @@ def nodes(records):
     return sorted({n for r in records for n in r['nets'].values()}-{'0','vss'})
 
 def verify(path,records):
-    t,w=load_raw(path);zero=np.zeros(len(t));checks=0;failures=[];maxima={}
+    t,w=load_raw(path)
+    return verify_samples(t,w,records)
+
+def verify_samples(t,w,records):
+    zero=np.zeros(len(t));checks=0;failures=[];maxima={}
     def voltage(n):return zero if n in ('0','vss') else w['v('+n.lower()+')']
     for i,r in enumerate(records):
         if r['model'] not in ('NMOS','PMOS'):continue

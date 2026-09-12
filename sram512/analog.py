@@ -96,7 +96,12 @@ def load_raw(path):
     return data[:,0]*1e9,{n:data[:,i] for i,n in enumerate(names)}
 
 def verify(path,case,vdd=5):
-    t,w=load_raw(path);failures=[];checks=0;observations=[]
+    t,w=load_raw(path)
+    return verify_samples(t,w,case,vdd)
+
+def verify_samples(t,w,case,vdd=5):
+    """Apply the same checks to explicit samples; final callers require load_raw."""
+    failures=[];checks=0;observations=[]
     def vec(n):return w['v('+n.lower()+')']
     def level(n,b,a,z=None,fraction=.1):
         nonlocal checks

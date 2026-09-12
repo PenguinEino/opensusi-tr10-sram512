@@ -9,6 +9,10 @@ from analog import load_raw
 
 def verify(path, case, vdd):
     t, w = load_raw(path)
+    return verify_samples(t,w,case,vdd)
+
+
+def verify_samples(t, w, case, vdd):
     cells = [(r, c) for r in range(16) for c in range(32)]
     operations = case['operations']
     period = case['period_ns']
