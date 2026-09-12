@@ -1,7 +1,7 @@
 {
-  "top": "sram512_bank_core",
-  "gds_sha256": "8678532a1abc3991e6b9ee7ee540eb8eca63e05e2e45306581599d01da268028",
-  "reference_sha256": "fc9c2ba11fa7700d8f0d56c37b7250404175bd3147643f308473a6a07013803f",
+  "top": "sram512",
+  "gds_sha256": "33a1b6e32e97a9bb423b9aac3758a333619549cc599b38c7afedc0f38f158cee",
+  "reference_sha256": "e273af8a5e2fc257fc7a8e4da8c5ff5c3d982d5e04cf58e6e8fcfcf496ac578a",
   "pdk": {
     "profile": "dev",
     "pdk_directory": "/home/ishi-kai/sram/.pdk/dev/TR-1um",
@@ -42,18 +42,32 @@
     }
   },
   "drc": {
-    "passed": true,
-    "items": 0,
-    "categories": {}
+    "passed": false,
+    "items": 51,
+    "categories": {
+      "M1.W1:M1 Wmin <  1.8": 2,
+      "M1.S1:M1 Smin <  1.4": 1,
+      "M2.S1:M2 Smin <  2.0": 48
+    }
   },
   "lvs": {
-    "passed": true,
+    "passed": false,
     "circuit_pairs": [
+      "NoMatch",
       "Match",
       "Match",
-      "Match"
+      "Match",
+      "Match",
+      "Match",
+      "Match",
+      "Match",
+      "Match",
+      "Match",
+      "Match",
+      "Skipped"
     ],
     "errors": []
   },
-  "bbox_um": "(-34.7,-36.7;386.7,516.1)"
+  "bbox_um": "(-1.7,-1.7;1794.7,595.7)",
+  "router_passed": false
 }

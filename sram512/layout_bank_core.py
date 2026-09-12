@@ -22,6 +22,13 @@ def main():
             d.wire('M1',[(x,y0),(x,AY+464.9)],3.4)
     for row in range(16):
         y=AY+(row*29.6+2.7 if row%2==0 else (row+1)*29.6-2.7)
+        gy=round(y/5.5)*5.5;direction=gy-y
+        long_leg=(row%2==1 and direction>=0) or (row%2==0 and direction<0)
+        reach=33 if long_leg else 27.5
+        # Leave the dense array before jogging onto a metal routing track.
+        # Both sides are exposed so the right half can be driven from right.
+        for x0,x in [(-9.6,-reach),(361.6,352+reach)]:
+            d.wire('M2',[(x0,y),(x,y),(x,gy)],3.4)
         d.label('M2',f'WL{row}',0,y)
     for name,y in [('Y',5.5),('YB',0),('PREB',11.5),('VDD',31.5)]:
         d.label('M2',name,366.4,y)

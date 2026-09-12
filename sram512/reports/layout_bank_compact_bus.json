@@ -1,7 +1,7 @@
 {
-  "top": "sram512_bank_core",
-  "gds_sha256": "8678532a1abc3991e6b9ee7ee540eb8eca63e05e2e45306581599d01da268028",
-  "reference_sha256": "fc9c2ba11fa7700d8f0d56c37b7250404175bd3147643f308473a6a07013803f",
+  "top": "sram512_bank",
+  "gds_sha256": "acf05accde591fb7ce3e43106f708fc20b8a71c81e1f432ec2ce650d5892e07c",
+  "reference_sha256": "c2bc35a55d5c56956ade1c78bdbe79ba4bc4c736b04ea5ab4d4bec95c53ac2e2",
   "pdk": {
     "profile": "dev",
     "pdk_directory": "/home/ishi-kai/sram/.pdk/dev/TR-1um",
@@ -51,9 +51,10 @@
     "circuit_pairs": [
       "Match",
       "Match",
+      "Match",
       "Match"
     ],
     "errors": []
   },
-  "bbox_um": "(-34.7,-36.7;386.7,516.1)"
+  "router_passed": true
 }

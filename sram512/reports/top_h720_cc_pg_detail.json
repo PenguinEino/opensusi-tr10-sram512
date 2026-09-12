@@ -1,7 +1,7 @@
 {
-  "top": "sram512_bank_core",
-  "gds_sha256": "8678532a1abc3991e6b9ee7ee540eb8eca63e05e2e45306581599d01da268028",
-  "reference_sha256": "fc9c2ba11fa7700d8f0d56c37b7250404175bd3147643f308473a6a07013803f",
+  "top": "sram512_macro",
+  "gds_sha256": "b3320fffcdc420ec00706510507f32451601018e2a987c89fba4f1cb7c36322c",
+  "reference_sha256": "4f6c68710d1c5565ce389628e1475cd106974293acba9ece2f5427f4ecb48503",
   "pdk": {
     "profile": "dev",
     "pdk_directory": "/home/ishi-kai/sram/.pdk/dev/TR-1um",
@@ -42,18 +42,56 @@
     }
   },
   "drc": {
-    "passed": true,
-    "items": 0,
-    "categories": {}
+    "passed": false,
+    "items": 8,
+    "categories": {
+      "M1.W1:M1 Wmin <  1.8": 2,
+      "M1.S1:M1 Smin <  1.4": 3,
+      "M2.W1:M2 Wmin <  3.0": 3
+    }
   },
   "lvs": {
-    "passed": true,
+    "passed": false,
     "circuit_pairs": [
       "Match",
       "Match",
-      "Match"
+      "Match",
+      "Match",
+      "Match",
+      "Match",
+      "Match",
+      "Match",
+      "Match",
+      "Match",
+      "Match",
+      "NoMatch",
+      "Match",
+      "Skipped"
     ],
     "errors": []
   },
-  "bbox_um": "(-34.7,-36.7;386.7,516.1)"
+  "router_passed": false,
+  "global_source": "/home/ishi-kai/sram/build/sram512/layout/top_h720_cc_pg",
+  "detailed_nets": [
+    "xcol_decode__cl0",
+    "xcol_decode__ch1",
+    "xcol_decode__cl1",
+    "xcol_decode__cl2",
+    "xcol_decode__ch2",
+    "sout",
+    "pd_y",
+    "pd_yb",
+    "sdi",
+    "we",
+    "xctrl__xphase__c1b",
+    "xctrl__xphase__c4b",
+    "xctrl__xphase__c4",
+    "xctrl__e1",
+    "xctrl__e2",
+    "xctrl__e3",
+    "xctrl__e5",
+    "xctrl__e6",
+    "ra3"
+  ],
+  "bbox_um": "(-1.7,-1.7;1794.7,716.7)"
 }
