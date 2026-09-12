@@ -25,6 +25,19 @@ REQUIRED = [
               'wire_3x', 'wire_1p_hot', 'vth_slow_n_fast_p', 'vth_fast_n_slow_p')
 ]
 
+REQUIRED_OPERATIONS = {
+    'pd102_decode_coverage':136,
+    'pd102_rc3_low_hot_5us':16,
+    'pd102_power_paths_ramp':16,
+    'pd102_pg_rc3_lowhot_corner':4,
+    'pd102_operational_hot':28,
+    **{'analog_pd102_'+n:16 for n in ('nominal','low_cold','low_hot','high_cold','high_hot',
+        'wire_3x','wire_1p_hot','vth_slow_n_fast_p','vth_fast_n_slow_p')},
+}
+
+REQUIRE_SIGNAL_MESH = {'pd102_power_paths_ramp', 'pd102_pg_rc3_lowhot_corner'}
+KNOWN_SIGNAL_DIAGNOSTICS = ('pd102_signal_mesh4_prefix', 'pd102_signal_mesh8_prefix')
+
 
 def source_files():
     todo = [ROOT / 'sram512_macro.sch', ROOT / 'sram512_tb.sch']
@@ -66,17 +79,33 @@ def main():
         if path.is_file():
             r = json.loads(path.read_text())
             matches = not physical or source_gds(r) == digest
-            row.update(state='PASS' if r.get('passed') and matches else 'FAIL',
+            complete = name not in REQUIRED_OPERATIONS or r.get('operations') == REQUIRED_OPERATIONS[name]
+            detailed = name not in REQUIRE_SIGNAL_MESH or (
+                r.get('signal_mesh') is True and r.get('physical_gate_paths') is True
+                and r.get('signal_sections',0)>=4)
+            row.update(state='PASS' if r.get('passed') and matches and complete and detailed else 'FAIL',
                        report_sha256=sha(path), source_matches=matches,
+                       required_operations=REQUIRED_OPERATIONS.get(name), scope_complete=complete,
+                       required_signal_model_present=detailed,
                        checks=r.get('checks'), failure_count=r.get('failure_count', 0))
         rows.append(row)
-    result = dict(all_required_reports_pass=all(r['state'] == 'PASS' for r in rows),
+    blocking = []
+    for name in KNOWN_SIGNAL_DIAGNOSTICS:
+        path = REPORTS/(name+'.json')
+        if not path.exists():continue
+        report = json.loads(path.read_text())
+        if source_gds(report)==digest and not report.get('passed',False):
+            blocking.append(dict(test=name,report_sha256=sha(path),
+                                 failure_count=report.get('failure_count'),
+                                 reason='Reproduced signal margin / terminal voltage failure on this GDS.'))
+    result = dict(all_required_reports_pass=all(r['state'] == 'PASS' for r in rows) and not blocking,
         created_utc=datetime.now(timezone.utc).isoformat(), source_gds_sha256=digest,
         source_mask_sha256=sha(HERE / 'layout/sram512_mask.gds'), source_snapshot=source_files(),
-        pdk=provenance('dev'), tests=rows,
+        pdk=provenance('dev'), tests=rows, blocking_signal_diagnostics=blocking,
         scope='Evidence index for this source snapshot, not a replacement for fresh verification. RC coefficients and global Vth shifts are uncalibrated sensitivity tests; pad/frame integration and statistical yield qualification are outside this core verification.')
     write_json(REPORTS / 'validation_summary.json', result)
     print('\n'.join(f'{r["state"]:7} {r["test"]}' for r in rows))
+    for r in blocking:print('FAIL    '+r['test']+' (release blocker)')
     print('All required reports pass:', result['all_required_reports_pass'])
     return result
 

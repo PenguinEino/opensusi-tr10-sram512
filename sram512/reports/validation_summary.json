@@ -1,6 +1,6 @@
 {
   "all_required_reports_pass": false,
-  "created_utc": "2026-09-12T10:26:35.397914+00:00",
+  "created_utc": "2026-09-12T11:45:58.591433+00:00",
   "source_gds_sha256": "dee111388a5c4d3131b68772507706706d894248988ab761bf9c4070e9194e61",
   "source_mask_sha256": "a74ca4fca3bc09a5c7080910c597d81f6adb7e3ed295a4dda9d0b1c13e69207e",
   "source_snapshot": {
@@ -84,6 +84,9 @@
       "state": "PASS",
       "report_sha256": "fd18088ec7ebe8564a38010461e187cc191b8d081105294f5c87bc60652b3dc0",
       "source_matches": true,
+      "required_operations": null,
+      "scope_complete": true,
+      "required_signal_model_present": true,
       "checks": null,
       "failure_count": 0
     },
@@ -94,6 +97,9 @@
       "state": "PASS",
       "report_sha256": "2f58b8d7754e04f415ffc6f02987e62078f461492977b6cc189860a5042800c4",
       "source_matches": true,
+      "required_operations": null,
+      "scope_complete": true,
+      "required_signal_model_present": true,
       "checks": null,
       "failure_count": 0
     },
@@ -104,6 +110,9 @@
       "state": "PASS",
       "report_sha256": "25ce6bd840301f98b0d000ef2eb7ac2a19de917e6f2c3affdba55ff3b27cf4de",
       "source_matches": true,
+      "required_operations": null,
+      "scope_complete": true,
+      "required_signal_model_present": true,
       "checks": null,
       "failure_count": 0
     },
@@ -111,7 +120,14 @@
       "test": "pd102_decode_coverage",
       "purpose": "Extracted MOS: every row and column, both data",
       "report": "sram512/reports/pd102_decode_coverage.json",
-      "state": "PENDING"
+      "state": "PASS",
+      "report_sha256": "d2547d1cafa3fa3722986797f940590a680780b84ddefcaf1c4877520fff7e6f",
+      "source_matches": true,
+      "required_operations": 136,
+      "scope_complete": true,
+      "required_signal_model_present": true,
+      "checks": 38901,
+      "failure_count": 0
     },
     {
       "test": "pd102_rc3_low_hot_5us",
@@ -120,6 +136,9 @@
       "state": "PASS",
       "report_sha256": "aa57ebfc826865f640759c05e5dc8f512a69589c8f70c94643835522c35daa5a",
       "source_matches": true,
+      "required_operations": 16,
+      "scope_complete": true,
+      "required_signal_model_present": true,
       "checks": 22357,
       "failure_count": 0
     },
@@ -130,6 +149,9 @@
       "state": "PASS",
       "report_sha256": "ffa7f0173f61c991e6ff11d092b798a99e6d8526bf79cdc9254e1e0b346994d6",
       "source_matches": true,
+      "required_operations": null,
+      "scope_complete": true,
+      "required_signal_model_present": true,
       "checks": null,
       "failure_count": 0
     },
@@ -140,6 +162,9 @@
       "state": "PASS",
       "report_sha256": "4a7987b8aa5a970344880731149721b0469ecc370b37f0adff15f5e3f03f6140",
       "source_matches": true,
+      "required_operations": null,
+      "scope_complete": true,
+      "required_signal_model_present": true,
       "checks": 32729,
       "failure_count": 0
     },
@@ -150,6 +175,9 @@
       "state": "PASS",
       "report_sha256": "6ad0689c4c2576ff3b6994cea499823737688e92d4f0d40f69fb35b75ef3c2d6",
       "source_matches": true,
+      "required_operations": null,
+      "scope_complete": true,
+      "required_signal_model_present": true,
       "checks": 32729,
       "failure_count": 0
     },
@@ -172,6 +200,9 @@
       "state": "PASS",
       "report_sha256": "bb0485e703fa70f2b300124d522bd8537d147b247cf9ec0a2cf455d96dddbd1f",
       "source_matches": true,
+      "required_operations": 28,
+      "scope_complete": true,
+      "required_signal_model_present": true,
       "checks": 5429,
       "failure_count": 0
     },
@@ -182,6 +213,9 @@
       "state": "PASS",
       "report_sha256": "168da6995f5409e8428b254f81cdece4032d43cf67be7ea77a797b5964cb8c5d",
       "source_matches": true,
+      "required_operations": 16,
+      "scope_complete": true,
+      "required_signal_model_present": true,
       "checks": 2901,
       "failure_count": 0
     },
@@ -192,6 +226,9 @@
       "state": "PASS",
       "report_sha256": "3253f074e15e6abd24159299b2b2a608fac584c119f2613b91757ba740f5698f",
       "source_matches": true,
+      "required_operations": 16,
+      "scope_complete": true,
+      "required_signal_model_present": true,
       "checks": 2901,
       "failure_count": 0
     },
@@ -202,6 +239,9 @@
       "state": "PASS",
       "report_sha256": "657a93acc40517afa6526859646cc938ff772b088b282341fbe662f4272f4e56",
       "source_matches": true,
+      "required_operations": 16,
+      "scope_complete": true,
+      "required_signal_model_present": true,
       "checks": 2901,
       "failure_count": 0
     },
@@ -212,6 +252,9 @@
       "state": "PASS",
       "report_sha256": "14791d1a35fb70bd8b14f4203fc90fc9b3778af3ea75e56e6a3a0d125b9da055",
       "source_matches": true,
+      "required_operations": 16,
+      "scope_complete": true,
+      "required_signal_model_present": true,
       "checks": 2901,
       "failure_count": 0
     },
@@ -222,6 +265,9 @@
       "state": "PASS",
       "report_sha256": "67211c525020243a1894ad892bc7e81d6a42b240f87257697bad61b2ad489259",
       "source_matches": true,
+      "required_operations": 16,
+      "scope_complete": true,
+      "required_signal_model_present": true,
       "checks": 2901,
       "failure_count": 0
     },
@@ -232,6 +278,9 @@
       "state": "PASS",
       "report_sha256": "b93bbc009f0c79120700f1005dca509dd2acea7a92b20a042cdf060717664da4",
       "source_matches": true,
+      "required_operations": 16,
+      "scope_complete": true,
+      "required_signal_model_present": true,
       "checks": 2901,
       "failure_count": 0
     },
@@ -242,6 +291,9 @@
       "state": "PASS",
       "report_sha256": "8f590162918a1505a427f71698633a29bbd9a6811308d000673c4b4325c15e33",
       "source_matches": true,
+      "required_operations": 16,
+      "scope_complete": true,
+      "required_signal_model_present": true,
       "checks": 2901,
       "failure_count": 0
     },
@@ -252,6 +304,9 @@
       "state": "PASS",
       "report_sha256": "7b5d70821dab8425304979b6c33dcb83d4b54b37b0aa33e474d6a7c168f7c145",
       "source_matches": true,
+      "required_operations": 16,
+      "scope_complete": true,
+      "required_signal_model_present": true,
       "checks": 2901,
       "failure_count": 0
     },
@@ -262,8 +317,25 @@
       "state": "PASS",
       "report_sha256": "70716a67a49b1c9c095b76314de9ff1efe7235ac152eec8c0aa8e4ad3b3e360c",
       "source_matches": true,
+      "required_operations": 16,
+      "scope_complete": true,
+      "required_signal_model_present": true,
       "checks": 2901,
       "failure_count": 0
+    }
+  ],
+  "blocking_signal_diagnostics": [
+    {
+      "test": "pd102_signal_mesh4_prefix",
+      "report_sha256": "df6d1e0df9429cfa2cd406dd99a8ff591e4ccf6fdf8211faf038f461228f56d1",
+      "failure_count": 587,
+      "reason": "Reproduced signal margin / terminal voltage failure on this GDS."
+    },
+    {
+      "test": "pd102_signal_mesh8_prefix",
+      "report_sha256": "28a407461a39ea444adfe0d812b7977527289158cdbd24fec32ffe1d29318e5b",
+      "failure_count": 587,
+      "reason": "Reproduced signal margin / terminal voltage failure on this GDS."
     }
   ],
   "scope": "Evidence index for this source snapshot, not a replacement for fresh verification. RC coefficients and global Vth shifts are uncalibrated sensitivity tests; pad/frame integration and statistical yield qualification are outside this core verification."

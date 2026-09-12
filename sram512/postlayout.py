@@ -20,6 +20,11 @@ def rc_summary(info,path):
     result.update(geometry_nets=len(info['geometry']),detailed_parameters_sha256=sha(path),
                   detailed_parameters_file=str(path),clock=info['gate_loads']['xctrl.cki'])
     result['wire_groups']={}
+    if 'signal_mesh' in info:
+        mesh=info['signal_mesh']
+        result['signal_topology']=dict(model=mesh['model'],scope=mesh['scope'],
+            nets={n:{k:r[k] for k in ('sampled_nodes','reduced_nodes','cap_ff','maximum_path_ohm','observation_columns','dc_validation')}
+                  for n,r in mesh['nets'].items()})
     for prefix,pattern in [('bitline',r'blb?\d+'),('wordline',r'wl(?:_r)?\d+'),('common',r'yb?')]:
         values=[v for n,v in info['ladder_nets'].items() if re.fullmatch(pattern,n)]
         result['wire_groups'][prefix]=dict(nets=len(values),
@@ -82,10 +87,14 @@ def device_lines(records):
         lines.append(f'XM{i} '+' '.join(r['nets'][p] for p in ('D','G','S','B'))+f" {r['model']} {pars} m={r['fingers']}")
     return [re.sub(r'(?i)\bvss\b','0',line) for line in lines]
 
-def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale=None,recheck=False,power_sheet=None,voltage_envelope=False,power_mesh_grid=None,solver='sparse',addresses=None,max_step_ns=20,physical_gate_paths=False,startup_ramp_ns=0,reltol=None,integration_method=None,initial_reset_high=False,threads=1,pivrel=None,stream=False):
+def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale=None,recheck=False,power_sheet=None,voltage_envelope=False,power_mesh_grid=None,solver='sparse',addresses=None,max_step_ns=20,physical_gate_paths=False,startup_ramp_ns=0,reltol=None,integration_method=None,initial_reset_high=False,threads=1,pivrel=None,stream=False,signal_mesh=False,signal_sections=4,access_limit=None):
     work=WORK/'analog'/name;work.mkdir(parents=True,exist_ok=True)
     records,provenance=devices(folder);write_json(work/'physical_devices.json',records)
     case=scenario(period=period,addresses=addresses)
+    if access_limit is not None:
+        assert 0<access_limit<=len(case['operations'])
+        case['operations']=case['operations'][:access_limit]
+        case['stop_ns']=case['operations'][-1]['e0']+8*period
     if initial_reset_high:
         case['events']['RESET']=[(0,1),(.75*period,1),(.75*period+case['edge_ns'],0)]
     if startup_ramp_ns:
@@ -96,10 +105,11 @@ def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale
         for n,events in case['events'].items():
             if n=='RESET':case['events'][n]=[(0,1),(startup_ramp_ns+.75*period,1),(startup_ramp_ns+.75*period+case['edge_ns'],0)]
             else:case['events'][n]=[(0,0)]+[(t+startup_ramp_ns,b) for t,b in events[1:]]
+    write_json(work/'scenario.json',case)
     extra=[];wire_nodes=[];rc_info=None;power_info=None
     if rc_scale is not None:
         from wire_rc import add_rc
-        records,extra,wire_nodes,rc_info=add_rc(folder,records,rc_scale,physical_gate_paths=physical_gate_paths)
+        records,extra,wire_nodes,rc_info=add_rc(folder,records,rc_scale,physical_gate_paths=physical_gate_paths,signal_mesh=signal_mesh,signal_sections=signal_sections)
         write_json(work/'wire_rc.json',rc_info)
     if power_sheet is not None:
         if power_mesh_grid is None:
@@ -203,6 +213,11 @@ def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale
         result.update(rc_checks=rc_checks,passed=result['passed'] and rc_checks['passed'])
         result['failure_count']+=rc_checks['failure_count']
         result['checks']+=rc_checks['checks']
+        if signal_mesh:
+            from signal_mesh import verify_waveform
+            mesh_checks=verify_waveform(work/'sram512_tb.raw',case,vdd,rc_info['signal_mesh'])
+            result.update(signal_mesh_checks=mesh_checks,passed=result['passed'] and mesh_checks['passed'],
+                checks=result['checks']+mesh_checks['checks'],failure_count=result['failure_count']+mesh_checks['failure_count'])
     result.update(name=name,physical_extraction=provenance,period_ns=period,voltage_v=vdd,temperature_c=temp,
                   elapsed_seconds=round(time.monotonic()-start,2),deck_sha256=sha(path),
                   reused_waveform=recheck,model_notices=notices,
@@ -212,6 +227,7 @@ def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale
                   local_init_sha256=sha(work/'.spiceinit') if stream else None,
                   numerical_reltol=reltol,numerical_pivrel=pivrel,integration_method=integration_method,
                   maximum_timestep_ns=max_step_ns,
+                  signal_mesh=signal_mesh,signal_sections=signal_sections if signal_mesh else None,access_limit=access_limit,
                   physical_gate_paths=physical_gate_paths,startup_ramp_ns=startup_ramp_ns,
                   initial_reset_high=initial_reset_high,
                   startup_scope=('Supply ramps from zero with RESET tracking it.' if startup_ramp_ns else
@@ -231,12 +247,17 @@ def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale
 if __name__=='__main__':
     ap=argparse.ArgumentParser();ap.add_argument('folder',type=Path);ap.add_argument('--name',default='postlayout_nominal');ap.add_argument('--rc-scale',type=float)
     ap.add_argument('--vdd',type=float,default=5);ap.add_argument('--temperature',type=float,default=27)
-    ap.add_argument('--period',type=float,default=1000);ap.add_argument('--max-step-ns',type=float,default=20);ap.add_argument('--recheck',action='store_true');ap.add_argument('--power-sheet',type=float);ap.add_argument('--voltage-envelope',action='store_true');ap.add_argument('--power-mesh-grid',type=float);ap.add_argument('--solver',choices=['sparse','klu'],default='sparse');ap.add_argument('--decode-coverage',action='store_true');ap.add_argument('--addresses',help='Comma-separated physical addresses for a bounded diagnostic');ap.add_argument('--physical-gate-paths',action='store_true');ap.add_argument('--startup-ramp-ns',type=float,default=0);ap.add_argument('--reltol',type=float);ap.add_argument('--pivrel',type=float);ap.add_argument('--stream',action='store_true');ap.add_argument('--integration-method',choices=['trap','gear']);ap.add_argument('--initial-reset-high',action='store_true');ap.add_argument('--threads',type=int,choices=range(5),default=1,help='0 keeps the external ngspice setting for historical rechecks; default 1 avoids oversubscribing concurrent simulations');a=ap.parse_args()
+    ap.add_argument('--period',type=float,default=1000);ap.add_argument('--max-step-ns',type=float,default=20);ap.add_argument('--recheck',action='store_true');ap.add_argument('--power-sheet',type=float);ap.add_argument('--voltage-envelope',action='store_true');ap.add_argument('--power-mesh-grid',type=float);ap.add_argument('--solver',choices=['sparse','klu'],default='sparse');ap.add_argument('--decode-coverage',action='store_true');ap.add_argument('--addresses',help='Comma-separated physical addresses for a bounded diagnostic');ap.add_argument('--physical-gate-paths',action='store_true');ap.add_argument('--startup-ramp-ns',type=float,default=0);ap.add_argument('--reltol',type=float);ap.add_argument('--pivrel',type=float);ap.add_argument('--stream',action='store_true');ap.add_argument('--integration-method',choices=['trap','gear']);ap.add_argument('--initial-reset-high',action='store_true');ap.add_argument('--threads',type=int,choices=range(5),default=1,help='0 keeps the external ngspice setting for historical rechecks; default 1 avoids oversubscribing concurrent simulations')
+    ap.add_argument('--signal-mesh',action='store_true',help='Retain actual WL/C4B branches and separate physical gate taps')
+    ap.add_argument('--signal-sections',type=int,choices=(1,2,4,8,16),default=4)
+    ap.add_argument('--access-limit',type=int,help='Bound a diagnostic to the first N complete accesses')
+    a=ap.parse_args()
+    if a.signal_mesh:assert a.rc_scale is not None,'Signal mesh requires --rc-scale.'
     if a.power_mesh_grid is not None:assert a.power_sheet is not None,'Mesh needs an explicit sheet-resistance assumption.'
     addresses=sorted(set([0,31,480,511]+[32*(c%16)+c for c in range(32)])) if a.decode_coverage else None
     if a.addresses:
         assert not a.decode_coverage
         addresses=[int(n) for n in a.addresses.split(',')]
         assert addresses and len(set(addresses))==len(addresses) and all(0<=n<512 for n in addresses)
-    result=simulate(a.folder.resolve(),a.name,period=a.period,vdd=a.vdd,temp=a.temperature,rc_scale=a.rc_scale,recheck=a.recheck,power_sheet=a.power_sheet,voltage_envelope=a.voltage_envelope,power_mesh_grid=a.power_mesh_grid,solver=a.solver,addresses=addresses,max_step_ns=a.max_step_ns,physical_gate_paths=a.physical_gate_paths,startup_ramp_ns=a.startup_ramp_ns,reltol=a.reltol,integration_method=a.integration_method,initial_reset_high=a.initial_reset_high,threads=a.threads,pivrel=a.pivrel,stream=a.stream)
+    result=simulate(a.folder.resolve(),a.name,period=a.period,vdd=a.vdd,temp=a.temperature,rc_scale=a.rc_scale,recheck=a.recheck,power_sheet=a.power_sheet,voltage_envelope=a.voltage_envelope,power_mesh_grid=a.power_mesh_grid,solver=a.solver,addresses=addresses,max_step_ns=a.max_step_ns,physical_gate_paths=a.physical_gate_paths,startup_ramp_ns=a.startup_ramp_ns,reltol=a.reltol,integration_method=a.integration_method,initial_reset_high=a.initial_reset_high,threads=a.threads,pivrel=a.pivrel,stream=a.stream,signal_mesh=a.signal_mesh,signal_sections=a.signal_sections,access_limit=a.access_limit)
     raise SystemExit(0 if result['passed'] else 1)

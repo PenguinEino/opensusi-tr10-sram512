@@ -76,7 +76,7 @@ def geometry(folder):
     assert abs(expected-measured)<1e-5,(expected,measured,'field-GC area accounting')
     return out
 
-def add_rc(folder,original,scale,physical_gate_paths=False):
+def add_rc(folder,original,scale,physical_gate_paths=False,signal_mesh=False,signal_sections=4):
     assert scale>0
     records=copy.deepcopy(original);geo=geometry(folder)
     gate_paths=None
@@ -84,6 +84,8 @@ def add_rc(folder,original,scale,physical_gate_paths=False):
         from gate_paths import calculate
         gate_paths=calculate(folder,original,COEFFICIENTS)
     lines=[];nodes=[];done=set();ladder_nets={};groups_info={}
+    mesh_names={f'wl{r}' for r in range(16)}|{'xctrl.xphase.c4b'} if signal_mesh else set()
+    mesh_info=None
     def node(n,i):return 'rc_'+n.replace('.','_')+'_'+str(i)
     def ladder(net,loads):
         if not loads:return
@@ -109,7 +111,8 @@ def add_rc(folder,original,scale,physical_gate_paths=False):
         if record['model']=='NMOS' and re.fullmatch(r'col\d+',ns['G']):
             for pin,n in ns.items():
                 if n in ('y','yb'):common[n].append((record,pin,int(ns['G'][3:])))
-    for n,loads in {**bitloads,**wlloads}.items():ladder(n,loads)
+    for n,loads in {**bitloads,**wlloads}.items():
+        if n not in mesh_names:ladder(n,loads)
     for n,loads in common.items():
         drivers=[r['position_um'] for r in records if r['model'] in ('NMOS','PMOS') and r['nets'].get('G') in ('preb','pd_y','pd_yb')
                  and n in (r['nets']['D'],r['nets']['S'])]
@@ -117,6 +120,14 @@ def add_rc(folder,original,scale,physical_gate_paths=False):
         x=sum(p[0] for p in drivers)/len(drivers);y=sum(p[1] for p in drivers)/len(drivers)
         ranked=sorted(loads,key=lambda t:math.hypot(t[0]['position_um'][0]-x,t[0]['position_um'][1]-y))
         ladder(n,[(r,p,i//8+1) for i,(r,p,col) in enumerate(ranked)])
+    if mesh_names:
+        from signal_mesh import add_mesh
+        mesh_lines,mesh_nodes,mesh_info=add_mesh(folder,records,geo,COEFFICIENTS,mesh_names,scale,signal_sections)
+        lines+=mesh_lines;nodes+=mesh_nodes;done|=mesh_names
+        for n,info in mesh_info['nets'].items():
+            if n.startswith('wl'):
+                ladder_nets[n]=dict(resistance_ohm=info['maximum_path_ohm']*scale,
+                                   cap_ff=info['cap_ff']*scale,topology='physical branched signal mesh')
     for n,info in geo.items():
         if n in done or info['cap_ff']==0:continue
         # Feedback nodes within the bitcell keep local interconnect capacitance.
@@ -153,6 +164,9 @@ def add_rc(folder,original,scale,physical_gate_paths=False):
         summary['gate_path_model']=dict(model=gate_paths['model'],scope=gate_paths['scope'],
             gds_sha256=gate_paths['gds_sha256'],nets=gate_paths['nets'])
         summary['assumptions'][0]='BL/WL/common lines retain the series-sum stress model; other gate branches use real shortest resistive paths as two-terminal resistance bounds.'
+    if mesh_info:
+        summary['signal_mesh']=mesh_info
+        summary['assumptions'][0]='WL and C4B retain actual conductor branches and loops; remaining BL/common lines keep the earlier ladder stress model and other gate branches the documented branch approximation.'
     return records,lines,nodes,summary
 
 def verify_rc(path,case,vdd=5):
