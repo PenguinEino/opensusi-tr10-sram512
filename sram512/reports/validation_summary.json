@@ -1,6 +1,6 @@
 {
   "all_required_reports_pass": false,
-  "created_utc": "2026-09-12T14:11:20.804554+00:00",
+  "created_utc": "2026-09-12T14:29:55.070117+00:00",
   "source_gds_sha256": "56810ad742a73036fb9db5207c75a2fcd63d344833c17da5f6270f1dc128bca1",
   "source_mask_sha256": "cbd3e51a3f9ff9c6f90b93c4c3ca134acf3cb28adb3b495ca357f47e6b280ba4",
   "source_snapshot": {
@@ -139,13 +139,27 @@
       "test": "decoderfix_startup_1n",
       "purpose": "Finer-step supply ramp, all MOS voltages and vias",
       "report": "sram512/reports/decoderfix_startup_1n.json",
-      "state": "PENDING"
+      "state": "PASS",
+      "report_sha256": "859338b85819912d8068c93d13360eca8628db6b0c6689a8f0404bd29d546c7a",
+      "source_matches": true,
+      "required_operations": null,
+      "scope_complete": true,
+      "required_signal_model_present": true,
+      "checks": 33753,
+      "failure_count": 0
     },
     {
       "test": "decoderfix_startup_comparison",
       "purpose": "Startup time-step comparison on the current GDS",
       "report": "sram512/reports/decoderfix_startup_comparison.json",
-      "state": "PENDING"
+      "state": "PASS",
+      "report_sha256": "89b8f724ed3e1b3659aabb14afb6a738fe3ce57095e25d9f57a8984dfe64b848",
+      "source_matches": true,
+      "required_operations": null,
+      "scope_complete": true,
+      "required_signal_model_present": true,
+      "checks": null,
+      "failure_count": 0
     },
     {
       "test": "decoderfix_mesh4_prefix",
@@ -164,13 +178,27 @@
       "test": "decoderfix_mesh8_prefix",
       "purpose": "Finer spatial RC model of first complete access",
       "report": "sram512/reports/decoderfix_mesh8_prefix.json",
-      "state": "PENDING"
+      "state": "PASS",
+      "report_sha256": "4017c7069d7f19e5b33ed25816d87e8f6626b2be801dd53e805d149e0e106b37",
+      "source_matches": true,
+      "required_operations": 1,
+      "scope_complete": true,
+      "required_signal_model_present": true,
+      "checks": 38138,
+      "failure_count": 0
     },
     {
       "test": "decoderfix_signal_resolution",
       "purpose": "Spatial RC resolution: both circuits PASS and peaks agree",
       "report": "sram512/reports/decoderfix_signal_resolution.json",
-      "state": "PENDING"
+      "state": "PASS",
+      "report_sha256": "c4b158171b2ba03673fa7f1ed370838c32d6add26d5d48ea3ab394452d91909c",
+      "source_matches": true,
+      "required_operations": null,
+      "scope_complete": true,
+      "required_signal_model_present": true,
+      "checks": null,
+      "failure_count": 0
     },
     {
       "test": "decoderfix_power_paths_ramp",
