@@ -144,6 +144,41 @@ python3 sram512/reset_address_test.py build/sram512/layout/rechecked16x32 --name
 python3 sram512/reset_address_test.py build/sram512/layout/rechecked16x32 --name decoderfix_reset_write1 --write-data 1
 ```
 
+電源投入とRC分割の比較を再現する場合は、次のコマンドを使う。
+信号網の分割数だけを変え、電圧・温度・時間刻み・判定基準は同じにする。
+
+```bash
+for divisions in 4 8; do
+  python3 sram512/postlayout.py build/sram512/layout/rechecked16x32 \
+    --name "decoderfix_mesh${divisions}_prefix" --rc-scale 1 \
+    --signal-mesh --signal-sections "$divisions" --access-limit 1 \
+    --physical-gate-paths --power-sheet 0.1 --power-mesh-grid 0.25 \
+    --voltage-envelope --startup-ramp-ns 1000 --period 5000 \
+    --max-step-ns 20 --solver sparse --stream
+done
+python3 sram512/signal_resolution.py \
+  sram512/reports/decoderfix_mesh4_prefix.json \
+  sram512/reports/decoderfix_mesh8_prefix.json \
+  sram512/reports/decoderfix_signal_resolution.json
+for step in 5 1; do
+  python3 sram512/startup_tests.py build/sram512/layout/rechecked16x32 \
+    --name "decoderfix_startup_${step}n" --max-step-ns "$step" \
+    --signal-mesh --solver sparse --stream
+done
+python3 sram512/startup_summary.py --prefix decoderfix --skip-solver-comparison
+```
+
+連続16操作の2条件が完走して合格した後、保存波形から電源金属の電流を調べる。
+これは追加の過渡計算ではなく、同じ電源抵抗網の各枝の電流を復元する検査。
+
+```bash
+python3 sram512/power_wire_audit.py build/sram512/layout/rechecked16x32 \
+  build/sram512/analog/decoderfix_power_paths_ramp
+python3 sram512/power_wire_audit.py build/sram512/layout/rechecked16x32 \
+  build/sram512/analog/decoderfix_pg_rc3_lowhot
+python3 sram512/validation_summary.py
+```
+
 `verification_jobs.py`は個別プロセスを起動し、PID・コマンド・GDSハッシュを記録する。
 デスクトップの終了には依存しない。VM再起動後は未完了フォルダを保存して再計算する。
 既に合格した別GDSの結果を上書きして再利用することは拒否する。
