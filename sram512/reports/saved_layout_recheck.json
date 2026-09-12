@@ -1,6 +1,6 @@
 {
   "top": "sram512_macro",
-  "gds_sha256": "dee111388a5c4d3131b68772507706706d894248988ab761bf9c4070e9194e61",
+  "gds_sha256": "f32c213db5efaa09449b3c8db709c2b547bae09c6fe011f1eb284dda8342eff2",
   "reference_sha256": "8c42cccf2172fcd10c2871b79bfc890bf2aa80ef986012b27632737fd58e9cc9",
   "pdk": {
     "profile": "dev",
@@ -69,8 +69,8 @@
   "geometry": {
     "passed": true,
     "source": {
-      "gds_sha256": "dee111388a5c4d3131b68772507706706d894248988ab761bf9c4070e9194e61",
-      "lvsdb_sha256": "dc6294d7c871cf559c985b52a718b92e396b228e31a6eb286d48ce33fb04e85b",
+      "gds_sha256": "f32c213db5efaa09449b3c8db709c2b547bae09c6fe011f1eb284dda8342eff2",
+      "lvsdb_sha256": "371fade78a044e9fa471dd8018287f87e152ea9b0112c4aef2ae65da21e211cc",
       "mos_groups": 4877,
       "physical_fingers": 4953,
       "model_counts": {
@@ -207,8 +207,8 @@
       80
     ],
     "dimension_scope": "Physical masks listed in unmodified run_mdp.drc; all derived recognition layers remain present and fully checked.",
-    "drawing_sha256": "dee111388a5c4d3131b68772507706706d894248988ab761bf9c4070e9194e61",
-    "mask_sha256": "7661bef42b63be5b614f5015e9b23d9dc7b8df16210a866220b0c5a0daa099f2",
+    "drawing_sha256": "f32c213db5efaa09449b3c8db709c2b547bae09c6fe011f1eb284dda8342eff2",
+    "mask_sha256": "61b0268c6324f2864ae699c44589e1cb019bbc135b24c2356830418b5ebf41fa",
     "pdk": {
       "profile": "dev",
       "pdk_directory": "/home/ishi-kai/sram/.pdk/dev/TR-1um",
@@ -248,16 +248,14 @@
         "libs.tech/klayout/tech/lvs/run.lvs": "b9c776230ab5afe9ddd2dccee5996c49acae5db0fc6ba5cd375dd6be1d36a6f0"
       }
     },
-    "source": "/home/ishi-kai/sram/build/sram512/extracted_sources/dee111388a5c4d3131b68772507706706d894248988ab761bf9c4070e9194e61",
+    "source": "/home/ishi-kai/sram/build/sram512/extracted_sources/f32c213db5efaa09449b3c8db709c2b547bae09c6fe011f1eb284dda8342eff2",
     "waiver_regions": 0,
     "scope": "Official MDP and complete IP62 mask DRC of the core; package/pad integration is separate."
   },
-  "passed": true,
-  "scope": "Saved layout independently checked against the current editable Xschem hierarchy and unmodified dev decks.",
   "saved_mask_comparison": {
     "passed": true,
-    "saved_mask_sha256": "a74ca4fca3bc09a5c7080910c597d81f6adb7e3ed295a4dda9d0b1c13e69207e",
-    "regenerated_mask_sha256": "7661bef42b63be5b614f5015e9b23d9dc7b8df16210a866220b0c5a0daa099f2",
+    "saved_mask_sha256": "c802aa16c5f99d8d7987c04e1b1a401ee9842bab24f6e0cae3737e5e95682959",
+    "regenerated_mask_sha256": "61b0268c6324f2864ae699c44589e1cb019bbc135b24c2356830418b5ebf41fa",
     "layers": [
       {
         "layer": [
@@ -477,5 +475,7 @@
       }
     ],
     "scope": "All polygon layers of the delivered mask equal the newly generated, fully DRC-checked mask. GDS timestamps and non-mask text are not polygons."
-  }
+  },
+  "passed": true,
+  "scope": "Saved layout independently checked against the current editable Xschem hierarchy and unmodified dev decks."
 }

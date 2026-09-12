@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the four remaining checks independently of the desktop process.
+"""Run named electrical checks independently of the desktop process.
 
 Only explicit `start` launches work. Completed evidence is never overwritten
 by a restart; interrupted directories are preserved. VM restart still stops
@@ -9,9 +9,8 @@ import argparse
 from datetime import datetime, timezone
 from common import *
 
-FOLDER = WORK / 'layout/final16x32_pd10p2'
-if not FOLDER.exists():
-    FOLDER = WORK / 'layout/rechecked16x32'
+FOLDER = WORK / 'layout/signal_taps16x32_rev6'
+if not FOLDER.exists():FOLDER = WORK / 'layout/rechecked16x32'
 JOBS = WORK / 'jobs'
 POWER = ['--physical-gate-paths', '--power-sheet', '0.1', '--power-mesh-grid', '0.25',
          '--voltage-envelope', '--startup-ramp-ns', '1000', '--period', '5000',
@@ -23,6 +22,17 @@ CASES = {
     'pd102_pg_rc3_lowhot_corner': ['postlayout.py', '--rc-scale', '3', '--vdd', '4.5',
                                 '--temperature', '85', '--addresses', '0'] + POWER,
 }
+SIGNAL_POWER = ['--physical-gate-paths','--signal-mesh','--signal-sections','4',
+    '--power-sheet','0.1','--power-mesh-grid','0.25','--voltage-envelope',
+    '--startup-ramp-ns','1000','--period','5000','--max-step-ns','20',
+    '--solver','sparse','--stream']
+CURRENT_CASES = {
+    'signalfix_decode_coverage': ['postlayout.py','--decode-coverage','--solver','klu','--stream'],
+    'signalfix_operational_hot': ['operational_tests.py','--solver','klu','--pivrel','0.1','--stream'],
+    'signalfix_power_paths_ramp': ['postlayout.py','--rc-scale','1']+SIGNAL_POWER,
+    'signalfix_pg_rc3_lowhot': ['postlayout.py','--rc-scale','3','--vdd','4.5','--temperature','85']+SIGNAL_POWER,
+}
+CASES.update(CURRENT_CASES)
 
 
 def now():
@@ -75,12 +85,13 @@ def status(name):
     return state
 
 
-def execute(name):
+def execute(name,folder):
     spec = CASES[name]
-    command = [sys.executable, str(HERE / spec[0]), str(FOLDER), '--name', name] + spec[1:]
+    folder=Path(folder).resolve()
+    command = [sys.executable, str(HERE / spec[0]), str(folder), '--name', name] + spec[1:]
     state = dict(name=name, state='RUNNING', pid=os.getpid(), started_utc=now(),
                  boot_id=Path('/proc/sys/kernel/random/boot_id').read_text().strip(),
-                 command=command, source_gds_sha256=sha(FOLDER / 'sram512.gds'))
+                 command=command, source_gds_sha256=sha(folder / 'sram512.gds'))
     save(name, state)
     code = subprocess.call(command, cwd=ROOT, env=ENV)
     report = REPORTS / (name + '.json')
@@ -92,7 +103,7 @@ def execute(name):
     return code if code else (0 if passed else 1)
 
 
-def start(name):
+def start(name,folder):
     if running(status(name)):
         print(name, 'already running')
         return
@@ -100,14 +111,15 @@ def start(name):
     report = work / 'result.json'
     if report.exists() and json.loads(report.read_text()).get('passed'):
         from validation_summary import source_gds
-        assert source_gds(json.loads(report.read_text())) == sha(FOLDER / 'sram512.gds'), 'Passing evidence belongs to another GDS; keep it and choose a new case name.'
+        assert source_gds(json.loads(report.read_text())) == sha(folder / 'sram512.gds'), 'Passing evidence belongs to another GDS; keep it and choose a new case name.'
         print(name, 'already passed; kept unchanged')
         return
     if work.exists():
         suffix = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
         work.rename(work.with_name(name + '_interrupted_' + suffix))
     with (JOBS / (name + '.log')).open('w') as log:
-        process = subprocess.Popen([sys.executable, str(Path(__file__).resolve()), 'run', name],
+        process = subprocess.Popen([sys.executable, str(Path(__file__).resolve()), 'run', name,
+                                    '--folder',str(folder)],
             cwd=ROOT, env=ENV, stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT,
             start_new_session=True)
     print(name, 'started', process.pid)
@@ -117,15 +129,16 @@ if __name__ == '__main__':
     p = argparse.ArgumentParser()
     p.add_argument('action', choices=['start', 'run', 'status'])
     p.add_argument('names', nargs='*', choices=list(CASES))
+    p.add_argument('--folder',type=Path,default=FOLDER)
     args = p.parse_args()
     JOBS.mkdir(parents=True, exist_ok=True)
-    names = args.names or list(CASES)
+    names = args.names or list(CURRENT_CASES)
     if args.action == 'run':
         assert len(names) == 1
-        raise SystemExit(execute(names[0]))
+        raise SystemExit(execute(names[0],args.folder))
     for name in names:
         if args.action == 'start':
-            start(name)
+            start(name,args.folder.resolve())
         else:
             s = status(name)
             progress = (f'{s["simulation_time_us"]:.2f}/{s["simulation_stop_us"]:.2f} us'

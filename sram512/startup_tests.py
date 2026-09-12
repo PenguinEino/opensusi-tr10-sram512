@@ -15,7 +15,7 @@ from power_mesh import add_power_mesh, verify_via_currents
 from electrical_limits import nodes, verify as verify_limits
 
 
-def functional_checks(path, ramp_ns, stop_ns, vdd):
+def functional_checks(path, ramp_ns, stop_ns, vdd, wordline_gate_nodes=()):
     t, w = load_raw(path)
     assert t[0] == 0 and abs(t[-1] - stop_ns) < 1e-6
     start = ramp_ns + (stop_ns - ramp_ns) / 2
@@ -40,6 +40,8 @@ def functional_checks(path, ramp_ns, stop_ns, vdd):
             level(prefix + str(i), 0)
     for col in range(32):
         level(f'COL{col}', int(col == 0))
+    for net in sorted(set(wordline_gate_nodes)):
+        level(net,0)
     resolved = []
     for row in range(16):
         for col in range(32):
@@ -61,12 +63,13 @@ def functional_checks(path, ramp_ns, stop_ns, vdd):
                 waveform_points=len(t))
 
 
-def simulate(folder, name='pd102_startup', max_step_ns=5, recheck=False, solver='sparse', pivrel=None, stream=False):
+def simulate(folder, name='pd102_startup', max_step_ns=5, recheck=False, solver='sparse', pivrel=None, stream=False, signal_mesh=False):
     work = WORK / 'analog' / name
     work.mkdir(parents=True, exist_ok=True)
     ramp_ns, stop_ns, vdd = 1000, 2000, 5
     records, source = devices(folder)
-    records, rc_lines, wire_nodes, rc_info = add_rc(folder, records, 1, physical_gate_paths=True)
+    records, rc_lines, wire_nodes, rc_info = add_rc(folder, records, 1, physical_gate_paths=True,
+                                                  signal_mesh=signal_mesh)
     records, power_lines, power_nodes, power_info = add_power_mesh(folder, records, .1, step_um=.25)
     write_json(work / 'physical_devices.json', records)
     write_json(work / 'wire_rc.json', rc_info)
@@ -108,7 +111,9 @@ def simulate(folder, name='pd102_startup', max_step_ns=5, recheck=False, solver=
         _, log = run(['ngspice', '-b'] + (['-r', 'startup.raw'] if stream else []) + [path], work, 'simulation.log')
     notices = simulation_diagnostics(log)
     raw = work / 'startup.raw'
-    functional = functional_checks(raw, ramp_ns, stop_ns, vdd)
+    wl_gates = [m['node'] for name,net in rc_info.get('signal_mesh',{}).get('nets',{}).items()
+                if re.fullmatch(r'wl\d+',name) for m in net['terminals'] if m['pin']=='G']
+    functional = functional_checks(raw, ramp_ns, stop_ns, vdd, wl_gates)
     limits = verify_limits(raw, records)
     currents = verify_via_currents(raw, power_info)
     parts = [functional, limits, currents]
@@ -118,6 +123,7 @@ def simulate(folder, name='pd102_startup', max_step_ns=5, recheck=False, solver=
         functional_checks=functional, voltage_limits=limits, via_currents=currents,
         maximum_timestep_ns=max_step_ns, supply_ramp_ns=ramp_ns, stop_ns=stop_ns,
         voltage_v=vdd, temperature_c=27, solver=solver, numerical_pivrel=pivrel, integration_method='gear2', simulator_threads=1,
+        signal_mesh=signal_mesh, signal_sections=4 if signal_mesh else None,
         waveform_storage='streamed binary file' if stream else 'control memory then write',
         local_init_sha256=sha(work / '.spiceinit') if stream else None,
         interconnect=rc_summary(rc_info, work / 'wire_rc.json'),
@@ -140,6 +146,7 @@ if __name__ == '__main__':
     p.add_argument('--solver', choices=['sparse', 'klu'], default='sparse')
     p.add_argument('--pivrel', type=float)
     p.add_argument('--stream', action='store_true')
+    p.add_argument('--signal-mesh', action='store_true')
     args = p.parse_args()
     assert 0 < args.max_step_ns <= 5
-    raise SystemExit(0 if simulate(args.folder.resolve(), args.name, args.max_step_ns, args.recheck, args.solver, args.pivrel, args.stream)['passed'] else 1)
+    raise SystemExit(0 if simulate(args.folder.resolve(), args.name, args.max_step_ns, args.recheck, args.solver, args.pivrel, args.stream, args.signal_mesh)['passed'] else 1)

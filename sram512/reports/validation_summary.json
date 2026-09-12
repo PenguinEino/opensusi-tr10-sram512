@@ -1,8 +1,8 @@
 {
   "all_required_reports_pass": false,
-  "created_utc": "2026-09-12T11:45:58.591433+00:00",
-  "source_gds_sha256": "dee111388a5c4d3131b68772507706706d894248988ab761bf9c4070e9194e61",
-  "source_mask_sha256": "a74ca4fca3bc09a5c7080910c597d81f6adb7e3ed295a4dda9d0b1c13e69207e",
+  "created_utc": "2026-09-12T12:52:18.243281+00:00",
+  "source_gds_sha256": "f32c213db5efaa09449b3c8db709c2b547bae09c6fe011f1eb284dda8342eff2",
+  "source_mask_sha256": "c802aa16c5f99d8d7987c04e1b1a401ee9842bab24f6e0cae3737e5e95682959",
   "source_snapshot": {
     "klayout/sram_pcell/build.py": "5394337bde7072d74d5755d992398bb07208dea54dd81fd7080be0e8411e868a",
     "pdk/profiles.lock.json": "17c5680342878e312528302a5a8050fb7c05ab175e29d304618ba1eed5317811",
@@ -82,7 +82,7 @@
       "purpose": "Current schematic / drawing DRC / strict LVS / full mask DRC",
       "report": "sram512/reports/saved_layout_recheck.json",
       "state": "PASS",
-      "report_sha256": "fd18088ec7ebe8564a38010461e187cc191b8d081105294f5c87bc60652b3dc0",
+      "report_sha256": "1de4a024858eda4920a24cd6c1199cebda2120d02d463d7c4f22af3448649c5a",
       "source_matches": true,
       "required_operations": null,
       "scope_complete": true,
@@ -95,7 +95,7 @@
       "purpose": "Original PCell geometry preservation",
       "report": "sram512/reports/pcell_preservation.json",
       "state": "PASS",
-      "report_sha256": "2f58b8d7754e04f415ffc6f02987e62078f461492977b6cc189860a5042800c4",
+      "report_sha256": "e7c5edef8ec7fe721f379e0cc369a5eb6e237d6ae3880ad2eb396dbfe7014e20",
       "source_matches": true,
       "required_operations": null,
       "scope_complete": true,
@@ -117,37 +117,43 @@
       "failure_count": 0
     },
     {
-      "test": "pd102_decode_coverage",
+      "test": "signalfix_decode_coverage",
       "purpose": "Extracted MOS: every row and column, both data",
-      "report": "sram512/reports/pd102_decode_coverage.json",
+      "report": "sram512/reports/signalfix_decode_coverage.json",
+      "state": "PENDING"
+    },
+    {
+      "test": "signalfix_startup_5n",
+      "purpose": "Supply ramp with physical signal and power networks",
+      "report": "sram512/reports/signalfix_startup_5n.json",
       "state": "PASS",
-      "report_sha256": "d2547d1cafa3fa3722986797f940590a680780b84ddefcaf1c4877520fff7e6f",
+      "report_sha256": "98f5731d9034bd588ebf6e48b3868a8025f59087bc5c9a64290a67c21ee8c8b3",
       "source_matches": true,
-      "required_operations": 136,
+      "required_operations": null,
       "scope_complete": true,
       "required_signal_model_present": true,
-      "checks": 38901,
+      "checks": 33753,
       "failure_count": 0
     },
     {
-      "test": "pd102_rc3_low_hot_5us",
-      "purpose": "Extracted signal RC x3, 4.5 V, 85 C, 16 accesses",
-      "report": "sram512/reports/pd102_rc3_low_hot_5us.json",
+      "test": "signalfix_startup_1n",
+      "purpose": "Finer-step supply ramp, all MOS voltages and vias",
+      "report": "sram512/reports/signalfix_startup_1n.json",
       "state": "PASS",
-      "report_sha256": "aa57ebfc826865f640759c05e5dc8f512a69589c8f70c94643835522c35daa5a",
+      "report_sha256": "02881a0044e23fc466c2a12e11466209a814bc9896302eb309985a50f9dc0632",
       "source_matches": true,
-      "required_operations": 16,
+      "required_operations": null,
       "scope_complete": true,
       "required_signal_model_present": true,
-      "checks": 22357,
+      "checks": 33753,
       "failure_count": 0
     },
     {
-      "test": "pd102_timestep_5_default_20_accurate",
-      "purpose": "Write-transition numerical convergence",
-      "report": "sram512/reports/pd102_timestep_5_default_20_accurate.json",
+      "test": "signalfix_startup_comparison",
+      "purpose": "Startup time-step comparison on the current GDS",
+      "report": "sram512/reports/signalfix_startup_comparison.json",
       "state": "PASS",
-      "report_sha256": "ffa7f0173f61c991e6ff11d092b798a99e6d8526bf79cdc9254e1e0b346994d6",
+      "report_sha256": "26a658510723962faf8b9f48c5d0208f374b2053248c000ac4b7a8647100e68b",
       "source_matches": true,
       "required_operations": null,
       "scope_complete": true,
@@ -156,55 +162,61 @@
       "failure_count": 0
     },
     {
-      "test": "pd102_startup_5n",
-      "purpose": "Supply ramp with physical signal and power networks",
-      "report": "sram512/reports/pd102_startup_5n.json",
+      "test": "signalfix_mesh4_prefix",
+      "purpose": "All physical gate taps and voltages in first complete access",
+      "report": "sram512/reports/signalfix_mesh4_prefix.json",
       "state": "PASS",
-      "report_sha256": "4a7987b8aa5a970344880731149721b0469ecc370b37f0adff15f5e3f03f6140",
+      "report_sha256": "0a89cac04ad7756c80c972c31a1a0d3bf83a469a666dd0281dd4fa022ca8c08e",
+      "source_matches": true,
+      "required_operations": 1,
+      "scope_complete": true,
+      "required_signal_model_present": true,
+      "checks": 38138,
+      "failure_count": 0
+    },
+    {
+      "test": "signalfix_mesh8_prefix",
+      "purpose": "Finer spatial RC model of first complete access",
+      "report": "sram512/reports/signalfix_mesh8_prefix.json",
+      "state": "PASS",
+      "report_sha256": "d55fc211bf186b39d7d7dadc9ce53c8106f966914e124feb313469907f495d27",
+      "source_matches": true,
+      "required_operations": 1,
+      "scope_complete": true,
+      "required_signal_model_present": true,
+      "checks": 38138,
+      "failure_count": 0
+    },
+    {
+      "test": "signalfix_signal_resolution",
+      "purpose": "Spatial RC resolution: both circuits PASS and peaks agree",
+      "report": "sram512/reports/signalfix_signal_resolution.json",
+      "state": "PASS",
+      "report_sha256": "6a5190b8531f82c37b8968b73c0ee999aae565241e86f87744dd3acae60825aa",
       "source_matches": true,
       "required_operations": null,
       "scope_complete": true,
       "required_signal_model_present": true,
-      "checks": 32729,
+      "checks": null,
       "failure_count": 0
     },
     {
-      "test": "pd102_startup_1n",
-      "purpose": "Finer-step supply ramp, all MOS voltages and vias",
-      "report": "sram512/reports/pd102_startup_1n.json",
-      "state": "PASS",
-      "report_sha256": "6ad0689c4c2576ff3b6994cea499823737688e92d4f0d40f69fb35b75ef3c2d6",
-      "source_matches": true,
-      "required_operations": null,
-      "scope_complete": true,
-      "required_signal_model_present": true,
-      "checks": 32729,
-      "failure_count": 0
-    },
-    {
-      "test": "pd102_power_paths_ramp",
+      "test": "signalfix_power_paths_ramp",
       "purpose": "Power ramp followed by 16 accesses, signal and supply R/C",
-      "report": "sram512/reports/pd102_power_paths_ramp.json",
+      "report": "sram512/reports/signalfix_power_paths_ramp.json",
       "state": "PENDING"
     },
     {
-      "test": "pd102_pg_rc3_lowhot_corner",
-      "purpose": "Combined supply network and RC x3 at 4.5 V / 85 C",
-      "report": "sram512/reports/pd102_pg_rc3_lowhot_corner.json",
+      "test": "signalfix_pg_rc3_lowhot",
+      "purpose": "Combined supply and RC x3, 4.5 V / 85 C, all four corners, 16 accesses",
+      "report": "sram512/reports/signalfix_pg_rc3_lowhot.json",
       "state": "PENDING"
     },
     {
-      "test": "pd102_operational_hot",
+      "test": "signalfix_operational_hot",
       "purpose": "20 us supply ramp, 1 ms retention and asynchronous interruptions",
-      "report": "sram512/reports/pd102_operational_hot.json",
-      "state": "PASS",
-      "report_sha256": "bb0485e703fa70f2b300124d522bd8537d147b247cf9ec0a2cf455d96dddbd1f",
-      "source_matches": true,
-      "required_operations": 28,
-      "scope_complete": true,
-      "required_signal_model_present": true,
-      "checks": 5429,
-      "failure_count": 0
+      "report": "sram512/reports/signalfix_operational_hot.json",
+      "state": "PENDING"
     },
     {
       "test": "analog_pd102_nominal",
@@ -324,19 +336,6 @@
       "failure_count": 0
     }
   ],
-  "blocking_signal_diagnostics": [
-    {
-      "test": "pd102_signal_mesh4_prefix",
-      "report_sha256": "df6d1e0df9429cfa2cd406dd99a8ff591e4ccf6fdf8211faf038f461228f56d1",
-      "failure_count": 587,
-      "reason": "Reproduced signal margin / terminal voltage failure on this GDS."
-    },
-    {
-      "test": "pd102_signal_mesh8_prefix",
-      "report_sha256": "28a407461a39ea444adfe0d812b7977527289158cdbd24fec32ffe1d29318e5b",
-      "failure_count": 587,
-      "reason": "Reproduced signal margin / terminal voltage failure on this GDS."
-    }
-  ],
+  "blocking_signal_diagnostics": [],
   "scope": "Evidence index for this source snapshot, not a replacement for fresh verification. RC coefficients and global Vth shifts are uncalibrated sensitivity tests; pad/frame integration and statistical yield qualification are outside this core verification."
 }

@@ -2,6 +2,7 @@
 """Compare startup step sizes and plot the finer extracted-circuit waveform."""
 import os
 import tempfile
+import argparse
 os.environ.setdefault("MPLCONFIGDIR", os.path.join(tempfile.gettempdir(), "sram512-matplotlib"))
 import numpy as np
 import matplotlib
@@ -42,14 +43,15 @@ def compare_solvers():
     return report
 
 
-def main():
-    names = ['pd102_startup_5n', 'pd102_startup_1n']
+def main(prefix='pd102',check_solver=True):
+    names = [prefix+'_startup_5n', prefix+'_startup_1n']
     folders = [WORK / 'analog' / n for n in names]
     results = [json.loads((p / 'result.json').read_text()) for p in folders]
     assert all(r['passed'] for r in results)
-    decks = [re.sub(r'(?m)^(tran \S+ \S+ 0) \S+$', r'\1 MAXSTEP',
+    decks = [re.sub(r'(?m)^(\.?tran \S+ \S+ 0) \S+$', r'\1 MAXSTEP',
                     (p / 'test.spice').read_text()) for p in folders]
     assert decks[0] == decks[1]
+    assert results[0]['physical_extraction']['gds_sha256']==results[1]['physical_extraction']['gds_sha256']
     volts = [max(x['peak_abs_v'] for x in r['voltage_limits']['maximum_by_pair'].values()) for r in results]
     currents = [r['via_currents']['maximum_peak_a'] for r in results]
     report = dict(passed=True, source_gds_sha256=results[0]['physical_extraction']['gds_sha256'],
@@ -65,8 +67,8 @@ def main():
     axes[0].plot(x, w['v(vdd)'], label='VDD', lw=1.6)
     axes[0].plot(x, w['v(reset)'], '--', label='RESET follows VDD', lw=1.1)
     axes[0].set_title('Power-up: actual 16 x 32 extracted circuit, signal RC and supply mesh', loc='left')
-    for prefix, count, label in [('wl', 16, 'Maximum of all 16 WL'), ('pd_y', 1, 'PD_Y')]:
-        values = [w[f'v({prefix}{i if count > 1 else ""})'] for i in range(count)]
+    for signal_prefix, count, label in [('wl', 16, 'Maximum of all 16 WL'), ('pd_y', 1, 'PD_Y')]:
+        values = [w[f'v({signal_prefix}{i if count > 1 else ""})'] for i in range(count)]
         axes[1].plot(x, np.maximum.reduce(values), label=label)
     records = json.loads((folders[1] / 'physical_devices.json').read_text())
     maximum = np.zeros(len(t))
@@ -96,13 +98,18 @@ def main():
     axes[3].set_xlabel('Time [us]')
     fig.text(.11, .015, 'No forced initial state. Power-on memory data is unspecified. Interconnect coefficients are sensitivity assumptions.', fontsize=9)
     fig.tight_layout(rect=(0, .04, 1, 1))
-    fig.savefig(REPORTS / 'startup.png', dpi=150)
+    stem = '' if prefix=='pd102' else prefix+'_'
+    fig.savefig(REPORTS / (stem+'startup.png'), dpi=150)
     plt.close(fig)
-    write_json(REPORTS / 'startup_comparison.json', report)
+    write_json(REPORTS / (stem+'startup_comparison.json'), report)
     print('Startup step comparison:', report['passed'], 'voltage peak difference:', report['voltage_peak_difference_v'], flush=True)
-    assert compare_solvers()['passed']
+    if check_solver:
+        assert prefix=='pd102', 'Historical solver comparison has fixed, independently verified run names.'
+        assert compare_solvers()['passed']
     return report
 
 
 if __name__ == '__main__':
-    main()
+    parser=argparse.ArgumentParser();parser.add_argument('--prefix',default='pd102')
+    parser.add_argument('--skip-solver-comparison',action='store_true')
+    args=parser.parse_args();main(args.prefix,not args.skip_solver_comparison)

@@ -1,0 +1,6 @@
+{
+  "source_gds_sha256": "f32c213db5efaa09449b3c8db709c2b547bae09c6fe011f1eb284dda8342eff2",
+  "diagnostic_report_sha256": "0a89cac04ad7756c80c972c31a1a0d3bf83a469a666dd0281dd4fa022ca8c08e",
+  "saved_layout_recheck_sha256": "1de4a024858eda4920a24cd6c1199cebda2120d02d463d7c4f22af3448649c5a",
+  "release_status": "Candidate only: full electrical verification is evaluated separately by validation_summary.py."
+}

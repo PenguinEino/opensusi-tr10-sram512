@@ -17,7 +17,8 @@ from pdk_profiles import locked, tree_digest
 ENTRY_POINTS = ('open', 'verify_saved_layout', 'verify_digital', 'analog',
     'postlayout', 'operational_tests', 'startup_tests', 'startup_summary',
     'pcell_preservation', 'validation_summary', 'compare_timesteps',
-    'verification_jobs', 'package')
+    'verification_jobs', 'signal_resolution', 'route_waveforms', 'power_wire_audit',
+    'save_candidate', 'strengthen_signal_routes', 'package')
 
 
 def python_dependencies(initial):
