@@ -130,13 +130,13 @@ def bitcell_array():
         y=r*280
         for c in range(COLS):
             x=c*320
-            wl=f'WL{r}' if c<16 else f'WL_R{r}'
+            wl=f'WL{r}'
             s.device('sram512_bitcell',f'r{r}c{c}',x,y,dict(WL=wl,BL=f'BL{c}',BLB=f'BLB{c}',VDD='VDD',VSS='VSS'))
             s.lead(f'r{r}c{c}','WL',[(x-130,y),(x-130,y+100)],False)
             for p,dx in [('BL',-110),('BLB',110)]:
                 px,py=s.at(f'r{r}c{c}',p);s.lead(f'r{r}c{c}',p,[(x+dx,py)],False)
-        for first,name in [(0,f'WL{r}'),(16,f'WL_R{r}')]:
-            s.wire([(first*320-300,y+100),((first+15)*320-130,y+100)],name)
+        for first,name in [(0,f'WL{r}')]:
+            s.wire([(first*320-300,y+100),((first+31)*320-130,y+100)],name)
             s.port(name,first*320-300,y+100)
     for c in range(COLS):
         for n,dx in [('BL',-110),('BLB',110)]:
@@ -144,7 +144,7 @@ def bitcell_array():
             s.port(f'{n}{c}',x,-240,'inout')
     s.named_port('VDD',-300,-340,'inout');s.named_port('VSS',-100,-340,'inout')
     s.finish();s.save('sram512_array.sch')
-    pts={f'{p}{r}':(-3220,-620+40*(2*r+j)) for r in range(16) for j,p in enumerate(('WL','WL_R'))}
+    pts={f'WL{r}':(-3220,-300+40*r) for r in range(16)}
     for c in range(32):
         pts[f'BL{c}']=(-3100+c*200-50,720);pts[f'BLB{c}']=(-3100+c*200+50,720)
     pts.update(VDD=(-200,-720),VSS=(200,-720))
@@ -154,7 +154,7 @@ def column_cell():
     s=Sheet();s.text('ONE COLUMN: local precharge + nMOS pass MUX',-300,-360,.35)
     for side,bl,y in [(0,'BL','Y'),(1,'BLB','YB')]:
         x=side*600
-        s.device('MP','pc'+bl,x,-160,dict(D=bl,G='PREB',S='VDD',BG='VDD'),'model=PMOS w=10.2u l=1u m=1 spiceprefix=X')
+        s.device('MP','pc'+bl,x,-160,dict(D=bl,G='PREB',S='VDD',BG='VDD'),'model=PMOS w=3.4u l=1u m=1 spiceprefix=X')
         s.device('MN','mux'+bl,x,160,dict(D=bl,G='COL',S=y,BG='VSS'),'model=NMOS w=3.4u l=1u m=1 spiceprefix=X')
         # PMOS drain to bitline, continuing physically to the pass transistor.
         s.link('pc'+bl,'D','mux'+bl,'D')
@@ -185,13 +185,13 @@ def controller():
 
 def top(tb=False):
     s=Sheet();s.text('SRAM512 | 16 x 32 | 7-pin serial interface | 5 V',-1100,-1000,.55)
-    s.device('sram512_array','array',4000,0,{**{f'{p}{r}':f'{p}{r}' for r in range(16) for p in ('WL','WL_R')},
+    s.device('sram512_array','array',4000,0,{**{f'WL{r}':f'WL{r}' for r in range(16)},
         **{f'{n}{c}':f'{n}{c}' for n in ('BL','BLB') for c in range(32)}})
-    s.device('sram512_row_decoder','row',300,0,{**{f'RA{i}':f'RA{i}' for i in range(4)},'WL_EN':'WL_EN',**{f'{p}{r}':f'{p}{r}' for r in range(16) for p in ('WL','WL_R')}})
+    s.device('sram512_row_decoder','row',300,0,{**{f'RA{i}':f'RA{i}' for i in range(4)},'WL_EN':'WL_EN',**{f'WL{r}':f'WL{r}' for r in range(16)}})
     for r in range(16):
-        for j,p in enumerate(('WL','WL_R')):
+        for j,p in enumerate(('WL',)):
             s.link('row',f'{p}{r}','array',f'{p}{r}')
-            s.label(620,-620+40*(2*r+j),f'{p}{r}',onwire=True)
+            s.label(620,-300+40*r,f'{p}{r}',onwire=True)
     for c in range(32):
         x=900+c*200
         s.device('sram512_column',f'col{c}',x,1300,dict(BL=f'BL{c}',BLB=f'BLB{c}',Y='Y',YB='YB',COL=f'COL{c}',PREB='PREB'))
@@ -245,7 +245,7 @@ def top(tb=False):
             s.text(n+' stimulus',x-100,y-180,.3)
         s.comp('devices/gnd.sym',-1100,4050,'name=g0 lab=0')
         loads=[(f'{p}{i}','CBLWIRE') for i in range(32) for p in ('BL','BLB')]
-        loads +=[(f'{p}{i}','CWLWIRE') for i in range(16) for p in ('WL','WL_R')]+[(n,'CYWIRE') for n in ('Y','YB')]+[('SDO','CSDO')]
+        loads +=[(f'WL{i}','CWLWIRE') for i in range(16)]+[(n,'CYWIRE') for n in ('Y','YB')]+[('SDO','CSDO')]
         s.text('SIMULATION-ONLY EXTRA WIRE LOADS (MOS intrinsic capacitance is already present)',2200,3690,.34)
         for i,(n,param) in enumerate(loads):
             x=2300+(i%16)*300;y=3910+(i//16)*230

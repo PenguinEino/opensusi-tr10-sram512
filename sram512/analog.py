@@ -42,14 +42,14 @@ def pwl(events):
 
 def vectors(case):
     nets=['VDD','CLK','RESET','SDI','WE','SDO','PREB','SAE','WL_EN','WRITE_EN','DIN','PD_Y','PD_YB','Y','YB','SOUT','SOUTB']
-    nets += [f'{p}{i}' for p,n in [('RA',4),('CA',5),('WL',16),('WL_R',16),('COL',32),('BL',32),('BLB',32)] for i in range(n)]
+    nets += [f'{p}{i}' for p,n in [('RA',4),('CA',5),('WL',16),('COL',32),('BL',32),('BLB',32)] for i in range(n)]
     nets += [f'xctrl.xphase.C{i}' for i in range(5)]+['xctrl.CKI','xctrl.RSTI','xctrl.xcontrol.W']
     for r,c in sorted({(op['row'],op['col']) for op in case['operations']}):
         nets += [f'xarray.xr{r}c{c}.{q}' for q in ('Q','QB')]
     return nets
 
 def control(case):
-    lines=['.param VSUP=5 CBLWIRE=70f CWLWIRE=200f CYWIRE=180f CSDO=10p',
+    lines=['.param VSUP=5 CBLWIRE=70f CWLWIRE=400f CYWIRE=180f CSDO=10p',
            '.temp 27','.control','save '+' '.join('v('+n+')' for n in vectors(case)),
            f'tran 5n {spice_time(case["stop_ns"])} 0 20n','let failures=0']
     last_read=0
@@ -112,7 +112,7 @@ def verify(path,case,vdd=5):
         for p,num,v in [('RA',4,r),('CA',5,c)]:
             for k in range(num):level(f'{p}{k}',(v>>k)&1,e-.1*period,e+7.8*period)
         for rr in range(16):
-            for prefix in ('WL','WL_R'):
+            for prefix in ('WL',):
                 level(f'{prefix}{rr}',0,first+.3*period,e+2.9*period)
                 level(f'{prefix}{rr}',int(rr==r),e+3.3*period,e+4.9*period)
                 level(f'{prefix}{rr}',0,e+5.3*period,e+7.8*period)
@@ -148,7 +148,7 @@ def verify(path,case,vdd=5):
     return dict(passed=not failures,checks=checks,failure_count=len(failures),failures=failures[:40],
                 read_observations=observations,points=len(t),operations=len(case['operations']))
 
-def simulate(name='nominal',vdd=5,temp=27,bl='70f',wl='200f',y='180f',sdo='10p',period=1000,edge=5,vthmn=0,vthmp=0,addresses=None,solver=None):
+def simulate(name='shared_wl_nominal',vdd=5,temp=27,bl='70f',wl='400f',y='180f',sdo='10p',period=1000,edge=5,vthmn=0,vthmp=0,addresses=None,solver='klu'):
     work=WORK/'analog'/name;work.mkdir(parents=True,exist_ok=True)
     source=netlist(ROOT/'sram512_tb.sch',work,subckt=False)
     deck=re.sub(r'\n\+\s*',' ',source.read_text());case=scenario(period,edge,addresses)
@@ -197,14 +197,15 @@ if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--matrix',action='store_true');args=p.parse_args()
     if args.matrix:
         from concurrent.futures import ThreadPoolExecutor
-        cases=[dict(name='low_cold',vdd=4.5,temp=-20),dict(name='low_hot',vdd=4.5,temp=85),
+        cases=[dict(name='nominal'),dict(name='low_cold',vdd=4.5,temp=-20),dict(name='low_hot',vdd=4.5,temp=85),
                dict(name='high_cold',vdd=5.5,temp=-20),dict(name='high_hot',vdd=5.5,temp=85),
-               dict(name='wire_3x',bl='210f',wl='600f',y='540f',edge=20),
-               dict(name='wire_1p_hot',vdd=4.5,temp=85,bl='1p',wl='1p',y='1p',edge=20),
+               dict(name='wire_3x',bl='210f',wl='1200f',y='540f',edge=20),
+               dict(name='wire_1p_hot',vdd=4.5,temp=85,bl='1p',wl='2p',y='1p',edge=20),
                dict(name='vth_slow_n_fast_p',vthmn=.1,vthmp=.1,temp=85),
                dict(name='vth_fast_n_slow_p',vthmn=-.1,vthmp=-.1,temp=85)]
+        for case in cases:case['name']='shared_wl_'+case['name']
         with ThreadPoolExecutor(max_workers=2) as pool:results=list(pool.map(lambda c:simulate(**c),cases))
-        write_json(REPORTS/'analog_matrix.json',results)
+        write_json(REPORTS/'analog_shared_wl_matrix.json',results)
         raise SystemExit(0 if all(r['passed'] for r in results) else 1)
     else:
         result=simulate();raise SystemExit(0 if result['passed'] else 1)

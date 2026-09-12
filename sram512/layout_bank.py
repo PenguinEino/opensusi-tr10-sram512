@@ -3,8 +3,8 @@
 from layout_analog import *
 from routing import *
 
-AX=0; AY=147; CY=104.5; GY=66; COMPACT=False
-def bank_work():return WORK/('layout/bank_compact' if COMPACT else 'layout/bank')
+AX=0; AY=147; CY=104.5; GY=66; COMPACT=False; DECODE_GC_BUS=False; MINIMUM_PC=False
+def bank_work():return WORK/('layout/bank_min_pc' if MINIMUM_PC else 'layout/bank_compact_bus' if DECODE_GC_BUS else 'layout/bank_compact' if COMPACT else 'layout/bank')
 def trans(x,y,mirror=False):
     return db.Trans(db.Trans.M0 if mirror else db.Trans.R0,round(x*1000),round(y*1000))
 
@@ -16,8 +16,10 @@ def macros():
             core=pc.bitcell(l,family='six_single');c=pc.array(l,core,16,16,gap=22)
             source=pc.reference(c.name,16,16)
         else:
-            c=column_bank(l,16,gap=22,ground_below_logic=True,ground_depth=CY-5.5)
+            c=column_bank(l,16,gap=22,ground_below_logic=True,ground_depth=CY+11 if DECODE_GC_BUS else CY-5.5,
+                          logic_rail=GY-CY if MINIMUM_PC else None,minimum_pc=MINIMUM_PC)
             source=reference(c.name,16)
+            if MINIMUM_PC:source=source.replace('w=10.2u','w=3.4u')
         gds=w/'macro.gds';ref=w/'reference.spice';c.write(str(gds));ref.write_text(source)
         rr=verify_layout(gds,c.name,ref,w/'checks');print(name,rr['drc'],rr['lvs'],flush=True)
         assert all(rr[k]['passed'] for k in ('drc','lvs')),rr
@@ -38,12 +40,18 @@ def build():
         gd.box('GC',2.75,-5.5,8.75,-2.8)
         gd.wire('M1',[(2.75,-5.5),(-2.75,-5.5)],1.8);gd.via(-2.75,-5.5)
         gd.wire('M2',[(-2.75,-5.5),(0,-5.5)],3.4)
+        if DECODE_GC_BUS:
+            # A second A contact passes through the real gaps between the
+            # separate well taps. It remains outside both active regions.
+            gd.wire('GC',[(6.1,51.1),(6.1,52.8),(8.25,52.8),(8.25,59.4)],1)
+            gd.contact(8.25,59.4,'GC')
         gw=w/'column_gate';gw.mkdir(exist_ok=True);path=gw/'cell.gds';gate.write(str(path))
         check=verify_layout(path,gate.name,WORK/'library/interfaces/AND2_X1/reference.spice',gw)
         print('column A escape',check['drc'],check['lvs'],flush=True)
         assert all(check[k]['passed'] for k in ('drc','lvs'))
         gate_report=gw/'AND2_X1.lvsdb'
-    top=l.create_cell('sram512_bank');d=pc.Drawing(l,top);r=Router(l,top,(-49.5,0,374,599.5) if COMPACT else (-44,-33,374,621.5),step=2750 if COMPACT else 5500)
+    bounds=(-49.5,-5.5,390.5,588.5) if MINIMUM_PC else ((-49.5,-16.5 if DECODE_GC_BUS else 0,374,599.5) if COMPACT else (-44,-33,374,621.5))
+    top=l.create_cell('sram512_bank');d=pc.Drawing(l,top);r=Router(l,top,bounds,step=2750 if COMPACT else 5500)
     for c,y,path in [(arr,AY,'array16'),(col,CY,'columns16')]:
         tr=trans(0,y);top.insert(db.CellInstArray(c.cell_index(),tr))
         mapping={n:n for n in physical_labels(c,l)}
@@ -72,11 +80,12 @@ def build():
             via(name,x+16.5,77);wire(name,'M1',[(x+16.5,77),(x+16.5,CY-11),(x+11,CY-11)])
         via(name,x+11,CY-11);r.pins[r.netid(name)]=[]
         for name,dx in [('bl',-.4),('blb',18.4)]:
-            wire(f'{name}{c}','M1',[(x+dx,CY+40),(x+dx,AY+5.7)])
+            wire(f'{name}{c}','M1',[(x+dx,CY+(33.2 if MINIMUM_PC else 40)),(x+dx,AY+5.7)])
             r.pins[r.netid(f'{name}{c}')]=[]
     for side,bx in [(-1,0),(1,352)]:
-        for name,off,y0 in [('vdd',14.4,CY+31.5),('vss',19.8,5.5)]:
+        for name,off,y0 in [('vdd',14.4,11 if MINIMUM_PC else CY+31.5),('vss',19.8,66 if MINIMUM_PC else 5.5)]:
             wire(name,'M1',[(bx+side*off,y0),(bx+side*off,AY+464.9)],3.4)
+    if MINIMUM_PC:wire('vdd','M1',[(-14.4,11),(366.4,11)],2.6)
     if COMPACT:
         # Four adjacent column selects share CH. Join those real M2 input
         # landing pads locally before routing the remaining predecode buses.
@@ -110,19 +119,49 @@ def build():
         extra=wire(name,'M2',[(-9.6,y),(x,y),(x,gy)])
         label,regs=r.pins[r.netid(name)][0];r.pins[r.netid(name)][0]=(label,[regs[k]+extra[k] for k in range(2)])
         d.label('M2',name.upper(),x,gy)
+        if MINIMUM_PC:
+            reach=-x
+            wire(name,'M2',[(361.6,y),(352+reach,y),(352+reach,gy)])
     # Decode buses have independent external terminals on the decoder-facing edge.
     for i,name in enumerate([f'CL{i}' for i in range(4)]+[f'CH{i}' for i in range(4)]):
         x=-44 if COMPACT else -33;y=11+i*11 if COMPACT else -22+i*16.5
+        if MINIMUM_PC and i==0:y=16.5
         pad=db.Region(db.Box(round((x-1.7)*1000),round((y-1.7)*1000),round((x+1.7)*1000),round((y+1.7)*1000)))
         top.shapes(l.layer(*M2)).insert(pad);d.label('M2',name,x,y)
         r.add_geometry([db.Region(),pad],name,'PORT.'+name)
-    for name,y,x,gy in [('preb',CY+11.5,-27.5,CY+11),('y',CY+5.5,-33,CY+5.5),('yb',CY,-38.5,CY),('vdd',CY+31.5,-27.5,CY+33)]:
+    if DECODE_GC_BUS:
+        # These three global decode buses occupy field below the logic row.
+        # M1 stubs cross other GC buses without joining them; each intended
+        # junction uses a physical CO. The bus spacing includes CO landing
+        # enclosure, not only the minimum bare-GC spacing.
+        for bit,yy in [(1,1.1),(2,-2.2),(3,-5.5)]:
+            name=f'cl{bit}';start=-44+(bit-1)*5.5
+            xs=[c*22+8.25 for c in range(bit,16,4)]
+            d.wire('GC',[(start,yy),(xs[-1],yy)],1)
+            for x in xs:
+                d.contact(x,yy,'GC')
+                wire(name,'M1',[(x,6.6),(x,yy)])
+                pad=db.Region(db.DBox(x-1.3,yy-1.3,x+1.3,yy+1.3).to_itype(.001))
+                r.add_geometry([pad,db.Region()],name)
+            d.contact(start,yy,'GC');target=11+bit*11
+            wire(name,'M1',[(start,yy),(start,target),(-44,target)])
+            pad=db.Region(db.DBox(start-1.3,yy-1.3,start+1.3,yy+1.3).to_itype(.001))
+            r.add_geometry([pad,db.Region()],name);via(name,-44,target)
+            # Physical GC+CO+M1 now joins the complete net. Official LVS
+            # independently verifies this connection instead of the router.
+            r.pins[r.netid(name)]=[]
+    vdy=24.7 if MINIMUM_PC else 31.5
+    for name,y,x,gy in [('preb',CY+11.5,-27.5,CY+11),('y',CY+5.5,-33,CY+5.5),('yb',CY,-38.5,CY),('vdd',CY+vdy,-27.5,round((CY+vdy)/2.75)*2.75 if MINIMUM_PC else CY+33)]:
         extra=wire(name,'M2',[(-14.4,y),(x,y),(x,gy)])
         terms=r.pins[r.netid(name)]
         for j,(label,regs) in enumerate(terms):
             if label.startswith(col.name+'.'):terms[j]=(label,[regs[k]+extra[k] for k in range(2)])
         d.label('M2',name.upper(),x,gy)
-    d.label('M1','VSS',-19.8,5.5)
+    d.label('M1','VSS',-19.8,66 if MINIMUM_PC else 5.5)
+    if MINIMUM_PC:
+        # Reserve real space for the top-level power and WL_EN buses. This
+        # is a router obstacle only; no dummy shape enters the GDS or DRC.
+        r.add_geometry([db.Region(),db.Region(db.DBox(-49.5,-5.5,390.5,10).to_itype(.001))])
     top.write(str(w/'placed.gds'))
     return l,top,r,w
 

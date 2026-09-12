@@ -13,6 +13,24 @@ M1=(13,0);M2=(20,0);VIA=(19,0);GC=(8,1);CO=(11,0)
 def raster(region,step,nx,ny,origin=(0,0)):
     """Grid points inside a rectilinear expanded Region (including its edges)."""
     out=set();ox,oy=origin
+    if step<2750:
+        # A large power/obstacle polygon can have thousands of holes. Testing
+        # every fine-grid point against that polygon is unnecessarily costly.
+        # KLayout's exact trapezoid decomposition preserves the geometry and
+        # allows rectangular spans to be rasterized as NumPy slices.
+        mask=np.zeros((ny,nx),dtype=bool)
+        pieces=region.merged().decompose_trapezoids()
+        for shape in pieces.each():
+            p=shape.polygon;b=p.bbox()
+            xmin=max(0,math.ceil((b.left-ox)/step));xmax=min(nx-1,math.floor((b.right-ox)/step))
+            ymin=max(0,math.ceil((b.bottom-oy)/step));ymax=min(ny-1,math.floor((b.top-oy)/step))
+            if xmin>xmax or ymin>ymax:continue
+            if p.is_box():mask[ymin:ymax+1,xmin:xmax+1]=True
+            else:
+                for y in range(ymin,ymax+1):
+                    for x in range(xmin,xmax+1):
+                        if p.inside(db.Point(ox+x*step,oy+y*step)):mask[y,x]=True
+        return np.flatnonzero(mask.ravel()).astype(np.int32)
     for p in region.merged().each():
         b=p.bbox();xmin=max(0,math.ceil((b.left-ox)/step));xmax=min(nx-1,math.floor((b.right-ox)/step))
         ymin=max(0,math.ceil((b.bottom-oy)/step));ymax=min(ny-1,math.floor((b.top-oy)/step))
@@ -85,6 +103,12 @@ class Router:
         forbidden+=cut.sized(2200)
         via=np.zeros(self.nx*self.ny,dtype=np.int32)
         via[raster(forbidden,self.step,self.nx,self.ny,origin)]=1
+        if self.step==1100:
+            # New cuts on a 5.5 um lattice satisfy cut spacing even when two
+            # cuts belong to the same routed net. Existing legal cuts below
+            # remain reusable at their exact original coordinates.
+            yy,xx=np.indices((self.ny,self.nx))
+            via[((xx%5!=0)|(yy%5!=0)).ravel()]=1
         # Exactly coincident existing legal vias may be reused.
         for p in cut.each():
             b=p.bbox();pt=b.center()

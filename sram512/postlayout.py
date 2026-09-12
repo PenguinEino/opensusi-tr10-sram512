@@ -107,7 +107,7 @@ def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale
     lines+=['VVDD vdd 0 5']
     for n,events in case['events'].items():lines.append(f'V{n} {n} 0 {pwl(events)}')
     if rc_scale is None:
-        for prefix,count,value in [('BL',32,'70f'),('BLB',32,'70f'),('WL',16,'200f'),('WL_R',16,'200f')]:
+        for prefix,count,value in [('BL',32,'70f'),('BLB',32,'70f'),('WL',16,'400f')]:
             for i in range(count):lines.append(f'Cwire_{prefix}{i} {prefix}{i} 0 {value}')
         lines +=['Cwire_Y Y 0 180f','Cwire_YB YB 0 180f']
     lines +=extra+['Cout SDO 0 10p']

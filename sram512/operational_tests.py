@@ -60,7 +60,7 @@ def extra_checks(path,case,vdd):
         for n,b in [('PREB',1),('SAE',1),('WL_EN',0),('WRITE_EN',0),('SDO',0),('PD_Y',0),('PD_YB',0)]:level(n,b,start,end)
         for i in range(5):level(f'xctrl.xphase.c{i}',0,start,end)
         for row in range(16):
-            for prefix in ('wl','wl_r'):level(prefix+str(row),0,start,end)
+            for prefix in ('wl',):level(prefix+str(row),0,start,end)
         for row,col,data in [(0,31,1),(15,0,1),(15,31,0)]:
             for q,b in [('q',data),('qb',1-data)]:level(f'xarray.xr{row}c{col}.{q}',b,start,end)
     a,b=case['retention_interval_ns']
@@ -79,7 +79,7 @@ def simulate(folder,name='operational_hot',vdd=5,temp=85,recheck=False):
             lines+=['Vreset_logic reset_logic 0 '+pwl(ev).replace('VSUP','1'),
                     'Breset RESET 0 v=v(vdd)*v(reset_logic)']
         else:lines.append(f'V{n} {n} 0 {pwl(ev)}')
-    for prefix,num,cap in [('BL',32,70),('BLB',32,70),('WL',16,200),('WL_R',16,200)]:
+    for prefix,num,cap in [('BL',32,70),('BLB',32,70),('WL',16,400)]:
         for i in range(num):lines.append(f'Cwire_{prefix}{i} {prefix}{i} 0 {cap}f')
     lines+=['Cwire_Y Y 0 180f','Cwire_YB YB 0 180f','Cout SDO 0 10p',f'.param VSUP={vdd}',f'.temp {temp}',
             '.control','save i(VVDD) '+' '.join(f'v({n})' for n in vectors(case)),
