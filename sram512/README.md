@@ -28,21 +28,34 @@
 |---|---|---|
 | 回路図/ERC | 合格 | 512 bit専用回路とTB |
 | 論理検証 | 334,063項目合格、9,270操作 | 全512アドレス、両データ、March C-、全18段階のRESET |
-| 回路図のMOS基準・感度試験 | 旧列MUX寸法で9条件合格。変更後を再検証中 | 5 V基準、電源・温度・容量・Vthの感度 |
+| 回路図のMOS基準・感度試験 | 変更後の9条件・26,109項目合格 | 5 V基準、電源・温度・容量・Vthの感度 |
 | 回路図の行列カバレッジ | 136操作、38,901項目合格 | 全16行・全32列を通る34アドレス |
 | 統合Drawing DRC / LVS | **0件 / 全14回路一致** | 現GDS、厳密な外部端子照合あり |
 | 製造マスクDRC | **全項目0件** | 無改変devのMDP変換とIP62チェック |
 | 物理配列・外形・端子 | 合格 | 512個の6Tセル、16行×32列、7端子、600×1800 µm以内 |
 | 抽出後MOS・配線RC・電源・運用試験 | **実行中** | 現GDSから抽出した4,953 MOS＋8ダイオード |
+| 抽出後RC×3・4.5 V・85°C | **22,357項目合格** | 現GDS、周期5 µs、四隅への16操作、全RC分割点と21本のCLK枝 |
+| 電源投入・RESET保持 | **32,729項目合格** | 現GDS、全MOS端子・全電源ビア、信号RCと実電源配線を含む1 µsの電源立上り |
 
 列MUXを最小W=3.4 µmから5.1 µmへ変更した。旧寸法ではRC×3・4.5 V・85°Cの
 遅いWL立ち上がりで書込みが失敗したためで、単にCLKを遅くしても解消しなかった。
 旧結果は残し、列MUXのみの変更では端の1セルの1書込みがまだ不合格だったため、共有PDの2個も
 W=10.2 µmへ変更した。問題のアドレス0について、全512セルを接続した0/1書込み・読出しが
-100 ns／20 nsの両最大刻みで各5,551項目に合格した。全行列・電源試験は継続中。
+100 ns／20 ns／5 nsの各最大刻みで5,551項目に合格した。
+同じ低電圧・高温・RC×3条件で四隅を0/1それぞれ書いて読む全16操作も22,357項目に合格。
+結果は `reports/pd102_rc3_low_hot_5us.json`。全行列・電源試験は継続中。
+5 ns刻みの結果と、相対誤差を0.0001へ厳しくした20 ns刻みの結果は、
+反転時刻の差が0.022 nsで一致した。数値収束の比較も合格している。
+`reports/pd102_timestep_5_default_20_accurate.json` に比較値を記録した。
+
+`startup_tests.py` は初期値を強制せず、0→5 Vの電源立上りにRESETを追従させる。
+起動後は全WLがLOW、書込み駆動がOFF、全512セルが相補の保持状態に落ち着いた。
+MOS端子間の最大電圧は5.233 V、個別ビアの最大瞬時電流は2.420 mAで、
+各上限5.75 V／7.8 mA以内。ビアのRMS電流も0.78 mA以下。
+電源投入時の各セルの0/1は仕様としては未定義であり、特定値への初期化は保証しない。
 
 現配置の物理検証は `layout/drawing_lvs.json`、`layout/manufacturing.json`、
-`layout/geometry_audit.json`。回路図のMOS試験は `reports/analog_shared_wl_*.json`。
+`layout/geometry_audit.json`。回路図のMOS試験は `reports/analog_pd102_*.json`。
 過去の720 µm配置の結果を現GDSの合格根拠に流用していない。
 過去の比較結果と不合格は[検討記録](EXPERIMENTS.md)に分けた。
 
@@ -78,16 +91,40 @@ SDOにはBUF_X4があり、検証負荷は10 pF。詳細はSPEC.mdを参照。
 
 ```bash
 python3 sram512/verify_digital.py
+python3 sram512/analog.py --matrix --name-prefix pd102 --jobs 1
+python3 sram512/pcell_preservation.py  # 元のPCellと提出GDS内のセルの全層XOR
 python3 sram512/verify_saved_layout.py  # 保存GDSを現在の回路図へ照合し、DRC/LVS・マスクを再検証
 python3 sram512/geometry_audit.py build/sram512/layout/final16x32_pd10p2 --require-origin
 python3 sram512/manufacturing.py build/sram512/layout/final16x32_pd10p2
-python3 sram512/postlayout.py build/sram512/layout/final16x32_pd10p2 --name final_decode_coverage --decode-coverage --solver klu
-python3 sram512/postlayout.py build/sram512/layout/final16x32_pd10p2 --name final_rc3_low_hot --rc-scale 3 --vdd 4.5 --temperature 85 --solver klu
-python3 sram512/postlayout.py build/sram512/layout/final16x32_pd10p2 --name final_rc_power_nominal --rc-scale 1 --power-sheet 0.1 --power-mesh-grid 0.25 --voltage-envelope --solver klu
-python3 sram512/operational_tests.py build/sram512/layout/final16x32_pd10p2 --name final_operational_hot --solver klu
+python3 sram512/postlayout.py build/sram512/layout/final16x32_pd10p2 --name pd102_decode_coverage --decode-coverage --solver klu
+python3 sram512/postlayout.py build/sram512/layout/final16x32_pd10p2 --name pd102_rc3_low_hot_5us --rc-scale 3 --vdd 4.5 --temperature 85 --period 5000 --solver klu
+python3 sram512/postlayout.py build/sram512/layout/final16x32_pd10p2 --name pd102_power_paths_reset_high --rc-scale 1 --physical-gate-paths --power-sheet 0.1 --power-mesh-grid 0.25 --voltage-envelope --initial-reset-high --period 5000 --solver klu
+python3 sram512/startup_tests.py build/sram512/layout/final16x32_pd10p2 --name pd102_startup_5n
+python3 sram512/startup_tests.py build/sram512/layout/final16x32_pd10p2 --name pd102_startup_1n --max-step-ns 1
+python3 sram512/startup_tests.py build/sram512/layout/final16x32_pd10p2 --name pd102_startup_klu_pivot --solver klu --pivrel 0.1
+python3 sram512/startup_tests.py build/sram512/layout/final16x32_pd10p2 --name pd102_startup_stream --solver klu --pivrel 0.1 --stream
+python3 sram512/startup_summary.py
+python3 sram512/postlayout.py build/sram512/layout/final16x32_pd10p2 --name pd102_power_paths_ramp --rc-scale 1 --physical-gate-paths --power-sheet 0.1 --power-mesh-grid 0.25 --voltage-envelope --startup-ramp-ns 1000 --period 5000 --solver klu --pivrel 0.1 --stream
+python3 sram512/operational_tests.py build/sram512/layout/final16x32_pd10p2 --name pd102_operational_hot --solver klu --pivrel 0.1 --stream
 ```
+
+`--stream`を付けた抽出後試験は、ngspiceの標準バッチraw出力で各計算点を
+直接ファイルへ保存する。メモリ内に全波形をため込まず、同じPython検査を行う。
+ケース固有のbuildディレクトリ内にだけ`.spiceinit`を作り、1スレッドを指定する。
+起動試験で8,863電圧ノード・全時刻が従来方式と完全一致した。
 
 大きな波形と再生成物は `build/sram512/` に置き、Gitへは入れない。
 GUIでTBを開く場合は `python3 sram512/open.py`。
 RC係数は明記した感度試験用の仮定であり、校正済みファウンドリPEXではない。
+512 bit用の解析は `set num_threads=1` をTB内で指定し、複数ケース実行時の
+過剰なOpenMPスレッド生成を避ける。電源立上りを含む長時間試験ではKLUの
+`pivrel=0.1`を指定する。通常の0.001より厳しいピボット選択で数値計算を安定させ、
+モデル・誤差許容値・検査しきい値は変えない。全起動区間の8,863ノードがSparseと
+最大約13 nVの差で一致した。システムのspinitやPDKは変更しない。
 温度・電源・Vth感度の合格を、統計的な製造ばらつきや歩留まりの保証と取り違えない。
+
+未完了の必須4試験は`python3 sram512/verification_jobs.py start`で実行し、
+`python3 sram512/verification_jobs.py status`で状態を確認できる。デスクトップの
+終了に依存しない個別プロセスとして実行し、PID・コマンド・結果をbuild内へ記録する。
+VM再起動時は実行途中の解析を継続できないので、未完了フォルダを残して再実行する。
+保存済みの合格結果は上書きしない。

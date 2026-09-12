@@ -48,9 +48,13 @@ def vectors(case):
         nets += [f'xarray.xr{r}c{c}.{q}' for q in ('Q','QB')]
     return nets
 
-def control(case):
+def control(case,threads=1):
     lines=['.param VSUP=5 CBLWIRE=70f CWLWIRE=400f CYWIRE=180f CSDO=10p',
-           '.temp 27','.control','save '+' '.join('v('+n+')' for n in vectors(case)),
+           '.temp 27','.control']
+    if threads:
+        assert 1<=threads<=4
+        lines.append(f'set num_threads={threads}')
+    lines+=['save '+' '.join('v('+n+')' for n in vectors(case)),
            f'tran 5n {spice_time(case["stop_ns"])} 0 20n','let failures=0']
     last_read=0
     for i,op in enumerate(case['operations']):
@@ -188,13 +192,19 @@ def simulate(name='shared_wl_nominal',vdd=5,temp=27,bl='70f',wl='400f',y='180f',
     result.update(name=name,voltage_v=vdd,temperature_c=temp,period_ns=period,extra_wire_loads={'BL':bl,'WL':wl,'Y':y},
         output_load=sdo,edge_ns=edge,vth_shift_v={'NMOS':vthmn,'PMOS':vthmp},
         elapsed_seconds=round(time.monotonic()-start,2),input_sha256=sha(path),electrical_sha256=key,
-        reused_waveform=reuse,model_notices=notices)
+        reused_waveform=reuse,model_notices=notices,
+        simulator_threads=(int(m[1]) if (m:=re.search(r'(?m)^set num_threads=(\d+)$',path.read_text())) else None))
     write_json(work/'result.json',result);write_json(REPORTS/f'analog_{name}.json',result)
     print(name,result['passed'],result['failure_count'],result['elapsed_seconds'],flush=True)
     return result
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--matrix',action='store_true');args=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--matrix',action='store_true')
+    p.add_argument('--name-prefix',default='shared_wl');p.add_argument('--jobs',type=int,default=2)
+    p.add_argument('--period',type=float,default=1000)
+    p.add_argument('--shard',help='Optional INDEX/COUNT partition, with a separate result file')
+    args=p.parse_args()
+    assert re.fullmatch(r'[a-zA-Z0-9_]+',args.name_prefix) and 1<=args.jobs<=4
     if args.matrix:
         from concurrent.futures import ThreadPoolExecutor
         cases=[dict(name='nominal'),dict(name='low_cold',vdd=4.5,temp=-20),dict(name='low_hot',vdd=4.5,temp=85),
@@ -203,9 +213,15 @@ if __name__=='__main__':
                dict(name='wire_1p_hot',vdd=4.5,temp=85,bl='1p',wl='2p',y='1p',edge=20),
                dict(name='vth_slow_n_fast_p',vthmn=.1,vthmp=.1,temp=85),
                dict(name='vth_fast_n_slow_p',vthmn=-.1,vthmp=-.1,temp=85)]
-        for case in cases:case['name']='shared_wl_'+case['name']
-        with ThreadPoolExecutor(max_workers=2) as pool:results=list(pool.map(lambda c:simulate(**c),cases))
-        write_json(REPORTS/'analog_shared_wl_matrix.json',results)
+        for case in cases:
+            case['name']=args.name_prefix+'_'+case['name'];case['period']=args.period
+        suffix=''
+        if args.shard:
+            index,count=map(int,args.shard.split('/'));assert 0<=index<count<=len(cases)
+            cases=cases[index::count];suffix=f'_shard{index}of{count}'
+        with ThreadPoolExecutor(max_workers=args.jobs) as pool:results=list(pool.map(lambda c:simulate(**c),cases))
+        write_json(REPORTS/f'analog_{args.name_prefix}_matrix{suffix}.json',results)
         raise SystemExit(0 if all(r['passed'] for r in results) else 1)
     else:
-        result=simulate();raise SystemExit(0 if result['passed'] else 1)
+        result=simulate(name=args.name_prefix+'_nominal',period=args.period)
+        raise SystemExit(0 if result['passed'] else 1)

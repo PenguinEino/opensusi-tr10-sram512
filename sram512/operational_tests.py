@@ -70,7 +70,7 @@ def extra_checks(path,case,vdd):
     return dict(passed=not failures,checks=checks,failure_count=len(failures),failures=failures[:40],
                 asynchronous_interruptions=len(case['reset_intervals']),stopped_clock_retention_ns=b-a)
 
-def simulate(folder,name='operational_hot',vdd=5,temp=85,recheck=False,solver='sparse'):
+def simulate(folder,name='operational_hot',vdd=5,temp=85,recheck=False,solver='sparse',pivrel=None,stream=False):
     work=WORK/'analog'/name;work.mkdir(parents=True,exist_ok=True)
     records,provenance=devices(folder);case=scenario();lines=device_lines(records)
     lines.append(f'VVDD vdd 0 PWL(0 0 {spice_time(case["supply_ramp_ns"])} {vdd})')
@@ -82,27 +82,39 @@ def simulate(folder,name='operational_hot',vdd=5,temp=85,recheck=False,solver='s
     for prefix,num,cap in [('BL',32,70),('BLB',32,70),('WL',16,400)]:
         for i in range(num):lines.append(f'Cwire_{prefix}{i} {prefix}{i} 0 {cap}f')
     lines+=['Cwire_Y Y 0 180f','Cwire_YB YB 0 180f','Cout SDO 0 10p',f'.param VSUP={vdd}',f'.temp {temp}',
-            '.control','save i(VVDD) '+' '.join(f'v({n})' for n in vectors(case)),
+            '.control','set num_threads=1','save i(VVDD) '+' '.join(f'v({n})' for n in vectors(case)),
             f'tran 20n {spice_time(case["stop_ns"])} 0 100n','write sram512_tb.raw','quit','.endc','.end']
     deck='\n'.join(lines)+'\n'
     assert solver in ('sparse','klu')
     if solver=='klu':deck=deck.replace('.control','.options klu\n.control',1)
+    if pivrel is not None:
+        assert 0<pivrel<=1
+        deck=deck.replace('.control',f'.options pivrel={pivrel:.12g}\n.control',1)
+    if stream:
+        block=re.search(r'(?s)\.control\n(.*?)\.endc',deck)
+        batch='\n'.join('.'+line for line in block[1].splitlines() if line.startswith(('save ','tran ')))
+        deck=deck[:block.start()]+batch+deck[block.end():]
+        local_init=work/'.spiceinit'
+        if recheck:assert local_init.read_text()=='set num_threads=1\n'
+        else:local_init.write_text('set num_threads=1\n')
     path=work/'test.spice';start=time.monotonic()
     if recheck:
         assert path.read_text()==deck;log=(work/'simulation.log').read_text()
     else:
-        path.write_text(deck);print('ngspice',name,flush=True);_,log=run(['ngspice','-b',path],work,'simulation.log')
+        path.write_text(deck);print('ngspice',name,flush=True)
+        _,log=run(['ngspice','-b']+(['-r','sram512_tb.raw'] if stream else [])+[path],work,'simulation.log')
     notices=simulation_diagnostics(log);result=verify(work/'sram512_tb.raw',case,vdd)
     extra=extra_checks(work/'sram512_tb.raw',case,vdd)
     result.update(operational_checks=extra,passed=result['passed'] and extra['passed'],
         checks=result['checks']+extra['checks'],failure_count=result['failure_count']+extra['failure_count'],
         source=provenance,voltage_v=vdd,temperature_c=temp,deck_sha256=sha(path),model_notices=notices,
-        supply_ramp_ns=case['supply_ramp_ns'],elapsed_seconds=round(time.monotonic()-start,2),solver=solver)
+        supply_ramp_ns=case['supply_ramp_ns'],elapsed_seconds=round(time.monotonic()-start,2),solver=solver,simulator_threads=1,numerical_pivrel=pivrel,
+        waveform_storage='streamed binary file' if stream else 'control memory then write',local_init_sha256=sha(work/'.spiceinit') if stream else None)
     write_json(work/'scenario.json',case);write_json(work/'result.json',result);write_json(REPORTS/(name+'.json'),result)
     print(name,result['passed'],result['checks'],result['failure_count'],flush=True)
     return result
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('folder',type=Path);p.add_argument('--name',default='operational_hot')
-    p.add_argument('--recheck',action='store_true');p.add_argument('--solver',choices=['sparse','klu'],default='sparse');a=p.parse_args()
-    result=simulate(a.folder,a.name,recheck=a.recheck,solver=a.solver);raise SystemExit(0 if result['passed'] else 1)
+    p.add_argument('--recheck',action='store_true');p.add_argument('--solver',choices=['sparse','klu'],default='sparse');p.add_argument('--pivrel',type=float);p.add_argument('--stream',action='store_true');a=p.parse_args()
+    result=simulate(a.folder,a.name,recheck=a.recheck,solver=a.solver,pivrel=a.pivrel,stream=a.stream);raise SystemExit(0 if result['passed'] else 1)
