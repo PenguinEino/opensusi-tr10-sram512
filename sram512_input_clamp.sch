@@ -11,13 +11,13 @@ C {TR-1umLIB/DN.sym} 0 80 0 0 {name=xlower model=DN w=3.6u l=3.6u m=1 spiceprefi
 N 0 -60 0 80 {lab=IN}
 C {devices/iopin.sym} -250 0 0 0 {name=pIN lab=IN}
 N -250 0 -190 0 {lab=IN}
-C {devices/lab_pin.sym} -190 0 0 0 {name=l13 lab=IN}
+C {devices/lab_pin.sym} -190 0 0 0 {name=l13 lab=IN hide_texts=true}
 N -190 0 0 0 {lab=IN}
 C {devices/iopin.sym} -250 -120 0 0 {name=pVDD lab=VDD}
 N -250 -120 -190 -120 {lab=VDD}
-C {devices/lab_pin.sym} -190 -120 0 0 {name=l17 lab=VDD}
+C {devices/lab_pin.sym} -190 -120 0 0 {name=l17 lab=VDD hide_texts=true}
 C {devices/iopin.sym} -250 140 0 0 {name=pVSS lab=VSS}
 N -250 140 -190 140 {lab=VSS}
-C {devices/lab_pin.sym} -190 140 0 0 {name=l20 lab=VSS}
+C {devices/lab_pin.sym} -190 140 0 0 {name=l20 lab=VSS hide_texts=true}
 C {devices/lab_pin.sym} 0 -120 0 0 {name=l21 lab=VDD}
 C {devices/lab_pin.sym} 0 140 0 0 {name=l22 lab=VSS}

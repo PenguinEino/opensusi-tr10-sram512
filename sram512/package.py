@@ -18,7 +18,8 @@ ENTRY_POINTS = ('open', 'verify_saved_layout', 'verify_digital', 'analog',
     'postlayout', 'operational_tests', 'startup_tests', 'startup_summary',
     'pcell_preservation', 'validation_summary', 'compare_timesteps',
     'verification_jobs', 'signal_resolution', 'route_waveforms', 'power_wire_audit',
-    'save_candidate', 'strengthen_signal_routes', 'package')
+    'save_candidate', 'strengthen_signal_routes', 'reinforce_decoder_routes',
+    'widen_decoder_poly', 'live_probe', 'export_schematics', 'package')
 
 
 def python_dependencies(initial):
@@ -52,7 +53,9 @@ def selected_files(summary):
     python += [ROOT / 'klayout/sram_pcell/build.py', ROOT / 'klayout/dense_sram/build.py']
     files |= python_dependencies(python)
     files.update(HERE / n for n in ('README.md', 'SPEC.md', 'SUBMISSION.md', 'EXPERIMENTS.md',
-        'design.json', 'analog_scenario.json'))
+        'THIRD_PARTY.md', 'design.json', 'analog_scenario.json'))
+    files.update((HERE/'licenses').glob('*.txt'))
+    files.update((HERE/'diagrams').glob('*.svg'))
     files.update(p for p in (HERE / 'layout').iterdir() if p.is_file())
     files.update(REPORTS.glob('*.json'))
     files.update(REPORTS.glob('*.png'))

@@ -2727,10 +2727,10 @@ N 10030 -240 10030 4100 {lab=BLB31}
 C {devices/iopin.sym} 10030 -240 0 0 {name=pBLB31 lab=BLB31}
 C {devices/iopin.sym} -300 -340 0 0 {name=pVDD lab=VDD}
 N -300 -340 -240 -340 {lab=VDD}
-C {devices/lab_pin.sym} -240 -340 0 0 {name=l2729 lab=VDD}
+C {devices/lab_pin.sym} -240 -340 0 0 {name=l2729 lab=VDD hide_texts=true}
 C {devices/iopin.sym} -100 -340 0 0 {name=pVSS lab=VSS}
 N -100 -340 -40 -340 {lab=VSS}
-C {devices/lab_pin.sym} -40 -340 0 0 {name=l2732 lab=VSS}
+C {devices/lab_pin.sym} -40 -340 0 0 {name=l2732 lab=VSS hide_texts=true}
 C {devices/lab_pin.sym} 100 -40 0 0 {name=l2733 lab=VDD}
 C {devices/lab_pin.sym} 100 40 0 0 {name=l2734 lab=VSS}
 C {devices/lab_pin.sym} 420 -40 0 0 {name=l2735 lab=VDD}

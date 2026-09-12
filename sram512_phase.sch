@@ -239,10 +239,10 @@ N 770 60 770 1340 {lab=RESET}
 C {devices/lab_wire.sym} 770 60 0 0 {name=l238 lab=RESET}
 C {devices/ipin.sym} -520 10 0 0 {name=pCLK lab=CLK}
 N -520 10 -460 10 {lab=CLK}
-C {devices/lab_pin.sym} -460 10 0 0 {name=l241 lab=CLK}
+C {devices/lab_pin.sym} -460 10 0 0 {name=l241 lab=CLK hide_texts=true}
 C {devices/ipin.sym} -520 100 0 0 {name=pRESET lab=RESET}
 N -520 100 -460 100 {lab=RESET}
-C {devices/lab_pin.sym} -460 100 0 0 {name=l244 lab=RESET}
+C {devices/lab_pin.sym} -460 100 0 0 {name=l244 lab=RESET hide_texts=true}
 N 2340 2160 2540 2160 {lab=RX}
 C {devices/opin.sym} 2540 2160 0 0 {name=pRX lab=RX}
 N 2580 0 2780 0 {lab=E0}
@@ -263,10 +263,10 @@ N 2580 1680 2780 1680 {lab=E7}
 C {devices/opin.sym} 2780 1680 0 0 {name=pE7 lab=E7}
 C {devices/iopin.sym} -520 -200 0 0 {name=pVDD lab=VDD}
 N -520 -200 -460 -200 {lab=VDD}
-C {devices/lab_pin.sym} -460 -200 0 0 {name=l265 lab=VDD}
+C {devices/lab_pin.sym} -460 -200 0 0 {name=l265 lab=VDD hide_texts=true}
 C {devices/iopin.sym} -520 -130 0 0 {name=pVSS lab=VSS}
 N -520 -130 -460 -130 {lab=VSS}
-C {devices/lab_pin.sym} -460 -130 0 0 {name=l268 lab=VSS}
+C {devices/lab_pin.sym} -460 -130 0 0 {name=l268 lab=VSS hide_texts=true}
 C {devices/lab_pin.sym} -20 1680 0 0 {name=l269 lab=C3B}
 C {devices/lab_pin.sym} -20 1660 0 0 {name=l270 lab=C2B}
 C {devices/lab_pin.sym} 30 1590 0 0 {name=l271 lab=VDD}

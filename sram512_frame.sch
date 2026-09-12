@@ -158,16 +158,16 @@ N 3260 60 3260 920 {lab=RESET}
 C {devices/lab_wire.sym} 3260 60 0 0 {name=l157 lab=RESET}
 C {devices/ipin.sym} -520 10 0 0 {name=pCLK lab=CLK}
 N -520 10 -460 10 {lab=CLK}
-C {devices/lab_pin.sym} -460 10 0 0 {name=l160 lab=CLK}
+C {devices/lab_pin.sym} -460 10 0 0 {name=l160 lab=CLK hide_texts=true}
 C {devices/ipin.sym} -520 100 0 0 {name=pRESET lab=RESET}
 N -520 100 -460 100 {lab=RESET}
-C {devices/lab_pin.sym} -460 100 0 0 {name=l163 lab=RESET}
+C {devices/lab_pin.sym} -460 100 0 0 {name=l163 lab=RESET hide_texts=true}
 C {devices/ipin.sym} -520 190 0 0 {name=pRX lab=RX}
 N -520 190 -460 190 {lab=RX}
-C {devices/lab_pin.sym} -460 190 0 0 {name=l166 lab=RX}
+C {devices/lab_pin.sym} -460 190 0 0 {name=l166 lab=RX hide_texts=true}
 C {devices/ipin.sym} -520 280 0 0 {name=pSDI lab=SDI}
 N -520 280 -460 280 {lab=SDI}
-C {devices/lab_pin.sym} -460 280 0 0 {name=l169 lab=SDI}
+C {devices/lab_pin.sym} -460 280 0 0 {name=l169 lab=SDI hide_texts=true}
 N 330 0 530 0 {lab=DIN}
 C {devices/opin.sym} 530 0 0 0 {name=pDIN lab=DIN}
 N 330 40 530 40 {lab=DINB}
@@ -210,10 +210,10 @@ N 3370 820 3570 820 {lab=RA3B}
 C {devices/opin.sym} 3570 820 0 0 {name=pRA3B lab=RA3B}
 C {devices/iopin.sym} -520 -200 0 0 {name=pVDD lab=VDD}
 N -520 -200 -460 -200 {lab=VDD}
-C {devices/lab_pin.sym} -460 -200 0 0 {name=l212 lab=VDD}
+C {devices/lab_pin.sym} -460 -200 0 0 {name=l212 lab=VDD hide_texts=true}
 C {devices/iopin.sym} -520 -130 0 0 {name=pVSS lab=VSS}
 N -520 -130 -460 -130 {lab=VSS}
-C {devices/lab_pin.sym} -460 -130 0 0 {name=l215 lab=VSS}
+C {devices/lab_pin.sym} -460 -130 0 0 {name=l215 lab=VSS hide_texts=true}
 C {devices/lab_pin.sym} -20 20 0 0 {name=l216 lab=SDI}
 C {devices/lab_pin.sym} 20 40 0 0 {name=l217 lab=RX}
 C {devices/lab_pin.sym} 40 -40 0 0 {name=l218 lab=VDD}

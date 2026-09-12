@@ -23,7 +23,9 @@ class Sheet(base.Sheet):
         super().port(name,x,y,direction);self.port_names.add(name)
     def named_port(self,name,x,y,direction='in'):
         self.port(name,x,y,direction)
-        self.wire([(x,y),(x+60,y)],name);self.label(x+60,y,name)
+        self.wire([(x,y),(x+60,y)],name)
+        self.comp('devices/lab_pin.sym',x+60,y,
+                  f'name=l{len(self.lines)} lab={name} hide_texts=true')
     def finish(self):
         counts=defaultdict(int)
         for _,_,n in self.pins.values():counts[n]+=1

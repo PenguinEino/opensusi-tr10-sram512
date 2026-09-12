@@ -31,100 +31,100 @@ N 200 1470 480 1470 {lab=READ_DATA}
 C {devices/lab_wire.sym} 200 1220 0 0 {name=l30 lab=READ_DATA}
 C {devices/ipin.sym} -1100 300 0 0 {name=pCLK lab=CLK}
 N -1100 300 -1040 300 {lab=CLK}
-C {devices/lab_pin.sym} -1040 300 0 0 {name=l33 lab=CLK}
+C {devices/lab_pin.sym} -1040 300 0 0 {name=l33 lab=CLK hide_texts=true}
 C {devices/ipin.sym} -1100 450 0 0 {name=pRESET lab=RESET}
 N -1100 450 -1040 450 {lab=RESET}
-C {devices/lab_pin.sym} -1040 450 0 0 {name=l36 lab=RESET}
+C {devices/lab_pin.sym} -1040 450 0 0 {name=l36 lab=RESET hide_texts=true}
 C {devices/ipin.sym} -1100 600 0 0 {name=pSDI lab=SDI}
 N -1100 600 -1040 600 {lab=SDI}
-C {devices/lab_pin.sym} -1040 600 0 0 {name=l39 lab=SDI}
+C {devices/lab_pin.sym} -1040 600 0 0 {name=l39 lab=SDI hide_texts=true}
 C {devices/ipin.sym} -1100 750 0 0 {name=pWE lab=WE}
 N -1100 750 -1040 750 {lab=WE}
-C {devices/lab_pin.sym} -1040 750 0 0 {name=l42 lab=WE}
+C {devices/lab_pin.sym} -1040 750 0 0 {name=l42 lab=WE hide_texts=true}
 C {devices/ipin.sym} -1100 900 0 0 {name=pSOUT lab=SOUT}
 N -1100 900 -1040 900 {lab=SOUT}
-C {devices/lab_pin.sym} -1040 900 0 0 {name=l45 lab=SOUT}
+C {devices/lab_pin.sym} -1040 900 0 0 {name=l45 lab=SOUT hide_texts=true}
 C {devices/opin.sym} 1450 -450 0 0 {name=pDIN lab=DIN}
 N 1450 -450 1510 -450 {lab=DIN}
-C {devices/lab_pin.sym} 1510 -450 0 0 {name=l48 lab=DIN}
+C {devices/lab_pin.sym} 1510 -450 0 0 {name=l48 lab=DIN hide_texts=true}
 C {devices/opin.sym} 1450 -370 0 0 {name=pDINB lab=DINB}
 N 1450 -370 1510 -370 {lab=DINB}
-C {devices/lab_pin.sym} 1510 -370 0 0 {name=l51 lab=DINB}
+C {devices/lab_pin.sym} 1510 -370 0 0 {name=l51 lab=DINB hide_texts=true}
 C {devices/opin.sym} 1450 -290 0 0 {name=pCA0 lab=CA0}
 N 1450 -290 1510 -290 {lab=CA0}
-C {devices/lab_pin.sym} 1510 -290 0 0 {name=l54 lab=CA0}
+C {devices/lab_pin.sym} 1510 -290 0 0 {name=l54 lab=CA0 hide_texts=true}
 C {devices/opin.sym} 1450 -210 0 0 {name=pCA0B lab=CA0B}
 N 1450 -210 1510 -210 {lab=CA0B}
-C {devices/lab_pin.sym} 1510 -210 0 0 {name=l57 lab=CA0B}
+C {devices/lab_pin.sym} 1510 -210 0 0 {name=l57 lab=CA0B hide_texts=true}
 C {devices/opin.sym} 1450 -130 0 0 {name=pCA1 lab=CA1}
 N 1450 -130 1510 -130 {lab=CA1}
-C {devices/lab_pin.sym} 1510 -130 0 0 {name=l60 lab=CA1}
+C {devices/lab_pin.sym} 1510 -130 0 0 {name=l60 lab=CA1 hide_texts=true}
 C {devices/opin.sym} 1450 -50 0 0 {name=pCA1B lab=CA1B}
 N 1450 -50 1510 -50 {lab=CA1B}
-C {devices/lab_pin.sym} 1510 -50 0 0 {name=l63 lab=CA1B}
+C {devices/lab_pin.sym} 1510 -50 0 0 {name=l63 lab=CA1B hide_texts=true}
 C {devices/opin.sym} 1450 30 0 0 {name=pCA2 lab=CA2}
 N 1450 30 1510 30 {lab=CA2}
-C {devices/lab_pin.sym} 1510 30 0 0 {name=l66 lab=CA2}
+C {devices/lab_pin.sym} 1510 30 0 0 {name=l66 lab=CA2 hide_texts=true}
 C {devices/opin.sym} 1450 110 0 0 {name=pCA2B lab=CA2B}
 N 1450 110 1510 110 {lab=CA2B}
-C {devices/lab_pin.sym} 1510 110 0 0 {name=l69 lab=CA2B}
+C {devices/lab_pin.sym} 1510 110 0 0 {name=l69 lab=CA2B hide_texts=true}
 C {devices/opin.sym} 1450 190 0 0 {name=pCA3 lab=CA3}
 N 1450 190 1510 190 {lab=CA3}
-C {devices/lab_pin.sym} 1510 190 0 0 {name=l72 lab=CA3}
+C {devices/lab_pin.sym} 1510 190 0 0 {name=l72 lab=CA3 hide_texts=true}
 C {devices/opin.sym} 1450 270 0 0 {name=pCA3B lab=CA3B}
 N 1450 270 1510 270 {lab=CA3B}
-C {devices/lab_pin.sym} 1510 270 0 0 {name=l75 lab=CA3B}
+C {devices/lab_pin.sym} 1510 270 0 0 {name=l75 lab=CA3B hide_texts=true}
 C {devices/opin.sym} 1450 350 0 0 {name=pCA4 lab=CA4}
 N 1450 350 1510 350 {lab=CA4}
-C {devices/lab_pin.sym} 1510 350 0 0 {name=l78 lab=CA4}
+C {devices/lab_pin.sym} 1510 350 0 0 {name=l78 lab=CA4 hide_texts=true}
 C {devices/opin.sym} 1450 430 0 0 {name=pCA4B lab=CA4B}
 N 1450 430 1510 430 {lab=CA4B}
-C {devices/lab_pin.sym} 1510 430 0 0 {name=l81 lab=CA4B}
+C {devices/lab_pin.sym} 1510 430 0 0 {name=l81 lab=CA4B hide_texts=true}
 C {devices/opin.sym} 1450 510 0 0 {name=pRA0 lab=RA0}
 N 1450 510 1510 510 {lab=RA0}
-C {devices/lab_pin.sym} 1510 510 0 0 {name=l84 lab=RA0}
+C {devices/lab_pin.sym} 1510 510 0 0 {name=l84 lab=RA0 hide_texts=true}
 C {devices/opin.sym} 1450 590 0 0 {name=pRA0B lab=RA0B}
 N 1450 590 1510 590 {lab=RA0B}
-C {devices/lab_pin.sym} 1510 590 0 0 {name=l87 lab=RA0B}
+C {devices/lab_pin.sym} 1510 590 0 0 {name=l87 lab=RA0B hide_texts=true}
 C {devices/opin.sym} 1450 670 0 0 {name=pRA1 lab=RA1}
 N 1450 670 1510 670 {lab=RA1}
-C {devices/lab_pin.sym} 1510 670 0 0 {name=l90 lab=RA1}
+C {devices/lab_pin.sym} 1510 670 0 0 {name=l90 lab=RA1 hide_texts=true}
 C {devices/opin.sym} 1450 750 0 0 {name=pRA1B lab=RA1B}
 N 1450 750 1510 750 {lab=RA1B}
-C {devices/lab_pin.sym} 1510 750 0 0 {name=l93 lab=RA1B}
+C {devices/lab_pin.sym} 1510 750 0 0 {name=l93 lab=RA1B hide_texts=true}
 C {devices/opin.sym} 1450 830 0 0 {name=pRA2 lab=RA2}
 N 1450 830 1510 830 {lab=RA2}
-C {devices/lab_pin.sym} 1510 830 0 0 {name=l96 lab=RA2}
+C {devices/lab_pin.sym} 1510 830 0 0 {name=l96 lab=RA2 hide_texts=true}
 C {devices/opin.sym} 1450 910 0 0 {name=pRA2B lab=RA2B}
 N 1450 910 1510 910 {lab=RA2B}
-C {devices/lab_pin.sym} 1510 910 0 0 {name=l99 lab=RA2B}
+C {devices/lab_pin.sym} 1510 910 0 0 {name=l99 lab=RA2B hide_texts=true}
 C {devices/opin.sym} 1450 990 0 0 {name=pRA3 lab=RA3}
 N 1450 990 1510 990 {lab=RA3}
-C {devices/lab_pin.sym} 1510 990 0 0 {name=l102 lab=RA3}
+C {devices/lab_pin.sym} 1510 990 0 0 {name=l102 lab=RA3 hide_texts=true}
 C {devices/opin.sym} 1450 1070 0 0 {name=pRA3B lab=RA3B}
 N 1450 1070 1510 1070 {lab=RA3B}
-C {devices/lab_pin.sym} 1510 1070 0 0 {name=l105 lab=RA3B}
+C {devices/lab_pin.sym} 1510 1070 0 0 {name=l105 lab=RA3B hide_texts=true}
 C {devices/opin.sym} 1450 1150 0 0 {name=pPREB lab=PREB}
 N 1450 1150 1510 1150 {lab=PREB}
-C {devices/lab_pin.sym} 1510 1150 0 0 {name=l108 lab=PREB}
+C {devices/lab_pin.sym} 1510 1150 0 0 {name=l108 lab=PREB hide_texts=true}
 C {devices/opin.sym} 1450 1230 0 0 {name=pSAE lab=SAE}
 N 1450 1230 1510 1230 {lab=SAE}
-C {devices/lab_pin.sym} 1510 1230 0 0 {name=l111 lab=SAE}
+C {devices/lab_pin.sym} 1510 1230 0 0 {name=l111 lab=SAE hide_texts=true}
 C {devices/opin.sym} 1450 1310 0 0 {name=pWL_EN lab=WL_EN}
 N 1450 1310 1510 1310 {lab=WL_EN}
-C {devices/lab_pin.sym} 1510 1310 0 0 {name=l114 lab=WL_EN}
+C {devices/lab_pin.sym} 1510 1310 0 0 {name=l114 lab=WL_EN hide_texts=true}
 C {devices/opin.sym} 1450 1390 0 0 {name=pWRITE_EN lab=WRITE_EN}
 N 1450 1390 1510 1390 {lab=WRITE_EN}
-C {devices/lab_pin.sym} 1510 1390 0 0 {name=l117 lab=WRITE_EN}
+C {devices/lab_pin.sym} 1510 1390 0 0 {name=l117 lab=WRITE_EN hide_texts=true}
 C {devices/opin.sym} 1450 1470 0 0 {name=pSDO lab=SDO}
 N 1450 1470 1510 1470 {lab=SDO}
-C {devices/lab_pin.sym} 1510 1470 0 0 {name=l120 lab=SDO}
+C {devices/lab_pin.sym} 1510 1470 0 0 {name=l120 lab=SDO hide_texts=true}
 C {devices/iopin.sym} -800 -690 0 0 {name=pVDD lab=VDD}
 N -800 -690 -740 -690 {lab=VDD}
-C {devices/lab_pin.sym} -740 -690 0 0 {name=l123 lab=VDD}
+C {devices/lab_pin.sym} -740 -690 0 0 {name=l123 lab=VDD hide_texts=true}
 C {devices/iopin.sym} -500 -690 0 0 {name=pVSS lab=VSS}
 N -500 -690 -440 -690 {lab=VSS}
-C {devices/lab_pin.sym} -440 -690 0 0 {name=l126 lab=VSS}
+C {devices/lab_pin.sym} -440 -690 0 0 {name=l126 lab=VSS hide_texts=true}
 C {devices/lab_pin.sym} -770 -490 0 0 {name=l127 lab=VDD}
 C {devices/lab_pin.sym} -820 -450 0 0 {name=l128 lab=CLK}
 C {devices/lab_pin.sym} -700 -450 2 0 {name=l129 lab=CKI}

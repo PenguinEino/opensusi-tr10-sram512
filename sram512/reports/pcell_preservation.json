@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "source_gds_sha256": "f32c213db5efaa09449b3c8db709c2b547bae09c6fe011f1eb284dda8342eff2",
+  "source_gds_sha256": "56810ad742a73036fb9db5207c75a2fcd63d344833c17da5f6270f1dc128bca1",
   "source_generator": "klayout/sram_pcell/build.py",
   "generator_sha256": "5394337bde7072d74d5755d992398bb07208dea54dd81fd7080be0e8411e868a",
   "family": "six_single",

@@ -11,18 +11,18 @@ REQUIRED = [
     ('saved_layout_recheck', 'Current schematic / drawing DRC / strict LVS / full mask DRC', True),
     ('pcell_preservation', 'Original PCell geometry preservation', True),
     ('digital', 'All 512 addresses, March C-, all reset phases', False),
-    ('signalfix_decode_coverage', 'Extracted MOS: every row and column, both data', True),
-    ('signalfix_startup_5n', 'Supply ramp with physical signal and power networks', True),
-    ('signalfix_startup_1n', 'Finer-step supply ramp, all MOS voltages and vias', True),
-    ('signalfix_startup_comparison', 'Startup time-step comparison on the current GDS', True),
-    ('signalfix_mesh4_prefix', 'All physical gate taps and voltages in first complete access', True),
-    ('signalfix_mesh8_prefix', 'Finer spatial RC model of first complete access', True),
-    ('signalfix_signal_resolution', 'Spatial RC resolution: both circuits PASS and peaks agree', True),
-    ('signalfix_power_paths_ramp', 'Power ramp followed by 16 accesses, signal and supply R/C', True),
-    ('signalfix_pg_rc3_lowhot', 'Combined supply and RC x3, 4.5 V / 85 C, all four corners, 16 accesses', True),
-    ('signalfix_power_paths_ramp_power_wires', 'Supply-metal mean/RMS current screen over the full nominal sequence', True),
-    ('signalfix_pg_rc3_lowhot_power_wires', 'Supply-metal mean/RMS current screen over the full RC x3 low/hot sequence', True),
-    ('signalfix_operational_hot', '20 us supply ramp, 1 ms retention and asynchronous interruptions', True),
+    ('decoderfix_decode_coverage', 'Extracted MOS: every row and column, both data', True),
+    ('decoderfix_startup_5n', 'Supply ramp with physical signal and power networks', True),
+    ('decoderfix_startup_1n', 'Finer-step supply ramp, all MOS voltages and vias', True),
+    ('decoderfix_startup_comparison', 'Startup time-step comparison on the current GDS', True),
+    ('decoderfix_mesh4_prefix', 'All physical gate taps and voltages in first complete access', True),
+    ('decoderfix_mesh8_prefix', 'Finer spatial RC model of first complete access', True),
+    ('decoderfix_signal_resolution', 'Spatial RC resolution: both circuits PASS and peaks agree', True),
+    ('decoderfix_power_paths_ramp', 'Power ramp followed by 16 accesses, signal and supply R/C', True),
+    ('decoderfix_pg_rc3_lowhot', 'Combined supply and RC x3, 4.5 V / 85 C, all four corners, 16 accesses', True),
+    ('decoderfix_power_paths_ramp_power_wires', 'Supply-metal mean/RMS current screen over the full nominal sequence', True),
+    ('decoderfix_pg_rc3_lowhot_power_wires', 'Supply-metal mean/RMS current screen over the full RC x3 low/hot sequence', True),
+    ('decoderfix_operational_hot', '20 us supply ramp, 1 ms retention and asynchronous interruptions', True),
 ] + [
     ('analog_pd102_' + n, 'Schematic MOS sensitivity: ' + n, False)
     for n in ('nominal', 'low_cold', 'low_hot', 'high_cold', 'high_hot',
@@ -30,21 +30,21 @@ REQUIRED = [
 ]
 
 REQUIRED_OPERATIONS = {
-    'signalfix_decode_coverage':136,
-    'signalfix_power_paths_ramp':16,
-    'signalfix_pg_rc3_lowhot':16,
-    'signalfix_operational_hot':28,
-    'signalfix_mesh4_prefix':1,
-    'signalfix_mesh8_prefix':1,
+    'decoderfix_decode_coverage':136,
+    'decoderfix_power_paths_ramp':16,
+    'decoderfix_pg_rc3_lowhot':16,
+    'decoderfix_operational_hot':28,
+    'decoderfix_mesh4_prefix':1,
+    'decoderfix_mesh8_prefix':1,
     **{'analog_pd102_'+n:16 for n in ('nominal','low_cold','low_hot','high_cold','high_hot',
         'wire_3x','wire_1p_hot','vth_slow_n_fast_p','vth_fast_n_slow_p')},
 }
 
-REQUIRE_SIGNAL_MESH = {'signalfix_power_paths_ramp', 'signalfix_pg_rc3_lowhot',
-                      'signalfix_mesh4_prefix','signalfix_mesh8_prefix'}
+REQUIRE_SIGNAL_MESH = {'decoderfix_power_paths_ramp', 'decoderfix_pg_rc3_lowhot',
+                      'decoderfix_mesh4_prefix','decoderfix_mesh8_prefix'}
 KNOWN_SIGNAL_DIAGNOSTICS = ('pd102_signal_mesh4_prefix', 'pd102_signal_mesh8_prefix',
                             'signalfix_decoder_voltage_diagnostic')
-WIRE_AUDITS = {'signalfix_'+n+'_power_wires':'signalfix_'+n
+WIRE_AUDITS = {'decoderfix_'+n+'_power_wires':'decoderfix_'+n
                for n in ('power_paths_ramp','pg_rc3_lowhot')}
 
 

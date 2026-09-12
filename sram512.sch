@@ -363,25 +363,25 @@ C {sram512_input_clamp.sym} -260 980 0 0 {name=xinput_sdi}
 C {sram512_input_clamp.sym} 160 980 0 0 {name=xinput_we}
 C {devices/ipin.sym} -1100 1400 0 0 {name=pCLK lab=CLK}
 N -1100 1400 -1040 1400 {lab=CLK}
-C {devices/lab_pin.sym} -1040 1400 0 0 {name=l365 lab=CLK}
+C {devices/lab_pin.sym} -1040 1400 0 0 {name=l365 lab=CLK hide_texts=true}
 C {devices/ipin.sym} -1100 1540 0 0 {name=pRESET lab=RESET}
 N -1100 1540 -1040 1540 {lab=RESET}
-C {devices/lab_pin.sym} -1040 1540 0 0 {name=l368 lab=RESET}
+C {devices/lab_pin.sym} -1040 1540 0 0 {name=l368 lab=RESET hide_texts=true}
 C {devices/ipin.sym} -1100 1680 0 0 {name=pSDI lab=SDI}
 N -1100 1680 -1040 1680 {lab=SDI}
-C {devices/lab_pin.sym} -1040 1680 0 0 {name=l371 lab=SDI}
+C {devices/lab_pin.sym} -1040 1680 0 0 {name=l371 lab=SDI hide_texts=true}
 C {devices/ipin.sym} -1100 1820 0 0 {name=pWE lab=WE}
 N -1100 1820 -1040 1820 {lab=WE}
-C {devices/lab_pin.sym} -1040 1820 0 0 {name=l374 lab=WE}
+C {devices/lab_pin.sym} -1040 1820 0 0 {name=l374 lab=WE hide_texts=true}
 C {devices/opin.sym} -1100 1960 0 0 {name=pSDO lab=SDO}
 N -1100 1960 -1040 1960 {lab=SDO}
-C {devices/lab_pin.sym} -1040 1960 0 0 {name=l377 lab=SDO}
+C {devices/lab_pin.sym} -1040 1960 0 0 {name=l377 lab=SDO hide_texts=true}
 C {devices/iopin.sym} -1100 2100 0 0 {name=pVDD lab=VDD}
 N -1100 2100 -1040 2100 {lab=VDD}
-C {devices/lab_pin.sym} -1040 2100 0 0 {name=l380 lab=VDD}
+C {devices/lab_pin.sym} -1040 2100 0 0 {name=l380 lab=VDD hide_texts=true}
 C {devices/iopin.sym} -1100 2240 0 0 {name=pVSS lab=VSS}
 N -1100 2240 -1040 2240 {lab=VSS}
-C {devices/lab_pin.sym} -1040 2240 0 0 {name=l383 lab=VSS}
+C {devices/lab_pin.sym} -1040 2240 0 0 {name=l383 lab=VSS hide_texts=true}
 T {Common lines Y / YB feed the shared write pulldown and 7T sense amplifier} 1000 3270 0 0 0.34 0.34 {}
 T {E0 precharge; E1 release; E2 write drive; E3 WL; E4 SAE; E5 WL off; E6 capture; E7 end} 1000 3340 0 0 0.3 0.3 {}
 C {devices/lab_pin.sym} 3800 -720 0 0 {name=l386 lab=VDD}

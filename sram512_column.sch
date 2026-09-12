@@ -21,16 +21,16 @@ N 640 190 640 290 {lab=YB}
 C {devices/iopin.sym} 640 290 0 0 {name=pYB lab=YB}
 C {devices/ipin.sym} -280 -200 0 0 {name=pPREB lab=PREB}
 N -280 -200 -220 -200 {lab=PREB}
-C {devices/lab_pin.sym} -220 -200 0 0 {name=l23 lab=PREB}
+C {devices/lab_pin.sym} -220 -200 0 0 {name=l23 lab=PREB hide_texts=true}
 C {devices/ipin.sym} -280 -40 0 0 {name=pCOL lab=COL}
 N -280 -40 -220 -40 {lab=COL}
-C {devices/lab_pin.sym} -220 -40 0 0 {name=l26 lab=COL}
+C {devices/lab_pin.sym} -220 -40 0 0 {name=l26 lab=COL hide_texts=true}
 C {devices/iopin.sym} -280 120 0 0 {name=pVDD lab=VDD}
 N -280 120 -220 120 {lab=VDD}
-C {devices/lab_pin.sym} -220 120 0 0 {name=l29 lab=VDD}
+C {devices/lab_pin.sym} -220 120 0 0 {name=l29 lab=VDD hide_texts=true}
 C {devices/iopin.sym} -280 280 0 0 {name=pVSS lab=VSS}
 N -280 280 -220 280 {lab=VSS}
-C {devices/lab_pin.sym} -220 280 0 0 {name=l32 lab=VSS}
+C {devices/lab_pin.sym} -220 280 0 0 {name=l32 lab=VSS hide_texts=true}
 C {devices/lab_pin.sym} 0 -160 0 0 {name=l33 lab=PREB}
 C {devices/lab_pin.sym} 40 -190 0 0 {name=l34 lab=VDD}
 C {devices/lab_pin.sym} 40 -160 0 0 {name=l35 lab=VDD}

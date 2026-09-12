@@ -54,8 +54,8 @@
     80
   ],
   "dimension_scope": "Physical masks listed in unmodified run_mdp.drc; all derived recognition layers remain present and fully checked.",
-  "drawing_sha256": "f32c213db5efaa09449b3c8db709c2b547bae09c6fe011f1eb284dda8342eff2",
-  "mask_sha256": "61b0268c6324f2864ae699c44589e1cb019bbc135b24c2356830418b5ebf41fa",
+  "drawing_sha256": "56810ad742a73036fb9db5207c75a2fcd63d344833c17da5f6270f1dc128bca1",
+  "mask_sha256": "79090705632153bb7b22c1db64d7b6d82f57d9ca900e8c8aa03f1fef28e70318",
   "pdk": {
     "profile": "dev",
     "pdk_directory": "/home/ishi-kai/sram/.pdk/dev/TR-1um",
@@ -95,7 +95,7 @@
       "libs.tech/klayout/tech/lvs/run.lvs": "b9c776230ab5afe9ddd2dccee5996c49acae5db0fc6ba5cd375dd6be1d36a6f0"
     }
   },
-  "source": "/home/ishi-kai/sram/build/sram512/extracted_sources/f32c213db5efaa09449b3c8db709c2b547bae09c6fe011f1eb284dda8342eff2",
+  "source": "/home/ishi-kai/sram/build/sram512/extracted_sources/56810ad742a73036fb9db5207c75a2fcd63d344833c17da5f6270f1dc128bca1",
   "waiver_regions": 0,
   "scope": "Official MDP and complete IP62 mask DRC of the core; package/pad integration is separate."
 }

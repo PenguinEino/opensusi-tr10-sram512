@@ -1,6 +1,6 @@
 {
   "top": "sram512_macro",
-  "gds_sha256": "f32c213db5efaa09449b3c8db709c2b547bae09c6fe011f1eb284dda8342eff2",
+  "gds_sha256": "56810ad742a73036fb9db5207c75a2fcd63d344833c17da5f6270f1dc128bca1",
   "reference_sha256": "8c42cccf2172fcd10c2871b79bfc890bf2aa80ef986012b27632737fd58e9cc9",
   "pdk": {
     "profile": "dev",

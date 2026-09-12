@@ -38,19 +38,19 @@ C {TR-1um_5_stdcell/AND3_X1.sym} 2450 1800 0 0 {name=xdriver14}
 C {TR-1um_5_stdcell/AND3_X1.sym} 2450 2100 0 0 {name=xdriver15}
 C {devices/ipin.sym} -520 10 0 0 {name=pRA0 lab=RA0}
 N -520 10 -460 10 {lab=RA0}
-C {devices/lab_pin.sym} -460 10 0 0 {name=l40 lab=RA0}
+C {devices/lab_pin.sym} -460 10 0 0 {name=l40 lab=RA0 hide_texts=true}
 C {devices/ipin.sym} -520 100 0 0 {name=pRA1 lab=RA1}
 N -520 100 -460 100 {lab=RA1}
-C {devices/lab_pin.sym} -460 100 0 0 {name=l43 lab=RA1}
+C {devices/lab_pin.sym} -460 100 0 0 {name=l43 lab=RA1 hide_texts=true}
 C {devices/ipin.sym} -520 190 0 0 {name=pRA2 lab=RA2}
 N -520 190 -460 190 {lab=RA2}
-C {devices/lab_pin.sym} -460 190 0 0 {name=l46 lab=RA2}
+C {devices/lab_pin.sym} -460 190 0 0 {name=l46 lab=RA2 hide_texts=true}
 C {devices/ipin.sym} -520 280 0 0 {name=pRA3 lab=RA3}
 N -520 280 -460 280 {lab=RA3}
-C {devices/lab_pin.sym} -460 280 0 0 {name=l49 lab=RA3}
+C {devices/lab_pin.sym} -460 280 0 0 {name=l49 lab=RA3 hide_texts=true}
 C {devices/ipin.sym} -520 370 0 0 {name=pWL_EN lab=WL_EN}
 N -520 370 -460 370 {lab=WL_EN}
-C {devices/lab_pin.sym} -460 370 0 0 {name=l52 lab=WL_EN}
+C {devices/lab_pin.sym} -460 370 0 0 {name=l52 lab=WL_EN hide_texts=true}
 N 1510 0 1710 0 {lab=WL0}
 C {devices/opin.sym} 1710 0 0 0 {name=pWL0 lab=WL0}
 N 1510 300 1710 300 {lab=WL1}
@@ -85,10 +85,10 @@ N 2560 2100 2760 2100 {lab=WL15}
 C {devices/opin.sym} 2760 2100 0 0 {name=pWL15 lab=WL15}
 C {devices/iopin.sym} -520 -200 0 0 {name=pVDD lab=VDD}
 N -520 -200 -460 -200 {lab=VDD}
-C {devices/lab_pin.sym} -460 -200 0 0 {name=l87 lab=VDD}
+C {devices/lab_pin.sym} -460 -200 0 0 {name=l87 lab=VDD hide_texts=true}
 C {devices/iopin.sym} -520 -130 0 0 {name=pVSS lab=VSS}
 N -520 -130 -460 -130 {lab=VSS}
-C {devices/lab_pin.sym} -460 -130 0 0 {name=l90 lab=VSS}
+C {devices/lab_pin.sym} -460 -130 0 0 {name=l90 lab=VSS hide_texts=true}
 C {devices/lab_pin.sym} -120 -40 0 0 {name=l91 lab=VDD}
 C {devices/lab_pin.sym} -170 0 0 0 {name=l92 lab=RA0}
 C {devices/lab_pin.sym} -50 0 2 0 {name=l93 lab=RA0B}
