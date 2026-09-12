@@ -338,7 +338,7 @@ N 5360 2670 5360 1560 {lab=Y}
 N 5450 2730 5280 2730 {lab=YB}
 N 5280 2730 5280 1600 {lab=YB}
 C {TR-1umLIB/MP.sym} 2400 2500 0 0 {name=xpc_Y model=PMOS w=10.2u l=1u m=1 spiceprefix=X}
-C {TR-1umLIB/MN.sym} 2400 2940 0 0 {name=xwrite_Y model=NMOS w=3.4u l=1u m=1 spiceprefix=X}
+C {TR-1umLIB/MN.sym} 2400 2940 0 0 {name=xwrite_Y model=NMOS w=10.2u l=1u m=1 spiceprefix=X}
 N 2440 2530 2560 2530 {lab=Y}
 N 2560 2530 2560 1560 {lab=Y}
 N 2440 2910 2620 2910 {lab=Y}
@@ -347,7 +347,7 @@ C {TR-1um_5_stdcell/AND2_X1.sym} 1950 2940 0 0 {name=xwrite_data0}
 N 2060 2940 2400 2940 {lab=PD_Y}
 C {devices/lab_wire.sym} 2200 2940 0 0 {name=l347 lab=PD_Y}
 C {TR-1umLIB/MP.sym} 3700 2500 0 0 {name=xpc_YB model=PMOS w=10.2u l=1u m=1 spiceprefix=X}
-C {TR-1umLIB/MN.sym} 3700 2940 0 0 {name=xwrite_YB model=NMOS w=3.4u l=1u m=1 spiceprefix=X}
+C {TR-1umLIB/MN.sym} 3700 2940 0 0 {name=xwrite_YB model=NMOS w=10.2u l=1u m=1 spiceprefix=X}
 N 3740 2530 3860 2530 {lab=YB}
 N 3860 2530 3860 1600 {lab=YB}
 N 3740 2910 3920 2910 {lab=YB}

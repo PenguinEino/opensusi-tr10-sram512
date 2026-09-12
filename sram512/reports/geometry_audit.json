@@ -1,8 +1,8 @@
 {
   "passed": true,
   "source": {
-    "gds_sha256": "bbae5a2e0a63d1d0304937d7a5edef00291f0db6eafc00ce3a7700bdafa9ab02",
-    "lvsdb_sha256": "ad6002d464a8119e7b0abe1c74478af4ced53859d103a0db9082284f5160a18b",
+    "gds_sha256": "dee111388a5c4d3131b68772507706706d894248988ab761bf9c4070e9194e61",
+    "lvsdb_sha256": "8f9f770c9f1bbf22f91739074362225e35dead9cf0182e40851ef868a9491884",
     "mos_groups": 4877,
     "physical_fingers": 4953,
     "model_counts": {
@@ -11,7 +11,7 @@
       "DP": 4,
       "DN": 4
     },
-    "source": "/home/ishi-kai/sram/build/sram512/layout/final16x32"
+    "source": "/home/ishi-kai/sram/build/sram512/layout/rechecked16x32"
   },
   "physical_rows": 16,
   "physical_columns": 32,
@@ -22,6 +22,13 @@
   "cell_pitch_um": [
     22,
     29.6
+  ],
+  "column_mux_devices": 64,
+  "column_mux_width_um": 5.1,
+  "column_mux_length_um": 1,
+  "write_pulldown_devices": 2,
+  "write_pulldown_widths_um": [
+    10.2
   ],
   "row_direction": "horizontal",
   "column_direction": "vertical",

@@ -76,9 +76,13 @@ def geometry(folder):
     assert abs(expected-measured)<1e-5,(expected,measured,'field-GC area accounting')
     return out
 
-def add_rc(folder,original,scale):
+def add_rc(folder,original,scale,physical_gate_paths=False):
     assert scale>0
     records=copy.deepcopy(original);geo=geometry(folder)
+    gate_paths=None
+    if physical_gate_paths:
+        from gate_paths import calculate
+        gate_paths=calculate(folder,original,COEFFICIENTS)
     lines=[];nodes=[];done=set();ladder_nets={};groups_info={}
     def node(n,i):return 'rc_'+n.replace('.','_')+'_'+str(i)
     def ladder(net,loads):
@@ -129,6 +133,8 @@ def add_rc(folder,original,scale):
         for i,rs in groups.items():
             load=node(n,'g'+str(i));factor=.25+.75*distances[i]/longest
             resistance=max(.01,info['resistance_series_sum_ohm']*scale*factor)
+            if gate_paths and n in gate_paths['nets']:
+                resistance=max(.01,gate_paths['nets'][n]['branches'][str(i)]*scale)
             cap=info['cap_ff']*scale/len(groups)
             lines.extend([f'Rwire_{len(lines)} {n} {load} {resistance:.12g}',
                           f'Cwire_{len(lines)+1} {load} 0 {cap:.12g}f'])
@@ -143,6 +149,10 @@ def add_rc(folder,original,scale):
                               'CO contact resistance is not separately calibrated or modeled.',
                               'Capacitance is represented to ground; scale sweep also stresses coupling load.',
                               'Power-rail resistance is not included in this signal-RC model.'],geometry=geo)
+    if gate_paths:
+        summary['gate_path_model']=dict(model=gate_paths['model'],scope=gate_paths['scope'],
+            gds_sha256=gate_paths['gds_sha256'],nets=gate_paths['nets'])
+        summary['assumptions'][0]='BL/WL/common lines retain the series-sum stress model; other gate branches use real shortest resistive paths as two-terminal resistance bounds.'
     return records,lines,nodes,summary
 
 def verify_rc(path,case,vdd=5):

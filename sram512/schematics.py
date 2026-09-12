@@ -155,7 +155,7 @@ def column_cell():
     for side,bl,y in [(0,'BL','Y'),(1,'BLB','YB')]:
         x=side*600
         s.device('MP','pc'+bl,x,-160,dict(D=bl,G='PREB',S='VDD',BG='VDD'),'model=PMOS w=3.4u l=1u m=1 spiceprefix=X')
-        s.device('MN','mux'+bl,x,160,dict(D=bl,G='COL',S=y,BG='VSS'),'model=NMOS w=3.4u l=1u m=1 spiceprefix=X')
+        s.device('MN','mux'+bl,x,160,dict(D=bl,G='COL',S=y,BG='VSS'),'model=NMOS w=5.1u l=1u m=1 spiceprefix=X')
         # PMOS drain to bitline, continuing physically to the pass transistor.
         s.link('pc'+bl,'D','mux'+bl,'D')
         px,py=s.at('pc'+bl,'D');s.wire([(px,py),(px+150,py)],bl);s.port(bl,px+150,py,'inout')
@@ -216,7 +216,7 @@ def top(tb=False):
     for i,n in enumerate(('Y','YB')):
         x=2400+i*1300
         s.device('MP','pc_'+n,x,2500,dict(D=n,G='PREB',S='VDD',BG='VDD'),'model=PMOS w=10.2u l=1u m=1 spiceprefix=X')
-        s.device('MN','write_'+n,x,2940,dict(D=n,G='PD_'+n,S='VSS',BG='VSS'),'model=NMOS w=3.4u l=1u m=1 spiceprefix=X')
+        s.device('MN','write_'+n,x,2940,dict(D=n,G='PD_'+n,S='VSS',BG='VSS'),'model=NMOS w=10.2u l=1u m=1 spiceprefix=X')
         px,py=s.at('pc_'+n,'D');bus=1560 if i==0 else 1600
         s.lead('pc_'+n,'D',[(px+120,py),(px+120,bus)],False)
         px,py=s.at('write_'+n,'D');s.lead('write_'+n,'D',[(px+180,py),(px+180,bus)],False)

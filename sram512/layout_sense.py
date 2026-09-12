@@ -13,8 +13,8 @@ DEVICES=[
  ('tail','n',0,3.4,('TAIL','SAE','VSS','VSS')),
  ('nl','n',1,3.4,('SOUT','SOUTB','TAIL','VSS')),
  ('nr','n',2,3.4,('SOUTB','SOUT','TAIL','VSS')),
- ('pdy','n',4,3.4,('Y','PD_Y','VSS','VSS')),
- ('pdyb','n',5,3.4,('YB','PD_YB','VSS','VSS')),
+ ('pdy','n',4,10.2,('Y','PD_Y','VSS','VSS')),
+ ('pdyb','n',5,10.2,('YB','PD_YB','VSS','VSS')),
 ]
 PORTS=['Y','YB','SOUT','SAE','PREB','PD_Y','PD_YB','VDD','VSS']
 

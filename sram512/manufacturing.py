@@ -19,7 +19,7 @@ def freeze(folder):
     if not dest.exists():
         dest.mkdir(parents=True)
         for name in ('sram512.gds','reference.spice','placement.json','ports.json',
-                     'array_geometry.json','geometry_audit.json','result.json'):
+                     'array_geometry.json','coordinate_frames.json','geometry_audit.json','result.json'):
             if (folder/name).exists():shutil.copy2(folder/name,dest/name)
         shutil.copytree(folder/'checks',dest/'checks')
     assert sha(dest/'sram512.gds')==result['gds_sha256']

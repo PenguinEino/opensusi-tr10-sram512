@@ -11,10 +11,12 @@ assert pc.PDK.resolve()==PDK.resolve()
 def mos(d,kind,x,y,w=3.4):
     return d.pcell('fet_p' if kind=='p' else 'fet_n',x,y,dict(w=w,l=1.0,n=1,cont_between_gates=True,y0='c'))
 
-def column_tile(l,minimum_pc=False):
+def column_tile(l,minimum_pc=False,mux_width=5.1):
     c=l.create_cell('sram512_column_tile');d=pc.Drawing(l,c)
     py=20.6 if minimum_pc else 24;vdy=24.7 if minimum_pc else 31.5
-    for x in (2,16):mos(d,'n',x,0)
+    # Keep the original north diffusion edge and well spacing. The wider
+    # pass devices grow into the unused space below, within the same pitch.
+    for x in (2,16):mos(d,'n',x,-(mux_width-3.4)/2,mux_width)
     for x in (6,12):mos(d,'p',x,py,3.4 if minimum_pc else 10.2)
     # Pass nMOS: outer drains are BL/BLB; inner contacts go to Y/YB.
     for bx,nx,px in [(-.4,0,4),(18.4,18,14)]:

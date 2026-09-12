@@ -5,14 +5,14 @@
 提出候補は [`layout/sram512.gds`](layout/sram512.gds)。最上位は `sram512_macro`、
 外形は **横1776.7 × 縦600.0 µm**、原点は左下 `(0, 0)`。
 実際の製造マスクも同じ外形内に収まる。物理配置は16行×32列で、転置していない。
-現GDSのSHA-256は `bbae5a2e0a63d1d0304937d7a5edef00291f0db6eafc00ce3a7700bdafa9ab02`。
+現GDSのSHA-256は `dee111388a5c4d3131b68772507706706d894248988ab761bf9c4070e9194e61`。
 
 ![実際のレイアウト](layout/overview.png)
 
 ## 回路と操作
 
 - ユーザーの `klayout/sram_pcell/` のsix_single版を使用。セルは22 × 29.6 µmピッチ、全MOSはW=3.4/L=1 µm。
-- 16行・32列、512 bit。nMOS列MUXと片側プルダウン書込み、共有7Tセンスアンプ。
+- 16行・32列、512 bit。W=5.1/L=1 µmのnMOS列MUXと片側プルダウン書込み、共有7Tセンスアンプ。
 - 32セル共通のWLを各行1個のAND3_X1から駆動。行4 bit、列5 bitの静的プリデコード。
 - 受信とアクセスで同じ10 bitのフレームFFを使用。全体は21 FF。
 - 外部7端子：VDD / VSS / CLK / RESET / SDI / WE / SDO。
@@ -28,12 +28,18 @@
 |---|---|---|
 | 回路図/ERC | 合格 | 512 bit専用回路とTB |
 | 論理検証 | 334,063項目合格、9,270操作 | 全512アドレス、両データ、March C-、全18段階のRESET |
-| 回路図のMOS基準・感度試験 | 9条件、それぞれ2,901項目合格 | 5 V基準、電源・温度・容量・Vthの感度 |
+| 回路図のMOS基準・感度試験 | 旧列MUX寸法で9条件合格。変更後を再検証中 | 5 V基準、電源・温度・容量・Vthの感度 |
 | 回路図の行列カバレッジ | 136操作、38,901項目合格 | 全16行・全32列を通る34アドレス |
 | 統合Drawing DRC / LVS | **0件 / 全14回路一致** | 現GDS、厳密な外部端子照合あり |
 | 製造マスクDRC | **全項目0件** | 無改変devのMDP変換とIP62チェック |
 | 物理配列・外形・端子 | 合格 | 512個の6Tセル、16行×32列、7端子、600×1800 µm以内 |
 | 抽出後MOS・配線RC・電源・運用試験 | **実行中** | 現GDSから抽出した4,953 MOS＋8ダイオード |
+
+列MUXを最小W=3.4 µmから5.1 µmへ変更した。旧寸法ではRC×3・4.5 V・85°Cの
+遅いWL立ち上がりで書込みが失敗したためで、単にCLKを遅くしても解消しなかった。
+旧結果は残し、列MUXのみの変更では端の1セルの1書込みがまだ不合格だったため、共有PDの2個も
+W=10.2 µmへ変更した。問題のアドレス0について、全512セルを接続した0/1書込み・読出しが
+100 ns／20 nsの両最大刻みで各5,551項目に合格した。全行列・電源試験は継続中。
 
 現配置の物理検証は `layout/drawing_lvs.json`、`layout/manufacturing.json`、
 `layout/geometry_audit.json`。回路図のMOS試験は `reports/analog_shared_wl_*.json`。
@@ -72,12 +78,13 @@ SDOにはBUF_X4があり、検証負荷は10 pF。詳細はSPEC.mdを参照。
 
 ```bash
 python3 sram512/verify_digital.py
-python3 sram512/geometry_audit.py build/sram512/layout/final16x32 --require-origin
-python3 sram512/manufacturing.py build/sram512/layout/final16x32
-python3 sram512/postlayout.py build/sram512/layout/final16x32 --name final_decode_coverage --decode-coverage --solver klu
-python3 sram512/postlayout.py build/sram512/layout/final16x32 --name final_rc3_low_hot --rc-scale 3 --vdd 4.5 --temperature 85 --solver klu
-python3 sram512/postlayout.py build/sram512/layout/final16x32 --name final_rc_power_nominal --rc-scale 1 --power-sheet 0.1 --power-mesh-grid 0.25 --voltage-envelope --solver klu
-python3 sram512/operational_tests.py build/sram512/layout/final16x32 --name final_operational_hot --solver klu
+python3 sram512/verify_saved_layout.py  # 保存GDSを現在の回路図へ照合し、DRC/LVS・マスクを再検証
+python3 sram512/geometry_audit.py build/sram512/layout/final16x32_pd10p2 --require-origin
+python3 sram512/manufacturing.py build/sram512/layout/final16x32_pd10p2
+python3 sram512/postlayout.py build/sram512/layout/final16x32_pd10p2 --name final_decode_coverage --decode-coverage --solver klu
+python3 sram512/postlayout.py build/sram512/layout/final16x32_pd10p2 --name final_rc3_low_hot --rc-scale 3 --vdd 4.5 --temperature 85 --solver klu
+python3 sram512/postlayout.py build/sram512/layout/final16x32_pd10p2 --name final_rc_power_nominal --rc-scale 1 --power-sheet 0.1 --power-mesh-grid 0.25 --voltage-envelope --solver klu
+python3 sram512/operational_tests.py build/sram512/layout/final16x32_pd10p2 --name final_operational_hot --solver klu
 ```
 
 大きな波形と再生成物は `build/sram512/` に置き、Gitへは入れない。

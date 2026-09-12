@@ -82,14 +82,22 @@ def device_lines(records):
         lines.append(f'XM{i} '+' '.join(r['nets'][p] for p in ('D','G','S','B'))+f" {r['model']} {pars} m={r['fingers']}")
     return [re.sub(r'(?i)\bvss\b','0',line) for line in lines]
 
-def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale=None,recheck=False,power_sheet=None,voltage_envelope=False,power_mesh_grid=None,solver='sparse',addresses=None):
+def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale=None,recheck=False,power_sheet=None,voltage_envelope=False,power_mesh_grid=None,solver='sparse',addresses=None,max_step_ns=20,physical_gate_paths=False,startup_ramp_ns=0):
     work=WORK/'analog'/name;work.mkdir(parents=True,exist_ok=True)
     records,provenance=devices(folder);write_json(work/'physical_devices.json',records)
     case=scenario(period=period,addresses=addresses)
+    if startup_ramp_ns:
+        assert startup_ramp_ns>0
+        for op in case['operations']:
+            for key in ('first','e0'):op[key]+=startup_ramp_ns
+        case['stop_ns']+=startup_ramp_ns;case['initial_check_ns']=startup_ramp_ns+.6*period
+        for n,events in case['events'].items():
+            if n=='RESET':case['events'][n]=[(0,1),(startup_ramp_ns+.75*period,1),(startup_ramp_ns+.75*period+case['edge_ns'],0)]
+            else:case['events'][n]=[(0,0)]+[(t+startup_ramp_ns,b) for t,b in events[1:]]
     extra=[];wire_nodes=[];rc_info=None;power_info=None
     if rc_scale is not None:
         from wire_rc import add_rc
-        records,extra,wire_nodes,rc_info=add_rc(folder,records,rc_scale)
+        records,extra,wire_nodes,rc_info=add_rc(folder,records,rc_scale,physical_gate_paths=physical_gate_paths)
         write_json(work/'wire_rc.json',rc_info)
     if power_sheet is not None:
         if power_mesh_grid is None:
@@ -104,14 +112,24 @@ def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale
         from electrical_limits import nodes
         wire_nodes=sorted(set(wire_nodes+nodes(records)))
     lines=device_lines(records)
-    lines+=['VVDD vdd 0 5']
-    for n,events in case['events'].items():lines.append(f'V{n} {n} 0 {pwl(events)}')
+    if startup_ramp_ns:
+        from analog import spice_time
+        lines+=[f'VVDD vdd 0 PWL(0 0 {spice_time(startup_ramp_ns)} {vdd})']
+    else:lines+=['VVDD vdd 0 5']
+    for n,events in case['events'].items():
+        if startup_ramp_ns and n=='RESET':
+            lines+=['Vreset_logic reset_logic 0 '+pwl(events).replace('VSUP','1'),
+                    'Breset reset 0 v=v(vdd)*v(reset_logic)']
+        else:lines.append(f'V{n} {n} 0 {pwl(events)}')
     if rc_scale is None:
         for prefix,count,value in [('BL',32,'70f'),('BLB',32,'70f'),('WL',16,'400f')]:
             for i in range(count):lines.append(f'Cwire_{prefix}{i} {prefix}{i} 0 {value}')
         lines +=['Cwire_Y Y 0 180f','Cwire_YB YB 0 180f']
     lines +=extra+['Cout SDO 0 10p']
     ctl=control(case).replace('save ','save i(VVDD) '+' '.join(f'v({n})' for n in wire_nodes)+' ',1)
+    if startup_ramp_ns:ctl=ctl.replace('v(VDD)[0]',f'{vdd:.12g}')
+    assert 0<max_step_ns<=period/10
+    ctl=ctl.replace(' 0 20n',f' 0 {max_step_ns:.12g}n',1)
     # ngspice's interactive save command has a finite argument count. Split
     # large observation lists; an overlong save silently falls back to all
     # circuit nodes after reporting "save: too many args".
@@ -161,6 +179,8 @@ def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale
                   elapsed_seconds=round(time.monotonic()-start,2),deck_sha256=sha(path),
                   reused_waveform=recheck,model_notices=notices,
                   solver=solver,
+                  maximum_timestep_ns=max_step_ns,
+                  physical_gate_paths=physical_gate_paths,startup_ramp_ns=startup_ramp_ns,
                   interconnect=rc_summary(rc_info,work/'wire_rc.json') if rc_info else
                   'Extra lumped C only; wire resistance and distributed RC not yet included')
     t,w=load_raw(work/'sram512_tb.raw');current=-w['i(vvdd)']
@@ -175,8 +195,12 @@ def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale
 if __name__=='__main__':
     ap=argparse.ArgumentParser();ap.add_argument('folder',type=Path);ap.add_argument('--name',default='postlayout_nominal');ap.add_argument('--rc-scale',type=float)
     ap.add_argument('--vdd',type=float,default=5);ap.add_argument('--temperature',type=float,default=27)
-    ap.add_argument('--period',type=float,default=1000);ap.add_argument('--recheck',action='store_true');ap.add_argument('--power-sheet',type=float);ap.add_argument('--voltage-envelope',action='store_true');ap.add_argument('--power-mesh-grid',type=float);ap.add_argument('--solver',choices=['sparse','klu'],default='sparse');ap.add_argument('--decode-coverage',action='store_true');a=ap.parse_args()
+    ap.add_argument('--period',type=float,default=1000);ap.add_argument('--max-step-ns',type=float,default=20);ap.add_argument('--recheck',action='store_true');ap.add_argument('--power-sheet',type=float);ap.add_argument('--voltage-envelope',action='store_true');ap.add_argument('--power-mesh-grid',type=float);ap.add_argument('--solver',choices=['sparse','klu'],default='sparse');ap.add_argument('--decode-coverage',action='store_true');ap.add_argument('--addresses',help='Comma-separated physical addresses for a bounded diagnostic');ap.add_argument('--physical-gate-paths',action='store_true');ap.add_argument('--startup-ramp-ns',type=float,default=0);a=ap.parse_args()
     if a.power_mesh_grid is not None:assert a.power_sheet is not None,'Mesh needs an explicit sheet-resistance assumption.'
     addresses=sorted(set([0,31,480,511]+[32*(c%16)+c for c in range(32)])) if a.decode_coverage else None
-    result=simulate(a.folder.resolve(),a.name,period=a.period,vdd=a.vdd,temp=a.temperature,rc_scale=a.rc_scale,recheck=a.recheck,power_sheet=a.power_sheet,voltage_envelope=a.voltage_envelope,power_mesh_grid=a.power_mesh_grid,solver=a.solver,addresses=addresses)
+    if a.addresses:
+        assert not a.decode_coverage
+        addresses=[int(n) for n in a.addresses.split(',')]
+        assert addresses and len(set(addresses))==len(addresses) and all(0<=n<512 for n in addresses)
+    result=simulate(a.folder.resolve(),a.name,period=a.period,vdd=a.vdd,temp=a.temperature,rc_scale=a.rc_scale,recheck=a.recheck,power_sheet=a.power_sheet,voltage_envelope=a.voltage_envelope,power_mesh_grid=a.power_mesh_grid,solver=a.solver,addresses=addresses,max_step_ns=a.max_step_ns,physical_gate_paths=a.physical_gate_paths,startup_ramp_ns=a.startup_ramp_ns)
     raise SystemExit(0 if result['passed'] else 1)

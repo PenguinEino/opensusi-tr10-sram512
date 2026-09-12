@@ -66,6 +66,17 @@ def simulation_diagnostics(log):
             return ''
         return block
     remaining=re.sub(r'(?m)^Warning: Model issue on line \d+ :\n  \.model [^\n]+\n(?:unrecognized parameter \([^\n]+\) - ignored\n)+',diode_notice,log)
+    # A preflight RAM estimate is not an electrical diagnostic. Preserve it
+    # in the report; callers still require a successful process exit and a
+    # complete, finite binary waveform before any circuit check can pass.
+    def memory_notice(match):
+        notices.append(dict(kind='simulation_memory_estimate',message=match[0].strip(),
+                            consequence='Estimated waveform storage exceeds currently free RAM; runtime may increase.'))
+        return ''
+    remaining=re.sub(r'(?m)^Warning: memory required \([^\n]+\), made of\n'
+                     r' +[^\n]+nodes and approximately [^\n]+time steps,\n'
+                     r' +is more than the DRAM memory available \([^\n]+\)!\n'
+                     r' +Swapping data to SSD may slow down the simulation\.\n',memory_notice,remaining)
     if re.search(r'(?im)^error|^warning|timestep too small|doanalyses:|not enough memory|unrecognized parameter|too many args',remaining):
         lines=[line for line in remaining.splitlines() if re.search(r'error|warning|ignored|timestep too small|doanalyses:|too many args',line,re.I)]
         raise RuntimeError('Unexpected ngspice diagnostic:\n'+'\n'.join(lines)[:3000])

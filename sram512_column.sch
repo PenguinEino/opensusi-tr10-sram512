@@ -6,14 +6,14 @@ S {}
 E {}
 T {ONE COLUMN: local precharge + nMOS pass MUX} -300 -360 0 0 0.35 0.35 {}
 C {TR-1umLIB/MP.sym} 0 -160 0 0 {name=xpcBL model=PMOS w=3.4u l=1u m=1 spiceprefix=X}
-C {TR-1umLIB/MN.sym} 0 160 0 0 {name=xmuxBL model=NMOS w=3.4u l=1u m=1 spiceprefix=X}
+C {TR-1umLIB/MN.sym} 0 160 0 0 {name=xmuxBL model=NMOS w=5.1u l=1u m=1 spiceprefix=X}
 N 40 -130 40 130 {lab=BL}
 N 40 -130 190 -130 {lab=BL}
 C {devices/iopin.sym} 190 -130 0 0 {name=pBL lab=BL}
 N 40 190 40 290 {lab=Y}
 C {devices/iopin.sym} 40 290 0 0 {name=pY lab=Y}
 C {TR-1umLIB/MP.sym} 600 -160 0 0 {name=xpcBLB model=PMOS w=3.4u l=1u m=1 spiceprefix=X}
-C {TR-1umLIB/MN.sym} 600 160 0 0 {name=xmuxBLB model=NMOS w=3.4u l=1u m=1 spiceprefix=X}
+C {TR-1umLIB/MN.sym} 600 160 0 0 {name=xmuxBLB model=NMOS w=5.1u l=1u m=1 spiceprefix=X}
 N 640 -130 640 130 {lab=BLB}
 N 640 -130 790 -130 {lab=BLB}
 C {devices/iopin.sym} 790 -130 0 0 {name=pBLB lab=BLB}

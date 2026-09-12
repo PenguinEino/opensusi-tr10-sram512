@@ -19,6 +19,11 @@ def audit(folder,require_origin=False):
         bits[next(iter(identities))].append(record)
     assert set(bits)=={(row,col) for row in range(16) for col in range(32)}
     assert all(len(devices)==6 for devices in bits.values())
+    mux=[r for r in records if r['model']=='NMOS' and re.fullmatch(r'col\d+',r['nets']['G'])]
+    assert len(mux)==64
+    assert all(abs(r['parameters']['W']-5.1)<1e-6 and abs(r['parameters']['L']-1)<1e-6 for r in mux)
+    pulldowns=[r for r in records if r['model']=='NMOS' and r['nets']['G'] in ('pd_y','pd_yb')]
+    assert len(pulldowns)==2 and all(abs(r['parameters']['L']-1)<1e-6 for r in pulldowns)
     centers={key:[sum(d['position_um'][k] for d in group)/6 for k in range(2)] for key,group in bits.items()}
     for row in range(16):
         assert max(centers[row,c][1] for c in range(32))-min(centers[row,c][1] for c in range(32))<1e-6
@@ -47,6 +52,8 @@ def audit(folder,require_origin=False):
     assert set(pins)=={'VDD','VSS','CLK','RESET','SDI','WE','SDO'}
     result=dict(passed=True,source=source,physical_rows=16,physical_columns=32,cells=512,
         mos_per_cell=6,cell_mos_width_um=3.4,cell_mos_length_um=1,cell_pitch_um=[22,29.6],
+        column_mux_devices=len(mux),column_mux_width_um=5.1,column_mux_length_um=1,
+        write_pulldown_devices=2,write_pulldown_widths_um=sorted({round(r['parameters']['W'],6) for r in pulldowns}),
         row_direction='horizontal',column_direction='vertical',logical_columns_increase_left_to_right=True,
         dimensions_um=[box.width(),box.height()],bbox_um=[box.left,box.bottom,box.right,box.top],
         pins=pins,origin_required=require_origin,
