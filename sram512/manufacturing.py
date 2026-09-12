@@ -3,6 +3,13 @@
 import argparse,shutil
 from common import *
 
+# Physical process layers listed in the official run_mdp.drc output section.
+# 150/151 and the other DL* outputs are derived device-recognition drawings,
+# not implant masks. Keep them in the file and in every official check, and
+# report their complete extent separately from the fabrication footprint.
+PROCESS_LAYERS=(36,141,25,26,33,148,143,144,145,146,147,3,35,7,12,9,28,
+                8,11,13,19,20,14,121,122,80)
+
 def freeze(folder):
     folder=Path(folder).resolve()
     result=json.loads((folder/'checks/result.json').read_text())
@@ -11,7 +18,8 @@ def freeze(folder):
     dest=WORK/'extracted_sources'/result['gds_sha256']
     if not dest.exists():
         dest.mkdir(parents=True)
-        for name in ('sram512.gds','reference.spice','placement.json'):
+        for name in ('sram512.gds','reference.spice','placement.json','ports.json',
+                     'array_geometry.json','geometry_audit.json','result.json'):
             if (folder/name).exists():shutil.copy2(folder/name,dest/name)
         shutil.copytree(folder/'checks',dest/'checks')
     assert sha(dest/'sram512.gds')==result['gds_sha256']
@@ -33,8 +41,24 @@ def verify(folder):
                 work,'mask_drc.log',check=False)
     assert code==0 and report.exists(),log[-1500:]
     r=rdb.ReportDatabase();r.load(str(report))
-    result=dict(passed=r.num_items()==0,items=r.num_items(),
+    mask_layout=db.Layout();mask_layout.read(str(mask))
+    mask_top=mask_layout.cell(top)
+    complete_box=mask_top.dbbox()
+    physical=db.Region()
+    for number in PROCESS_LAYERS:
+        physical+=db.Region(mask_top.begin_shapes_rec(mask_layout.layer(number,0)))
+    mask_box=physical.bbox().to_dtype(mask_layout.dbu)
+    drawing_box=c.dbbox()
+    dimensions_passed=mask_box.width()<=1800+1e-6 and mask_box.height()<=600+1e-6
+    result=dict(passed=r.num_items()==0 and dimensions_passed,items=r.num_items(),
                 categories={c.name():c.num_items() for c in r.each_category() if c.num_items()},
+                dimensions_passed=dimensions_passed,
+                drawing_bbox_um=[drawing_box.left,drawing_box.bottom,drawing_box.right,drawing_box.top],
+                mask_bbox_um=[mask_box.left,mask_box.bottom,mask_box.right,mask_box.top],
+                mask_dimensions_um=[mask_box.width(),mask_box.height()],
+                all_output_layers_bbox_um=[complete_box.left,complete_box.bottom,complete_box.right,complete_box.top],
+                fabrication_layers=list(PROCESS_LAYERS),
+                dimension_scope='Physical masks listed in unmodified run_mdp.drc; all derived recognition layers remain present and fully checked.',
                 drawing_sha256=sha(source),mask_sha256=sha(mask),pdk=provenance('dev'),
                 source=str(folder),waiver_regions=0,
                 scope='Official MDP and complete IP62 mask DRC of the core; package/pad integration is separate.')

@@ -122,16 +122,52 @@ def add_power_mesh(folder,original,sheet_ohm,via_ohm=1.,step_um=.25):
             lines.append(f'Rpower_{slug}_mesh_{j} {label(a)} {label(b)} {d["r"]:.12g}')
         external='vdd' if name=='VDD' else '0'
         lines.append(f'Rpower_{slug}_port {external} {label(source)} {max(.001,source_r):.12g}')
-        observed+=list(loads.values())
+        # Keep both ends of each individual physical via observable. This
+        # checks transient current sharing in the same resistance network,
+        # rather than dividing the total supply current by the via count.
+        via_branches=[dict(position_um=v['position_um'],a=label(v['ends'][0]),
+                           b=label(v['ends'][1]),resistance_ohm=v['r']) for v in via_edges]
+        observed+=sorted(set(loads.values())|{v[k] for v in via_branches for k in ('a','b')})
         details[name]=dict(sampled_nodes=raw_nodes,sampled_edges=raw_edges,
             reduced_nodes=len(g),reduced_edges=g.number_of_edges(),load_nodes=len(loads),
-            physical_via_cuts=len(via_edges),maximum_mapping_distance_um=max(m['distance_to_metal_um'] for m in mapping),
+            physical_via_cuts=len(via_edges),via_branches=via_branches,
+            maximum_mapping_distance_um=max(m['distance_to_metal_um'] for m in mapping),
             terminal_map=mapping,port_node=label(source),port_lead_resistance_ohm=source_r,
             mesh_nodes=[dict(net=label(n),position_um=coords[n].tolist(),layer=n[0]+1,width_um=float(width[n])) for n in g],
             mesh_edges=[dict(a=label(a),b=label(b),resistance_ohm=d['r'],kind=d['kind']) for a,b,d in g.edges(data=True)])
         print(name,'power mesh',raw_nodes,'->',len(g),'nodes;',len(loads),'load taps',flush=True)
     return records,lines,observed,dict(sheet_ohm=sheet_ohm,via_ohm=via_ohm,grid_um=step_um,
         scope=__doc__,networks=details,source_gds_sha256=sha(folder/'sram512.gds'))
+
+def verify_via_currents(path,info):
+    """Compare individual TC currents with the published current limits.
+
+    The 0.78 mA continuous and 7.8 mA instantaneous limits are from OS00
+    rev1.1, table I-3-3. RMS is also checked against the continuous limit as
+    a conservative heating screen. This is conditional on the explicit
+    uncalibrated sheet/via-R model, not an electromigration signoff deck.
+    """
+    from analog import load_raw
+    t,w=load_raw(path);dt=np.diff(t);span=t[-1]-t[0]
+    assert span>0
+    rows=[]
+    for supply,network in info['networks'].items():
+        for branch in network['via_branches']:
+            current=(w[f'v({branch["a"]})']-w[f'v({branch["b"]})'])/branch['resistance_ohm']
+            peak=float(np.max(np.abs(current)))
+            average=float(np.sum((np.abs(current[1:])+np.abs(current[:-1]))*.5*dt)/span)
+            rms=float(np.sqrt(np.sum((current[1:]**2+current[:-1]**2)*.5*dt)/span))
+            rows.append(dict(supply=supply,position_um=branch['position_um'],peak_a=peak,
+                             mean_absolute_a=average,rms_a=rms,
+                             passed=peak<=.0078 and rms<=.00078))
+    assert rows
+    failures=[r for r in rows if not r['passed']]
+    return dict(passed=not failures,checks=2*len(rows),physical_vias=len(rows),
+                failure_count=len(failures),failures=failures[:20],
+                maximum_peak_a=max(r['peak_a'] for r in rows),maximum_rms_a=max(r['rms_a'] for r in rows),
+                worst_peak_vias=sorted(rows,key=lambda r:-r['peak_a'])[:10],
+                limits_a=dict(instantaneous=.0078,continuous=.00078,rms_screen=.00078),
+                reference='OpenSUSI OS00 reference manual rev1.1, table I-3-3',scope=verify_via_currents.__doc__)
 
 def validate():
     """Nontrivial analytic checks on straight sheets and a split current path."""

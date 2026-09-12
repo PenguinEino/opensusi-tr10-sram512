@@ -8,7 +8,7 @@ import math, struct
 from common import *
 from routing import M1,M2
 
-def named_macro(layout,core,work,array_y=147):
+def named_macro(layout,core,work,array_y=147,column_label_y=61.5):
     info=json.loads((work/'routing/routing.json').read_text())
     names={int(k):v for k,v in info['node_names'].items()}
     nx,ny,_,_=struct.unpack('4i',(work/'routing/router.bin').read_bytes()[:16])
@@ -17,7 +17,10 @@ def named_macro(layout,core,work,array_y=147):
     ports={'VDD','VSS','CLK','RESET','SDI','WE','SDO'}
     while i<len(lines):
         nid,n=map(int,lines[i].split());i+=1
-        edge=tuple(map(int,lines[i].split())) if n else None;i+=n
+        # A field-GC route must still receive its electrical correspondence
+        # label on an actual M1/M2 segment, as required by the official deck.
+        edges=[tuple(map(int,v.split())) for v in lines[i:i+n]];i+=n
+        edge=next(((a,b) if a//plane<2 else (b,a) for a,b in edges if min(a//plane,b//plane)<2),None)
         name=names[nid]
         if edge and name.upper() not in ports:
             u=edge[0];layer=u//plane;v=u%plane
@@ -28,13 +31,14 @@ def named_macro(layout,core,work,array_y=147):
     for p in json.loads((work/'placement.json').read_text()):
         if not p['instance'].startswith('bank'):continue
         b=int(p['instance'][-1])
-        tr=db.Trans(p.get('rotation',0)//90,False,round(p['x']*1000),round(p['y']*1000))
+        tr=db.Trans(p.get('rotation',0)//90,p.get('mirror',False),round(p['x']*1000),round(p['y']*1000))
         for col in range(16):
+            logical_col=p.get('logical_columns',list(range(b*16,b*16+16)))[col]
             for prefix,x in [('BL',col*22-.4),('BLB',col*22+18.4)]:
                 point=tr*db.Point(round(x*1000),round((array_y+5.7)*1000))
-                core.shapes(layout.layer(48,0)).insert(db.Text(prefix+str(col+b*16),db.Trans(point)))
-            point=tr*db.Point(round((col*22+16.5)*1000),61500)
-            core.shapes(layout.layer(49,0)).insert(db.Text('COL'+str(col+b*16),db.Trans(point)))
+                core.shapes(layout.layer(48,0)).insert(db.Text(prefix+str(logical_col),db.Trans(point)))
+            point=tr*db.Point(round((col*22+(11 if column_label_y==-11 else 16.5))*1000),round(column_label_y*1000))
+            core.shapes(layout.layer(49,0)).insert(db.Text('COL'+str(logical_col),db.Trans(point)))
     top=layout.create_cell('sram512_macro')
     top.insert(db.CellInstArray(core.cell_index(),db.Trans()))
     for layer in (48,49):

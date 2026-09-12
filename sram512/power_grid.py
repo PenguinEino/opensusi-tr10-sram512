@@ -64,8 +64,7 @@ def network(folder):
     l=db.Layout();l.read(str(folder/'sram512.gds'));core=l.cell('sram512')
     indices={}
     for key,num in [('M1',13),('V1',19),('M2',20)]:
-        actual=db.Region(core.begin_shapes_rec(l.layer(num,0)))
-        indices[key]=next(i for i in v.layer_indexes() if (v.layer_by_index(i)^actual).is_empty())
+        indices[key]=extracted_layer_index(v,l,core,(num,0))
     result={}
     for n in v.netlist().circuit_by_name('sram512').each_net():
         if n.name not in ('VDD','VSS'):continue

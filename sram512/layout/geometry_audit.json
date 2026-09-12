@@ -1,0 +1,78 @@
+{
+  "passed": true,
+  "source": {
+    "gds_sha256": "bbae5a2e0a63d1d0304937d7a5edef00291f0db6eafc00ce3a7700bdafa9ab02",
+    "lvsdb_sha256": "ad6002d464a8119e7b0abe1c74478af4ced53859d103a0db9082284f5160a18b",
+    "mos_groups": 4877,
+    "physical_fingers": 4953,
+    "model_counts": {
+      "PMOS": 1927,
+      "NMOS": 2950,
+      "DP": 4,
+      "DN": 4
+    },
+    "source": "/home/ishi-kai/sram/build/sram512/layout/final16x32"
+  },
+  "physical_rows": 16,
+  "physical_columns": 32,
+  "cells": 512,
+  "mos_per_cell": 6,
+  "cell_mos_width_um": 3.4,
+  "cell_mos_length_um": 1,
+  "cell_pitch_um": [
+    22,
+    29.6
+  ],
+  "row_direction": "horizontal",
+  "column_direction": "vertical",
+  "logical_columns_increase_left_to_right": true,
+  "dimensions_um": [
+    1776.7,
+    600.0
+  ],
+  "bbox_um": [
+    0.0,
+    0.0,
+    1776.7,
+    600.0
+  ],
+  "pins": {
+    "VDD": {
+      "layer": "M2",
+      "x_um": 1747.7,
+      "y_um": 597.3000000000001
+    },
+    "VSS": {
+      "layer": "M2",
+      "x_um": 1769.7,
+      "y_um": 597.3000000000001
+    },
+    "SDO": {
+      "layer": "M2",
+      "x_um": 1684.7,
+      "y_um": 1.7
+    },
+    "CLK": {
+      "layer": "M2",
+      "x_um": 1101.7,
+      "y_um": 1.7
+    },
+    "RESET": {
+      "layer": "M2",
+      "x_um": 1244.7,
+      "y_um": 1.7
+    },
+    "SDI": {
+      "layer": "M2",
+      "x_um": 1393.2,
+      "y_um": 1.7
+    },
+    "WE": {
+      "layer": "M2",
+      "x_um": 1530.7,
+      "y_um": 1.7
+    }
+  },
+  "origin_required": true,
+  "scope": "Device centroids and electrical cell identities from strict LVS; actual top-level metal pin locations."
+}

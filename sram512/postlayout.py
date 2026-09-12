@@ -82,10 +82,10 @@ def device_lines(records):
         lines.append(f'XM{i} '+' '.join(r['nets'][p] for p in ('D','G','S','B'))+f" {r['model']} {pars} m={r['fingers']}")
     return [re.sub(r'(?i)\bvss\b','0',line) for line in lines]
 
-def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale=None,recheck=False,power_sheet=None,voltage_envelope=False,power_mesh_grid=None,solver='sparse'):
+def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale=None,recheck=False,power_sheet=None,voltage_envelope=False,power_mesh_grid=None,solver='sparse',addresses=None):
     work=WORK/'analog'/name;work.mkdir(parents=True,exist_ok=True)
     records,provenance=devices(folder);write_json(work/'physical_devices.json',records)
-    case=scenario(period=period)
+    case=scenario(period=period,addresses=addresses)
     extra=[];wire_nodes=[];rc_info=None;power_info=None
     if rc_scale is not None:
         from wire_rc import add_rc
@@ -145,6 +145,12 @@ def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale
         result['power_resistance_model']={k:power_info[k] for k in ('sheet_ohm','via_ohm','scope','source_gds_sha256')}
         if 'grid_um' in power_info:result['power_resistance_model']['grid_um']=power_info['grid_um']
         result['power_resistance_model']['detailed_parameters_sha256']=sha(work/'power_rc.json')
+        if power_mesh_grid is not None:
+            from power_mesh import verify_via_currents
+            currents=verify_via_currents(work/'sram512_tb.raw',power_info)
+            result.update(via_currents=currents,passed=result['passed'] and currents['passed'],
+                          checks=result['checks']+currents['checks'],
+                          failure_count=result['failure_count']+currents['failure_count'])
     if rc_scale is not None:
         from wire_rc import verify_rc
         rc_checks=verify_rc(work/'sram512_tb.raw',case,vdd)
@@ -169,7 +175,8 @@ def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale
 if __name__=='__main__':
     ap=argparse.ArgumentParser();ap.add_argument('folder',type=Path);ap.add_argument('--name',default='postlayout_nominal');ap.add_argument('--rc-scale',type=float)
     ap.add_argument('--vdd',type=float,default=5);ap.add_argument('--temperature',type=float,default=27)
-    ap.add_argument('--period',type=float,default=1000);ap.add_argument('--recheck',action='store_true');ap.add_argument('--power-sheet',type=float);ap.add_argument('--voltage-envelope',action='store_true');ap.add_argument('--power-mesh-grid',type=float);ap.add_argument('--solver',choices=['sparse','klu'],default='sparse');a=ap.parse_args()
+    ap.add_argument('--period',type=float,default=1000);ap.add_argument('--recheck',action='store_true');ap.add_argument('--power-sheet',type=float);ap.add_argument('--voltage-envelope',action='store_true');ap.add_argument('--power-mesh-grid',type=float);ap.add_argument('--solver',choices=['sparse','klu'],default='sparse');ap.add_argument('--decode-coverage',action='store_true');a=ap.parse_args()
     if a.power_mesh_grid is not None:assert a.power_sheet is not None,'Mesh needs an explicit sheet-resistance assumption.'
-    result=simulate(a.folder.resolve(),a.name,period=a.period,vdd=a.vdd,temp=a.temperature,rc_scale=a.rc_scale,recheck=a.recheck,power_sheet=a.power_sheet,voltage_envelope=a.voltage_envelope,power_mesh_grid=a.power_mesh_grid,solver=a.solver)
+    addresses=sorted(set([0,31,480,511]+[32*(c%16)+c for c in range(32)])) if a.decode_coverage else None
+    result=simulate(a.folder.resolve(),a.name,period=a.period,vdd=a.vdd,temp=a.temperature,rc_scale=a.rc_scale,recheck=a.recheck,power_sheet=a.power_sheet,voltage_envelope=a.voltage_envelope,power_mesh_grid=a.power_mesh_grid,solver=a.solver,addresses=addresses)
     raise SystemExit(0 if result['passed'] else 1)

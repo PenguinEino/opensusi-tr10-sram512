@@ -1,6 +1,6 @@
 """Geometry-based RC sensitivity model, not a calibrated foundry RC deck.
 
-Actual metal area/perimeter are read from the official extracted connectivity.
+Actual conductor area/perimeter are read from the official extracted connectivity.
 The explicit sheet-R and area/edge-C assumptions are swept. Four sections model
 BL, WL and common-line loading; other gate loads receive unequal branch RC.
 """
@@ -13,6 +13,10 @@ from postlayout import observation_name
 COEFFICIENTS={
     'M1':dict(width_um=1.8,sheet_ohm=1.0,area_ff_um2=.05,edge_ff_um=.02),
     'M2':dict(width_um=3.4,sheet_ohm=1.0,area_ff_um2=.03,edge_ff_um=.02),
+    # An explicit sensitivity assumption, not a foundry value for GC wiring.
+    # The published 120 ohm/square RS resistor specification does not
+    # characterize a narrow field-GC interconnect or its contacts.
+    'GC_field':dict(width_um=1.0,sheet_ohm=120.0,area_ff_um2=.05,edge_ff_um=.02),
 }
 
 def geometry(folder):
@@ -22,15 +26,23 @@ def geometry(folder):
     names={p.first().cluster_id:observation_name(p.second().name) for p in v.xref().each_net_pair(c)
            if p.first() is not None and p.second() is not None}
     layers={}
-    for name,num in [('M1',13),('M2',20)]:
-        actual=db.Region(core.begin_shapes_rec(l.layer(num,0)))
-        layers[name]=next(i for i in v.layer_indexes() if (v.layer_by_index(i)^actual).is_empty())
+    for name,num,datatype in [('M1',13,0),('M2',20,0),('GC_field',8,1)]:
+        layers[name]=extracted_layer_index(v,l,core,(num,datatype))
+    active=(db.Region(core.begin_shapes_rec(l.layer(3,1)))+
+            db.Region(core.begin_shapes_rec(l.layer(3,2)))).merged()
     out={}
-    def measure(n,name):
+    def measure(n,name,transform):
         if name in ('vdd','vss'):return
         entry={};cap=0;res=0
         for layer,idx in layers.items():
             g=v.polygons_of_net(n,idx,True).merged()
+            if layer=='GC_field':
+                # Bring private child nets into top-cell coordinates before
+                # excluding active overlap. The MOS model already supplies
+                # the intrinsic gate capacitance in those channel regions.
+                tr=db.ICplxTrans(transform.mag,transform.angle,transform.is_mirror(),
+                                  round(transform.disp.x*1000),round(transform.disp.y*1000))
+                g=(g.transformed(tr)-active).merged()
             a=g.area()*1e-6;p=g.perimeter()*1e-3;co=COEFFICIENTS[layer]
             cap+=a*co['area_ff_um2']+p*co['edge_ff_um']
             # Total square count is a conservative series sum of all branches,
@@ -39,19 +51,29 @@ def geometry(folder):
             entry[layer]=dict(area_um2=a,perimeter_um=p)
         entry.update(cap_ff=cap,resistance_series_sum_ohm=res);out[name]=entry
     sequence=0
-    def walk(circuit,mapping,top=False):
+    def walk(circuit,mapping,transform,top=False):
         nonlocal sequence
         sequence+=1;inst=sequence
         local={n.cluster_id:mapping.get(n.cluster_id,f'physical_{inst}_{n.cluster_id}') for n in circuit.each_net()}
         for n in circuit.each_net():
             # Parent extraction already includes metal of connected child pins.
             # Child-private wires must be counted here, once per placed cell.
-            if top or n.cluster_id not in mapping:measure(n,local[n.cluster_id])
+            if top or n.cluster_id not in mapping:measure(n,local[n.cluster_id],transform)
         for sub in circuit.each_subcircuit():
             child=sub.circuit_ref()
             pins={child.net_for_pin(p.id()).cluster_id:local[sub.net_for_pin(p.id()).cluster_id] for p in child.each_pin()}
-            walk(child,pins)
-    walk(c,names,True)
+            walk(child,pins,transform*sub.trans)
+    walk(c,names,db.DCplxTrans(),True)
+    # Conservation check across hierarchy: every signal field-GC polygon
+    # must be accounted for once, including transformed private child nets.
+    gc=db.Region(core.begin_shapes_rec(l.layer(8,1)))
+    power_gc=db.Region()
+    for n in c.each_net():
+        if names.get(n.cluster_id) in ('vdd','vss'):
+            power_gc+=v.polygons_of_net(n,layers['GC_field'],True)
+    expected=(gc-active-power_gc).merged().area()*1e-6
+    measured=sum(entry['GC_field']['area_um2'] for entry in out.values())
+    assert abs(expected-measured)<1e-5,(expected,measured,'field-GC area accounting')
     return out
 
 def add_rc(folder,original,scale):
@@ -79,7 +101,7 @@ def add_rc(folder,original,scale):
             m=re.search(r'xr(\d+)c(\d+)',q);row,col=map(int,m.groups())
             for pin,n in ns.items():
                 if re.fullmatch(r'blb?\d+',n):bitloads[n].append((record,pin,row//4+1))
-                if re.fullmatch(r'wl(?:_r)?\d+',n):wlloads[n].append((record,pin,(col%16)//4+1))
+                if re.fullmatch(r'wl\d+',n):wlloads[n].append((record,pin,(31-col)//8+1))
         if record['model']=='NMOS' and re.fullmatch(r'col\d+',ns['G']):
             for pin,n in ns.items():
                 if n in ('y','yb'):common[n].append((record,pin,int(ns['G'][3:])))
@@ -115,7 +137,10 @@ def add_rc(folder,original,scale):
         groups_info[n]=dict(branches=len(groups),series_sum_ohm=info['resistance_series_sum_ohm']*scale,cap_ff=info['cap_ff']*scale)
     summary=dict(kind='geometry-based RC sensitivity; uncalibrated coefficients',scale=scale,
                  coefficients=COEFFICIENTS,segments=4,ladder_nets=ladder_nets,gate_loads=groups_info,
-                 assumptions=['Series square count sums all metal branches conservatively.',
+                 assumptions=['Series square count sums all conductor branches conservatively.',
+                              'Field GC excludes active overlap; intrinsic MOS gate capacitance is not added twice.',
+                              'GC sheet R=120 ohm/square is an uncalibrated sensitivity assumption; it is not a qualified GC wiring coefficient.',
+                              'CO contact resistance is not separately calibrated or modeled.',
                               'Capacitance is represented to ground; scale sweep also stresses coupling load.',
                               'Power-rail resistance is not included in this signal-RC model.'],geometry=geo)
     return records,lines,nodes,summary
@@ -136,7 +161,7 @@ def verify_rc(path,case,vdd=5):
     for op in case['operations']:
         e=op['e0'];first=op['first']
         for row in range(16):
-            for prefix in ('wl','wl_r'):
+            for prefix in ('wl',):
                 for segment in range(1,5):
                     name=f'rc_{prefix}{row}_{segment}'
                     level(name,0,first+.3*period,e+2.9*period)

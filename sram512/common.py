@@ -21,6 +21,24 @@ def write_json(path, data):
 def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
+def extracted_layer_index(extraction,layout,core,spec):
+    """Identify a raw extracted layer after an ordinary top-wrapper shift.
+
+    layer_by_index uses the submitted top's coordinates; polygons_of_net
+    uses its circuit's local coordinates. Match full physical geometry in
+    the first frame without translating circuit-local RC geometry twice.
+    """
+    actual=db.Region(core.begin_shapes_rec(layout.layer(*spec)))
+    wrapper=layout.cell('sram512_macro')
+    if wrapper is not None and wrapper.cell_index()!=core.cell_index():
+        instances=[i for i in wrapper.each_inst() if i.cell_index==core.cell_index()]
+        assert len(instances)==1
+        actual=actual.transformed(instances[0].trans)
+    matches=[i for i in extraction.layer_indexes()
+             if (extraction.layer_by_index(i)^actual).is_empty()]
+    assert len(matches)==1,(spec,matches,'Extracted layer differs from submitted geometry')
+    return matches[0]
+
 def run(cmd, work, log, check=True):
     work = Path(work); work.mkdir(parents=True, exist_ok=True)
     with (work / log).open('w') as f:

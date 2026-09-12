@@ -11,7 +11,7 @@
 #include <unordered_set>
 #include <vector>
 using namespace std;
-struct Net {int id,allowgc; vector<vector<int>> pins; vector<int> nodes,via_nodes; vector<pair<int,int>> edges;};
+struct Net {int id,allowgc; bool complete=false; vector<vector<int>> pins; vector<int> nodes,via_nodes; vector<pair<int,int>> edges;};
 struct Item {float f,g;int u;bool operator<(Item const&b)const{return f>b.f;}};
 template<class T> void readv(ifstream&f,vector<T>&v,int n){v.resize(n);f.read((char*)v.data(),n*sizeof(T));}
 int main(int argc,char**argv){
@@ -73,6 +73,9 @@ int main(int argc,char**argv){
        if(step==550&&!connection){bool bad=false;around(2*plane+p,4,[&](int q){if(tree[q])bad=true;});if(bad)continue;}
        if(parent[u]>=0&&parent[u]%plane==p&&parent[u]/plane!=l&&parent[u]/plane!=v/plane)continue;
        bool bad=false;if(step!=5500)around(p,step==550?5:1,[&](int q){if(owncut[q%plane]>=0&&owncut[q%plane]!=connection)bad=true;});
+       // A V1 is 1.4 um wide with 1.5 um spacing. On a 2.75 um
+       // candidate lattice, adjacent same-net cuts must also be excluded.
+       if(!connection&&step!=5500)around(p,step==550?5:1,[&](int q){if(q%plane!=p&&owncut[q%plane]==0)bad=true;});
        if(bad)continue;
       }
       float base=change?(connection?6.0f:5.0f):(l==2?2.4f:((l==0)==horizontal?1.0f:1.6f));
@@ -105,7 +108,7 @@ int main(int argc,char**argv){
     for(int v=goal;parent[v]>=0;v=parent[v]){net.edges.emplace_back(v,parent[v]);addtree(v);addtree(parent[v]);if(v/plane!=parent[v]/plane)owncut[v%plane]=(v/plane==2||parent[v]/plane==2)?1:0;}
     for(int u:pins)addtree(u);
    }
-   if(failed)unrouted++;
+   net.complete=!failed;
    if(step!=5500){
     // Native pin polygons are already represented by the fixed geometry.
     // All their candidate access points belong to the search tree, but an
@@ -118,6 +121,10 @@ int main(int argc,char**argv){
    unordered_set<int> cuts;for(auto e:net.edges)if(e.first/plane!=e.second/plane)cuts.insert(((e.first/plane==2||e.second/plane==2)?plane:0)+e.first%plane);
    net.via_nodes.assign(cuts.begin(),cuts.end());for(int u:net.via_nodes)usedvia[u]++;
   }
+  // In a selective pass, a partially routed net can have valid edges but
+  // still lack terminals. It must remain unresolved and be retried, even
+  // when none of its current edges conflicts with another net.
+  unrouted=count_if(nets.begin(),nets.end(),[](const Net&n){return !n.complete;});
   vector<int> conflicting(N),member(N),via_member(2*plane);int nc=0;
   for(auto&net:nets){nc++;for(int u:net.nodes)member[u]=nc;
    for(int u:net.via_nodes)via_member[u]=nc;
@@ -137,7 +144,7 @@ int main(int argc,char**argv){
    if(step==1100)for(int u:net.via_nodes)around(u,3,[&](int v){if(used[v]>(member[v]==nc?1:0))conflicting[u]=1;});
   }
   int conflicts=0;for(int u=0;u<N;u++)if(conflicting[u]){conflicts++;hist[u]++;}
-  for(int i=0;i<nn;i++){needs[i]=nets[i].edges.empty();for(int u:nets[i].nodes)if(conflicting[u]){needs[i]=1;break;}}
+  for(int i=0;i<nn;i++){needs[i]=!nets[i].complete||nets[i].edges.empty();for(int u:nets[i].nodes)if(conflicting[u]){needs[i]=1;break;}}
   cerr<<"iteration "<<it<<" conflicts "<<conflicts<<" unreachable "<<unrouted<<"\n";
   int score=conflicts+unrouted*N;
   if(score<bestscore){bestscore=score;bestedges.clear();for(auto&n:nets)bestedges.push_back(n.edges);

@@ -51,6 +51,7 @@ class Router:
         self.nx=(self.xmax-self.ox)//step+1;self.ny=(self.ymax-self.oy)//step+1
         self.sx=2*self.nx-1;self.sy=2*self.ny-1
         self.regions=[defaultdict(db.Region),defaultdict(db.Region)]
+        self.gate_regions=defaultdict(db.Region)
         self.pins=defaultdict(list);self.ids={};self.labels={};self._next=1
     def netid(self,name):
         name=name.lower()
@@ -76,11 +77,16 @@ class Router:
                 assert matches,(gds_cell.name,layer)
                 layers.append(matches[0])
         covered=[db.Region(),db.Region()]
+        actual_gc=db.Region(gds_cell.begin_shapes_rec(self.l.layer(*GC)))
+        gc_matches=[i for i in v.layer_indexes() if (v.layer_by_index(i).transformed(scale)^actual_gc).is_empty()]
+        gc_index=gc_matches[0] if gc_matches and not actual_gc.is_empty() else None
         for n in c.each_net():
             regs=[v.polygons_of_net(n,i,True).transformed(scale).transformed(transform) if i is not None else db.Region() for i in layers]
             for k,reg in enumerate(regs):covered[k]+=reg
             name=mapping.get(n.name.lower())
             self.add_geometry(regs,name,f'{instance}.{n.name}' if name is not None and any(not r.is_empty() for r in regs) else None)
+            if name is not None and gc_index is not None:
+                self.gate_regions[self.netid(name)]+=v.polygons_of_net(n,gc_index,True).transformed(scale).transformed(transform)
         # Child circuits also contain private nets (cell Q/QB, gate internal
         # nodes). They are not enumerated by the parent circuit's each_net().
         # Their actual metal must remain an obstacle to parent-level routing.
