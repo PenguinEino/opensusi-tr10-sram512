@@ -91,6 +91,12 @@ MOSのチャネル部分やSRAMのbitcell形状は変更していない。
 記録は `reports/decoder_route_strengthening.json`、再生成は
 `reinforce_decoder_routes.py` → `widen_decoder_poly.py`。
 
+同じ3か所・同じ切替区間を比較すると、修正後の|VGB|ピークは
+CA2Bで5.5960 V、RA0で5.6002 V、CL0で5.5890 Vとなり、各5.75 V以内へ下がった。
+これは3区間の比較結果であり、連続16操作の完走判定とは分けて記録している。
+
+![デコーダ入力の配線修正前後](reports/decoderfix_route_waveforms.png)
+
 詳細な経緯と不合格の保存先は[検討記録](EXPERIMENTS.md)。
 
 ## モデルとPDK
