@@ -57,6 +57,7 @@ GDS SHA-256：`56810ad742a73036fb9db5207c75a2fcd63d344833c17da5f6270f1dc128bca1`
 | 電源網を含む連続16操作 | 再実行中。前版で見つかったCA2B・RA0・CL0入力の電圧超過を含めて確認する |
 | 電源網＋信号RC×3 | 再実行中。4.5 V・85°C、四隅の16操作、全512セルの保持、全MOS端子・電源ビアを確認する |
 | 高温保持・非同期RESET | **5,429項目合格**。85°C、20 µs電源立上り、1 msクロック停止、10通りの割込み、28操作 |
+| 511番地での書込み中RESET | 実行中。書込み0/1とCLKのLOW/HIGHを分け、信号・電源の詳細RCで全511非選択セルの保持を確認する |
 
 機械判定は `reports/validation_summary.json`。必要な操作数、詳細信号モデルの有無、
 レポートと保存GDSのハッシュも照合する。初回アクセスの合格を連続16操作に代用しない。
@@ -134,6 +135,13 @@ python3 sram512/pcell_preservation.py
 python3 sram512/verification_jobs.py start
 python3 sram512/verification_jobs.py status
 python3 sram512/validation_summary.py
+```
+
+端のアドレスでのRESET試験は、同じ再検証済みレイアウトを指定して実行する。
+
+```bash
+python3 sram512/reset_address_test.py build/sram512/layout/rechecked16x32 --name decoderfix_reset_write0 --write-data 0
+python3 sram512/reset_address_test.py build/sram512/layout/rechecked16x32 --name decoderfix_reset_write1 --write-data 1
 ```
 
 `verification_jobs.py`は個別プロセスを起動し、PID・コマンド・GDSハッシュを記録する。

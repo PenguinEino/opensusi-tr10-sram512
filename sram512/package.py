@@ -19,7 +19,8 @@ ENTRY_POINTS = ('open', 'verify_saved_layout', 'verify_digital', 'analog',
     'pcell_preservation', 'validation_summary', 'compare_timesteps',
     'verification_jobs', 'signal_resolution', 'route_waveforms', 'power_wire_audit',
     'save_candidate', 'strengthen_signal_routes', 'reinforce_decoder_routes',
-    'widen_decoder_poly', 'live_probe', 'decoder_route_waveforms', 'export_schematics', 'package')
+    'widen_decoder_poly', 'live_probe', 'decoder_route_waveforms', 'reset_address_test',
+    'export_schematics', 'package')
 
 
 def python_dependencies(initial):

@@ -1,6 +1,6 @@
 {
   "all_required_reports_pass": false,
-  "created_utc": "2026-09-12T14:38:34.963568+00:00",
+  "created_utc": "2026-09-12T15:16:06.052306+00:00",
   "source_gds_sha256": "56810ad742a73036fb9db5207c75a2fcd63d344833c17da5f6270f1dc128bca1",
   "source_mask_sha256": "cbd3e51a3f9ff9c6f90b93c4c3ca134acf3cb28adb3b495ca357f47e6b280ba4",
   "source_snapshot": {
@@ -243,6 +243,18 @@
       "required_signal_model_present": true,
       "checks": 5429,
       "failure_count": 0
+    },
+    {
+      "test": "decoderfix_reset_write0",
+      "purpose": "Abort write 0 at address 511 with actual signal/power RC; retain all 511 other cells",
+      "report": "sram512/reports/decoderfix_reset_write0.json",
+      "state": "PENDING"
+    },
+    {
+      "test": "decoderfix_reset_write1",
+      "purpose": "Abort write 1 at address 511 while CLK is high; retain all 511 other cells",
+      "report": "sram512/reports/decoderfix_reset_write1.json",
+      "state": "PENDING"
     },
     {
       "test": "analog_pd102_nominal",

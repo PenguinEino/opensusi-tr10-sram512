@@ -23,6 +23,8 @@ REQUIRED = [
     ('decoderfix_power_paths_ramp_power_wires', 'Supply-metal mean/RMS current screen over the full nominal sequence', True),
     ('decoderfix_pg_rc3_lowhot_power_wires', 'Supply-metal mean/RMS current screen over the full RC x3 low/hot sequence', True),
     ('decoderfix_operational_hot', '20 us supply ramp, 1 ms retention and asynchronous interruptions', True),
+    ('decoderfix_reset_write0', 'Abort write 0 at address 511 with actual signal/power RC; retain all 511 other cells', True),
+    ('decoderfix_reset_write1', 'Abort write 1 at address 511 while CLK is high; retain all 511 other cells', True),
 ] + [
     ('analog_pd102_' + n, 'Schematic MOS sensitivity: ' + n, False)
     for n in ('nominal', 'low_cold', 'low_hot', 'high_cold', 'high_hot',
@@ -36,12 +38,15 @@ REQUIRED_OPERATIONS = {
     'decoderfix_operational_hot':28,
     'decoderfix_mesh4_prefix':1,
     'decoderfix_mesh8_prefix':1,
+    'decoderfix_reset_write0':4,
+    'decoderfix_reset_write1':4,
     **{'analog_pd102_'+n:16 for n in ('nominal','low_cold','low_hot','high_cold','high_hot',
         'wire_3x','wire_1p_hot','vth_slow_n_fast_p','vth_fast_n_slow_p')},
 }
 
 REQUIRE_SIGNAL_MESH = {'decoderfix_power_paths_ramp', 'decoderfix_pg_rc3_lowhot',
-                      'decoderfix_mesh4_prefix','decoderfix_mesh8_prefix'}
+                      'decoderfix_mesh4_prefix','decoderfix_mesh8_prefix',
+                      'decoderfix_reset_write0','decoderfix_reset_write1'}
 KNOWN_SIGNAL_DIAGNOSTICS = ('pd102_signal_mesh4_prefix', 'pd102_signal_mesh8_prefix',
                             'signalfix_decoder_voltage_diagnostic')
 WIRE_AUDITS = {'decoderfix_'+n+'_power_wires':'decoderfix_'+n
@@ -109,6 +114,14 @@ def main():
             detailed = name not in REQUIRE_SIGNAL_MESH or (
                 r.get('signal_mesh') is True and r.get('physical_gate_paths') is True
                 and r.get('signal_sections',0)>=4)
+            if name in ('decoderfix_reset_write0','decoderfix_reset_write1'):
+                reset=r.get('reset_address_checks',{})
+                bit=int(name[-1])
+                complete = complete and (reset.get('passed') is True
+                    and reset.get('interruptions')==1
+                    and reset.get('unselected_cells_per_interruption')==511
+                    and reset.get('targets')==[[15,31]] and reset.get('write_data')==[bit]
+                    and reset.get('clock_levels')==[bit])
             row.update(state='PASS' if r.get('passed') and matches and complete and detailed else 'FAIL',
                        report_sha256=sha(path), source_matches=matches,
                        required_operations=REQUIRED_OPERATIONS.get(name), scope_complete=complete,

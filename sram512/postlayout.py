@@ -5,7 +5,7 @@ LVS correspondence supplies observation names only. Connections, dimensions,
 junction areas/perimeters and physical finger counts come from extraction.
 Interconnect RC is a separate analysis and is never claimed to be in LVS.
 """
-import argparse,time
+import argparse,time,copy
 import numpy as np
 from collections import Counter
 from analog import scenario,pwl,control,verify,load_raw
@@ -87,10 +87,11 @@ def device_lines(records):
         lines.append(f'XM{i} '+' '.join(r['nets'][p] for p in ('D','G','S','B'))+f" {r['model']} {pars} m={r['fingers']}")
     return [re.sub(r'(?i)\bvss\b','0',line) for line in lines]
 
-def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale=None,recheck=False,power_sheet=None,voltage_envelope=False,power_mesh_grid=None,solver='sparse',addresses=None,max_step_ns=20,physical_gate_paths=False,startup_ramp_ns=0,reltol=None,integration_method=None,initial_reset_high=False,threads=1,pivrel=None,stream=False,signal_mesh=False,signal_sections=4,access_limit=None):
+def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale=None,recheck=False,power_sheet=None,voltage_envelope=False,power_mesh_grid=None,solver='sparse',addresses=None,max_step_ns=20,physical_gate_paths=False,startup_ramp_ns=0,reltol=None,integration_method=None,initial_reset_high=False,threads=1,pivrel=None,stream=False,signal_mesh=False,signal_sections=4,access_limit=None,case_override=None):
     work=WORK/'analog'/name;work.mkdir(parents=True,exist_ok=True)
     records,provenance=devices(folder);write_json(work/'physical_devices.json',records)
-    case=scenario(period=period,addresses=addresses)
+    case=scenario(period=period,addresses=addresses) if case_override is None else copy.deepcopy(case_override)
+    assert case['period_ns']==period
     if access_limit is not None:
         assert 0<access_limit<=len(case['operations'])
         case['operations']=case['operations'][:access_limit]
@@ -103,8 +104,13 @@ def simulate(folder,name='postlayout_nominal',period=1000,vdd=5,temp=27,rc_scale
             for key in ('first','e0'):op[key]+=startup_ramp_ns
         case['stop_ns']+=startup_ramp_ns;case['initial_check_ns']=startup_ramp_ns+.6*period
         for n,events in case['events'].items():
-            if n=='RESET':case['events'][n]=[(0,1),(startup_ramp_ns+.75*period,1),(startup_ramp_ns+.75*period+case['edge_ns'],0)]
+            if n=='RESET' and case_override is not None:
+                assert events[0]==(0,1)
+                case['events'][n]=[(0,1)]+[(t+startup_ramp_ns,b) for t,b in events[1:]]
+            elif n=='RESET':case['events'][n]=[(0,1),(startup_ramp_ns+.75*period,1),(startup_ramp_ns+.75*period+case['edge_ns'],0)]
             else:case['events'][n]=[(0,0)]+[(t+startup_ramp_ns,b) for t,b in events[1:]]
+        for reset in case.get('reset_intervals',[]):
+            for key in ('before_ns','assert_ns','release_ns'):reset[key]+=startup_ramp_ns
     write_json(work/'scenario.json',case)
     extra=[];wire_nodes=[];rc_info=None;power_info=None
     if rc_scale is not None:
