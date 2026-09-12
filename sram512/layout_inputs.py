@@ -21,8 +21,10 @@ def schematic():
     pts={'IN':(-100,0),'VDD':(0,-120),'VSS':(0,120)}
     custom_symbol('sram512_input_clamp',pts,{n:'inout' for n in pts},(-80,-100,80,100))
 
-def main(compact=False):
-    schematic();work=WORK/('layout/input_clamp_compact' if compact else 'layout/input_clamp');work.mkdir(parents=True,exist_ok=True)
+def main(compact=False,row_compatible=False):
+    compact=compact or row_compatible
+    variant='input_clamp_compact_row' if row_compatible else 'input_clamp_compact' if compact else 'input_clamp'
+    schematic();work=WORK/'layout'/variant;work.mkdir(parents=True,exist_ok=True)
     source=netlist(ROOT/'sram512_input_clamp.sch',work/'schematic',lvs=True)
     text=source.read_text()
     assert re.search(r'(?im)^Dxupper IN VDD DP A=12.96p P=14.4u$',text)
@@ -33,10 +35,13 @@ def main(compact=False):
         # junctions retain their 3.6 x 3.6 um area and perimeter; no dummy
         # recognition layer or excluded geometry is used.
         d.pcell('diode_p',8.25,38.5,{'x':3.6,'y':3.6})
-        d.pcell('diode_n',8.25,16.35,{'x':3.6,'y':3.6})
-        d.box('WN',-6.3,28.2,22.8,66.8)
+        # Some library gates start their N-well at y=23.2 um. Keep the
+        # lower diode at least 10 um below that well when cells abut.
+        dn_y=10.85 if row_compatible else 16.35
+        d.pcell('diode_n',8.25,dn_y,{'x':3.6,'y':3.6})
+        d.box('WN',-6.3,23.2 if row_compatible else 28.2,22.8,66.8)
         d.contact(8.25,55,'AN');d.contact(8.25,0,'AP')
-        d.wire('M1',[(8.25,16.35),(8.25,38.5)],1.8)
+        d.wire('M1',[(8.25,dn_y),(8.25,38.5)],1.8)
         d.wire('M1',[(8.25,27.5),(5.5,27.5)],1.8);d.via(5.5,27.5)
         d.box('M1',5.5,25.8,9.15,29.2)
         for name,y in [('VDD',55),('VSS',0)]:
@@ -54,8 +59,8 @@ def main(compact=False):
     d.label('M2','IN',5.5,27.5)
     gds=work/'cell.gds';c.write(str(gds))
     result=verify_layout(gds,c.name,source,work/'checks')
-    print(result['drc'],result['lvs'],flush=True);write_json(REPORTS/('input_clamp_compact.json' if compact else 'input_clamp.json'),result)
+    print(result['drc'],result['lvs'],flush=True);write_json(REPORTS/(variant+'.json'),result)
     if not all(result[k]['passed'] for k in ('drc','lvs')):raise SystemExit(1)
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--compact',action='store_true');a=p.parse_args();main(a.compact)
+    p=argparse.ArgumentParser();p.add_argument('--compact',action='store_true');p.add_argument('--row-compatible',action='store_true');a=p.parse_args();main(a.compact,a.row_compatible)
