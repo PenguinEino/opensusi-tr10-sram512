@@ -7,6 +7,7 @@ from validation_summary import main as summarize
 from pdk_profiles import locked, tree_digest
 from submission_layout import export_layout
 from submission_previews import export_previews
+from submission_figures import export_figures
 
 
 def dependencies():
@@ -62,6 +63,9 @@ def build():
     for kind in ('layout', 'schematic'):
         name = previews[kind]['image']
         add(name, drawing.parent/name)
+    figures = export_figures(drawing, drawing.parent)
+    for figure in [figures['pins'],*figures['layout_trials']]:
+        add(figure['image'],drawing.parent/figure['image'])
     add('SPEC.md', HERE/'SPEC.md')
     add('README.md', HERE/'SUBMISSION_README.md')
     assert {name for name in payload if name.endswith('.md')} == {'README.md', 'SPEC.md'}
@@ -74,6 +78,7 @@ def build():
                     source_mask_sha256=summary['source_mask_sha256'],
                     layout_export=layout_export,
                     previews=previews,
+                    figures=figures,
                     evidence_index='sram512/reports/validation_summary.json',
                     external_dependency='Unmodified TR-1um dev PDK: Xschem symbols, standard-cell schematics and SPICE models.',
                     sources=origins,

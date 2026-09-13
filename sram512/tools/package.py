@@ -13,6 +13,7 @@ import zipfile
 from common import *
 from validation_summary import main as summarize, source_files
 from evidence import design_inputs
+from submission_figures import source_files as figure_sources
 from pdk_profiles import locked, tree_digest
 
 
@@ -55,6 +56,7 @@ def python_dependencies(initial):
 def selected_files(summary):
     files = {ROOT / n for n in source_files()}
     files.update(design_inputs())
+    files.update(figure_sources())
     # PCell code loads the dense drawing helper dynamically, not with import.
     python = [TOOLS / (n + '.py') for n in ENTRY_POINTS]
     python += [ROOT / 'klayout/sram_pcell/build.py', ROOT / 'klayout/dense_sram/build.py']
