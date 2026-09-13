@@ -38,8 +38,8 @@
   "scope": "Unchanged electrical SCH/SYM files and MOS simulation netlist. An isolated export was freshly netlisted with standard Xschem LVS settings, then checked by the original dev GUI macro using its default current-view source and simulation/sram512.spice lookup. Exported GDS preserves every polygon and text coordinate after integrating one wrapper. Fresh DRC 0 and strict LVS match; earlier transistor simulation remains applicable by netlist/model identity.",
   "final_archive": {
     "path": "build/sram512/submission/sram512_submission_7cf6744ff1a1.zip",
-    "sha256": "6549f64fca85e940e715f6ef231121e5d307275fb9c00fb13f0e2bb947333eb6",
-    "bytes": 2224442
+    "sha256": "4320187242ebb00641d679b7b180d6340c1ec95b2667f2949e1e7d89f868627a",
+    "bytes": 2289870
   },
   "layout_export": {
     "passed": true,
@@ -215,30 +215,34 @@
     "archive_hashes_checked": true
   },
   "documentation_refresh": {
-    "checked_utc": "2026-09-13T05:12:38.251531+00:00",
-    "source_commit": "e5fcf04484fe58f19dde10836e7fd6798eed04ea",
+    "checked_utc": "2026-09-13T05:23:37.310798+00:00",
+    "source_commit": "75fa00608117ba05375c24e21dcc33e722997428",
     "changed_submission_files": [
       "README.md",
       "SPEC.md",
       "cell_branches.png",
       "cell_compact.png",
+      "cell_hand.png",
       "cell_one_wl.png",
       "cell_pcell.png",
       "cell_shared.png",
-      "cell_two_wl.png",
-      "sram512_pins.png"
+      "cell_two_wl.png"
     ],
-    "published_files": 37,
+    "published_files": 38,
     "electrical_files_unchanged": true,
     "archive_hashes_checked": true,
     "document_links_resolve": true,
-    "images_visually_reviewed": true,
-    "pins_verified_on_gds_metal": true,
-    "six_layout_densities_verified_from_gds_placement": true,
-    "hierarchy_diagrams_rendered_and_visually_reviewed": true,
-    "simulation_checks_cross_checked_with_checker_code": true,
-    "existing_required_reports_current": true,
+    "initial_hand_layout_image_visually_reviewed": true,
+    "original_hand_gds_matches_commit": "37c2088",
+    "layout_densities_verified_from_gds_placement": 7,
+    "comparison_view_um": [
+      160,
+      120
+    ],
+    "hierarchy_diagram_count": 1,
+    "hierarchy_edges_preserved": 13,
+    "hierarchy_diagram_rendered_and_visually_reviewed": true,
     "simulation_rerun": false,
-    "scope": "Pin connection image, six-layout comparison, per-test acceptance criteria and connections documented. Hierarchy split into two rendered diagrams to remove overlapping edges. Unwanted explanatory and supply disclaimer sentences removed. All 26 electrical files are unchanged; previous physical and simulation evidence remains applicable."
+    "scope": "Initial hand-drawn 2x2 layout added with measured 57.5 x 28 um pitch and 621 bit/mm2 density. All seven layout images use the same scale. One Mermaid hierarchy groups the controller subtree to avoid arrows crossing other nodes. All 26 electrical files are unchanged; prior circuit verification remains applicable."
   }
 }

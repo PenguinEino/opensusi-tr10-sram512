@@ -115,6 +115,7 @@ WEは受信開始前に設定して操作中保持した。
 ## 回路図の階層
 
 ```mermaid
+%%{init: {"flowchart": {"nodeSpacing": 20, "rankSpacing": 40}}}%%
 flowchart LR
     top["sram512.sch"]
     top --> array["sram512_array.sch"]
@@ -124,17 +125,16 @@ flowchart LR
     top --> col["sram512_col_decoder.sch"]
     top --> sense["sense_amp_7t.sch"]
     top --> write["AND2_X1.sch ×2（PDK）"]
-    top --> controller["sram512_controller.sch"]
     top --> clamp["sram512_input_clamp.sch ×4"]
-```
-
-```mermaid
-flowchart LR
-    controller["sram512_controller.sch"]
-    controller --> phase["sram512_phase.sch"]
-    controller --> frame["sram512_frame.sch"]
-    controller --> control["sram512_control.sch"]
-    controller --> buffers["BUF_X4.sch ×5（PDK）"]
+    top --> controller
+    subgraph controller_tree[" "]
+        controller["sram512_controller.sch"]
+        controller --> phase["sram512_phase.sch"]
+        controller --> frame["sram512_frame.sch"]
+        controller --> control["sram512_control.sch"]
+        controller --> buffers["BUF_X4.sch ×5（PDK）"]
+    end
+    style controller_tree fill:none,stroke:none
 ```
 
 下表は図の各ブロック内部で使うPDKスタンダードセル。個数は親回路1個あたり。
