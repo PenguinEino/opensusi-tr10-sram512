@@ -17,9 +17,9 @@ PDK_LVS = pdk_path()/'libs.tech/klayout/tech/lvs/run.lvs'
 def run(layout, output):
     output.mkdir(parents=True, exist_ok=True)
     cases = [
-        ('sram', ROOT / 'klayout/lvs/sram.lvs', 'sram', ROOT / 'simulation/sram.spice'),
-        ('sram_array', ROOT / 'klayout/lvs/sram.lvs', 'sram_array', ROOT / 'simulation/sram_array.spice'),
-        ('sram_array_official', PDK_LVS, 'sram_array', ROOT / 'simulation/sram_array.spice'),
+        ('sram', ROOT / 'klayout/lvs/sram.lvs', 'sram', ROOT / 'learning/simulation/sram.spice'),
+        ('sram_array', ROOT / 'klayout/lvs/sram.lvs', 'sram_array', ROOT / 'learning/simulation/sram_array.spice'),
+        ('sram_array_official', PDK_LVS, 'sram_array', ROOT / 'learning/simulation/sram_array.spice'),
     ]
     passed = True
     for name, deck, top, schematic in cases:
@@ -58,7 +58,7 @@ def run(layout, output):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--layout', type=Path, default=ROOT / 'sram.gds')
+    parser.add_argument('--layout', type=Path, default=ROOT / 'learning/layout/sram.gds')
     parser.add_argument('--output', type=Path, default=ROOT / 'build/lvs')
     args = parser.parse_args()
     raise SystemExit(0 if run(args.layout.resolve(), args.output.resolve()) else 1)

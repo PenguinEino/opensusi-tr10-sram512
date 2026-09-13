@@ -20,8 +20,8 @@ GDS SHA-256：`56810ad742a73036fb9db5207c75a2fcd63d344833c17da5f6270f1dc128bca1`
 - `RA3…RA0 CA4…CA0 DIN`を10クロックで送り、続く8クロックE0〜E7でアクセス。1操作18クロック。
 - RESETはHIGHで非同期。SRAM内容は初期化しない。書込み中のRESETでは、対象セルを再度書き込む。
 
-詳しくは[操作仕様](SPEC.md)。本体は `../sram512.sch`、専用TBは `../sram512_tb.sch`、
-7端子の階層入口は `../sram512_macro.sch`。回路図と論理は今回の配線修正で変更していない。
+詳しくは[操作仕様](SPEC.md)。本体は `schematics/sram512.sch`、専用TBは `schematics/sram512_tb.sch`、
+7端子の階層入口は `schematics/sram512_macro.sch`。回路図と論理は今回の配線修正で変更していない。
 拡大表示用：[全体回路図](diagrams/sram512.svg)、[制御回路](diagrams/sram512_controller.svg)、
 [フレームFF](diagrams/sram512_frame.svg)、[カウンタ](diagrams/sram512_phase.svg)。
 
@@ -82,7 +82,7 @@ GDS SHA-256：`56810ad742a73036fb9db5207c75a2fcd63d344833c17da5f6270f1dc128bca1`
 この図は完走・合格した実波形から `operation_waveforms.py` で生成する。
 
 ```bash
-python3 sram512/operation_waveforms.py build/sram512/analog/decoderfix_power_paths_ramp
+python3 sram512/tools/operation_waveforms.py build/sram512/analog/decoderfix_power_paths_ramp
 ```
 
 ## 今回の信号配線修正
@@ -146,20 +146,20 @@ BL・共通線は4区間のRC、その他のゲート枝は実形状に沿った
 ## 再検証と保存
 
 ```bash
-python3 sram512/verify_digital.py
-python3 sram512/analog.py --matrix --name-prefix pd102 --jobs 1
-python3 sram512/verify_saved_layout.py
-python3 sram512/pcell_preservation.py
-python3 sram512/verification_jobs.py start
-python3 sram512/verification_jobs.py status
-python3 sram512/validation_summary.py
+python3 sram512/tools/verify_digital.py
+python3 sram512/tools/analog.py --matrix --name-prefix pd102 --jobs 1
+python3 sram512/tools/verify_saved_layout.py
+python3 sram512/tools/pcell_preservation.py
+python3 sram512/tools/verification_jobs.py start
+python3 sram512/tools/verification_jobs.py status
+python3 sram512/tools/validation_summary.py
 ```
 
 端のアドレスでのRESET試験は、同じ再検証済みレイアウトを指定して実行する。
 
 ```bash
-python3 sram512/reset_address_test.py build/sram512/layout/rechecked16x32 --name decoderfix_reset_write0 --write-data 0
-python3 sram512/reset_address_test.py build/sram512/layout/rechecked16x32 --name decoderfix_reset_write1 --write-data 1
+python3 sram512/tools/reset_address_test.py build/sram512/layout/rechecked16x32 --name decoderfix_reset_write0 --write-data 0
+python3 sram512/tools/reset_address_test.py build/sram512/layout/rechecked16x32 --name decoderfix_reset_write1 --write-data 1
 ```
 
 電源投入とRC分割の比較を再現する場合は、次のコマンドを使う。
@@ -167,34 +167,34 @@ python3 sram512/reset_address_test.py build/sram512/layout/rechecked16x32 --name
 
 ```bash
 for divisions in 4 8; do
-  python3 sram512/postlayout.py build/sram512/layout/rechecked16x32 \
+  python3 sram512/tools/postlayout.py build/sram512/layout/rechecked16x32 \
     --name "decoderfix_mesh${divisions}_prefix" --rc-scale 1 \
     --signal-mesh --signal-sections "$divisions" --access-limit 1 \
     --physical-gate-paths --power-sheet 0.1 --power-mesh-grid 0.25 \
     --voltage-envelope --startup-ramp-ns 1000 --period 5000 \
     --max-step-ns 20 --solver sparse --stream
 done
-python3 sram512/signal_resolution.py \
+python3 sram512/tools/signal_resolution.py \
   sram512/reports/decoderfix_mesh4_prefix.json \
   sram512/reports/decoderfix_mesh8_prefix.json \
   sram512/reports/decoderfix_signal_resolution.json
 for step in 5 1; do
-  python3 sram512/startup_tests.py build/sram512/layout/rechecked16x32 \
+  python3 sram512/tools/startup_tests.py build/sram512/layout/rechecked16x32 \
     --name "decoderfix_startup_${step}n" --max-step-ns "$step" \
     --signal-mesh --solver sparse --stream
 done
-python3 sram512/startup_summary.py --prefix decoderfix --skip-solver-comparison
+python3 sram512/tools/startup_summary.py --prefix decoderfix --skip-solver-comparison
 ```
 
 連続16操作の2条件が完走して合格した後、保存波形から電源金属の電流を調べる。
 これは追加の過渡計算ではなく、同じ電源抵抗網の各枝の電流を復元する検査。
 
 ```bash
-python3 sram512/power_wire_audit.py build/sram512/layout/rechecked16x32 \
+python3 sram512/tools/power_wire_audit.py build/sram512/layout/rechecked16x32 \
   build/sram512/analog/decoderfix_power_paths_ramp
-python3 sram512/power_wire_audit.py build/sram512/layout/rechecked16x32 \
+python3 sram512/tools/power_wire_audit.py build/sram512/layout/rechecked16x32 \
   build/sram512/analog/decoderfix_pg_rc3_lowhot
-python3 sram512/validation_summary.py
+python3 sram512/tools/validation_summary.py
 ```
 
 `verification_jobs.py`は個別プロセスを起動し、PID・コマンド・GDSハッシュを記録する。
@@ -209,7 +209,7 @@ python3 sram512/validation_summary.py
 各試験は1スレッドで、`--stream`により全計算点をrawファイルへ直接保存する。
 大きな再生成可能な波形は `build/` に置き、Git・提出ZIPには含めない。
 
-GUIは `python3 sram512/open.py`。提出ファイルの収集は `python3 sram512/package.py`。
+GUIは `python3 sram512/tools/open.py`。提出ファイルの収集は `python3 sram512/tools/package.py`。
 回路図の依存ファイル、GDS、仕様書、検証結果、使用ツールのバージョンとSHA-256を
 `build/sram512/submission/sram512_core_56810ad742a7.zip` へまとめる。
 梱包は現GDSの必須検証がすべて合格した場合だけ行える。途中のレビュー用は明示的に

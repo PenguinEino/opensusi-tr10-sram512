@@ -5,7 +5,7 @@ import pya
 ROOT = Path(__file__).resolve().parents[3]
 app = pya.Application.instance()
 mw = app.main_window()
-cv = mw.load_layout(str(ROOT / 'sram.gds'), 0)
+cv = mw.load_layout(str(ROOT / 'learning/layout/sram.gds'), 0)
 cv.cell = cv.layout().cell('sram_array')
 v = mw.current_view()
 print('GUI source:', cv.cell.name)

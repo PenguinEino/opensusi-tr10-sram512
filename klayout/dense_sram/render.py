@@ -37,7 +37,7 @@ def draw(ax,layout,cell,dx=0,dy=0):
 
 
 def main():
-    old=db.Layout();old.read(str(ROOT/'sram.gds'))
+    old=db.Layout();old.read(str(ROOT/'learning/layout/sram.gds'))
     new=db.Layout();new.read(str(HERE/'sram_dense.gds'))
     dims=json.loads((HERE/'dimensions.json').read_text())
     plt.rcParams.update({'font.family':'DejaVu Sans','font.size':10})

@@ -33,13 +33,13 @@ def run(cmd, directory, log):
 def netlist_and_simulate(work,case):
     pdk=Path(os.environ.get('PDK_ROOT','/home/ishi-kai/pdk'))/os.environ.get('PDK','TR-1um')
     lib=pdk/'libs.tech/xschem'
-    paths=[ROOT,Path('/usr/local/share/xschem/xschem_library'),Path('/usr/local/share/xschem/xschem_library/devices'),lib,lib/'TR-1umLIB',lib/'TR-1um_5_stdcell']
+    paths=[ROOT/'learning/schematics', ROOT/'sram512/schematics',Path('/usr/local/share/xschem/xschem_library'),Path('/usr/local/share/xschem/xschem_library/devices'),lib,lib/'TR-1umLIB',lib/'TR-1um_5_stdcell']
     rc=work/'xschemrc'
     rc.write_text('set XSCHEM_LIBRARY_PATH {'+':'.join(map(str,paths))+'}\n'+f'set LIB {{{pdk}/libs.tech/spice/models}}\nset lvs_netlist 0\nset top_is_subckt 0\nset spiceprefix 1\n')
     # ERC messages live in Xschem's info window, not stdout by default.
     # Print them and propagate the netlister status so run() checks both.
     command='set result [xschem netlist]; puts [xschem get infowindow_text]; exit $result'
-    run(['xschem','-r','-x','--rcfile',rc,'-s','--command',command,'-o',work,ROOT/'sram_tb_serial.sch'],work,'netlist.log')
+    run(['xschem','-r','-x','--rcfile',rc,'-s','--command',command,'-o',work,ROOT/'learning/schematics/sram_tb_serial.sch'],work,'netlist.log')
     net=(work/'sram_tb_serial.spice').read_text()
     # Detect edits to the generator/stimulus without corresponding TB updates.
     flat=re.sub(r'\n\+\s*',' ',net)
@@ -58,7 +58,7 @@ def rtl_reference(work,case):
     if cc[0]==LOCAL_ICARUS/'bin/iverilog':
         ivl=next((LOCAL_ICARUS/'lib').glob('*/ivl'))
         cc+=['-B',ivl];vv+=['-M',ivl]
-    run(cc+['-g2012','-Wall','-s','tb_serial_spice_reference','-o','reference.vvp',ROOT/'rtl/sram_serial_controller.v',ROOT/'tb/sram_functional_model.v',ROOT/'tb/tb_serial_spice_reference.sv'],work,'rtl_compile.log')
+    run(cc+['-g2012','-Wall','-s','tb_serial_spice_reference','-o','reference.vvp',ROOT/'sram512/rtl/sram_serial_controller.v',ROOT/'learning/tb/sram_functional_model.v',ROOT/'learning/tb/tb_serial_spice_reference.sv'],work,'rtl_compile.log')
     run(vv+['reference.vvp'],work,'rtl_simulation.log')
 
 

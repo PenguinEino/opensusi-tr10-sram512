@@ -86,7 +86,7 @@ NMOSの1本の拡散列とPMOSの1本の拡散列、中央VSS/VDD共有、行反
 
 保持・読出しSNMは抽出1×1のMOS・接合形状から、5 V・27℃で計算した。保持**1.5373 V**、読出し**0.4421 V**。従来案とこの計算精度で同等。[snm.json](/home/ishi-kai/sram/klayout/sram_compact/snm.json)。MOS幅比の改善によるSNM向上を主張するものではない。
 
-実2×2の抽出回路を既存の`sram_tb_serial.sch`へ接続し、通常条件、85℃、BL/共通線に各1 pFを追加した条件の3条件でPASS。各条件5 V、100 nsクロック、19操作、3,408件のRTL比較と745件のアナログ区間判定、計4,153件を確認した。[serial_results.json](/home/ishi-kai/sram/klayout/sram_compact/serial_results.json)。共有部を含む実2×2の抽出MOSを使い、周辺回路は回路図モデル。追加容量は仮定した負荷であり、PEX値ではない。
+実2×2の抽出回路を既存の`learning/schematics/sram_tb_serial.sch`へ接続し、通常条件、85℃、BL/共通線に各1 pFを追加した条件の3条件でPASS。各条件5 V、100 nsクロック、19操作、3,408件のRTL比較と745件のアナログ区間判定、計4,153件を確認した。[serial_results.json](/home/ishi-kai/sram/klayout/sram_compact/serial_results.json)。共有部を含む実2×2の抽出MOSを使い、周辺回路は回路図モデル。追加容量は仮定した負荷であり、PEX値ではない。
 
 **512 bit＋8列ごとのWL接続の全トランジスタマクロも8操作でPASS**。`compact_strap8_16x32`の全メモリ抽出MOSに、生成したシリアル制御・行列デコーダ・列MUX・書き込み・プリチャージ・7Tセンスアンプを接続した。5 V・27℃・100 nsクロックで、先頭／末尾の2アドレスへ両極性を書き、読み戻し、反転データを再び書いて読み戻した。SDOに加え、PREBと選択WLの電圧も判定した。メモリ全体のMOSは回路に存在するが、**全アドレス／全パターンの動作試験ではない**。
 

@@ -15,7 +15,7 @@ class LVSRegression(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix='sram-lvs-test-') as directory:
             tmp = Path(directory)
             layout = db.Layout()
-            layout.read(str(ROOT / 'sram.gds'))
+            layout.read(str(ROOT / 'learning/layout/sram.gds'))
             edit(layout)
             layout.write(str(tmp / 'fault.gds'))
             result = subprocess.run([

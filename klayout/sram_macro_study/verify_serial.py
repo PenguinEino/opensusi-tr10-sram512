@@ -17,7 +17,7 @@ PDK = Path('/home/ishi-kai/pdk/TR-1um')
 
 def fresh_netlist():
     WORK.mkdir(parents=True, exist_ok=True)
-    paths = [ROOT, Path('/usr/local/share/xschem/xschem_library'),
+    paths=[ROOT/'learning/schematics', ROOT/'sram512/schematics', Path('/usr/local/share/xschem/xschem_library'),
              Path('/usr/local/share/xschem/xschem_library/devices'),
              PDK/'libs.tech/xschem', PDK/'libs.tech/xschem/TR-1umLIB',
              PDK/'libs.tech/xschem/TR-1um_5_stdcell']
@@ -27,7 +27,7 @@ def fresh_netlist():
                   +'set lvs_netlist 0\nset top_is_subckt 0\nset spiceprefix 1\n')
     command = 'set result [xschem netlist]; puts [xschem get infowindow_text]; exit $result'
     serial.run(['xschem','-r','-x','--rcfile',rc,'-s','--command',command,
-                '-o',WORK,ROOT/'sram_tb_serial.sch'], WORK, 'netlist.log')
+                '-o',WORK,ROOT/'learning/schematics/sram_tb_serial.sch'], WORK, 'netlist.log')
     net = (WORK/'sram_tb_serial.spice').read_text()
     flat = re.sub(r'\n\+\s*', ' ', net)
     case = serial.scenario()
@@ -54,7 +54,7 @@ def main():
             if p.is_file(): source += p.read_bytes()
         for p in ['verify_serial_spice.py','serial_spice_stimulus.py']:
             source += (ROOT/'scripts'/p).read_bytes()
-        source += (ROOT/'rtl/sram_serial_controller.v').read_bytes()
+        source += (ROOT/'sram512/rtl/sram_serial_controller.v').read_bytes()
         key = hashlib.sha256(source).hexdigest()
         cache = work/'result.json'
         if cache.exists() and json.loads(cache.read_text()).get('input_sha256') == key:

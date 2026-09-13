@@ -10,6 +10,10 @@ import hashlib,json,math,re
 import klayout.db as db
 from macro_model import digital,source_text,Circuit
 HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[1]
+import sys
+sys.path.insert(0,str(ROOT/'scripts'))
+from project_paths import schematic_path
+
 PDK=Path('/home/ishi-kai/pdk/TR-1um')
 LIB=db.Layout();LIB.read(str(PDK/'libs.tech/klayout/libraries/TR-1um_STDCELL.gds'))
 
@@ -25,7 +29,7 @@ def area(bom):return sum(dimension(n)['abut_width_um']*55*v for n,v in bom.items
 
 
 def schematic_bom(name):
-    return Counter(re.findall(r'^C \{TR-1um_5_stdcell/([^/}]+)\.sym\}',(ROOT/name).read_text(),re.M))
+    return Counter(re.findall(r'^C \{TR-1um_5_stdcell/([^/}]+)\.sym\}',schematic_path(name).read_text(),re.M))
 
 
 def pack_rows(bom,utilization,width=580):
@@ -118,7 +122,7 @@ def main():
     strap_tradeoff=[estimate(r,c,u,s,interval=i) for i in (4,8,16)
                    for r,c,u,s in ((16,16,.65,150),(16,32,.85,120))]
     report=dict(scope='600 x 1800 um core including serial controller; no pads/ESD; block estimates, not routed peripheral GDS',
-        sources_sha256={n:hashlib.sha256((ROOT/(n+'.sch')).read_bytes()).hexdigest() for n in original},
+        sources_sha256={n:hashlib.sha256(schematic_path(n+'.sch').read_bytes()).hexdigest() for n in original},
         library_sha256=hashlib.sha256((PDK/'libs.tech/klayout/libraries/TR-1um_STDCELL.gds').read_bytes()).hexdigest(),
         library_dimensions=inventory,original_2x2=exact,scenarios=scenarios,comparisons=[compact(x) for x in comparisons],
         strap_tradeoff=[compact(x) for x in strap_tradeoff])

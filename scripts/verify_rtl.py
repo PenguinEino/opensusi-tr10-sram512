@@ -63,9 +63,9 @@ def main():
         compile_prefix += ['-B', ivl_dirs[0]]
         sim_prefix += ['-M', ivl_dirs[0]]
 
-    sources = [ROOT / 'rtl/sram_serial_controller.v',
-               ROOT / 'tb/sram_functional_model.v',
-               ROOT / 'tb/tb_sram_serial_controller.sv']
+    sources = [ROOT / 'sram512/rtl/sram_serial_controller.v',
+               ROOT / 'learning/tb/sram_functional_model.v',
+               ROOT / 'learning/tb/tb_sram_serial_controller.sv']
     for row_bits, col_bits in shapes:
         name = f'{1 << row_bits}x{1 << col_bits}'
         work = ROOT / 'build/rtl' / name

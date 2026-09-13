@@ -103,7 +103,7 @@ def faults(source,out,circuit):
 def spice(out):
     work=out/'spice';work.mkdir(exist_ok=True)
     rc=work/'xschemrc'
-    rc.write_text(f'''set XSCHEM_LIBRARY_PATH {ROOT}
+    rc.write_text(f'''set XSCHEM_LIBRARY_PATH {ROOT}/learning/schematics:{ROOT}/sram512/schematics
 append XSCHEM_LIBRARY_PATH :${{XSCHEM_SHAREDIR}}/xschem_library
 append XSCHEM_LIBRARY_PATH :${{XSCHEM_SHAREDIR}}/xschem_library/devices
 append XSCHEM_LIBRARY_PATH :{PDK}/libs.tech/xschem
@@ -116,7 +116,7 @@ set lvs_netlist 0
 set top_is_subckt 0
 set flat_netlist 0
 ''')
-    schematic=ROOT/'sram_tb_array_write_control.sch'
+    schematic=ROOT/'learning/schematics/sram_tb_array_write_control.sch'
     generated=work/'sram_tb_array_write_control.spice'
     generated.unlink(missing_ok=True)
     run(['xschem','-x','-q','--rcfile',rc,'-n','-o',work,schematic],work/'xschem.log')

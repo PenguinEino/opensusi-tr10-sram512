@@ -32,7 +32,7 @@ def main():
     dependencies=Path(__file__).read_bytes()+Path(shared.__file__).read_bytes()
     for p in sorted((shared.PDK/'libs.tech/spice/models').rglob('*')):
         if p.is_file():dependencies+=p.read_bytes()
-    for p in ['scripts/verify_serial_spice.py','scripts/serial_spice_stimulus.py','rtl/sram_serial_controller.v']:
+    for p in ['scripts/verify_serial_spice.py','scripts/serial_spice_stimulus.py','sram512/rtl/sram_serial_controller.v']:
         dependencies+=(ROOT/p).read_bytes()
     results=[]
     for variant,temp,cbl,cy in [('t4_dualwl',27,'10f','100f'),('t4_singlewl',27,'10f','100f'),

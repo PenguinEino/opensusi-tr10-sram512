@@ -67,7 +67,7 @@ def main():
                      'T4 has terminal body-tap rows only; extra tap rows, RC, IR drop, latch-up constraints unresolved.'],
         source_sha256={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in
                        [HERE/'build.py',Path(base.__file__),HERE.parent/'sram_macro_study/macro_model.py',
-                        ROOT/'sram_serial_controller.sch',ROOT/'write_control.sch']},
+                        ROOT/'learning/schematics/sram_serial_controller.sch',ROOT/'sram512/schematics/write_control.sch']},
         best=best,cases=cases)
     (HERE/'capacity_comparison.json').write_text(json.dumps(report,indent=2)+'\n')
     for b in best:print(b['variant'],b['utilization'],b['bits'],b['rows'],b['columns'],b['floorplan'])

@@ -21,7 +21,7 @@ def layout(path):
 
 def main():
     plt.rcParams.update({'font.family':'DejaVu Sans','font.size':10})
-    old=layout(ROOT/'sram.gds');base=layout(HERE/'baseline_fit.gds');new=layout(HERE/'euler_shared.gds')
+    old=layout(ROOT/'learning/layout/sram.gds');base=layout(HERE/'baseline_fit.gds');new=layout(HERE/'euler_shared.gds')
     fig,axes=plt.subplots(1,3,figsize=(15,5.4),layout='constrained')
     entries=[(old,'sram',57.5,28,'Hand layout | 1,610 um²/bit'),
              (base,'sram_dense',21.2,34,'Previous dense | 720.8 um²/bit'),

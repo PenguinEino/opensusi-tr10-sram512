@@ -32,7 +32,7 @@ def main():
     best=[max((a for a in cases if a['utilization']==u and a['floorplan']['fits']),
               key=lambda a:(a['bits'],-a['floorplan']['height_um'])) for u in (.65,.75,.85)]
     paths=[Path(__file__),HERE/'dimensions.json',Path(previous.__file__),Path(previous.base.__file__),
-           Path(macro_model.__file__),netlist,ROOT/'sram_serial_controller.sch',ROOT/'write_control.sch',
+           Path(macro_model.__file__),netlist,ROOT/'learning/schematics/sram_serial_controller.sch',ROOT/'sram512/schematics/write_control.sch',
            previous.base.PDK/'libs.tech/klayout/libraries/TR-1um_STDCELL.gds']
     report=dict(gds_sha256=dims['gds_sha256'],array_only_best=largest,
                 array_search='1..100 rows and columns, both orientations; 16-column tap interval.',

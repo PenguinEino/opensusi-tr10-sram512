@@ -1,60 +1,15 @@
-/build/lvs/
-/klayout/lvs/**/__pycache__/
-/klayout/path_preview/**/__pycache__/
-
-/xschem/flat_top/tests/__pycache__/
-
-# Regenerated ngspice waveforms and testbench netlists
-/simulation/*.raw
-/simulation/sram_tb*.spice
-/simulation/sense_amp_7t.spice
-
-# Sequencer verification outputs
-/scripts/__pycache__/
-/simulation/sequencer_waveforms.txt
-/sequencer_waveforms.txt
-/sram_tb_sequencer.raw
-
-# Digital RTL simulation executables, logs and optional VCD waveforms
-/build/rtl/
-
-# Dense SRAM layout verification, extracted netlists, and simulator outputs
-/build/dense_sram/
-
-# Serial controller schematic generation and transistor verification
-/build/serial_sch/
-/build/serial_spice/
-/build/shared_frame/
-/simulation/serial_spice_waveforms.txt
-/serial_spice_waveforms.txt
-/sram_tb_serial.raw
-
-# Reproducible SRAM research verification and simulation outputs
-/build/sram_research/
-
-# SRAM macro capacity and serial extracted-circuit study
-/build/sram_macro_study/
-/klayout/sram_macro_study/__pycache__/
-
-# T4 two-metal topology exploration
-/build/sram_t4/
-/klayout/sram_t4/__pycache__/
-
-# Compacted shared-source SRAM study
-/build/sram_compact/
-/klayout/sram_compact/__pycache__/
-
-# TR-1um PCell SRAM experiments and regenerated simulation data
-/build/sram_pcell/
-/klayout/sram_pcell/__pycache__/
-
-# Isolated, reproducible PDK installs and per-profile verification output
+# Installed PDKs and machine-local tool state
 /.pdk/
-/build/pdk_checks/
-/scripts/__pycache__/
-/scripts/tests/__pycache__/
-
-# 512-bit implementation verification and regenerable waveforms
-/build/sram512/
-/sram512/__pycache__/
-/sram512*.raw
+# Reproducible calculations and multi-GB waveforms
+/build/*
+!/build/README.md
+**/__pycache__/
+*.pyc
+*.raw
+*.vcd
+/submission/results/
+# Learning testbench netlists are regenerated; small reference circuits stay tracked
+/learning/simulation/sram_tb*.spice
+/learning/simulation/sense_amp_7t.spice
+/learning/simulation/*waveforms.txt
+/learning/schematics/*waveforms.txt

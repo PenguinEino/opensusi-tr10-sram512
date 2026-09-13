@@ -11,7 +11,7 @@
 
 ## 回路図で確認した変更と削減量
 
-dev PDKで現在の`sram_tb_serial.sch`をXschemから新しくネットリスト化した。
+dev PDKで現在の`learning/schematics/sram_tb_serial.sch`をXschemから新しくネットリスト化した。
 `sram_serial_controller`は48スタセル、DFFRが13個、MUX2が5個。
 受信用FFのQが直接DIN・CA・RAへつながり、RX期間だけシフトする実配線を確認した。
 2×2コントローラ単体のスタセル共有配置面積は120,092.5 µm²。

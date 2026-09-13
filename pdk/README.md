@@ -77,7 +77,7 @@ originalは、以前使っていた`/home/ishi-kai/pdk/TR-1um`の実ファイル
 | GDSのトップセル | 旧版 | dev |
 |---|---:|---:|
 | 元の手配置 `sram_array` | 0件 | 0件 |
-| 現在のルート直下 `sram_dense_1x1` | 0件 | **12件** |
+| 旧ルートの手配置GDS内 `sram_dense_1x1`（現在は`learning/layout/`） | 0件 | **12件** |
 | 手描き最小案 `compact_4x4` | 0件 | **160件** |
 | PCell版 `pcell_4x4` | 0件 | **0件** |
 | 手描き最小案 `compact_20x76`、1,520 bit | 0件 | **15,200件** |

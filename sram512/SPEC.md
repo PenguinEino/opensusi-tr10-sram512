@@ -75,8 +75,8 @@ ESD耐量の保証や、フレーム接続後のチップ全体の検証を済�
 
 ## 検証の区別
 
-`sram512.sch` は電源以外の理想部品を含まない本体。
-`sram512_tb.sch` は同じ本体配置を含む専用TBで、外部入力と配線負荷を追加する。
+`sram512/schematics/sram512.sch` は電源以外の理想部品を含まない本体。
+`sram512/schematics/sram512_tb.sch` は同じ本体配置を含む専用TBで、外部入力と配線負荷を追加する。
 VSSはTB内で直接0番ノードへ接続する。
 BL追加70 fF/本、WL追加400 fF/本、共通線追加180 fF/本、SDO負荷10 pFは
 **初期の感度試験用の仮定**。これにMOSモデルのゲート・接合容量が加わる。
@@ -109,8 +109,8 @@ BLと共通線を4区間に分ける。他のゲート配線には実経路の�
 これは電圧を扱わない試験であり、SPICE・DRC・LVSと合わせて評価する。
 
 ```bash
-python3 sram512/schematics.py       # 専用ファイルのみ再生成。手編集後は実行しない
-python3 sram512/verify_digital.py   # 現在の回路図をネットリスト化して検証
-python3 sram512/analog.py           # 現在の専用TBをngspiceで実行
-python3 sram512/analog.py --matrix  # 電圧、温度、負荷、Vth感度試験
+python3 sram512/tools/schematics.py       # 専用ファイルのみ再生成。手編集後は実行しない
+python3 sram512/tools/verify_digital.py   # 現在の回路図をネットリスト化して検証
+python3 sram512/tools/analog.py           # 現在の専用TBをngspiceで実行
+python3 sram512/tools/analog.py --matrix  # 電圧、温度、負荷、Vth感度試験
 ```

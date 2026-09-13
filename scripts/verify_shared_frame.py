@@ -36,7 +36,7 @@ def icarus(source, work):
         ivl = next((LOCAL_ICARUS / 'lib').glob('*/ivl'))
         cc += ['-B', ivl]; vv += ['-M', ivl]
     run(cc + ['-g2012', '-Wall', '-s', 'test', '-o', 'sim',
-              ROOT / 'rtl/sram_serial_controller.v', source], work, 'compile.log')
+              ROOT / 'sram512/rtl/sram_serial_controller.v', source], work, 'compile.log')
     return run(vv + ['sim'], work, 'simulation.log')
 
 
@@ -297,8 +297,8 @@ def main():
     parser.add_argument('--jobs', type=int, default=2)
     args = parser.parse_args(); WORK.mkdir(parents=True, exist_ok=True)
     netlist = (BASE / 'sram_tb_serial.spice').read_text()
-    files = [BASE/'sram_tb_serial.spice', ROOT/'rtl/sram_serial_controller.v',
-             ROOT/'sram_serial_controller.sch', ROOT/'sram_tb_serial.sch',
+    files = [BASE/'sram_tb_serial.spice', ROOT/'sram512/rtl/sram_serial_controller.v',
+             ROOT/'learning/schematics/sram_serial_controller.sch', ROOT/'learning/schematics/sram_tb_serial.sch',
              ROOT/'scripts/verify_serial_spice.py', Path(__file__)]
     hashes = {str(p.relative_to(ROOT)): sha(p) for p in files}
     if args.section == 'logic': result = logic(netlist)

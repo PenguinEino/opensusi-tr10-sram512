@@ -246,8 +246,8 @@ def main():
     inputs = [Path(__file__),Path(macro_model.__file__),Path(base.__file__),
               Path(verify_serial.__file__),ROOT/'scripts/verify_serial_spice.py',
               ROOT/'scripts/pdk_profiles.py',ROOT/'pdk/profiles.lock.json',
-              ROOT/'sram_serial_controller.sch',ROOT/'sram_tb_serial.sch',
-              ROOT/'write_control.sch',ROOT/'rtl/sram_serial_controller.v',
+              ROOT/'learning/schematics/sram_serial_controller.sch',ROOT/'learning/schematics/sram_tb_serial.sch',
+              ROOT/'sram512/schematics/write_control.sch',ROOT/'sram512/rtl/sram_serial_controller.v',
               HERE/'dimensions.json',HERE/'pcell.gds',archive_path,library,
               verify_serial.WORK/'sram_tb_serial.spice']
     report = dict(schema=1,date='2026-09-12',pdk_profile=args.profile,

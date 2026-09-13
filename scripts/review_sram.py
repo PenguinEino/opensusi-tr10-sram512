@@ -273,8 +273,8 @@ def main():
     model_include = Path(re.search(r'(?m)^\s*\.include (.*ip62_models)', netlist)[1])
     report = {'scope':'Schematic-only review; diagnostic loads are not extracted or foundry corners.',
               'files_sha256':{str(p.relative_to(ROOT)):sha(p) for p in
-                    [netfile, ROOT/'sram_tb_serial.sch', ROOT/'sram_serial_controller.sch', ROOT/'sram.sch',
-                     ROOT/'sense_amp_7t.sch', ROOT/'rtl/sram_serial_controller.v']},
+                    [netfile, ROOT/'learning/schematics/sram_tb_serial.sch', ROOT/'learning/schematics/sram_serial_controller.sch', ROOT/'learning/schematics/sram.sch',
+                     ROOT/'sram512/schematics/sense_amp_7t.sch', ROOT/'sram512/rtl/sram_serial_controller.v']},
               'controller_truth':controller_truth(netlist),
               'baseline':analyze(BASE / 'serial_spice_waveforms.txt')}
     for p in (model_include, model_include.parent/'models_IP62_mos_v2.lib'):

@@ -65,7 +65,7 @@ def logic_test(rb,cb):
     cc=[tool('iverilog')];vv=[tool('vvp')]
     if cc[0]==LOCAL_ICARUS/'bin/iverilog':
         ivl=next((LOCAL_ICARUS/'lib').glob('*/ivl'));cc+=['-B',ivl];vv+=['-M',ivl]
-    run(cc+['-g2012','-s','test','-o','sim',ROOT/'rtl/sram_serial_controller.v','test.sv'],work,'compile.log')
+    run(cc+['-g2012','-s','test','-o','sim',ROOT/'sram512/rtl/sram_serial_controller.v','test.sv'],work,'compile.log')
     log=run(vv+['sim'],work,'simulation.log');assert 'PASS' in log
     print(f'Gate vs RTL {2**rb} x {2**cb}: PASS',flush=True)
     return dict(row_bits=rb,col_bits=cb,cycles=2048,pass_=True,
@@ -117,7 +117,7 @@ def main():
     cases=[(n,r,c,t) for n in (4,8,16) for r in (10,30,120,300) for c in (.1,.3) for t in (27,85)]
     with ThreadPoolExecutor(max_workers=2) as pool:wl=list(pool.map(wl_case,cases))
     report=dict(gate_logic_vs_rtl=logic,wl_sensitivity=wl,
-        rtl_sha256=hashlib.sha256((ROOT/'rtl/sram_serial_controller.v').read_bytes()).hexdigest(),
+        rtl_sha256=hashlib.sha256((ROOT/'sram512/rtl/sram_serial_controller.v').read_bytes()).hexdigest(),
         scope='Gate functional comparison uses zero delay. WL sweep uses PDK MOS, assumed GC sheet R and wire C, 20 ohm M2 branch R, 32 columns; not PEX or full-array read/write.',
         model_sha256=hashlib.sha256((PDK/'libs.tech/spice/models/models_IP62_mos_v2.lib').read_bytes()).hexdigest())
     (HERE/'scaling_results.json').write_text(json.dumps(report,indent=2)+'\n')

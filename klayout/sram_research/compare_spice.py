@@ -32,7 +32,7 @@ set lvs_netlist 0
 set top_is_subckt 0
 set flat_netlist 0
 ''')
-    schematic=ROOT/'sram_tb_array_write_control.sch'
+    schematic=ROOT/'learning/schematics/sram_tb_array_write_control.sch'
     run(['xschem','-x','-q','--rcfile',rc,'-n','-o',OUT,schematic],OUT/'xschem.log')
     text=(OUT/'sram_tb_array_write_control.spice').read_text()
     text='\n'.join(s for s in text.splitlines() if not s.lstrip().startswith(('plot ','write ')))+'\n'
@@ -133,7 +133,7 @@ def main():
     static=[dc_snm(v,read) for v in templates for read in (False,True)]
     report={'model_file':str(PDK/'libs.tech/spice/models/models_IP62_mos_v2.lib'),
             'model_sha256':hashlib.sha256((PDK/'libs.tech/spice/models/models_IP62_mos_v2.lib').read_bytes()).hexdigest(),
-            'testbench_sha256':hashlib.sha256((ROOT/'sram_tb_array_write_control.sch').read_bytes()).hexdigest(),
+            'testbench_sha256':hashlib.sha256((ROOT/'learning/schematics/sram_tb_array_write_control.sch').read_bytes()).hexdigest(),
             'scope':'Actual 2x2 GDS extracted MOS including junction geometry; nominal process model; no wire RC or mismatch.',
             'transient':transient,'static_noise_margin':static}
     (HERE/'spice_comparison.json').write_text(json.dumps(report,indent=2)+'\n')

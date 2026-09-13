@@ -5,8 +5,8 @@ import json
 from pdk_profiles import ROOT,run_drc
 
 CASES=[
-    ('sram.gds','sram_array'),
-    ('sram_dense.gds','sram_dense_1x1'),
+    ('learning/layout/sram.gds','sram_array'),
+    ('learning/layout/sram_dense.gds','sram_dense_1x1'),
     ('klayout/sram_compact/compact.gds','compact_4x4'),
     ('klayout/sram_pcell/pcell.gds','pcell_4x4'),
     ('klayout/sram_compact/compact.gds','compact_20x76'),

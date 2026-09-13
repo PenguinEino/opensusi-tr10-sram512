@@ -16,13 +16,13 @@ Gitには不採用の配置・配線スクリプトと不合格レポートも�
 
 ### 配線済みの比較配置
 
-`python3 sram512/layout.py --height 720 --iterations 1800` で生成する比較配置は、
+`python3 sram512/tools/layout.py --height 720 --iterations 1800` で生成する比較配置は、
 158ネットの配線が完了し、無改変devのDrawing DRC 0・厳密LVS一致を確認した。
 結果は `reports/layout_h720.json`。外形は約720×1800 µmであり、目標の
 600×1800 µmに収まったという意味ではない。抽出後の動作・配線RC・電流評価、
 製造レイヤー変換、提出先の端子・ESD条件の確認も引き続き必要。
 
-[`sram512_macro.sch`](../sram512_macro.sch) は本体を含む7端子の階層で、
+[`sram512/schematics/sram512_macro.sch`](schematics/sram512_macro.sch) は本体を含む7端子の階層で、
 GDS最上位は `sram512_macro`。内側の実配線に回路図と対応するネット名を付け、
 SRAMの大量の同形セルをLVSで照合しやすくしている。外部端子は7本のまま。
 `physical_top.py` は実回路図から参照ネットリストを作る。端子の無視や

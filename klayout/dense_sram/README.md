@@ -1,7 +1,7 @@
 # TR-1um 高密度6T SRAM単セル
 
 600×1800 µmに入るビット数を増やすため、既存の手描きセルから配置・配線を作り直した。
-保存済みの成果物は [sram_dense.gds](sram_dense.gds)。元の `../../sram.gds` と回路図は変更していない。
+保存済みの成果物は [sram_dense.gds](sram_dense.gds)。元の [手配置GDS](../../learning/layout/sram.gds) と回路図は変更していない。
 
 ## 寸法と成果
 
@@ -41,7 +41,7 @@ MOSとコンタクト・V1の間隔に制約される。幅は4本のM2経路と
 
 ## GDSの使い方
 
-KLayoutで `sram_dense.gds` を開き、目的に応じて以下のセルを選ぶ。
+KLayoutで `klayout/dense_sram/sram_dense.gds` を開き、目的に応じて以下のセルを選ぶ。
 
 | セル名 | 内容 |
 |---|---|
@@ -88,7 +88,7 @@ LVSは標準のdeepモードと厳密ポート比較で、独立に記述した6
 交差結合の切断、BLとBLBの短絡をそれぞれ加えた故障コピーがLVSで不一致になることも確認した。
 
 1×1から抽出した6T回路とW/L・AS/AD/PS/PDを、既存の
-`sram_tb_array_write_control.sch` の4個のセルに適用したSPICE検証もPASSした。
+`learning/schematics/sram_tb_array_write_control.sch` の4個のセルに適用したSPICE検証もPASSした。
 5 V・27℃、追加CBL=10 fF・CY=100 fFで、書き込み、センス読み出し、非選択セル保持、
 行列選択、プリチャージ・センス初期化の既存判定を維持している。
 抽出した配線RC、1 Kbit全体のアナログ動作、PVT・ミスマッチ、電源降下、ラッチアップ耐性は未評価。

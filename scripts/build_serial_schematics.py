@@ -70,7 +70,7 @@ class Sheet:
                 else:
                     self.label(x,y,net,2 if key[1] in ['Q','QB','Y','GND'] else 0)
     def save(self, name):
-        (ROOT/name).write_text('\n'.join(self.lines)+'\n')
+        (ROOT/'learning/schematics'/name).write_text('\n'.join(self.lines)+'\n')
 
 
 def controller():
@@ -245,7 +245,7 @@ def controller_symbol():
 def testbench(pins):
     from serial_spice_stimulus import scenario, pwl
     case=scenario();s=Sheet()
-    old=(ROOT/'sram_tb_array_write_control.sch').read_text()
+    old=(ROOT/'learning/schematics/sram_tb_array_write_control.sch').read_text()
     replaced={(-680,430),(-680,510),(-680,940),(-680,1470),(-680,1550),(1000,1440),
               (-40,0),(460,0),(760,0),(1260,0),(110,1170),(610,1170)}
     for rec in re.split(r'(?=^[A-Z] )',old,flags=re.M):
@@ -352,7 +352,7 @@ def testbench(pins):
 def main():
     OUT.mkdir(parents=True,exist_ok=True)
     s=controller();s.save('sram_serial_controller.sch')
-    sym,pins=controller_symbol();(ROOT/'sram_serial_controller.sym').write_text(sym)
+    sym,pins=controller_symbol();(ROOT/'learning/schematics/sram_serial_controller.sym').write_text(sym)
     (OUT/'intended_connections.json').write_text(json.dumps(s.cells,indent=2)+'\n')
     (OUT/'symbol_pins.json').write_text(json.dumps(pins,indent=2)+'\n')
     testbench(pins).save('sram_tb_serial.sch')

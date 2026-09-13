@@ -36,15 +36,15 @@ arrayでは同じ補正の接続義務が実配線で解決され、警告・エ
 
 ## arrayの検証
 
-標準メニュー **TR-1um LVS(Drawing)** は、`sram.gds` 内の `sram_array` を
-デフォルトの `simulation/sram_array.spice` と比較します。
+標準メニュー **TR-1um LVS(Drawing)** では、`learning/layout/sram.gds` 内の `sram_array` を
+`learning/simulation/sram_array.spice` と比較します。フォルダ整理後は参照回路のパスを指定してください。
 このファイルはXschemが回路図から直接生成した24 MOSのFlatネットリストです。
 ユーザー設定のFlat変換差し替えで、最上位の`.SUBCKT`宣言を保持します。
 
-1. Xschemで `sram_array.sch` を開く。
+1. Xschemで `learning/schematics/sram_array.sch` を開く。
 2. Options → Netlist format / Symbol mode → **Flat netlist** を有効にする。
 3. Simulation → LVS → **LVS netlist + Top level is a .subckt** を有効にする。
-4. 出力先をこのプロジェクトの `simulation/` にして **Netlist** を押す。
+4. 出力先をこのプロジェクトの `learning/simulation/` にして **Netlist** を押す。
 5. KLayoutで `sram_array` を表示して **TR-1um LVS(Drawing)** を実行する。
 
 生成後の手加工や別の展開コマンドは不要です。

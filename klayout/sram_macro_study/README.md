@@ -2,7 +2,7 @@
 
 2026-09-12続報：[最小PCellと保持段共用後の容量見積もり](../sram_pcell/SHARED_CAPACITY.md)を追加。600×1800 µmと1600×800 µmについて、旧構成との面積・外形比較を行った。
 
-2026-09-12追記：受信段とアクセス保持段を共用する変更を実装した。以下の表・全配列アナログ検証結果は、二重保持を残した時点の記録。現在の`macro_model.py`は共有構成を既定にし、`share_frame=False`で当時の論理構成を再現する。共有後の回路図・RTL・2×2 SPICE結果は[制御仕様](../../SEQUENCER_DESIGN.md#13-保持段共有による面積削減)を参照。容量と全配列アナログ結果は本変更では再算定・再検証していない。
+2026-09-12追記：受信段とアクセス保持段を共用する変更を実装した。以下の表・全配列アナログ検証結果は、二重保持を残した時点の記録。現在の`macro_model.py`は共有構成を既定にし、`share_frame=False`で当時の論理構成を再現する。共有後の回路図・RTL・2×2 SPICE結果は[制御仕様](../../learning/docs/SEQUENCER_DESIGN.md#13-保持段共有による面積削減)を参照。容量と全配列アナログ結果は本変更では再算定・再検証していない。
 
 続報：[共有ソース案の縮小検証](/home/ishi-kai/sram/klayout/sram_compact/README.md)で651.20 µm²/bit、アレー単体1,520 bitを確認した。周辺回路込みの512 bit＋8列ごとのWL接続も見積もりに入った。以下はその前段の記録。
 
@@ -26,11 +26,11 @@
 
 1,024 bit（16×64）は、アレー753,687.04 µm²と、今回割り当てたデジタル回路451,027.5 µm²だけで**1,204,714.54 µm²**となり、1,080,000 µm²を超える。アナログ周辺・配線余白を加える前の値なので、現行構成の延長で1 Kbitを目標とする根拠は弱い。制御方式や周辺セルを作り直す場合は再見積もりが必要。
 
-パッド・ESD・パッドを駆動する大きな出力段は元の`sram_tb_serial.sch`にも含まれないため、この表にも含めていない。7ピンのパッドまで同じ600×1800 µmへ入れる場合には、この容量表を流用できない。
+パッド・ESD・パッドを駆動する大きな出力段は元の`learning/schematics/sram_tb_serial.sch`にも含まれないため、この表にも含めていない。7ピンのパッドまで同じ600×1800 µmへ入れる場合には、この容量表を流用できない。
 
 ## 2. 元の回路図から数えた周辺回路
 
-検証開始時の[sram_tb_serial.sch](/home/ishi-kai/sram/sram_tb_serial.sch)をXschemで新たにネットリスト化した。手編集されていた[sram_serial_controller.sch](/home/ishi-kai/sram/sram_serial_controller.sch)は再生成・上書きしていない。
+検証開始時の[sram_tb_serial.sch](/home/ishi-kai/sram/learning/schematics/sram_tb_serial.sch)をXschemで新たにネットリスト化した。手編集されていた[sram_serial_controller.sch](/home/ishi-kai/sram/learning/schematics/sram_serial_controller.sch)は再生成・上書きしていない。
 
 | 元の2×2構成のブロック | 数量 | 標準セル共有配置の面積和 |
 |---|---:|---:|

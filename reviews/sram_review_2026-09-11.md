@@ -1,6 +1,6 @@
 **TR-1um シリアル SRAM 全体レビュー — 2026-09-11**
 
-対象は [sram_tb_serial.sch](/home/ishi-kai/sram/sram_tb_serial.sch) を2×2の最終構成とする、電源込み7ピン・1アクセス1 bitのSRAM。回路図、階層内のPDKスタセル、制御RTL、動作モデル、刺激・判定スクリプト、PDKの資料とモデル、既存のセル配置研究を確認した。基準のGit HEADは `7fd16c3`。制御回路図の保存済み未コミット変更を含む実ファイルから再ネットリスト化して検証した。確認した入力のSHA-256は [測定結果JSON](/home/ishi-kai/sram/reviews/sram_review_2026-09-11_results.json) に記録した。
+対象は [sram_tb_serial.sch](/home/ishi-kai/sram/learning/schematics/sram_tb_serial.sch) を2×2の最終構成とする、電源込み7ピン・1アクセス1 bitのSRAM。回路図、階層内のPDKスタセル、制御RTL、動作モデル、刺激・判定スクリプト、PDKの資料とモデル、既存のセル配置研究を確認した。基準のGit HEADは `7fd16c3`。制御回路図の保存済み未コミット変更を含む実ファイルから再ネットリスト化して検証した。確認した入力のSHA-256は [測定結果JSON](/home/ishi-kai/sram/reviews/sram_review_2026-09-11_results.json) に記録した。
 
 **判断：2×2の機能確認用の基準設計として、制御とアナログ回路の動作は成立している。今回の確認では、修正が必要な論理接続ミスや制御RTLの不一致は見つからなかった。ただし、製造ばらつきに対するセル・センスの余裕、実I/O、配線RCを含むタイミングが未確定であり、現状のPASSを製造後の動作保証へ置き換えることはできない。**
 
@@ -59,7 +59,7 @@
 
 **R1：全最小寸法セルを、面積だけで確定しない**
 
-[sram.sch](/home/ishi-kai/sram/sram.sch:55) のpull-down NMOSとaccess NMOSは同じ3.4/1 µmで、幾何学的なcell ratioは1。PMOSも同じ寸法だが、NMOSとPMOSの電気的な強さが等しいという意味ではない。今回のDC試験は次の結果になった。
+[sram.sch](/home/ishi-kai/sram/learning/schematics/sram.sch:55) のpull-down NMOSとaccess NMOSは同じ3.4/1 µmで、幾何学的なcell ratioは1。PMOSも同じ寸法だが、NMOSとPMOSの電気的な強さが等しいという意味ではない。今回のDC試験は次の結果になった。
 
 | VDD | 温度 | 保持SNM | 読み出しSNM |
 |---|---:|---:|---:|
@@ -78,7 +78,7 @@
 
 **R2：SA単体の微小差増幅を、実チップの感度として扱わない**
 
-[sense_amp_7t.sch](/home/ishi-kai/sram/sense_amp_7t.sch:8) の方式は、今回の接続と制御で動作した。SAE=0ではtailがOFF、PMOS入力経由で追従し、両入力のプリチャージにより内部もHIGHへ戻る。SAE=1では入力分離と再生を同じ信号で行う。独立したequalizerはないが、その不在自体を今回の欠陥とは判定しない。
+[sense_amp_7t.sch](/home/ishi-kai/sram/sram512/schematics/sense_amp_7t.sch:8) の方式は、今回の接続と制御で動作した。SAE=0ではtailがOFF、PMOS入力経由で追従し、両入力のプリチャージにより内部もHIGHへ戻る。SAE=1では入力分離と再生を同じ信号で行う。独立したequalizerはないが、その不在自体を今回の欠陥とは判定しない。
 
 名目の実セル接続ではE4直前のY/YB差は最小でも約4.998 Vであり、十分に大きい信号で読んでいる。LOW側のSA内部ノードはPMOS入力のため0 Vまで追従せず、典型的に約1.9 Vを残した後に再生する。この動作は今回の試験では問題ない。
 
@@ -98,13 +98,13 @@
 
 左図は同じセルをRESET後に読む際の差動電圧。100 ns付近がE4。右図は名目モデルの読み出し蝶形曲線。両図は異なる種類の余裕を示す。
 
-[単体入力差掃引](/home/ishi-kai/sram/simulation/sense_amp_input_sweep.md) のpV級の結果は、資料自身が明記するとおり、完全対称・ノイズなし・理想入力源での数値実験である。最小入力差や歩留まりの根拠には使えない。また、実接続ではSOUTだけが結果FF前段のMUXを駆動し、SOUTBは同じ負荷を持たない。両方へ10 fFを置いていても総負荷は対称ではない。
+[単体入力差掃引](/home/ishi-kai/sram/learning/simulation/sense_amp_input_sweep.md) のpV級の結果は、資料自身が明記するとおり、完全対称・ノイズなし・理想入力源での数値実験である。最小入力差や歩留まりの根拠には使えない。また、実接続ではSOUTだけが結果FF前段のMUXを駆動し、SOUTBは同じ負荷を持たない。両方へ10 fFを置いていても総負荷は対称ではない。
 
 実装では入力差、同相電圧、左右の容量・配線抵抗差、前回読み出し極性、SAEのslew、入力分離とtail導通の重なりを含めて、オフセット・再生時間・kickbackを評価する。必要入力差の下限を決め、最悪のE4直前差がそれを上回ることを合格条件にする。必要に応じた入力負荷の整合、バッファ、初期化回路の変更は、この結果に基づいて判断する。
 
 **R3：現在のSDOは内部FF出力であり、製造用I/Oではない**
 
-[sram_tb_serial.sch](/home/ishi-kai/sram/sram_tb_serial.sch:355) はSDOへ10 fFを付けただけで、入力も理想5 V電圧源から直接駆動している。仕様書もパッド・ESD・出力段を後で追加するとしており、現段階の範囲としては一貫している。ただし、これをそのままパッドへ接続した完成品として扱うことはできない。
+[sram_tb_serial.sch](/home/ishi-kai/sram/learning/schematics/sram_tb_serial.sch:355) はSDOへ10 fFを付けただけで、入力も理想5 V電圧源から直接駆動している。仕様書もパッド・ESD・出力段を後で追加するとしており、現段階の範囲としては一貫している。ただし、これをそのままパッドへ接続した完成品として扱うことはできない。
 
 SDOだけを仮に10 pFに変更した追加試験では、E6から35 ns後のSDOは立上りで約2.439 V、立下りで約3.412 Vであり、名目試験の4.5/0.5 V判定を満たさなかった。4.5 Vへ達するまで約73.3 ns、0.5 V以下へ達するまで約101.5 nsかかる例があり、E7時点のLOWは約0.528 Vだった。E7+80 nsでは期待レベルになり、保存されたセルの内容も正しい。**これは出力タイミングの問題の再現であり、メモリの機能不良ではない。** 10 pFは実パッドの測定値ではない。
 
@@ -114,9 +114,9 @@ PDKにはESD専用の [保護素子ガイドライン](/home/ishi-kai/pdk/TR-1um
 
 **R4：制御をFF化した利点はあるが、100 nsのタイミング保証はまだない**
 
-[RTLの制御](/home/ishi-kai/sram/rtl/sram_serial_controller.v:69) は、E0プリチャージ、E1解除、E2書き込み準備、E3 WL開始、E4センス、E5 WL終了、E6捕捉／書き込み終了という明確な順序になっている。次の周期のカウンタを生デコードしてアナログ回路を動かす構成ではなく、この点は維持する価値がある。
+[RTLの制御](/home/ishi-kai/sram/sram512/rtl/sram_serial_controller.v:69) は、E0プリチャージ、E1解除、E2書き込み準備、E3 WL開始、E4センス、E5 WL終了、E6捕捉／書き込み終了という明確な順序になっている。次の周期のカウンタを生デコードしてアナログ回路を動かす構成ではなく、この点は維持する価値がある。
 
-ただし、受信・カウンタ・保持MUXは実際のFF間パスを形成する。QとQBの遅延差、クロック配線skew、短いデータ経路のhold、RESETのrecovery/removalは名目の波形照合だけでは確定しない。[比較時刻](/home/ishi-kai/sram/tb/tb_serial_spice_reference.sv:39) がエッジ開始から35 ns後であることも、35 ns以前の全ての危険な動作を否定するものではない。
+ただし、受信・カウンタ・保持MUXは実際のFF間パスを形成する。QとQBの遅延差、クロック配線skew、短いデータ経路のhold、RESETのrecovery/removalは名目の波形照合だけでは確定しない。[比較時刻](/home/ishi-kai/sram/learning/tb/tb_serial_spice_reference.sv:39) がエッジ開始から35 ns後であることも、35 ns以前の全ての危険な動作を否定するものではない。
 
 | 区間 | 実装で確認する制約 |
 |---|---|
@@ -169,7 +169,7 @@ TR-1umの公式資料は、従来のDRCのfull-custom対応上の制約とDrawin
 
 **R7：配置できるbit数と、現在のRTLで扱える容量は一致させる**
 
-[RTL](/home/ishi-kai/sram/rtl/sram_serial_controller.v:7) と [仕様](/home/ishi-kai/sram/SEQUENCER_DESIGN.md) は `2^ROW_BITS × 2^COL_BITS` を前提とする。16×64や32×32は直接表現できるが、既存研究の20×72＝1,440 bitはそのまま表現できない。
+[RTL](/home/ishi-kai/sram/sram512/rtl/sram_serial_controller.v:7) と [仕様](/home/ishi-kai/sram/learning/docs/SEQUENCER_DESIGN.md) は `2^ROW_BITS × 2^COL_BITS` を前提とする。16×64や32×32は直接表現できるが、既存研究の20×72＝1,440 bitはそのまま表現できない。
 
 20行／72列に必要な5 bit／7 bitをそのまま使うと32×128のアドレス空間になる。端数配列を製品容量として使うなら無効アドレスの検出・非選択動作・出力の仕様・TBの変更が必要。あるいは16×64を有効容量とし、残りを予備／試験セル等とする構成を検討する。これは今の2×2の不具合ではなく、物理配置研究を論理実装へ採用する際の条件である。
 
@@ -203,9 +203,9 @@ WEはE0だけで取り込み、SDOは読み出しE6で更新、E7後に観測す
 
 **R10：機能検証は良い出発点。故障と余裕の検査を足す**
 
-[RTL TB](/home/ishi-kai/sram/tb/tb_sram_serial_controller.sv:30) はDUTのデコードアドレスを期待値へ流用せず、外部から要求したアドレスからscoreboardを作る。未書き込みをXにする、逆順に読み戻す、幅の非対称性やカウンタ境界を試す点も適切。これは維持すべき検証資産である。
+[RTL TB](/home/ishi-kai/sram/learning/tb/tb_sram_serial_controller.sv:30) はDUTのデコードアドレスを期待値へ流用せず、外部から要求したアドレスからscoreboardを作る。未書き込みをXにする、逆順に読み戻す、幅の非対称性やカウンタ境界を試す点も適切。これは維持すべき検証資産である。
 
-一方、[動作モデル](/home/ishi-kai/sram/tb/sram_functional_model.v:4) は理想配列で、電圧・RC・read disturb・半選択の失敗を表現しない。大容量のRTL PASSで拡張後のアナログ動作を裏付けることはできない。シリアルSPICEの19操作は機能の代表例として有効だが、全背景パターン・製造故障・長時間の保持を網羅した試験ではない。
+一方、[動作モデル](/home/ishi-kai/sram/learning/tb/sram_functional_model.v:4) は理想配列で、電圧・RC・read disturb・半選択の失敗を表現しない。大容量のRTL PASSで拡張後のアナログ動作を裏付けることはできない。シリアルSPICEの19操作は機能の代表例として有効だが、全背景パターン・製造故障・長時間の保持を網羅した試験ではない。
 
 | 次に加える検証 | 検出するもの |
 |---|---|
@@ -219,7 +219,7 @@ WEはE0だけで取り込み、SDOは読み出しE6で更新、E7後に観測す
 
 名目SPICEの判定値0.5/4.5/2.5 Vや35 ns、RESET後の操作番号16は [判定スクリプト](/home/ishi-kai/sram/scripts/verify_serial_spice.py:68) に固定されている。5 V・現在の刺激に対しては妥当だが、VDDや周期、操作列を変更する際には判定器もパラメータ化する必要がある。今回は追加診断側で電源に対する10%／90%／50%を用いた。これは外部I/Oの製品仕様値を提案したものではない。
 
-`sram_tb_serial.sch` は理想電圧源、仮負荷、測定制御、Q/QBの観測端子を含むTBである。製造用には同じ接続の純粋なコアトップと7ピンI/O付きトップを用意し、それを既存TBから呼ぶ構成にする。旧 `sram_array.sch` やセル研究GDSに対するLVS一致が、そのまま現在の全体とのLVS一致にはならない。回路の複製を増やすより、基準となるコアを1つにする方が対応を維持しやすい。
+`learning/schematics/sram_tb_serial.sch` は理想電圧源、仮負荷、測定制御、Q/QBの観測端子を含むTBである。製造用には同じ接続の純粋なコアトップと7ピンI/O付きトップを用意し、それを既存TBから呼ぶ構成にする。旧 `learning/schematics/sram_array.sch` やセル研究GDSに対するLVS一致が、そのまま現在の全体とのLVS一致にはならない。回路の複製を増やすより、基準となるコアを1つにする方が対応を維持しやすい。
 
 [生成スクリプト](/home/ishi-kai/sram/scripts/build_serial_schematics.py:352) は回路図を上書きするため、手修正後の無条件実行を避ける。現在の回路図を読み直す既存検証の方針は適切。提出時には回路図、生成ネットリスト、RTL、刺激、PDK／スタセル、DRC/LVS/MDP、抽出回路の対応する版・ハッシュを揃える。
 
