@@ -4,6 +4,8 @@
 
 | ファイル | 内容 |
 |---|---|
+| [`sram512_review_2026-09-13.md`](sram512_review_2026-09-13.md) | SRAM512の設計・回路図・GDS・製造適合・テスト監査。新規検証、保存波形の再集計、検証ツールの欠陥と製造判断の未解決事項 |
+| [`sram512_review_2026-09-13_results.json`](sram512_review_2026-09-13_results.json)、[`sram512_review_checks.py`](sram512_review_checks.py) | 上記レビューの入力ハッシュ・確認結果・負例の再現コード |
 | `repository_organization.json` | 移動後の回路・レイアウト同一性、参照先の確認 |
 | `submission_portability.json` | 直下配置の提出回路図を別の場所へコピーし、dev PDKで確認した結果 |
 | `submission_manifest.json` | 提出ファイル一覧・元の場所・チェックサム・ZIPの確認 |
