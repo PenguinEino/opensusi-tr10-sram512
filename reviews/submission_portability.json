@@ -38,8 +38,8 @@
   "scope": "Unchanged electrical SCH/SYM files and MOS simulation netlist. An isolated export was freshly netlisted with standard Xschem LVS settings, then checked by the original dev GUI macro using its default current-view source and simulation/sram512.spice lookup. Exported GDS preserves every polygon and text coordinate after integrating one wrapper. Fresh DRC 0 and strict LVS match; earlier transistor simulation remains applicable by netlist/model identity.",
   "final_archive": {
     "path": "build/sram512/submission/sram512_submission_7cf6744ff1a1.zip",
-    "sha256": "9e886c249d38db9558b3904d9f163d6ef53e5984ec27ce20e14fde0eeb7625e4",
-    "bytes": 2289861
+    "sha256": "d642c6d843e3b7da753ecb4f33ad1f988b3f06a3e2914196f71fbc808b096a76",
+    "bytes": 2289993
   },
   "layout_export": {
     "passed": true,
@@ -207,12 +207,12 @@
     "scope": "README previews and appeal, specification terminology, and exporter updated. All 26 SCH/SYM/GDS files are byte-identical to the preceding export; existing physical and simulation evidence remains applicable. Flat ZIP, all file hashes, document links and image decoders checked."
   },
   "readme_wording_update": {
-    "checked_utc": "2026-09-13T05:34:00.297572+00:00",
-    "source_commit": "0e6d5c919a6c573f76f8e21c369e60b8e5cd863a",
+    "checked_utc": "2026-09-13T05:37:39.273498+00:00",
+    "source_commit": "7b8fa5c341673ff03b09cf3d28445e6783cf010d",
     "changed_files": [
       "README.md"
     ],
-    "removed_sentence": "周辺回路込みの密度は約480 bit/mm²。",
+    "change": "Draft author and GPT-6-Astra responsibility statement, prepared for user review before push.",
     "other_37_files_unchanged": true,
     "archive_hashes_checked": true
   },
