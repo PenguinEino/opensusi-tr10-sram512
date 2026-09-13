@@ -56,10 +56,9 @@ def selected_files(summary):
     python += [ROOT / 'klayout/sram_pcell/build.py', ROOT / 'klayout/dense_sram/build.py']
     files |= python_dependencies(python)
     files.update(HERE / n for n in ('README.md', 'SPEC.md', 'SUBMISSION.md', 'EXPERIMENTS.md',
-        'THIRD_PARTY.md', 'APPEAL.md', 'VERIFICATION.md', 'SUBMISSION_README.md',
+        'APPEAL.md', 'VERIFICATION.md', 'SUBMISSION_README.md',
         'run.py', 'design.json', 'analog_scenario.json'))
     files.add(ROOT/'reviews/repository_organization.json')
-    files.update((HERE/'licenses').glob('*.txt'))
     files.update((HERE/'diagrams').glob('*.svg'))
     files.update(p for p in (HERE / 'layout').iterdir() if p.is_file())
     files.update(REPORTS.glob('*.json'))

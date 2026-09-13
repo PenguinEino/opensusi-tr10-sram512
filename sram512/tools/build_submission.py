@@ -61,7 +61,7 @@ def build():
     for p in (PDK/'libs.tech/spice/models').iterdir():
         if p.is_file():
             add('pdk/models/'+p.name, p)
-    for name in ('sram512.gds', 'sram512_mask.gds', 'ports.json', 'overview.png', 'NOTICE.txt'):
+    for name in ('sram512.gds', 'sram512_mask.gds', 'ports.json', 'overview.png'):
         add('layout/'+name, HERE/'layout'/name)
     for name in ('SPEC.md', 'SUBMISSION.md', 'APPEAL.md', 'VERIFICATION.md'):
         add(name, HERE/name)
@@ -77,8 +77,6 @@ def build():
     payload['SPEC.md']=spec.encode()
     add('README.md', HERE/'SUBMISSION_README.md')
     add('run.py', TOOLS/'submission_runner.py')
-    for path in (HERE/'licenses').glob('*.txt'):
-        add('licenses/'+path.name, path)
     add('schematics/overview.svg', HERE/'diagrams/sram512.svg')
     for name in ('sram512_controller.svg','sram512_frame.svg','sram512_phase.svg'):
         add('schematics/'+name,HERE/'diagrams'/name)
@@ -109,7 +107,7 @@ def build():
             path=output/name
             if path.exists() and sha(path)!=info['sha256']:
                 raise RuntimeError(f'Export edited outside source: {path}; preserve/merge that edit before rebuilding.')
-        stale=set(old['files'])-set(payload)
+        stale={name for name in set(old['files'])-set(payload) if (output/name).exists()}
         if stale:
             raise RuntimeError('Stale export entries need explicit archival: '+', '.join(sorted(stale)))
     for name,data in payload.items():
