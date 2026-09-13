@@ -11,6 +11,7 @@ from common import *
 
 
 TRIALS = [
+    ('hand', 'learning/layout/sram.gds', 'sram_array', None, None),
     ('branches', 'klayout/dense_sram/sram_dense.gds', 'sram_dense_2x2',
      'klayout/dense_sram/dimensions.json', 'area_per_bit_um2'),
     ('shared', 'klayout/sram_research/euler_shared.gds', 'euler_shared_2x2',
@@ -27,7 +28,7 @@ TRIALS = [
 
 
 def source_files():
-    return {ROOT/p for _,gds,_,dimensions,_ in TRIALS for p in (gds,dimensions)} | {
+    return {ROOT/p for _,gds,_,dimensions,_ in TRIALS for p in (gds,dimensions) if p} | {
         HERE/'layout/ports.json'}
 
 
@@ -90,9 +91,9 @@ def pin_figure(gds, output):
 
 
 def periodic_pitch(layout, cell, key):
-    """Measure the saved 4x4 placement, including alternating mirrored rows."""
-    top=layout.cell(cell.replace('_2x2','_4x4'));assert top is not None
-    cores={'sram_dense','euler','compact_core','pcell_core',
+    """Measure saved placements, including alternating mirrored rows."""
+    top=layout.cell(cell if key=='hand' else cell.replace('_2x2','_4x4'));assert top is not None
+    cores={'sram','sram_dense','euler','compact_core','pcell_core',
            't4_core','t4_single_core','t4_shared_via_core'}
     groups={};count=0
     for instance in top.each_inst():
@@ -102,12 +103,13 @@ def periodic_pitch(layout, cell, key):
             groups.setdefault((transform.angle,transform.is_mirror()),[]).append(
                 (transform.disp.x*layout.dbu,transform.disp.y*layout.dbu))
             count+=1
-    assert count==16,(key,count)
+    assert count==(4 if key=='hand' else 16),(key,count)
     for points in groups.values():
         xs=sorted({x for x,y in points});ys=sorted({y for x,y in points})
         if len(xs)>1 and len(ys)>1:
-            dx=min(b-a for a,b in zip(xs,xs[1:]));dy=min(b-a for a,b in zip(ys,ys[1:]))
-            rows=1 if key=='two_wl' else 2
+            dx=round(min(b-a for a,b in zip(xs,xs[1:])),6)
+            dy=round(min(b-a for a,b in zip(ys,ys[1:])),6)
+            rows=1 if key in ('hand','two_wl') else 2
             return dict(repeat_x_um=dx,repeat_y_um=dy,rows_per_repeat=rows,
                         measured_area_per_bit_um2=dx*dy/rows,source_cell=top.name)
     raise AssertionError(('No repeated bitcell placement',key))
@@ -123,15 +125,15 @@ def trial_figures(output):
         view.max_hier();view.set_config('background-color','#000000')
         view.set_config('grid-visible','false');view.set_config('text-visible','false')
         box=top.dbbox();cx,cy=box.center().x,box.center().y
-        assert box.width()<=120 and box.height()<=90, (key,box)
+        assert box.width()<=160 and box.height()<=120, (key,box)
         path=output/f'cell_{key}.png'
-        view.save_image_with_options(str(path),720,540,0,2,0,db.DBox(cx-60,cy-45,cx+60,cy+45),False)
-        area=json.loads((ROOT/dimensions).read_text())[area_key]
+        view.save_image_with_options(str(path),960,720,0,2,0,db.DBox(cx-80,cy-60,cx+80,cy+60),False)
         pitch=periodic_pitch(view.cellview(index).layout(),cell,key)
+        area=json.loads((ROOT/dimensions).read_text())[area_key] if dimensions else pitch['measured_area_per_bit_um2']
         assert abs(pitch['measured_area_per_bit_um2']-area)<1e-5,(key,pitch,area)
         records.append(dict(image=path.name,image_sha256=sha(path),source_gds=gds,
-            source_gds_sha256=sha(ROOT/gds),cell=cell,shown_bits=4,view_um=[120,90],
-            dimensions_source=dimensions,dimensions_sha256=sha(ROOT/dimensions),
+            source_gds_sha256=sha(ROOT/gds),cell=cell,shown_bits=4,view_um=[160,120],
+            dimensions_source=dimensions,dimensions_sha256=sha(ROOT/dimensions) if dimensions else None,
             cell_area_um2=area,density_bit_per_mm2=1e6/area,placement_pitch=pitch,
             scope='Periodic array area per bit; excludes tap columns, ends and peripheral circuits'))
     return records
