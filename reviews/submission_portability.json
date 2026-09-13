@@ -6,7 +6,7 @@
   "source_repository_needed_for_schematics": false,
   "pdk_installation_needed": true,
   "pdk_revision": "6afbd918951f2ea0dcd11c5a46986b4c20f9e6f9",
-  "files": 31,
+  "files": 28,
   "subdirectories": 0,
   "erc": {
     "sram512": true,
@@ -38,8 +38,8 @@
   "scope": "Unchanged electrical SCH/SYM files and MOS simulation netlist. An isolated export was freshly netlisted with standard Xschem LVS settings, then checked by the original dev GUI macro using its default current-view source and simulation/sram512.spice lookup. Exported GDS preserves every polygon and text coordinate after integrating one wrapper. Fresh DRC 0 and strict LVS match; earlier transistor simulation remains applicable by netlist/model identity.",
   "final_archive": {
     "path": "build/sram512/submission/sram512_submission_7cf6744ff1a1.zip",
-    "sha256": "6f43bebfb00f158f72eb87a8e6ea2fb61af1b229368add5a119fd415c50bf7ba",
-    "bytes": 183148
+    "sha256": "6f0aff3ee3584b4ea3f75f79f2b30367ae4d0d8284f7eb50497bfbaa03767ac4",
+    "bytes": 172476
   },
   "layout_export": {
     "passed": true,
@@ -186,5 +186,17 @@
   "drawing_drc": {
     "passed": true,
     "items": 0
+  },
+  "documentation_update": {
+    "checked_utc": "2026-09-13T03:26:53.057691+00:00",
+    "markdown_files": [
+      "README.md",
+      "SPEC.md"
+    ],
+    "links_resolve": true,
+    "port_coordinates_unchanged": true,
+    "sch_sym_gds_unchanged": true,
+    "previous_manifest_commit": "49e23f6",
+    "scope": "Only submission documentation and exporter were edited. Existing ERC/LVS/DRC/simulation evidence retained; all 26 SCH/SYM/GDS files match the previous export byte for byte."
   }
 }

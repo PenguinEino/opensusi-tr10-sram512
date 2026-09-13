@@ -70,7 +70,7 @@ def main():
         raise RuntimeError(f'Simulation failed; inspect {work}/simulation.log\n{output[-3000:]}')
     print('PASS: 16 accesses; stored cell and SDO checks', flush=True)
     print('Log and waveform:', work, flush=True)
-    print('Original PDK diode IMAX/IMELT fields are unsupported by ngspice; see README.md.', flush=True)
+    print('Original PDK diode IMAX/IMELT fields are unsupported by ngspice.', flush=True)
 
 
 if __name__ == '__main__':

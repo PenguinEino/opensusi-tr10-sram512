@@ -1,86 +1,21 @@
-# 512 bit シリアルSRAM — OpenSUSI TR-1um
+# 512 bit Serial SRAM — OpenSUSI TR-1um
 
-**16行×32列の6T SRAMと周辺回路を、横1776.7×縦600.0 µmに収めた7端子のコアです。**
-主催者側の共通フレームへ統合する相乗り提出物です。
+16行×32列・7端子。周辺回路込みで横1776.7×縦600.0 µm。
 
-## 提出ファイル
+## 提出物
 
-| 提出項目 | ファイル |
+| 項目 | ファイル |
 |---|---|
-| 回路図（全体・LVS用） | **[sram512.sch](sram512.sch)** |
+| 回路図 | [sram512.sch](sram512.sch) |
 | シミュレーション用回路図 | [sram512_tb.sch](sram512_tb.sch) |
-| レイアウト（Drawing形式） | **[sram512.gds](sram512.gds)**、top: **sram512** |
-| 仕様書・操作説明 | [SPEC.md](SPEC.md) |
-| 端子座標・パッドへの接続指示 | [SUBMISSION.md](SUBMISSION.md) |
-| 工夫した点・アピールポイント | [APPEAL.md](APPEAL.md) |
-| 検証条件・結果・制限 | [VERIFICATION.md](VERIFICATION.md) |
+| レイアウト | [sram512.gds](sram512.gds) — top: `sram512` |
+| 仕様書・説明書 | [SPEC.md](SPEC.md) |
 
-同じ場所の下位回路図と`.sym`も必要です。すべて同じフォルダに置いたまま使ってください。
-PDK・モデル・画像・JSON・ログ・実行スクリプトはこのフォルダには同梱していません。
+## アピールポイント
 
-## 開く・シミュレーションする
+- **最小寸法の6Tセル**：全MOS W=3.4 µm / L=1 µm。PCellで22×29.6 µm、651.2 µm²/bit。
+- **周辺回路まで面積内に集積**：行列デコーダ、プリチャージ、書込み、センス、シリアル制御を600×1800 µm以内に収容。
+- **32列で回路を共有**：nMOS列MUX、片側プルダウン書込み、7Tセンスアンプで1 bit単位にアクセス。
+- **7端子・21 FF**：受信した10 bitを同じFFで保持。外部CLKの18段階で受信から読み書きまで制御。
 
-Xschem、ngspiceと、無改変のTR-1um dev PDKを使用します。PDKの固定コミットは
-`6afbd918951f2ea0dcd11c5a46986b4c20f9e6f9`です。
-TR-1um用に設定したXschemで、このフォルダから開きます。
-
-```sh
-xschem sram512.sch
-xschem sram512_tb.sch
-```
-
-必要なシンボル検索先は、このフォルダ、Xschem標準ライブラリ、PDKの
-`libs.tech/xschem`、`TR-1umLIB`、`TR-1um_5_stdcell`です。
-TBのモデル参照に使うTcl変数`LIB`は、PDKの`libs.tech/spice/models`に設定します。
-TBを通常のNetlist → Simulateで実行すると、波形と16操作のPASS/FAILを表示します。
-モデルのDP/DNに含まれる`IMAX/IMELT`はngspiceで未対応のため、元モデル由来の警告が出ます。
-
-開発リポジトリ上では、ルートから次のコマンドでも提出用TBを開けます。
-ログ・波形は開発側の`build/sram512/submission_check/`へ出力します。
-
-```sh
-python3 sram512/tools/submission_runner.py tb
-python3 sram512/tools/submission_runner.py simulate
-```
-
-## XschemからKLayoutでLVSする
-
-回路図名・ネットリスト名・GDSトップセル名を、すべて **`sram512`** に揃えています。
-LVSに使うのは本体の`sram512.sch`です。TBのネットリストは使いません。
-
-1. Xschemで`sram512.sch`を開く。
-2. Simulation → **Use 'simulation' dir in schematic dir**を選ぶ。
-3. Simulation → LVS → **LVS netlist + Top level is a .subckt**をONにする。
-   Options → Netlist → **Flat netlist**はOFFにする。
-4. **Netlist**を押す。同じフォルダの下に`simulation/sram512.spice`が生成される。
-5. KLayoutで、同じフォルダの`sram512.gds`を開き、トップセル`sram512`を表示する。
-   TR-1umの **LVS(Drawing)** を実行する。
-
-公式ルールは、表示中のセル名から`simulation/sram512.spice`を自動で探します。
-これは`.sch`から生成する作業ファイルで、提出ZIPへの同梱は不要です。
-`sram512_macro`という古いトップを表示している場合は、GDSを閉じて更新版を開き直してください。
-
-この開発環境で固定したdev PDKを使って開くコマンドは、リポジトリのルートから次のとおりです。
-
-```sh
-./scripts/pdk --profile dev exec -- xschem submission/sram512.sch
-./scripts/pdk --profile dev klayout submission/sram512.gds
-```
-
-通常の`klayout`で起動した既存ウィンドウは、別のPDKを参照している場合があります。
-上記はプロジェクト専用の設定で起動します。PDKのルールは変更しません。
-TBをシミュレーションするときは、LVSのチェックを外し、通常のシミュレーション設定に戻してください。
-
-## 概要と検証
-
-- 電源基準5 V。VDD / VSS / CLK / RESET / SDI / WE / SDOの7端子。
-- 行4bit・列5bit・データ1bitを10クロックで受信し、8クロックでアクセス。合計18クロック。
-- Drawing DRC 0、厳密LVS全13回路一致、公式変換後の製造マスクDRC 0。
-- 詳細配線RCは仮定した係数による簡易モデル。最大端子間電圧の5.75 V基準までの余裕は約2.5 mV。
-
-検証条件と制限は[VERIFICATION.md](VERIFICATION.md)に記載しています。
-詳細な検証データと提出ファイルのチェックサムは開発リポジトリに保存しています。
-
-パッドへの配線・パッドESDは主催者側の共通フレームを利用する前提です。
-SDO出力バッファはコア側に実装しています。
-提出するGDSはDrawing形式の1個です。MDP変換後のマスクは開発側の検証用に保存しています。
+Drawing DRC 0・厳密LVS一致（13回路）・製造マスクDRC 0。

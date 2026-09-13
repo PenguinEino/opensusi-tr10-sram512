@@ -57,34 +57,9 @@ def build():
     drawing = WORK/'submission/sram512.gds'
     layout_export = export_layout(HERE/'layout/sram512.gds', drawing)
     add('sram512.gds', drawing)
-    for name in ('SPEC.md', 'SUBMISSION.md', 'APPEAL.md', 'VERIFICATION.md'):
-        add(name, HERE/name)
-    # SPEC's development commands belong to the full repository, not the minimal export.
-    spec=payload['SPEC.md'].decode()
-    spec=spec.replace('sram512/schematics/','')
-    spec=re.sub(r'diagrams/(\w+)\.svg',r'\1.sch',spec)
-    spec=spec.replace('いずれも編集可能な `.sch` をXschemで直接出力した図である。',
-                      'いずれもXschemで開く編集可能な回路図である。')
-    spec=spec.replace('`reports/validation_summary.json`','開発リポジトリの `sram512/reports/validation_summary.json`')
-    spec=re.sub(r'```bash\npython3 sram512/tools/.*?```',
-                '同梱回路図の実行方法はREADME.mdを参照。詳細な検証ツールとログは開発リポジトリに保存している。',spec,flags=re.S)
-    payload['SPEC.md']=spec.encode()
-    integration=payload['SUBMISSION.md'].decode().replace('layout/sram512.gds','sram512.gds')
-    integration=integration.replace('GDS中の端子名ラベルと `layout/ports.json` にも同じ座標を記録している。',
-                                    'GDS中の端子名ラベルにも同じ座標を記録している。')
-    payload['SUBMISSION.md']=integration.encode()
-    for name in ('SUBMISSION.md', 'VERIFICATION.md'):
-        contents = payload[name].decode().replace('sram512_macro', 'sram512')
-        contents = contents.replace('全14回路一致', '全13回路一致')
-        contents = contents.replace(summary['source_gds_sha256'], sha(drawing))
-        payload[name] = contents.encode()
-    payload['VERIFICATION.md'] += (
-        '\n提出GDSは、検証元の外側の座標・端子用階層を一段統合し、'
-        'トップセル名を回路図と同じ`sram512`にしたものです。'
-        '全層の図形と文字・端子座標が元のレイアウトと一致することを確認しています。'
-        '階層統合後のDrawing DRCと厳密LVSも再実行し、0件・全13回路一致を確認しました。\n'
-    ).encode()
+    add('SPEC.md', HERE/'SPEC.md')
     add('README.md', HERE/'SUBMISSION_README.md')
+    assert {name for name in payload if name.endswith('.md')} == {'README.md', 'SPEC.md'}
     assert all(Path(name).name==name and Path(name).suffix in ('.sch','.sym','.gds','.md') for name in payload)
     manifest = dict(format_version=3, created_utc=datetime.now(timezone.utc).isoformat(),
                     source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),

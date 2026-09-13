@@ -37,7 +37,14 @@ TR-1um PDKはインストール済みのdev版を参照します。編集は`sra
 `python3 sram512/run.py submission`で提出物を更新します。提出用コピーを直接編集した場合、
 更新ツールはその変更を検出して停止します。
 提出版は外側の座標用階層を一段統合し、`sram512.sch`とGDSトップ名を揃えています。
-元の全図形・端子座標は保持しています。通常のXschem→KLayout操作は提出用READMEを参照してください。
+元の全図形・端子座標は保持しています。
+
+提出版のLVSは、Xschemで`submission/sram512.sch`を開き、Simulation → LVS →
+「LVS netlist + Top level is a .subckt」をON、Flat netlistをOFFにします。
+出力先を「Use 'simulation' dir in schematic dir」にしてNetlistを実行し、
+KLayoutで`submission/sram512.gds`のトップ`sram512`にLVS(Drawing)を実行します。
+dev版での起動は`./scripts/pdk --profile dev exec -- xschem submission/sram512.sch`と
+`./scripts/pdk --profile dev klayout submission/sram512.gds`です。
 
 ## 整理とGit履歴
 
@@ -49,6 +56,6 @@ TR-1um PDKはインストール済みのdev版を参照します。編集は`sra
 
 保存GDSは横1776.7×縦600.0 µm。Drawing DRC・製造マスクDRCは0件。
 厳密LVSは元の階層で全14回路一致、提出版の階層統合後は全13回路一致です。
-読み書きの条件と制限は[検証説明](submission/VERIFICATION.md)に記載しています。
+読み書きの条件は[仕様書](submission/SPEC.md)、詳細な検証記録は[検証説明](sram512/VERIFICATION.md)に記載しています。
 寄生RCは仮定した係数による簡易モデルです。最大端子間電圧の5.75 V基準までの余裕は
 約2.5 mVで、製造ばらつきや電源範囲の保証にはしていません。

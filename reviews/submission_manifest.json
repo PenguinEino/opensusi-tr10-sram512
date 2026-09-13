@@ -1,7 +1,7 @@
 {
   "format_version": 3,
-  "created_utc": "2026-09-13T03:05:08.804890+00:00",
-  "source_commit": "a4ad5a438166f1ff096f19d46dadbc77c9dfdf1e",
+  "created_utc": "2026-09-13T03:26:52.992374+00:00",
+  "source_commit": "49e23f60dcb60d684e61b5dae49ebc495363193c",
   "status": "CORE_VERIFIED_WITH_DOCUMENTED_MODEL_LIMITS",
   "pdk_revision": "6afbd918951f2ea0dcd11c5a46986b4c20f9e6f9",
   "source_gds_sha256": "56810ad742a73036fb9db5207c75a2fcd63d344833c17da5f6270f1dc128bca1",
@@ -155,31 +155,16 @@
     "sram512_tb.sch": "sram512/schematics/sram512_tb.sch",
     "sram512.gds": "build/sram512/submission/sram512.gds",
     "SPEC.md": "sram512/SPEC.md",
-    "SUBMISSION.md": "sram512/SUBMISSION.md",
-    "APPEAL.md": "sram512/APPEAL.md",
-    "VERIFICATION.md": "sram512/VERIFICATION.md",
     "README.md": "sram512/SUBMISSION_README.md"
   },
   "files": {
-    "APPEAL.md": {
-      "bytes": 3341,
-      "sha256": "ad3da506489437d383cdb1732ff4c28087aca7488d98e8f379520806758081e3"
-    },
     "README.md": {
-      "bytes": 4811,
-      "sha256": "5b9a83299186a077f6f827c829e45d5593591c7ddf60534ac51574ba4ac022b0"
+      "bytes": 1030,
+      "sha256": "164c44e49b5ad194cc9dc61fe0aa99d20babbeec92a0f9718842f3bd27ae7584"
     },
     "SPEC.md": {
-      "bytes": 7868,
-      "sha256": "6ac7e59d8f406f3ba7472574df708d1698c92d174414ead808314a73feea8225"
-    },
-    "SUBMISSION.md": {
-      "bytes": 3946,
-      "sha256": "6c1de682c22b2ab96feeddcf38de365579a4da7265af2b2c46f3d4fc63fe4f65"
-    },
-    "VERIFICATION.md": {
-      "bytes": 4614,
-      "sha256": "801d89c95fbf839079ba392165506a33bfe1e6f579fcb991e1b0cba901aebcee"
+      "bytes": 3240,
+      "sha256": "f61f77d4110fa9b20d16991bbdb49ab1be5ef5a0b21b19048d58ef8d34024b32"
     },
     "sense_amp_7t.sch": {
       "bytes": 2708,
@@ -288,7 +273,7 @@
   },
   "archive": {
     "path": "build/sram512/submission/sram512_submission_7cf6744ff1a1.zip",
-    "sha256": "6f43bebfb00f158f72eb87a8e6ea2fb61af1b229368add5a119fd415c50bf7ba",
-    "bytes": 183148
+    "sha256": "6f0aff3ee3584b4ea3f75f79f2b30367ae4d0d8284f7eb50497bfbaa03767ac4",
+    "bytes": 172476
   }
 }
