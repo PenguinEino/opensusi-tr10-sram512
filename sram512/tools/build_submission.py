@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Build a flat submission containing only SCH, SYM, GDS and Markdown files."""
+"""Build a flat submission with SCH, SYM, GDS, Markdown and full previews."""
 from datetime import datetime, timezone
 import zipfile
 from common import *
 from validation_summary import main as summarize
 from pdk_profiles import locked, tree_digest
 from submission_layout import export_layout
+from submission_previews import export_previews
 
 
 def dependencies():
@@ -57,10 +58,14 @@ def build():
     drawing = WORK/'submission/sram512.gds'
     layout_export = export_layout(HERE/'layout/sram512.gds', drawing)
     add('sram512.gds', drawing)
+    previews = export_previews(drawing, drawing.parent)
+    for kind in ('layout', 'schematic'):
+        name = previews[kind]['image']
+        add(name, drawing.parent/name)
     add('SPEC.md', HERE/'SPEC.md')
     add('README.md', HERE/'SUBMISSION_README.md')
     assert {name for name in payload if name.endswith('.md')} == {'README.md', 'SPEC.md'}
-    assert all(Path(name).name==name and Path(name).suffix in ('.sch','.sym','.gds','.md') for name in payload)
+    assert all(Path(name).name==name and Path(name).suffix in ('.sch','.sym','.gds','.md','.png','.svg') for name in payload)
     manifest = dict(format_version=3, created_utc=datetime.now(timezone.utc).isoformat(),
                     source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                     status='CORE_VERIFIED_WITH_DOCUMENTED_MODEL_LIMITS',
@@ -68,6 +73,7 @@ def build():
                     source_gds_sha256=summary['source_gds_sha256'],
                     source_mask_sha256=summary['source_mask_sha256'],
                     layout_export=layout_export,
+                    previews=previews,
                     evidence_index='sram512/reports/validation_summary.json',
                     external_dependency='Unmodified TR-1um dev PDK: Xschem symbols, standard-cell schematics and SPICE models.',
                     sources=origins,

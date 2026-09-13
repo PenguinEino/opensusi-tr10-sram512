@@ -32,7 +32,7 @@ python3 sram512/tools/submission_runner.py simulate  # 提出用TBで16操作を
 python3 sram512/run.py submission-lvs  # 提出版を通常のGUI設定でLVS・DRC確認
 ```
 
-`submission/`には必要な`.sch`・`.sym`・`.gds`・`.md`だけを直下に置いています。
+`submission/`には必要な`.sch`・`.sym`・`.gds`・`.md`と、README掲載用の全体画像を直下に置いています。
 TR-1um PDKはインストール済みのdev版を参照します。編集は`sram512/schematics/`で行い、必要な再検証後に
 `python3 sram512/run.py submission`で提出物を更新します。提出用コピーを直接編集した場合、
 更新ツールはその変更を検出して停止します。
