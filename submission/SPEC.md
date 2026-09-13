@@ -74,3 +74,36 @@
 端子パッドへの配線と静電気保護（ESD）は共通フレーム側で行う。
 コア入力4本にも、電源・接地へ接続する保護ダイオードを各1組実装済み。
 フレーム側保護との重複があり、コア側ダイオードの要否・統合後の静電気耐性は未確認。
+
+## 回路図の階層
+
+矢印は親回路から子回路への参照。`×`は配置個数（省略時は1個）。MOS・ダイオード単体は省略。
+
+```mermaid
+flowchart LR
+    top["sram512.sch"]
+    top --> array["sram512_array.sch<br/>16行×32列の記憶部"]
+    array --> bitcell["sram512_bitcell.sch ×512<br/>6T SRAMセル"]
+    top --> row["sram512_row_decoder.sch<br/>行デコーダ"]
+    top --> column["sram512_column.sch ×32<br/>列スイッチ・ビット線の充電"]
+    top --> col["sram512_col_decoder.sch<br/>列デコーダ"]
+    top --> sense["sense_amp_7t.sch<br/>読出し増幅"]
+    top --> write["AND2_X1.sch ×2（PDK）<br/>書込み制御"]
+    top --> controller["sram512_controller.sch<br/>シリアル受信・動作制御"]
+    top --> clamp["sram512_input_clamp.sch ×4<br/>入力保護"]
+    controller --> phase["sram512_phase.sch<br/>18段階の進行"]
+    controller --> frame["sram512_frame.sch<br/>10 bitの受信・保持"]
+    controller --> control["sram512_control.sch<br/>読書き制御・出力保持"]
+    controller --> buffers["BUF_X4.sch ×5（PDK）<br/>入出力バッファ"]
+```
+
+下表は図の各ブロック内部で使うPDKスタンダードセル。個数は親回路1個あたり。
+参照先は`TR-1um_5_stdcell/`内の同名`.sch`。
+
+| 親回路 | スタンダードセルと個数 |
+|---|---|
+| `sram512_row_decoder.sch` | INV_X1 ×4、AND2_X1 ×8、AND3_X1 ×16 |
+| `sram512_col_decoder.sch` | AND2_X1 ×36、AND3_X1 ×8 |
+| `sram512_phase.sch` | DFFR ×5、XOR2 ×4、AND2_X1 ×16、AND3_X1 ×1、AND4_X1 ×10、OR2 ×2 |
+| `sram512_frame.sch` | DFFR ×10、MUX2 ×10 |
+| `sram512_control.sch` | DFFR ×6、MUX2 ×2、INV_X1 ×1、AND2_X1 ×4、OR2 ×2、OR3 ×1、OR4 ×1 |

@@ -38,8 +38,8 @@
   "scope": "Unchanged electrical SCH/SYM files and MOS simulation netlist. An isolated export was freshly netlisted with standard Xschem LVS settings, then checked by the original dev GUI macro using its default current-view source and simulation/sram512.spice lookup. Exported GDS preserves every polygon and text coordinate after integrating one wrapper. Fresh DRC 0 and strict LVS match; earlier transistor simulation remains applicable by netlist/model identity.",
   "final_archive": {
     "path": "build/sram512/submission/sram512_submission_7cf6744ff1a1.zip",
-    "sha256": "78caafa1ae61ac2dcda2baf072813e9b69464446a81a6e5eff9c6f59d131f5a9",
-    "bytes": 1753131
+    "sha256": "b2cefe38b5f736fa1c934571b05411c22794bb9a46d99c4e648de41201b8342a",
+    "bytes": 1753809
   },
   "layout_export": {
     "passed": true,
@@ -215,12 +215,12 @@
     "archive_hashes_checked": true
   },
   "documentation_refresh": {
-    "source_commit": "91572c2cd792265b5eb248e67d3f81f74ec099f8",
+    "source_commit": "6f9f416abf21156078d2d8a436435fa2f3e28a05",
     "changed_submission_files": [
       "SPEC.md"
     ],
     "electrical_files_unchanged": true,
     "archive_hashes_checked": true,
-    "scope": "Regulated 5 V experimental use clarified; previous physical checks remain applicable to unchanged SCH/SYM/GDS."
+    "scope": "Regulated 5 V experimental use and schematic hierarchy documented; SCH/SYM/GDS unchanged, previous physical checks remain applicable."
   }
 }
