@@ -12,3 +12,8 @@
 /learning/simulation/sense_amp_7t.spice
 /learning/simulation/*waveforms.txt
 /learning/schematics/*waveforms.txt
+# Working output of the documented submission GUI flow; absent from ZIP.
+/submission/simulation/
+/submission/*.extracted
+/submission/*.lvsdb
+/submission/*.lyrdb

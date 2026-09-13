@@ -1,15 +1,15 @@
 {
   "passed": true,
   "format": "flat-sch-sym-gds-md",
-  "checked_utc": "2026-09-13T02:39:43.539780+00:00",
-  "independent_copy": "/tmp/sram512_flat_9f7ietyq/submission",
+  "checked_utc": "2026-09-13T03:05:43.802374+00:00",
+  "independent_copy": "/home/ishi-kai/sram/build/sram512/submission_lvs/default_flow_hm3p8d_b",
   "source_repository_needed_for_schematics": false,
   "pdk_installation_needed": true,
   "pdk_revision": "6afbd918951f2ea0dcd11c5a46986b4c20f9e6f9",
-  "files": 34,
+  "files": 31,
   "subdirectories": 0,
   "erc": {
-    "sram512_macro": true,
+    "sram512": true,
     "sram512_tb": true
   },
   "electrical_files_unchanged": true,
@@ -20,8 +20,8 @@
     "ignored": "Comments, blank/formatting whitespace, interactive plot/quit commands and model include directory. All included model bytes were separately compared.",
     "reference_deck": "build/sram512/organization/submission_portability/test.spice",
     "reference_deck_sha256": "ca1fa4c1f393b63315e4400712dfafd7c19962edf5dd5271df04754d5ec94b45",
-    "new_deck": "build/sram512/submission_check/sram512_tb.spice",
-    "new_deck_sha256": "488cf599469036d669888398a105b9790301380bdf9494cd0f737b716cb1ea13"
+    "new_deck": "build/sram512/submission_lvs/simulation_erc/sram512_tb.spice",
+    "new_deck_sha256": "82025f5a6879639f4d1df6e82291e1bde8af831f2fd98c3b6362c0bfe29feff9"
   },
   "prior_simulation": {
     "passed": true,
@@ -35,10 +35,156 @@
       "DN/DP: IMELT"
     ]
   },
-  "scope": "Fresh ERC from an isolated flat export with installed dev PDK. Its electrical netlist and model files equal the previously PASSed 16-operation simulation; no transistor simulation or physical check was redundantly rerun.",
+  "scope": "Unchanged electrical SCH/SYM files and MOS simulation netlist. An isolated export was freshly netlisted with standard Xschem LVS settings, then checked by the original dev GUI macro using its default current-view source and simulation/sram512.spice lookup. Exported GDS preserves every polygon and text coordinate after integrating one wrapper. Fresh DRC 0 and strict LVS match; earlier transistor simulation remains applicable by netlist/model identity.",
   "final_archive": {
-    "path": "build/sram512/submission/sram512_submission_56810ad742a7.zip",
-    "sha256": "5787c78f811d2cf63d5a8540637603d5b4479a227024204a113588d013ea4eb5",
-    "bytes": 1364310
+    "path": "build/sram512/submission/sram512_submission_7cf6744ff1a1.zip",
+    "sha256": "6f43bebfb00f158f72eb87a8e6ea2fb61af1b229368add5a119fd415c50bf7ba",
+    "bytes": 183148
+  },
+  "layout_export": {
+    "passed": true,
+    "source_gds_sha256": "56810ad742a73036fb9db5207c75a2fcd63d344833c17da5f6270f1dc128bca1",
+    "submitted_gds_sha256": "7cf6744ff1a17bc7a6560639bbdaeea98041bc4eb0629763154e4c86e44be5a2",
+    "source_top": "sram512_macro",
+    "submitted_top": "sram512",
+    "change": "Integrate only the outer coordinate/port wrapper; preserve all physical geometry and text.",
+    "bbox_um": "(0,0;1776.7,600)",
+    "layers": [
+      {
+        "layer": [
+          13,
+          0
+        ],
+        "polygons_equal": true,
+        "texts_equal": true,
+        "text_count": 0
+      },
+      {
+        "layer": [
+          11,
+          0
+        ],
+        "polygons_equal": true,
+        "texts_equal": true,
+        "text_count": 0
+      },
+      {
+        "layer": [
+          8,
+          1
+        ],
+        "polygons_equal": true,
+        "texts_equal": true,
+        "text_count": 0
+      },
+      {
+        "layer": [
+          3,
+          2
+        ],
+        "polygons_equal": true,
+        "texts_equal": true,
+        "text_count": 0
+      },
+      {
+        "layer": [
+          19,
+          0
+        ],
+        "polygons_equal": true,
+        "texts_equal": true,
+        "text_count": 0
+      },
+      {
+        "layer": [
+          20,
+          0
+        ],
+        "polygons_equal": true,
+        "texts_equal": true,
+        "text_count": 0
+      },
+      {
+        "layer": [
+          3,
+          1
+        ],
+        "polygons_equal": true,
+        "texts_equal": true,
+        "text_count": 0
+      },
+      {
+        "layer": [
+          140,
+          0
+        ],
+        "polygons_equal": true,
+        "texts_equal": true,
+        "text_count": 0
+      },
+      {
+        "layer": [
+          235,
+          0
+        ],
+        "polygons_equal": true,
+        "texts_equal": true,
+        "text_count": 0
+      },
+      {
+        "layer": [
+          48,
+          0
+        ],
+        "polygons_equal": true,
+        "texts_equal": true,
+        "text_count": 1248
+      },
+      {
+        "layer": [
+          48,
+          1
+        ],
+        "polygons_equal": true,
+        "texts_equal": true,
+        "text_count": 0
+      },
+      {
+        "layer": [
+          49,
+          0
+        ],
+        "polygons_equal": true,
+        "texts_equal": true,
+        "text_count": 305
+      }
+    ]
+  },
+  "gui_lvs": {
+    "passed": true,
+    "top": "sram512",
+    "circuit_pairs": [
+      "Match",
+      "Match",
+      "Match",
+      "Match",
+      "Match",
+      "Match",
+      "Match",
+      "Match",
+      "Match",
+      "Match",
+      "Match",
+      "Match",
+      "Match"
+    ],
+    "errors": [],
+    "strict_ports": true,
+    "reference": "simulation/sram512.spice",
+    "reference_override": false
+  },
+  "drawing_drc": {
+    "passed": true,
+    "items": 0
   }
 }

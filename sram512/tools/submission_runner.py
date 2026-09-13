@@ -36,7 +36,7 @@ def main():
     rc.write_text('set XSCHEM_LIBRARY_PATH {'+':'.join(map(str, paths))+'}\n'
                   +f'set LIB {{{pdk}/libs.tech/spice/models}}\nset netlist_dir {{{work}}}\n'
                   +'set lvs_netlist 0\nset spiceprefix 1\nset top_is_subckt 0\n')
-    circuit = root/'sram512_macro.sch'
+    circuit = root/'sram512.sch'
     tb = root/'sram512_tb.sch'
     if args.command in ('circuit', 'tb'):
         source = circuit if args.command == 'circuit' else tb

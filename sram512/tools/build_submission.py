@@ -5,11 +5,12 @@ import zipfile
 from common import *
 from validation_summary import main as summarize
 from pdk_profiles import locked, tree_digest
+from submission_layout import export_layout
 
 
 def dependencies():
-    pending = [SCHEMATICS/'sram512_macro.sch', SCHEMATICS/'sram512_tb.sch']
-    files = {SCHEMATICS/'sram512_macro.sym'}
+    pending = [SCHEMATICS/'sram512.sch', SCHEMATICS/'sram512_tb.sch']
+    files = {SCHEMATICS/'sram512.sym'}
     while pending:
         p = pending.pop()
         if p in files:
@@ -53,8 +54,9 @@ def build():
     for path in sorted(dependencies()):
         if path.is_relative_to(SCHEMATICS):
             add(path.name, path)
-    for name in ('sram512.gds', 'sram512_mask.gds'):
-        add(name, HERE/'layout'/name)
+    drawing = WORK/'submission/sram512.gds'
+    layout_export = export_layout(HERE/'layout/sram512.gds', drawing)
+    add('sram512.gds', drawing)
     for name in ('SPEC.md', 'SUBMISSION.md', 'APPEAL.md', 'VERIFICATION.md'):
         add(name, HERE/name)
     # SPEC's development commands belong to the full repository, not the minimal export.
@@ -71,14 +73,26 @@ def build():
     integration=integration.replace('GDS中の端子名ラベルと `layout/ports.json` にも同じ座標を記録している。',
                                     'GDS中の端子名ラベルにも同じ座標を記録している。')
     payload['SUBMISSION.md']=integration.encode()
+    for name in ('SUBMISSION.md', 'VERIFICATION.md'):
+        contents = payload[name].decode().replace('sram512_macro', 'sram512')
+        contents = contents.replace('全14回路一致', '全13回路一致')
+        contents = contents.replace(summary['source_gds_sha256'], sha(drawing))
+        payload[name] = contents.encode()
+    payload['VERIFICATION.md'] += (
+        '\n提出GDSは、検証元の外側の座標・端子用階層を一段統合し、'
+        'トップセル名を回路図と同じ`sram512`にしたものです。'
+        '全層の図形と文字・端子座標が元のレイアウトと一致することを確認しています。'
+        '階層統合後のDrawing DRCと厳密LVSも再実行し、0件・全13回路一致を確認しました。\n'
+    ).encode()
     add('README.md', HERE/'SUBMISSION_README.md')
     assert all(Path(name).name==name and Path(name).suffix in ('.sch','.sym','.gds','.md') for name in payload)
-    manifest = dict(format_version=2, created_utc=datetime.now(timezone.utc).isoformat(),
+    manifest = dict(format_version=3, created_utc=datetime.now(timezone.utc).isoformat(),
                     source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                     status='CORE_VERIFIED_WITH_DOCUMENTED_MODEL_LIMITS',
                     pdk_revision=subprocess.check_output(['git','-C',PDK,'rev-parse','HEAD'],text=True).strip(),
                     source_gds_sha256=summary['source_gds_sha256'],
                     source_mask_sha256=summary['source_mask_sha256'],
+                    layout_export=layout_export,
                     evidence_index='sram512/reports/validation_summary.json',
                     external_dependency='Unmodified TR-1um dev PDK: Xschem symbols, standard-cell schematics and SPICE models.',
                     sources=origins,
@@ -95,7 +109,11 @@ def build():
             if path.exists() and sha(path)!=info['sha256']:
                 raise RuntimeError(f'Export edited outside source: {path}; preserve/merge that edit before rebuilding.')
         actual={p.relative_to(output).as_posix() for p in output.rglob('*') if p.is_file()}
-        unknown=actual-set(old['files'])-({'MANIFEST.json'} if legacy_manifest.exists() else set())
+        # Ordinary Xschem/KLayout use creates these beside the submitted
+        # files. Preserve the user's working outputs; never put them in ZIP.
+        runtime={name for name in actual if name.startswith('simulation/')
+                 or Path(name).suffix in ('.extracted', '.lvsdb', '.lyrdb')}
+        unknown=actual-set(old['files'])-runtime-({'MANIFEST.json'} if legacy_manifest.exists() else set())
         if unknown:
             raise RuntimeError('Preserve unexpected export files before rebuilding: '+', '.join(sorted(unknown)))
         # The user requested removal of the previous nested export and auxiliary files.
@@ -103,11 +121,12 @@ def build():
             (output/name).unlink(missing_ok=True)
         legacy_manifest.unlink(missing_ok=True)
         for directory in sorted((p for p in output.rglob('*') if p.is_dir()),key=lambda p:len(p.parts),reverse=True):
-            directory.rmdir()
+            if not any(directory.iterdir()):
+                directory.rmdir()
     for name,data in payload.items():
         path=output/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(data)
     folder=WORK/'submission';folder.mkdir(parents=True,exist_ok=True)
-    archive=folder/f'sram512_submission_{summary["source_gds_sha256"][:12]}.zip'
+    archive=folder/f'sram512_submission_{sha(drawing)[:12]}.zip'
     temp=archive.with_suffix('.tmp')
     with zipfile.ZipFile(temp,'w',zipfile.ZIP_DEFLATED) as z:
         for name,data in sorted(payload.items()):

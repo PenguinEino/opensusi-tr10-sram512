@@ -7,11 +7,9 @@
 
 | 提出項目 | ファイル |
 |---|---|
-| 回路図（7端子の階層入口） | [sram512_macro.sch](sram512_macro.sch) |
-| 全体回路図 | [sram512.sch](sram512.sch) |
+| 回路図（全体・LVS用） | **[sram512.sch](sram512.sch)** |
 | シミュレーション用回路図 | [sram512_tb.sch](sram512_tb.sch) |
-| レイアウト | **[sram512.gds](sram512.gds)**、top: **sram512_macro** |
-| 公式MDP変換後のマスク | [sram512_mask.gds](sram512_mask.gds) |
+| レイアウト（Drawing形式） | **[sram512.gds](sram512.gds)**、top: **sram512** |
 | 仕様書・操作説明 | [SPEC.md](SPEC.md) |
 | 端子座標・パッドへの接続指示 | [SUBMISSION.md](SUBMISSION.md) |
 | 工夫した点・アピールポイント | [APPEAL.md](APPEAL.md) |
@@ -27,7 +25,7 @@ Xschem、ngspiceと、無改変のTR-1um dev PDKを使用します。PDKの固�
 TR-1um用に設定したXschemで、このフォルダから開きます。
 
 ```sh
-xschem sram512_macro.sch
+xschem sram512.sch
 xschem sram512_tb.sch
 ```
 
@@ -45,11 +43,39 @@ python3 sram512/tools/submission_runner.py tb
 python3 sram512/tools/submission_runner.py simulate
 ```
 
+## XschemからKLayoutでLVSする
+
+回路図名・ネットリスト名・GDSトップセル名を、すべて **`sram512`** に揃えています。
+LVSに使うのは本体の`sram512.sch`です。TBのネットリストは使いません。
+
+1. Xschemで`sram512.sch`を開く。
+2. Simulation → **Use 'simulation' dir in schematic dir**を選ぶ。
+3. Simulation → LVS → **LVS netlist + Top level is a .subckt**をONにする。
+   Options → Netlist → **Flat netlist**はOFFにする。
+4. **Netlist**を押す。同じフォルダの下に`simulation/sram512.spice`が生成される。
+5. KLayoutで、同じフォルダの`sram512.gds`を開き、トップセル`sram512`を表示する。
+   TR-1umの **LVS(Drawing)** を実行する。
+
+公式ルールは、表示中のセル名から`simulation/sram512.spice`を自動で探します。
+これは`.sch`から生成する作業ファイルで、提出ZIPへの同梱は不要です。
+`sram512_macro`という古いトップを表示している場合は、GDSを閉じて更新版を開き直してください。
+
+この開発環境で固定したdev PDKを使って開くコマンドは、リポジトリのルートから次のとおりです。
+
+```sh
+./scripts/pdk --profile dev exec -- xschem submission/sram512.sch
+./scripts/pdk --profile dev klayout submission/sram512.gds
+```
+
+通常の`klayout`で起動した既存ウィンドウは、別のPDKを参照している場合があります。
+上記はプロジェクト専用の設定で起動します。PDKのルールは変更しません。
+TBをシミュレーションするときは、LVSのチェックを外し、通常のシミュレーション設定に戻してください。
+
 ## 概要と検証
 
 - 電源基準5 V。VDD / VSS / CLK / RESET / SDI / WE / SDOの7端子。
 - 行4bit・列5bit・データ1bitを10クロックで受信し、8クロックでアクセス。合計18クロック。
-- Drawing DRC 0、厳密LVS全14回路一致、公式変換後の製造マスクDRC 0。
+- Drawing DRC 0、厳密LVS全13回路一致、公式変換後の製造マスクDRC 0。
 - 詳細配線RCは仮定した係数による簡易モデル。最大端子間電圧の5.75 V基準までの余裕は約2.5 mV。
 
 検証条件と制限は[VERIFICATION.md](VERIFICATION.md)に記載しています。
@@ -57,4 +83,4 @@ python3 sram512/tools/submission_runner.py simulate
 
 パッドへの配線・パッドESDは主催者側の共通フレームを利用する前提です。
 SDO出力バッファはコア側に実装しています。
-Drawing GDSと変換済みマスクGDSを区別し、変換済みマスクへMDPを再適用しないでください。
+提出するGDSはDrawing形式の1個です。MDP変換後のマスクは開発側の検証用に保存しています。

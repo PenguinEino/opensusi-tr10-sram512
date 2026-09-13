@@ -22,7 +22,8 @@ ENTRY_POINTS = ('open', 'verify_saved_layout', 'verify_digital', 'analog',
     'save_candidate', 'strengthen_signal_routes', 'reinforce_decoder_routes',
     'widen_decoder_poly', 'live_probe', 'decoder_route_waveforms', 'reset_address_test',
     'operation_waveforms',
-    'export_schematics', 'package', 'build_submission', 'submission_runner')
+    'export_schematics', 'package', 'build_submission', 'submission_runner',
+    'submission_lvs', 'submission_gui_lvs')
 
 
 def python_dependencies(initial):

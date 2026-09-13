@@ -45,3 +45,7 @@ rebase、履歴圧縮、`.git`再作成、強制pushは行っていません。
 Xschemの標準ライブラリとTR-1um dev PDKを導入した環境で開きます。
 画像・モデルのコピー・JSON・実行スクリプト・ログは提出フォルダへ入れず、作業領域に保持します。
 提出ファイルのチェックサムは`reviews/submission_manifest.json`にあります。
+提出版GDSは外側の座標・端子用階層を一段統合し、トップ名を回路図と同じ`sram512`にしています。
+元の全層の図形・文字・端子座標との一致は同manifest、通常設定でのDRC/LVSは
+`reviews/submission_lvs.json`に記録しました。開発側の元GDS・マスク・旧階層は保持しています。
+GUI実行で生じる`submission/simulation/`と抽出結果は作業ファイルで、Git・提出ZIPには含めません。

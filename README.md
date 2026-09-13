@@ -7,7 +7,8 @@
 |---|---|
 | 提出物を見る／渡す | **[submission/](submission/README.md)** |
 | 512 bit完成版を編集する | [sram512/schematics/](sram512/schematics/README.md) |
-| 完成版GDSを編集・検証する | [sram512/layout/sram512.gds](sram512/layout/sram512.gds)（top: `sram512_macro`） |
+| 提出版GDSを開く | [submission/sram512.gds](submission/sram512.gds)（top: `sram512`） |
+| 検証元のGDS・配置記録を見る | [sram512/layout/](sram512/layout/)（元のtop: `sram512_macro`） |
 | 完成版の設計・検証手順を読む | [sram512/README.md](sram512/README.md) |
 | 単セル・2×2から学習を追う | [learning/](learning/README.md) |
 | 元のPCellとセル配置比較を見る | [klayout/](klayout/README.md)、元PCellは [klayout/sram_pcell/](klayout/sram_pcell/README.md) |
@@ -28,12 +29,15 @@ python3 sram512/run.py digital       # 回路図の論理とVerilog仕様の照�
 python3 sram512/run.py layout-check  # 保存GDSの公式DRC/LVS・マスク検証
 python3 learning/open.py            # 以前の2×2シリアルTB
 python3 sram512/tools/submission_runner.py simulate  # 提出用TBで16操作を試す
+python3 sram512/run.py submission-lvs  # 提出版を通常のGUI設定でLVS・DRC確認
 ```
 
 `submission/`には必要な`.sch`・`.sym`・`.gds`・`.md`だけを直下に置いています。
 TR-1um PDKはインストール済みのdev版を参照します。編集は`sram512/schematics/`で行い、必要な再検証後に
 `python3 sram512/run.py submission`で提出物を更新します。提出用コピーを直接編集した場合、
 更新ツールはその変更を検出して停止します。
+提出版は外側の座標用階層を一段統合し、`sram512.sch`とGDSトップ名を揃えています。
+元の全図形・端子座標は保持しています。通常のXschem→KLayout操作は提出用READMEを参照してください。
 
 ## 整理とGit履歴
 
@@ -43,7 +47,8 @@ TR-1um PDKはインストール済みのdev版を参照します。編集は`sra
 
 ## 検証範囲
 
-保存GDSは横1776.7×縦600.0 µm。Drawing DRC・製造マスクDRCは0件、厳密LVSは全14回路一致。
+保存GDSは横1776.7×縦600.0 µm。Drawing DRC・製造マスクDRCは0件。
+厳密LVSは元の階層で全14回路一致、提出版の階層統合後は全13回路一致です。
 読み書きの条件と制限は[検証説明](submission/VERIFICATION.md)に記載しています。
 寄生RCは仮定した係数による簡易モデルです。最大端子間電圧の5.75 V基準までの余裕は
 約2.5 mVで、製造ばらつきや電源範囲の保証にはしていません。

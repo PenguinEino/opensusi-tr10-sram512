@@ -14,6 +14,7 @@ COMMANDS = {
     'layout-check': ('verify_saved_layout.py', []),
     'summary': ('validation_summary.py', []),
     'submission': ('build_submission.py', []),
+    'submission-lvs': ('submission_lvs.py', []),
     'full-archive': ('package.py', []),
 }
 
