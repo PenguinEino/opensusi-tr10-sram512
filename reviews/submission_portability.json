@@ -38,7 +38,7 @@
   "scope": "Fresh ERC from an isolated flat export with installed dev PDK. Its electrical netlist and model files equal the previously PASSed 16-operation simulation; no transistor simulation or physical check was redundantly rerun.",
   "final_archive": {
     "path": "build/sram512/submission/sram512_submission_56810ad742a7.zip",
-    "sha256": "ad6f39b7e419ecf885b7a1f01a539f2c2a966f9ded512c179938e01e8fbea29d",
+    "sha256": "5787c78f811d2cf63d5a8540637603d5b4479a227024204a113588d013ea4eb5",
     "bytes": 1364310
   }
 }

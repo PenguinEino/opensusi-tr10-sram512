@@ -4,11 +4,11 @@
 各セルのMOSはW=3.4 µm、L=1 µm。アドレスは `32*RA + CA`。
 既存の2×2版とは受信長と1操作のクロック数が異なる。
 
-拡大して読める回路図は[全体](schematics/overview.svg)、
-[制御ブロック](schematics/sram512_controller.svg)、
-[共有フレームFF](schematics/sram512_frame.svg)、
-[18段階のカウンタ](schematics/sram512_phase.svg)。
-いずれも編集可能な `.sch` をXschemで直接出力した図である。
+拡大して読める回路図は[全体](sram512.sch)、
+[制御ブロック](sram512_controller.sch)、
+[共有フレームFF](sram512_frame.sch)、
+[18段階のカウンタ](sram512_phase.sch)。
+いずれもXschemで開く編集可能な回路図である。
 
 | 端子 | 向き | 意味 |
 |---|---|---|
@@ -75,8 +75,8 @@ ESD耐量の保証や、フレーム接続後のチップ全体の検証を済�
 
 ## 検証の区別
 
-`schematics/sram512.sch` は電源以外の理想部品を含まない本体。
-`simulation/sram512_tb.sch` は同じ本体配置を含む専用TBで、外部入力と配線負荷を追加する。
+`sram512.sch` は電源以外の理想部品を含まない本体。
+`sram512_tb.sch` は同じ本体配置を含む専用TBで、外部入力と配線負荷を追加する。
 VSSはTB内で直接0番ノードへ接続する。
 BL追加70 fF/本、WL追加400 fF/本、共通線追加180 fF/本、SDO負荷10 pFは
 **初期の感度試験用の仮定**。これにMOSモデルのゲート・接合容量が加わる。
@@ -103,9 +103,9 @@ BLと共通線を4区間に分ける。他のゲート配線には実経路の�
 電源は実配線幅と各ビアの位置を含む。係数は `wire_rc.json` / `power_rc.json` に記録する。
 これは寄生の感度検証であり、校正済みのファウンドリPEXではない。
 全体Vthを動かす試験も、局所ミスマッチや統計的歩留まりの検証とは区別する。
-各条件の合否と、現在のGDSに対応する結果は `verification/validation_summary.json` で確認する。
+各条件の合否と、現在のGDSに対応する結果は 開発リポジトリの `sram512/reports/validation_summary.json` で確認する。
 
 論理試験は全512アドレス、4パターン、March C-、アドレス歩進、18段階のRESETを含む。
 これは電圧を扱わない試験であり、SPICE・DRC・LVSと合わせて評価する。
 
-同梱版の実行方法はREADME.mdを参照。`python3 run.py simulate`でTBを実行する。
+同梱回路図の実行方法はREADME.mdを参照。詳細な検証ツールとログは開発リポジトリに保存している。
