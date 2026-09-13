@@ -1,7 +1,7 @@
 {
   "format_version": 3,
-  "created_utc": "2026-09-13T05:36:57.577507+00:00",
-  "source_commit": "7b8fa5c341673ff03b09cf3d28445e6783cf010d",
+  "created_utc": "2026-09-13T05:40:26.401984+00:00",
+  "source_commit": "a61700d88cd3ac21b1f0e585564bf796b40828bb",
   "status": "CORE_VERIFIED_WITH_DOCUMENTED_MODEL_LIMITS",
   "pdk_revision": "6afbd918951f2ea0dcd11c5a46986b4c20f9e6f9",
   "source_gds_sha256": "56810ad742a73036fb9db5207c75a2fcd63d344833c17da5f6270f1dc128bca1",
@@ -422,8 +422,8 @@
   },
   "files": {
     "README.md": {
-      "bytes": 3774,
-      "sha256": "1d1e37b686fe6761183f3ca2aac02b67b8dee80dab2e56df59e963264b4b8e8d"
+      "bytes": 3799,
+      "sha256": "361561954b70647536e7459382856597e4ece47067ca62186082ca38fc373fee"
     },
     "SPEC.md": {
       "bytes": 11315,
@@ -576,7 +576,7 @@
   },
   "archive": {
     "path": "build/sram512/submission/sram512_submission_7cf6744ff1a1.zip",
-    "sha256": "d642c6d843e3b7da753ecb4f33ad1f988b3f06a3e2914196f71fbc808b096a76",
-    "bytes": 2289993
+    "sha256": "4dd763f388a9df293f92000c00751533e87e0824352e9779ecd80b7c9f746857",
+    "bytes": 2290009
   }
 }
