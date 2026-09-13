@@ -27,10 +27,11 @@ python3 sram512/run.py tb            # 完成版のMOSテストベンチ
 python3 sram512/run.py digital       # 回路図の論理とVerilog仕様の照合
 python3 sram512/run.py layout-check  # 保存GDSの公式DRC/LVS・マスク検証
 python3 learning/open.py            # 以前の2×2シリアルTB
-python3 submission/run.py simulate  # 提出フォルダ内のTBで16操作を試す
+python3 sram512/tools/submission_runner.py simulate  # 提出用TBで16操作を試す
 ```
 
-`submission/`は提出用のコピーです。編集は`sram512/schematics/`で行い、必要な再検証後に
+`submission/`には必要な`.sch`・`.sym`・`.gds`・`.md`だけを直下に置いています。
+TR-1um PDKはインストール済みのdev版を参照します。編集は`sram512/schematics/`で行い、必要な再検証後に
 `python3 sram512/run.py submission`で提出物を更新します。提出用コピーを直接編集した場合、
 更新ツールはその変更を検出して停止します。
 

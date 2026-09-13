@@ -1,21 +1,26 @@
 #!/usr/bin/env python3
-"""Open/netlist/simulate the self-contained submission. Requires Xschem and ngspice."""
+"""Open/netlist/simulate the flat submission with an installed TR-1um dev PDK."""
 import argparse
 import os
 from pathlib import Path
 import re
-import shutil
 import subprocess
 import sys
 
-ROOT = Path(__file__).resolve().parent
+PROJECT = Path(__file__).resolve().parents[2]
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('command', choices=('circuit', 'tb', 'erc', 'simulate'))
-    parser.add_argument('--output', type=Path, default=ROOT/'results')
+    parser.add_argument('--directory', type=Path, default=PROJECT/'submission')
+    parser.add_argument('--pdk', type=Path, default=PROJECT/'.pdk/dev/TR-1um')
+    parser.add_argument('--output', type=Path, default=PROJECT/'build/sram512/submission_check')
     args = parser.parse_args()
+    root=args.directory.resolve()
+    pdk=args.pdk.resolve()
+    if not (pdk/'libs.tech/spice/models/ip62_models').is_file():
+        parser.error('TR-1um PDK not found; specify its installation with --pdk.')
     work = args.output.resolve()
     work.mkdir(parents=True, exist_ok=True)
     # User-wide customizations must not select a different PDK or flatten this circuit.
@@ -24,15 +29,15 @@ def main():
     standard = next((p for p in candidates if (p/'devices/lab_wire.sym').is_file()), None)
     if standard is None:
         parser.error('Xschem standard library not found; set XSCHEM_LIBRARY_PATH to its xschem_library directory.')
-    paths = [ROOT/'schematics', ROOT/'simulation', ROOT/'pdk/xschem',
-             ROOT/'pdk/xschem/TR-1umLIB', ROOT/'pdk/xschem/TR-1um_5_stdcell',
+    paths = [root, pdk/'libs.tech/xschem',
+             pdk/'libs.tech/xschem/TR-1umLIB', pdk/'libs.tech/xschem/TR-1um_5_stdcell',
              standard, standard/'devices']
     rc = work/'xschemrc'
     rc.write_text('set XSCHEM_LIBRARY_PATH {'+':'.join(map(str, paths))+'}\n'
-                  +f'set LIB {{{ROOT}/pdk/models}}\nset netlist_dir {{{work}}}\n'
+                  +f'set LIB {{{pdk}/libs.tech/spice/models}}\nset netlist_dir {{{work}}}\n'
                   +'set lvs_netlist 0\nset spiceprefix 1\nset top_is_subckt 0\n')
-    circuit = ROOT/'schematics/sram512_macro.sch'
-    tb = ROOT/'simulation/sram512_tb.sch'
+    circuit = root/'sram512_macro.sch'
+    tb = root/'sram512_tb.sch'
     if args.command in ('circuit', 'tb'):
         source = circuit if args.command == 'circuit' else tb
         os.chdir(work)

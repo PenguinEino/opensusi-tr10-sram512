@@ -1,18 +1,29 @@
 {
   "passed": true,
-  "checked_utc": "2026-09-13T02:19:29.961442+00:00",
-  "independent_copy": "/tmp/sram512_submission_dyiu4k97/submission",
-  "source_repository_needed": false,
-  "pdk_installation_needed": false,
-  "commands": [
-    "python3 run.py erc",
-    "python3 run.py simulate"
-  ],
+  "format": "flat-sch-sym-gds-md",
+  "checked_utc": "2026-09-13T02:39:43.539780+00:00",
+  "independent_copy": "/tmp/sram512_flat_9f7ietyq/submission",
+  "source_repository_needed_for_schematics": false,
+  "pdk_installation_needed": true,
+  "pdk_revision": "6afbd918951f2ea0dcd11c5a46986b4c20f9e6f9",
+  "files": 34,
+  "subdirectories": 0,
   "erc": {
     "sram512_macro": true,
     "sram512_tb": true
   },
-  "simulation": {
+  "electrical_files_unchanged": true,
+  "netlist_comparison": {
+    "passed": true,
+    "canonical_lines": 1492,
+    "canonical_sha256": "0392cb9524793bb78fc9323a32e2fd23f31ffc7301c345edd30d705ef00f4da2",
+    "ignored": "Comments, blank/formatting whitespace, interactive plot/quit commands and model include directory. All included model bytes were separately compared.",
+    "reference_deck": "build/sram512/organization/submission_portability/test.spice",
+    "reference_deck_sha256": "ca1fa4c1f393b63315e4400712dfafd7c19962edf5dd5271df04754d5ec94b45",
+    "new_deck": "build/sram512/submission_check/sram512_tb.spice",
+    "new_deck_sha256": "488cf599469036d669888398a105b9790301380bdf9494cd0f737b716cb1ea13"
+  },
+  "prior_simulation": {
     "passed": true,
     "operations": 16,
     "result": "PASS: 16 accesses; stored cell and SDO checks",
@@ -24,262 +35,10 @@
       "DN/DP: IMELT"
     ]
   },
-  "tested_files_match_current_export": [
-    {
-      "file": "run.py",
-      "sha256": "6a7621047da8f1a67cd9fd835941771a449f745733a4e620fca17dd9a2b6b25d"
-    },
-    {
-      "file": "schematics/sram512_array.sym",
-      "sha256": "25c7a84249adeeccf2161aa407590aa5aba4212bbe767c8e32d3c31d841942a5"
-    },
-    {
-      "file": "schematics/sram512_frame.sch",
-      "sha256": "a138f41d92de490331abb2e94a6d7c3813055b54dcd1927c35ca2c89e918a1a7"
-    },
-    {
-      "file": "schematics/sram512_row_decoder.sym",
-      "sha256": "e2dd661c41fb5c3cc6ce47a3fd9bdc5fc33dc67c217421d63d8d4caa5e83fba7"
-    },
-    {
-      "file": "schematics/sram512_row_decoder.sch",
-      "sha256": "ea9ab1ddf99f08eb9454d90628adc218983b00d116ace67aca0e90de8b3f7b45"
-    },
-    {
-      "file": "schematics/sram512_col_decoder.sym",
-      "sha256": "d1ebd371fbaacc4f83e9389648703c22ff217e64f0f7fafab1a8c27108fcd4d9"
-    },
-    {
-      "file": "schematics/sram512_array.sch",
-      "sha256": "bf8e760f7cc182bc5947a1f7836e53fb1dcb559442df729c5e1c532c6f268369"
-    },
-    {
-      "file": "schematics/sram512_control.sch",
-      "sha256": "182dde6ef69ba9112690bbfe4c518d21b38e47fb38b84cbecd5bb5af1c45ab3c"
-    },
-    {
-      "file": "schematics/sram512.sch",
-      "sha256": "20ea4a2e70a68adcb3452832df4d674e672619c591ad045b8adb5881612f73da"
-    },
-    {
-      "file": "schematics/sram512_col_decoder.sch",
-      "sha256": "4e58f38e1d06f9a99233a855deb81e5c6fa226ddb4a07b4691ce7176300cb0a9"
-    },
-    {
-      "file": "schematics/sram512_column.sch",
-      "sha256": "26c65390e5593030fdf734ef21fdda2a38f2d37731eff4305a224e9f39e56098"
-    },
-    {
-      "file": "schematics/sram512_phase.sym",
-      "sha256": "68b64dddf81fa75cb6b1ba7fea015b55a66b13e0b55b87aaf7bf9827ba835f5c"
-    },
-    {
-      "file": "schematics/sram512_controller.sch",
-      "sha256": "8a24a5aa7b67bd46e283be1656e206e76031999b10b551cacca5125407911276"
-    },
-    {
-      "file": "schematics/sram512.sym",
-      "sha256": "ce6c8b742ddf175fd55302b563c4f370f5c5cf3eddaab4c87becb7b834bfe734"
-    },
-    {
-      "file": "schematics/sram512_input_clamp.sch",
-      "sha256": "95d73e7e74f8e2230df0fe1ea03f19b193627461e28e3fb99b6cbd30229d6047"
-    },
-    {
-      "file": "schematics/sense_amp_7t.sch",
-      "sha256": "fd8c65d937b248ae6d1eceec6d3c078b719e57398c8ab1ee282b200bbc7293b1"
-    },
-    {
-      "file": "schematics/sram512_macro.sch",
-      "sha256": "34041691e47cfe0587573552a97e687c3ae9369a1de322cf3d8c3c14846b60dc"
-    },
-    {
-      "file": "schematics/sram512_control.sym",
-      "sha256": "c69644f8b87a3608c025bf3c8bf287d403daa58abf9050e462a0c9190480e084"
-    },
-    {
-      "file": "schematics/sense_amp_7t.sym",
-      "sha256": "2baf283213c54b648d6eedbcbdce39248d61013e2fdc348ccb6be615ddbf8555"
-    },
-    {
-      "file": "schematics/sram512_bitcell.sch",
-      "sha256": "bc92f49c3383fbe5681e3fc3c38c69b0e8b17f1002c7a914364dca1efb2d01ec"
-    },
-    {
-      "file": "schematics/sram512_bitcell.sym",
-      "sha256": "f3c31ae7fda8dbc656038a160aed9e8f4e1d3fec2837a8e0fc639875ceffe020"
-    },
-    {
-      "file": "schematics/sram512_macro.sym",
-      "sha256": "7be35ec3192048210ac23fdf2696b726f044d02445630939abcc5990106bf7a6"
-    },
-    {
-      "file": "schematics/sram512_frame.sym",
-      "sha256": "f969c503cd1c66ad399e6a078ae740ed709c932c8d403e882df01a680a153416"
-    },
-    {
-      "file": "schematics/sram512_column.sym",
-      "sha256": "8cf87634b28ca56331d689387ad9af676b999e29fa870d8c9cb6cf604a4f62b1"
-    },
-    {
-      "file": "schematics/sram512_phase.sch",
-      "sha256": "a5d1a5e52f55bbe1583bbdc2b5d6ad288c2b399ef51bdaf4553fd0addcf29fc9"
-    },
-    {
-      "file": "schematics/sram512_controller.sym",
-      "sha256": "36675ada4ee265f0fd26871d3826da3fc9ce66e9b0d7a1cf2f94aa9bc455f1cd"
-    },
-    {
-      "file": "schematics/sram512_input_clamp.sym",
-      "sha256": "3560f412aa459da561265ef1dfe68854af4b811512c0a7f70d25e6b8af523455"
-    },
-    {
-      "file": "layout/sram512_mask.gds",
-      "sha256": "cbd3e51a3f9ff9c6f90b93c4c3ca134acf3cb28adb3b495ca357f47e6b280ba4"
-    },
-    {
-      "file": "layout/sram512.gds",
-      "sha256": "56810ad742a73036fb9db5207c75a2fcd63d344833c17da5f6270f1dc128bca1"
-    },
-    {
-      "file": "simulation/sram512_tb.sch",
-      "sha256": "a7b6e3467ba2c0187673e5aef49a2d81454c5a53f0881df3601d510b4cef9b88"
-    },
-    {
-      "file": "pdk/models/models_IP62_cap_v5p1.lib",
-      "sha256": "265c1e2b5228381633ec936f208101b64a0538905c41bdf53e760df10f347bed"
-    },
-    {
-      "file": "pdk/models/models_IP62_diode_v2.lib",
-      "sha256": "37c19bd4f6d631a5862f2b6aeda62e5eb73ed15fe0de9932296a81a144f1550f"
-    },
-    {
-      "file": "pdk/models/models_IP62_res_v5.lib",
-      "sha256": "0d6e2e4b7739fd68946c746830ed8896f4ec5ee98e984fdb5c8dd1116ad78311"
-    },
-    {
-      "file": "pdk/models/models_IP62_mos_v2.lib",
-      "sha256": "251864d489d0e15a3081871763af29e1bbc8654ae55662bede40e0a7bbac1400"
-    },
-    {
-      "file": "pdk/models/ip62_models",
-      "sha256": "219ca479adc7d6d960f83e18e0081da153a479f34615333d74c946869bc4c6ec"
-    },
-    {
-      "file": "pdk/xschem/TR-1umLIB/MN.sym",
-      "sha256": "a608c56c6659c3b48ab05f939953cd7bd0c5f0f4a1213d3ed5b12e3f6cec4fb6"
-    },
-    {
-      "file": "pdk/xschem/TR-1umLIB/MP.sym",
-      "sha256": "f14115d673498092814b1365ef9d4cf3d5dcddb589508554b79b1f2dc94c3635"
-    },
-    {
-      "file": "pdk/xschem/TR-1umLIB/DP.sym",
-      "sha256": "88c1c5118ffa79abfb91f7ab5f7fb097a8ae7a3d9930146f8ee9577b9e2aa0aa"
-    },
-    {
-      "file": "pdk/xschem/TR-1umLIB/DN.sym",
-      "sha256": "44855b251a60e3cfbb402fd63848016054b34c1eadfdc78c9132414672216837"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/OR2.sch",
-      "sha256": "edfc4f5550081a7cf6e95f7b6f7d34a470728180e713272d3e7f9e261f080c85"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/XOR2.sch",
-      "sha256": "5e24d96dc63cb16c159cd29323d7bfb83ea8766a01c7b7ed2fbe33b1f4841d9f"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/XOR2.sym",
-      "sha256": "9a5f3f09c4c2c3ef0ffc908a597dae92e72c5ce4a67bbffd92c2bff4ebc6f1f4"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/MUX2.sch",
-      "sha256": "8c0c76c206b6d1f5074bded294be26344800194e0c70e588bbea848fd4bce58f"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/OR3.sch",
-      "sha256": "af26bfa5b3097e2a383fe5310cfa677545a3abf11a7c45bf91882457049264a9"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/BUF_X4.sym",
-      "sha256": "d5eb8472613f7c1d25f7dbdb1c1f6f60d6e1996e405628b15d9f2014c5ff5843"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/OR2.sym",
-      "sha256": "962ca14b93b59b6b92881a415e0c1843a4fe17203d3530a2004125efecbb831b"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/BUF_X4.sch",
-      "sha256": "b03a9283f2aa2070c5ba1cf1a44615a83b86893b5e59c6283a37f21b7aefc2ff"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/AND3_X1.sym",
-      "sha256": "13819d7df9c73d1dd32bd3e503903d3f064fc17e298e8b22e369ed2fe2325c67"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/AND2_X1.sch",
-      "sha256": "46380d7ad620c91aa88b13ba4b748e2decdc81b8d8167982dec0ea583c57e43b"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/AND2_X1.sym",
-      "sha256": "9dbe4191a84cb6991569b823e4919856b82900e02c53db4f47e02fc1a9699a27"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/INV_X1.sch",
-      "sha256": "85e91b766f1046e95d1890b36b0e26a5c811f26e6da802931012a45db9238919"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/AND3_X1.sch",
-      "sha256": "0ca54bffecc8adcef8b914bf72b75b852cc12385e6c8f4e039e7dbff4eadcccc"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/INV_X1.sym",
-      "sha256": "83559548cb780f7c0c5dba382ccb335a5b44b7cab5c6ab9c829cf990f43c4487"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/MUX2.sym",
-      "sha256": "98bdd9f5b8287c50b3384c4d01c341fe10cd49d13a496324b94563b418be3e66"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/OR4.sym",
-      "sha256": "8f00428b467fcac9e0d9ad90a8ff7ee914e70909700596f00c8b8cdaa239ff9e"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/AND4_X1.sch",
-      "sha256": "89304ac924df40182c32afd829113baa1b0bd45f816d7b76a0b5ff838eedd3ba"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/AND4_X1.sym",
-      "sha256": "6a06e4eb6ce76cb2e02e3797ea9894f9ad88f1cf95c91d9c118ed7152164575c"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/DFFR.sym",
-      "sha256": "02bc0bad4e17056a56d9e259161b94e90b07bca395072a0e6714e38d0b0b8b91"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/DFFR.sch",
-      "sha256": "27c185640606ad5089e5a63c129365a81b4dabf1ec1f49b9b3d55ada2de4b4c1"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/OR4.sch",
-      "sha256": "675821606a7f6cb4629a46868edeaac0313aae18dd0cdd664192c5c2e0e3620f"
-    },
-    {
-      "file": "pdk/xschem/TR-1um_5_stdcell/OR3.sym",
-      "sha256": "424c4582eedc962868aa0b1bf8786d08a9f19133878ae7b40d5a857cd34878b8"
-    }
-  ],
-  "scope": "Portable schematic MOS testbench with its original lumped loads; no detailed distributed RC transient was repeated. Electrical files in the final export match the independently tested copy.",
+  "scope": "Fresh ERC from an isolated flat export with installed dev PDK. Its electrical netlist and model files equal the previously PASSed 16-operation simulation; no transistor simulation or physical check was redundantly rerun.",
   "final_archive": {
     "path": "build/sram512/submission/sram512_submission_56810ad742a7.zip",
-    "sha256": "e58acc703b65e2ce549d495e8a78163c9c109903495b8af395d745325a778126",
-    "bytes": 2066006,
-    "files": 103,
-    "source_commit": "b434d800da608f7b715221bed852a3f868233138",
-    "manifest_sha256": "3b48e10673a3f36a72a1882254acb4273b6a8d037297511e3142b61b5648dacf",
-    "all_payload_hashes_match": true,
-    "local_document_links": 18,
-    "checked_utc": "2026-09-13T02:32:18.996960+00:00"
+    "sha256": "ad6f39b7e419ecf885b7a1f01a539f2c2a966f9ded512c179938e01e8fbea29d",
+    "bytes": 1364310
   }
 }

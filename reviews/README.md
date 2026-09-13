@@ -5,7 +5,8 @@
 | ファイル | 内容 |
 |---|---|
 | `repository_organization.json` | 移動後の回路・レイアウト同一性、参照先の確認 |
-| `submission_portability.json` | 最小提出フォルダを別の場所へコピーして確認した結果 |
+| `submission_portability.json` | 直下配置の提出回路図を別の場所へコピーし、dev PDKで確認した結果 |
+| `submission_manifest.json` | 提出ファイル一覧・元の場所・チェックサム・ZIPの確認 |
 | `sram512_release_archive.json` | 整理前の詳細版提出ZIPの検証記録 |
 | `pre_organization_validation_summary.json` | 整理前の32依存ファイルと26群の検証一覧 |
 | `sram_review_2026-09-11*` | 以前の2×2のレビュー |

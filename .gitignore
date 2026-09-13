@@ -7,7 +7,6 @@
 *.pyc
 *.raw
 *.vcd
-/submission/results/
 # Learning testbench netlists are regenerated; small reference circuits stay tracked
 /learning/simulation/sram_tb*.spice
 /learning/simulation/sense_amp_7t.spice

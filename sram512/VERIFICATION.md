@@ -22,13 +22,13 @@ PDKは無改変のTR-1um devコミット`6afbd918951f2ea0dcd11c5a46986b4c20f9e6f
 | 高温保持・RESET | 85°Cで既知の四隅を1 ms保持、10通りの中断試験 |
 | 511番地の書き込み中RESET | 書込み0/1、CLK LOW/HIGHを分け、対象以外の全511セルの保持 |
 
-必須26群は全てPASSです。提出フォルダでは`verification/validation_summary.json`が
-対象レポートを列挙します。個別レポート内のパスは、解析当時の作業リポジトリのパスです。
-提出コピーでは該当ファイルを`verification/`に収録し、原本の内容・ハッシュを維持しています。
+必須26群は全てPASSです。詳細なJSON・ログは開発リポジトリに保存し、
+`sram512/reports/validation_summary.json`で対象レポートを列挙しています。
+提出フォルダにはこの結果説明を収録しています。
 
 ## 同梱TBと詳細RC試験の違い
 
-同梱`simulation/sram512_tb.sch`はMOS回路へ、BL 70 fF/本、WL 400 fF/本、
+同梱`sram512_tb.sch`はMOS回路へ、BL 70 fF/本、WL 400 fF/本、
 共通線180 fF/本、SDO 10 pFの仮定負荷を加えたものです。周期1 µs、5 V、27°Cで、
 四隅の両極性を書いて読み、セルとSDOを判定します。巨大なrawは提出していません。
 

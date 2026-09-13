@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""Build the minimal, portable root submission folder from verified design sources."""
-import argparse
+"""Build a flat submission containing only SCH, SYM, GDS and Markdown files."""
 from datetime import datetime, timezone
-import shutil
 import zipfile
 from common import *
-from validation_summary import main as summarize, source_files
+from validation_summary import main as summarize
 from pdk_profiles import locked, tree_digest
 
 
@@ -54,62 +52,58 @@ def build():
         origins[name] = str(path.relative_to(ROOT))
     for path in sorted(dependencies()):
         if path.is_relative_to(SCHEMATICS):
-            name = ('simulation/' if path.name == 'sram512_tb.sch' else 'schematics/')+path.name
-        else:
-            name = 'pdk/xschem/'+path.relative_to(LIB).as_posix()
-        add(name, path)
-    for p in (PDK/'libs.tech/spice/models').iterdir():
-        if p.is_file():
-            add('pdk/models/'+p.name, p)
-    for name in ('sram512.gds', 'sram512_mask.gds', 'ports.json', 'overview.png'):
-        add('layout/'+name, HERE/'layout'/name)
+            add(path.name, path)
+    for name in ('sram512.gds', 'sram512_mask.gds'):
+        add(name, HERE/'layout'/name)
     for name in ('SPEC.md', 'SUBMISSION.md', 'APPEAL.md', 'VERIFICATION.md'):
         add(name, HERE/name)
     # SPEC's development commands belong to the full repository, not the minimal export.
     spec=payload['SPEC.md'].decode()
-    spec=spec.replace('sram512/schematics/sram512_tb.sch','simulation/sram512_tb.sch')
-    spec=spec.replace('sram512/schematics/','schematics/')
-    spec=spec.replace('reports/validation_summary.json','verification/validation_summary.json')
-    spec=spec.replace('diagrams/sram512.svg','schematics/overview.svg')
-    spec=spec.replace('diagrams/','schematics/')
+    spec=spec.replace('sram512/schematics/','')
+    spec=re.sub(r'diagrams/(\w+)\.svg',r'\1.sch',spec)
+    spec=spec.replace('いずれも編集可能な `.sch` をXschemで直接出力した図である。',
+                      'いずれもXschemで開く編集可能な回路図である。')
+    spec=spec.replace('`reports/validation_summary.json`','開発リポジトリの `sram512/reports/validation_summary.json`')
     spec=re.sub(r'```bash\npython3 sram512/tools/.*?```',
-                '同梱版の実行方法はREADME.mdを参照。`python3 run.py simulate`でTBを実行する。',spec,flags=re.S)
+                '同梱回路図の実行方法はREADME.mdを参照。詳細な検証ツールとログは開発リポジトリに保存している。',spec,flags=re.S)
     payload['SPEC.md']=spec.encode()
+    integration=payload['SUBMISSION.md'].decode().replace('layout/sram512.gds','sram512.gds')
+    integration=integration.replace('GDS中の端子名ラベルと `layout/ports.json` にも同じ座標を記録している。',
+                                    'GDS中の端子名ラベルにも同じ座標を記録している。')
+    payload['SUBMISSION.md']=integration.encode()
     add('README.md', HERE/'SUBMISSION_README.md')
-    add('run.py', TOOLS/'submission_runner.py')
-    add('schematics/overview.svg', HERE/'diagrams/sram512.svg')
-    for name in ('sram512_controller.svg','sram512_frame.svg','sram512_phase.svg'):
-        add('schematics/'+name,HERE/'diagrams'/name)
-    add('simulation/operations.png', REPORTS/'decoderfix_power_paths_ramp_operations.png')
-    payload['.gitignore'] = b'/results/\n/__pycache__/\n'
-    add('verification/validation_summary.json', REPORTS/'validation_summary.json')
-    # Only current required evidence is submitted; research failures remain in the work repository.
-    for row in summary['tests']:
-        add('verification/'+Path(row['report']).name, ROOT/row['report'])
-    add('verification/repository_organization.json', ROOT/'reviews/repository_organization.json')
-    manifest = dict(format_version=1, created_utc=datetime.now(timezone.utc).isoformat(),
+    assert all(Path(name).name==name and Path(name).suffix in ('.sch','.sym','.gds','.md') for name in payload)
+    manifest = dict(format_version=2, created_utc=datetime.now(timezone.utc).isoformat(),
                     source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                     status='CORE_VERIFIED_WITH_DOCUMENTED_MODEL_LIMITS',
                     pdk_revision=subprocess.check_output(['git','-C',PDK,'rev-parse','HEAD'],text=True).strip(),
                     source_gds_sha256=summary['source_gds_sha256'],
                     source_mask_sha256=summary['source_mask_sha256'],
-                    evidence_index='verification/validation_summary.json',
-                    evidence_paths_note='Paths inside original reports are historical repository paths; report bytes are preserved.',
+                    evidence_index='sram512/reports/validation_summary.json',
+                    external_dependency='Unmodified TR-1um dev PDK: Xschem symbols, standard-cell schematics and SPICE models.',
                     sources=origins,
                     files={name:dict(bytes=len(data),sha256=hashlib.sha256(data).hexdigest())
                            for name,data in sorted(payload.items())})
-    payload['MANIFEST.json']=(json.dumps(manifest,indent=2,ensure_ascii=False)+'\n').encode()
-    # Refuse to silently overwrite a manually edited export. Source files are authoritative.
-    old_manifest=output/'MANIFEST.json'
+    # Keep packaging metadata outside the requested flat submission.
+    manifest_path=ROOT/'reviews/submission_manifest.json'
+    legacy_manifest=output/'MANIFEST.json'
+    old_manifest=legacy_manifest if legacy_manifest.exists() else manifest_path
     if old_manifest.exists():
         old=json.loads(old_manifest.read_text())
         for name,info in old['files'].items():
             path=output/name
             if path.exists() and sha(path)!=info['sha256']:
                 raise RuntimeError(f'Export edited outside source: {path}; preserve/merge that edit before rebuilding.')
-        stale={name for name in set(old['files'])-set(payload) if (output/name).exists()}
-        if stale:
-            raise RuntimeError('Stale export entries need explicit archival: '+', '.join(sorted(stale)))
+        actual={p.relative_to(output).as_posix() for p in output.rglob('*') if p.is_file()}
+        unknown=actual-set(old['files'])-({'MANIFEST.json'} if legacy_manifest.exists() else set())
+        if unknown:
+            raise RuntimeError('Preserve unexpected export files before rebuilding: '+', '.join(sorted(unknown)))
+        # The user requested removal of the previous nested export and auxiliary files.
+        for name in set(old['files'])-set(payload):
+            (output/name).unlink(missing_ok=True)
+        legacy_manifest.unlink(missing_ok=True)
+        for directory in sorted((p for p in output.rglob('*') if p.is_dir()),key=lambda p:len(p.parts),reverse=True):
+            directory.rmdir()
     for name,data in payload.items():
         path=output/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(data)
     folder=WORK/'submission';folder.mkdir(parents=True,exist_ok=True)
@@ -123,6 +117,8 @@ def build():
         for name,info in manifest['files'].items():
             assert hashlib.sha256(z.read('submission/'+name)).hexdigest()==info['sha256'],name
     temp.replace(archive)
+    manifest['archive']=dict(path=str(archive.relative_to(ROOT)),sha256=sha(archive),bytes=archive.stat().st_size)
+    write_json(manifest_path,manifest)
     print(f'Created {output}: {len(payload)} files, {sum(map(len,payload.values())):,} bytes')
     print('ZIP:', archive)
     return output
