@@ -1,7 +1,7 @@
 {
   "format_version": 3,
-  "created_utc": "2026-09-13T04:37:39.038599+00:00",
-  "source_commit": "6f9f416abf21156078d2d8a436435fa2f3e28a05",
+  "created_utc": "2026-09-13T05:11:18.366905+00:00",
+  "source_commit": "e5fcf04484fe58f19dde10836e7fd6798eed04ea",
   "status": "CORE_VERIFIED_WITH_DOCUMENTED_MODEL_LIMITS",
   "pdk_revision": "6afbd918951f2ea0dcd11c5a46986b4c20f9e6f9",
   "source_gds_sha256": "56810ad742a73036fb9db5207c75a2fcd63d344833c17da5f6270f1dc128bca1",
@@ -162,6 +162,198 @@
       "allocation_use_percent": 98.70555555555555
     }
   },
+  "figures": {
+    "pins": {
+      "image": "sram512_pins.png",
+      "image_sha256": "dd6d51a1763ae1ff0d97af31afb13c808fdc1eee611bdbb51fcadd6d519f3fd8",
+      "source_gds_sha256": "7cf6744ff1a17bc7a6560639bbdaeea98041bc4eb0629763154e4c86e44be5a2",
+      "metal_layer": [
+        20,
+        0
+      ],
+      "label_layer": [
+        49,
+        0
+      ],
+      "ports_on_metal_um": {
+        "CLK": [
+          1101.7,
+          1.7
+        ],
+        "RESET": [
+          1244.7,
+          1.7
+        ],
+        "SDI": [
+          1393.2,
+          1.7
+        ],
+        "WE": [
+          1530.7,
+          1.7
+        ],
+        "SDO": [
+          1684.7,
+          1.7
+        ],
+        "VDD": [
+          1747.7,
+          597.3
+        ],
+        "VSS": [
+          1769.7,
+          597.3
+        ]
+      },
+      "renderer": "GDS polygons drawn with Matplotlib; Metal 2 only, full view and seven details"
+    },
+    "layout_trials": [
+      {
+        "image": "cell_branches.png",
+        "image_sha256": "3bbb5388460b1a383bdab8779c6a00245f347cd4d57f39808bcecbb658fa75e9",
+        "source_gds": "klayout/dense_sram/sram_dense.gds",
+        "source_gds_sha256": "f48a3ebb26256cba78199467918278ddd724fc8a8ca68ec3e0a551a49bf01823",
+        "cell": "sram_dense_2x2",
+        "shown_bits": 4,
+        "view_um": [
+          120,
+          90
+        ],
+        "dimensions_source": "klayout/dense_sram/dimensions.json",
+        "dimensions_sha256": "17e54d34574b8449afb674a9d72baf7631d1d00fa9cbf4d1aee3d22c818d8dca",
+        "cell_area_um2": 720.8,
+        "density_bit_per_mm2": 1387.3473917869035,
+        "placement_pitch": {
+          "repeat_x_um": 21.199999999999996,
+          "repeat_y_um": 68.0,
+          "rows_per_repeat": 2,
+          "measured_area_per_bit_um2": 720.7999999999998,
+          "source_cell": "sram_dense_4x4"
+        },
+        "scope": "Periodic array area per bit; excludes tap columns, ends and peripheral circuits"
+      },
+      {
+        "image": "cell_shared.png",
+        "image_sha256": "f39d1235367290e72e26e40d67aa7de1ef6255da030f52f2804fe2044f480d06",
+        "source_gds": "klayout/sram_research/euler_shared.gds",
+        "source_gds_sha256": "0f9fed41787658153d00adf16b5718c0b74442280056f85a00ae889b692efa16",
+        "cell": "euler_shared_2x2",
+        "shown_bits": 4,
+        "view_um": [
+          120,
+          90
+        ],
+        "dimensions_source": "klayout/sram_research/euler_dimensions.json",
+        "dimensions_sha256": "ac4e4fd703a28326c2436df50912753a3503aefc42f28050cdbbe942d2c5070c",
+        "cell_area_um2": 686.72,
+        "density_bit_per_mm2": 1456.197576887232,
+        "placement_pitch": {
+          "repeat_x_um": 23.199999999999996,
+          "repeat_y_um": 59.19999999999999,
+          "rows_per_repeat": 2,
+          "measured_area_per_bit_um2": 686.7199999999997,
+          "source_cell": "euler_shared_4x4"
+        },
+        "scope": "Periodic array area per bit; excludes tap columns, ends and peripheral circuits"
+      },
+      {
+        "image": "cell_two_wl.png",
+        "image_sha256": "4e2c97e97d5d9c16434b4f7d50fe67b15b4cc8ae1f81f51ee6127243c53bd492",
+        "source_gds": "klayout/sram_t4/t4_dualwl.gds",
+        "source_gds_sha256": "9f1d26066520eb3018a200aecf7915bbeb62460ce300a600ac9afb7af820b38a",
+        "cell": "t4_dualwl_2x2",
+        "shown_bits": 4,
+        "view_um": [
+          120,
+          90
+        ],
+        "dimensions_source": "klayout/sram_t4/dimensions.json",
+        "dimensions_sha256": "07980cfce5da9a9e3deeb51bfd7085bed108069b9e1796dfeb3450a0bfd04b50",
+        "cell_area_um2": 1115.12,
+        "density_bit_per_mm2": 896.7644737786069,
+        "placement_pitch": {
+          "repeat_x_um": 52.599999999999994,
+          "repeat_y_um": 21.199999999999996,
+          "rows_per_repeat": 1,
+          "measured_area_per_bit_um2": 1115.1199999999997,
+          "source_cell": "t4_dualwl_4x4"
+        },
+        "scope": "Periodic array area per bit; excludes tap columns, ends and peripheral circuits"
+      },
+      {
+        "image": "cell_one_wl.png",
+        "image_sha256": "ba019031af3f767915b6ab8f5f877043513bc72706cadf511f4df3fdd09a99be",
+        "source_gds": "klayout/sram_t4/t4_singlewl.gds",
+        "source_gds_sha256": "31faf3ed204226fb8401b4d1b640e096c833f2ec28171aef79eae351f7d7a09a",
+        "cell": "t4_singlewl_2x2",
+        "shown_bits": 4,
+        "view_um": [
+          120,
+          90
+        ],
+        "dimensions_source": "klayout/sram_t4/single_dimensions.json",
+        "dimensions_sha256": "120922bb4bad8ec60a356df6ec0417f8e4ddb1cb3ef26478238860d96ff61a53",
+        "cell_area_um2": 857.3800000000001,
+        "density_bit_per_mm2": 1166.3439781660406,
+        "placement_pitch": {
+          "repeat_x_um": 52.599999999999994,
+          "repeat_y_um": 32.599999999999994,
+          "rows_per_repeat": 2,
+          "measured_area_per_bit_um2": 857.3799999999998,
+          "source_cell": "t4_singlewl_4x4"
+        },
+        "scope": "Periodic array area per bit; excludes tap columns, ends and peripheral circuits"
+      },
+      {
+        "image": "cell_compact.png",
+        "image_sha256": "698a2a2888ee773867d442d7a6c7c769feeb6634c063faa881f3c0d483a64cb8",
+        "source_gds": "klayout/sram_compact/compact.gds",
+        "source_gds_sha256": "5614e5c7ced7ca5036b61b7ef1b2ab00967b0ad6b76a45d13e8d1d7930eddb18",
+        "cell": "compact_2x2",
+        "shown_bits": 4,
+        "view_um": [
+          120,
+          90
+        ],
+        "dimensions_source": "klayout/sram_compact/dimensions.json",
+        "dimensions_sha256": "8fb9c5c47109fc3e532fa436cd12b37c7016458951e056c59d799d22fb88d227",
+        "cell_area_um2": 651.2,
+        "density_bit_per_mm2": 1535.6265356265355,
+        "placement_pitch": {
+          "repeat_x_um": 21.999999999999996,
+          "repeat_y_um": 59.19999999999999,
+          "rows_per_repeat": 2,
+          "measured_area_per_bit_um2": 651.1999999999998,
+          "source_cell": "compact_4x4"
+        },
+        "scope": "Periodic array area per bit; excludes tap columns, ends and peripheral circuits"
+      },
+      {
+        "image": "cell_pcell.png",
+        "image_sha256": "e2462d496d8bcd9eaebe9ec68ba2ce0a1b9922beffb537e69e78f0338057a78a",
+        "source_gds": "klayout/sram_pcell/pcell.gds",
+        "source_gds_sha256": "f944f38ff126069695ffe2fc5a6664aeb931f32faacf0c93b4a2b414cf431b51",
+        "cell": "pcell_2x2",
+        "shown_bits": 4,
+        "view_um": [
+          120,
+          90
+        ],
+        "dimensions_source": "klayout/sram_pcell/dimensions.json",
+        "dimensions_sha256": "435c5cb4986cc55a9a37b216df173fb87c70ffe15b0bb0671f4c8b79c4da8c45",
+        "cell_area_um2": 651.2,
+        "density_bit_per_mm2": 1535.6265356265355,
+        "placement_pitch": {
+          "repeat_x_um": 21.999999999999996,
+          "repeat_y_um": 59.19999999999999,
+          "rows_per_repeat": 2,
+          "measured_area_per_bit_um2": 651.1999999999998,
+          "source_cell": "pcell_4x4"
+        },
+        "scope": "Periodic array area per bit; excludes tap columns, ends and peripheral circuits"
+      }
+    ]
+  },
   "evidence_index": "sram512/reports/validation_summary.json",
   "external_dependency": "Unmodified TR-1um dev PDK: Xschem symbols, standard-cell schematics and SPICE models.",
   "sources": {
@@ -193,17 +385,48 @@
     "sram512.gds": "build/sram512/submission/sram512.gds",
     "sram512_layout.png": "build/sram512/submission/sram512_layout.png",
     "sram512_schematic.svg": "build/sram512/submission/sram512_schematic.svg",
+    "sram512_pins.png": "build/sram512/submission/sram512_pins.png",
+    "cell_branches.png": "build/sram512/submission/cell_branches.png",
+    "cell_shared.png": "build/sram512/submission/cell_shared.png",
+    "cell_two_wl.png": "build/sram512/submission/cell_two_wl.png",
+    "cell_one_wl.png": "build/sram512/submission/cell_one_wl.png",
+    "cell_compact.png": "build/sram512/submission/cell_compact.png",
+    "cell_pcell.png": "build/sram512/submission/cell_pcell.png",
     "SPEC.md": "sram512/SPEC.md",
     "README.md": "sram512/SUBMISSION_README.md"
   },
   "files": {
     "README.md": {
-      "bytes": 1299,
-      "sha256": "4205efe06d3c53de105edf92434bf52c97920a8d7a19a6f04d120f16e43151cc"
+      "bytes": 3243,
+      "sha256": "3359b1ec154071ec7b8c5ccfc147fc751c1b1696266958567f1157d4c20c19fb"
     },
     "SPEC.md": {
-      "bytes": 6040,
-      "sha256": "df25ce3cf05b47a39d5a035b208bcec36c0a74c53bafb66d675b43621681a9ac"
+      "bytes": 11194,
+      "sha256": "3a44dea58c968793da35fa1c39cc81de750aa7f4fc904a5206dbbf7ab04200f7"
+    },
+    "cell_branches.png": {
+      "bytes": 56933,
+      "sha256": "3bbb5388460b1a383bdab8779c6a00245f347cd4d57f39808bcecbb658fa75e9"
+    },
+    "cell_compact.png": {
+      "bytes": 44620,
+      "sha256": "698a2a2888ee773867d442d7a6c7c769feeb6634c063faa881f3c0d483a64cb8"
+    },
+    "cell_one_wl.png": {
+      "bytes": 60074,
+      "sha256": "ba019031af3f767915b6ab8f5f877043513bc72706cadf511f4df3fdd09a99be"
+    },
+    "cell_pcell.png": {
+      "bytes": 46647,
+      "sha256": "e2462d496d8bcd9eaebe9ec68ba2ce0a1b9922beffb537e69e78f0338057a78a"
+    },
+    "cell_shared.png": {
+      "bytes": 45154,
+      "sha256": "f39d1235367290e72e26e40d67aa7de1ef6255da030f52f2804fe2044f480d06"
+    },
+    "cell_two_wl.png": {
+      "bytes": 60114,
+      "sha256": "4e2c97e97d5d9c16434b4f7d50fe67b15b4cc8ae1f81f51ee6127243c53bd492"
     },
     "sense_amp_7t.sch": {
       "bytes": 2708,
@@ -301,6 +524,10 @@
       "bytes": 1542,
       "sha256": "68b64dddf81fa75cb6b1ba7fea015b55a66b13e0b55b87aaf7bf9827ba835f5c"
     },
+    "sram512_pins.png": {
+      "bytes": 185796,
+      "sha256": "dd6d51a1763ae1ff0d97af31afb13c808fdc1eee611bdbb51fcadd6d519f3fd8"
+    },
     "sram512_row_decoder.sch": {
       "bytes": 12512,
       "sha256": "ea9ab1ddf99f08eb9454d90628adc218983b00d116ace67aca0e90de8b3f7b45"
@@ -320,7 +547,7 @@
   },
   "archive": {
     "path": "build/sram512/submission/sram512_submission_7cf6744ff1a1.zip",
-    "sha256": "b2cefe38b5f736fa1c934571b05411c22794bb9a46d99c4e648de41201b8342a",
-    "bytes": 1753809
+    "sha256": "6549f64fca85e940e715f6ef231121e5d307275fb9c00fb13f0e2bb947333eb6",
+    "bytes": 2224442
   }
 }

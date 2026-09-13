@@ -38,8 +38,8 @@
   "scope": "Unchanged electrical SCH/SYM files and MOS simulation netlist. An isolated export was freshly netlisted with standard Xschem LVS settings, then checked by the original dev GUI macro using its default current-view source and simulation/sram512.spice lookup. Exported GDS preserves every polygon and text coordinate after integrating one wrapper. Fresh DRC 0 and strict LVS match; earlier transistor simulation remains applicable by netlist/model identity.",
   "final_archive": {
     "path": "build/sram512/submission/sram512_submission_7cf6744ff1a1.zip",
-    "sha256": "b2cefe38b5f736fa1c934571b05411c22794bb9a46d99c4e648de41201b8342a",
-    "bytes": 1753809
+    "sha256": "6549f64fca85e940e715f6ef231121e5d307275fb9c00fb13f0e2bb947333eb6",
+    "bytes": 2224442
   },
   "layout_export": {
     "passed": true,
@@ -215,12 +215,30 @@
     "archive_hashes_checked": true
   },
   "documentation_refresh": {
-    "source_commit": "6f9f416abf21156078d2d8a436435fa2f3e28a05",
+    "checked_utc": "2026-09-13T05:12:38.251531+00:00",
+    "source_commit": "e5fcf04484fe58f19dde10836e7fd6798eed04ea",
     "changed_submission_files": [
-      "SPEC.md"
+      "README.md",
+      "SPEC.md",
+      "cell_branches.png",
+      "cell_compact.png",
+      "cell_one_wl.png",
+      "cell_pcell.png",
+      "cell_shared.png",
+      "cell_two_wl.png",
+      "sram512_pins.png"
     ],
+    "published_files": 37,
     "electrical_files_unchanged": true,
     "archive_hashes_checked": true,
-    "scope": "Regulated 5 V experimental use and schematic hierarchy documented; SCH/SYM/GDS unchanged, previous physical checks remain applicable."
+    "document_links_resolve": true,
+    "images_visually_reviewed": true,
+    "pins_verified_on_gds_metal": true,
+    "six_layout_densities_verified_from_gds_placement": true,
+    "hierarchy_diagrams_rendered_and_visually_reviewed": true,
+    "simulation_checks_cross_checked_with_checker_code": true,
+    "existing_required_reports_current": true,
+    "simulation_rerun": false,
+    "scope": "Pin connection image, six-layout comparison, per-test acceptance criteria and connections documented. Hierarchy split into two rendered diagrams to remove overlapping edges. Unwanted explanatory and supply disclaimer sentences removed. All 26 electrical files are unchanged; previous physical and simulation evidence remains applicable."
   }
 }
