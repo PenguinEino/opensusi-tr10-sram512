@@ -1,7 +1,7 @@
 {
   "format_version": 1,
-  "created_utc": "2026-09-13T02:21:10.693775+00:00",
-  "source_commit": "16821aa34fa3dd947c3ab6db74ced68163327be8",
+  "created_utc": "2026-09-13T02:32:18.996960+00:00",
+  "source_commit": "b434d800da608f7b715221bed852a3f868233138",
   "status": "CORE_VERIFIED_WITH_DOCUMENTED_MODEL_LIMITS",
   "pdk_revision": "6afbd918951f2ea0dcd11c5a46986b4c20f9e6f9",
   "source_gds_sha256": "56810ad742a73036fb9db5207c75a2fcd63d344833c17da5f6270f1dc128bca1",
@@ -71,15 +71,12 @@
     "layout/sram512_mask.gds": "sram512/layout/sram512_mask.gds",
     "layout/ports.json": "sram512/layout/ports.json",
     "layout/overview.png": "sram512/layout/overview.png",
-    "layout/NOTICE.txt": "sram512/layout/NOTICE.txt",
     "SPEC.md": "sram512/SPEC.md",
     "SUBMISSION.md": "sram512/SUBMISSION.md",
     "APPEAL.md": "sram512/APPEAL.md",
     "VERIFICATION.md": "sram512/VERIFICATION.md",
     "README.md": "sram512/SUBMISSION_README.md",
     "run.py": "sram512/tools/submission_runner.py",
-    "licenses/IP62-NOTICE.txt": "sram512/licenses/IP62-NOTICE.txt",
-    "licenses/TR-1um-LICENSE.txt": "sram512/licenses/TR-1um-LICENSE.txt",
     "schematics/overview.svg": "sram512/diagrams/sram512.svg",
     "schematics/sram512_controller.svg": "sram512/diagrams/sram512_controller.svg",
     "schematics/sram512_frame.svg": "sram512/diagrams/sram512_frame.svg",
@@ -124,8 +121,8 @@
       "sha256": "ad3da506489437d383cdb1732ff4c28087aca7488d98e8f379520806758081e3"
     },
     "README.md": {
-      "bytes": 4335,
-      "sha256": "708a736c0a56b4787b342deabc0fa391e0ba2e89adc60fa532d786218f6efdd6"
+      "bytes": 4238,
+      "sha256": "c2b95f0bd740ed91f854e53f26f88da1ca2f3839660089682dae3c911e290100"
     },
     "SPEC.md": {
       "bytes": 7885,
@@ -138,10 +135,6 @@
     "VERIFICATION.md": {
       "bytes": 4362,
       "sha256": "7b282d25c7aecfb829516f49dc3e562b74559242edc829945e8a3cd71bb41916"
-    },
-    "layout/NOTICE.txt": {
-      "bytes": 955,
-      "sha256": "947ca9e6b3ee946e1c74109883361b7fe7b1181a96edbcb5a6970b9156a6204b"
     },
     "layout/overview.png": {
       "bytes": 346568,
@@ -158,14 +151,6 @@
     "layout/sram512_mask.gds": {
       "bytes": 5823308,
       "sha256": "cbd3e51a3f9ff9c6f90b93c4c3ca134acf3cb28adb3b495ca357f47e6b280ba4"
-    },
-    "licenses/IP62-NOTICE.txt": {
-      "bytes": 559,
-      "sha256": "0994fab10f3b8f28e72f9f22285cf62a0bb112d7ca8227755d776edcb12c611b"
-    },
-    "licenses/TR-1um-LICENSE.txt": {
-      "bytes": 11459,
-      "sha256": "6863509ccf02291e916f566f36f0e0ed5d218d55a0c08d8abadad6f55aa9540d"
     },
     "pdk/models/ip62_models": {
       "bytes": 321,
@@ -533,7 +518,7 @@
     },
     "verification/validation_summary.json": {
       "bytes": 21013,
-      "sha256": "f5e4f647c58e7e3c27c6ff3a8a241638ebffa88fe18c299aa369f93d2ce4c0dc"
+      "sha256": "599cb5f70a67dffc756282917def682cddc321a1aee22116d4a8a630f21593fa"
     }
   }
 }
