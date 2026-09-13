@@ -12,6 +12,7 @@ from importlib.metadata import version
 import zipfile
 from common import *
 from validation_summary import main as summarize, source_files
+from evidence import design_inputs
 from pdk_profiles import locked, tree_digest
 
 
@@ -22,6 +23,7 @@ ENTRY_POINTS = ('open', 'verify_saved_layout', 'verify_digital', 'analog',
     'save_candidate', 'strengthen_signal_routes', 'reinforce_decoder_routes',
     'widen_decoder_poly', 'live_probe', 'decoder_route_waveforms', 'reset_address_test',
     'operation_waveforms',
+    'review_recheck', 'test_verification',
     'export_schematics', 'package', 'build_submission', 'submission_runner',
     'submission_lvs', 'submission_gui_lvs')
 
@@ -52,6 +54,7 @@ def python_dependencies(initial):
 
 def selected_files(summary):
     files = {ROOT / n for n in source_files()}
+    files.update(design_inputs())
     # PCell code loads the dense drawing helper dynamically, not with import.
     python = [TOOLS / (n + '.py') for n in ENTRY_POINTS]
     python += [ROOT / 'klayout/sram_pcell/build.py', ROOT / 'klayout/dense_sram/build.py']
@@ -60,9 +63,13 @@ def selected_files(summary):
         'APPEAL.md', 'VERIFICATION.md', 'SUBMISSION_README.md',
         'run.py', 'design.json', 'analog_scenario.json'))
     files.add(ROOT/'reviews/repository_organization.json')
+    files.add(ROOT/'reviews/sram512_review_2026-09-13_results.json')
+    files.add(ROOT/'reviews/sram512_review_response_2026-09-13.md')
     files.update((HERE/'diagrams').glob('*.svg'))
     files.update(p for p in (HERE / 'layout').iterdir() if p.is_file())
     files.update(REPORTS.glob('*.json'))
+    files.update((REPORTS/'evidence').glob('*.json'))
+    files.update((REPORTS/'rechecks').glob('*.json'))
     files.update(REPORTS.glob('*.png'))
     # Router source files are only needed if an included exploratory layout
     # helper is used; no router is used by saved-GDS DRC/LVS verification.
@@ -103,10 +110,10 @@ PDK自体は同梱せず、無改変のTR-1um devを次の位置に用意しま�
 git clone https://github.com/OpenSUSI/TR-1um.git .pdk/dev/TR-1um
 git -C .pdk/dev/TR-1um checkout --detach 6afbd918951f2ea0dcd11c5a46986b4c20f9e6f9
 # SRAM_KLAYOUT_BINを、その環境のklayout実行ファイルの絶対パスへ設定する
-python3 sram512/tools/verify_saved_layout.py
-python3 sram512/tools/pcell_preservation.py
-python3 sram512/tools/verify_digital.py
-python3 sram512/tools/analog.py
+python3 sram512/run.py layout-check
+python3 sram512/tools/evidence.py --report pcell_preservation -- python3 sram512/tools/pcell_preservation.py
+python3 sram512/run.py digital
+python3 sram512/tools/evidence.py --report analog_pd102_nominal -- python3 sram512/tools/analog.py --name-prefix pd102
 ```
 
 回路図を開く場合は `python3 sram512/tools/open.py`。

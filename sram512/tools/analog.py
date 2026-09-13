@@ -7,6 +7,7 @@ model's intrinsic capacitances. They are TB elements, never LVS exceptions.
 import argparse,time
 import numpy as np
 from common import *
+from waveform import WaveformError, validate_time, sample_window
 
 def scenario(period=1000,edge=5,addresses=None):
     addresses=[0,31,480,511] if addresses is None else addresses
@@ -102,12 +103,21 @@ def verify(path,case,vdd=5):
 def verify_samples(t,w,case,vdd=5):
     """Apply the same checks to explicit samples; final callers require load_raw."""
     failures=[];checks=0;observations=[]
+    try:
+        validate_time(t, 0, case['stop_ns'])
+    except WaveformError as error:
+        return dict(passed=False, checks=1, failure_count=1,
+                    failures=[dict(kind='waveform_time', message=str(error))],
+                    read_observations=[], points=len(t), operations=len(case['operations']))
     def vec(n):return w['v('+n.lower()+')']
     def level(n,b,a,z=None,fraction=.1):
         nonlocal checks
         checks+=1
-        values=np.array([np.interp(a,t,vec(n))]) if z is None else vec(n)[(t>=a)&(t<=z)]
-        assert len(values),(n,a,z)
+        try:
+            values=sample_window(t,vec(n),a,z)
+        except WaveformError as error:
+            failures.append(dict(net=n,kind='measurement_range',message=str(error)))
+            return
         low=float(values.min());high=float(values.max())
         if (low<(1-fraction)*vdd if b else high>fraction*vdd):
             failures.append(dict(net=n,expected=b,start_ns=a,end_ns=z,min_v=low,max_v=high))
@@ -154,8 +164,23 @@ def verify_samples(t,w,case,vdd=5):
                 y_difference_v=float(np.interp(when,t,vec('Y')-vec('YB')))))
         for q,b in [('Q',known[r,c]),('QB',1-known[r,c])]:level(f'xarray.xr{r}c{c}.{q}',b,e+7.8*period)
         level('SDO',sdo,e+6.8*period,e+7.8*period)
+    # SDO may change only after a read capture or an asynchronous RESET.
+    # The external read convention allows settling until E6 + 0.8 cycle;
+    # the rest of reception, writes and stopped-clock time must retain data.
+    updates=[(op['e0']+6*period,op['data'],.8*period,'read_capture')
+             for op in case['operations'] if not op['write']]
+    updates += [(r['assert_ns'],0,.2*period,'reset') for r in case.get('reset_intervals',[])]
+    start=case.get('initial_check_ns',.6*period);expected=0;hold_checks=0
+    for when,bit,settling,reason in sorted(updates):
+        if when>=start:
+            level('SDO',expected,start,when);hold_checks+=1
+        start=when+settling;expected=bit
+    if start<=case['stop_ns']:
+        level('SDO',expected,start,case['stop_ns']);hold_checks+=1
     return dict(passed=not failures,checks=checks,failure_count=len(failures),failures=failures[:40],
-                read_observations=observations,points=len(t),operations=len(case['operations']))
+                read_observations=observations,points=len(t),operations=len(case['operations']),
+                sdo_hold_checks=hold_checks, sdo_read_settling_ns=.8*period,
+                required_time_range_ns=[0,case['stop_ns']])
 
 def simulate(name='shared_wl_nominal',vdd=5,temp=27,bl='70f',wl='400f',y='180f',sdo='10p',period=1000,edge=5,vthmn=0,vthmp=0,addresses=None,solver='klu'):
     work=WORK/'analog'/name;work.mkdir(parents=True,exist_ok=True)

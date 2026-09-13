@@ -23,4 +23,9 @@ parser.add_argument('command', choices=COMMANDS)
 args, extra = parser.parse_known_args()
 script, defaults = COMMANDS[args.command]
 os.chdir(HERE.parent)
-os.execv(sys.executable, [sys.executable, str(HERE/'tools'/script), *defaults, *extra])
+command = [sys.executable, str(HERE/'tools'/script), *defaults, *extra]
+reports = {'digital': 'digital', 'layout-check': 'saved_layout_recheck'}
+if args.command in reports:
+    command = [sys.executable, str(HERE/'tools/evidence.py'),
+               '--report', reports[args.command], '--', *command]
+os.execv(sys.executable, command)

@@ -141,7 +141,7 @@ def negative_probes(output):
         original_sha256=before, changed_sha256=sha(target),
         summary_all_pass=summary['all_required_reports_pass'],
         summary_pass_count=sum(r['state'] == 'PASS' for r in summary['tests']),
-        summary_stamps_changed_source=summary['source_snapshot'][relative] == sha(target),
+        summary_stamps_changed_source=summary['source_snapshot'].get(relative) == sha(target),
         full_archive_exit_code=process.returncode, full_archives=manifests,
         flat_export_exit_code=flat.returncode,
         flat_export_source_guard_triggered='Verified electrical sources changed' in

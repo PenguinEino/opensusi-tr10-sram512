@@ -6,6 +6,7 @@ checks first. The summary records report hashes and the source snapshot.
 """
 from datetime import datetime, timezone
 from common import *
+from evidence import check as check_evidence
 
 REQUIRED = [
     ('saved_layout_recheck', 'Current schematic / drawing DRC / strict LVS / full mask DRC', True),
@@ -109,7 +110,8 @@ def main():
         row = dict(test=name, purpose=purpose, report=str(path.relative_to(ROOT)), state='PENDING')
         if path.is_file():
             r = json.loads(path.read_text())
-            matches = not physical or source_gds(r) == digest
+            receipt_matches, receipt_errors, receipt = check_evidence(name)
+            matches = receipt_matches and (not physical or source_gds(r) == digest)
             complete = (name not in REQUIRED_OPERATIONS or r.get('operations') == REQUIRED_OPERATIONS[name]) and wire_audit_complete(name, r)
             detailed = name not in REQUIRE_SIGNAL_MESH or (
                 r.get('signal_mesh') is True and r.get('physical_gate_paths') is True
@@ -122,8 +124,10 @@ def main():
                     and reset.get('unselected_cells_per_interruption')==511
                     and reset.get('targets')==[[15,31]] and reset.get('write_data')==[bit]
                     and reset.get('clock_levels')==[bit])
-            row.update(state='PASS' if r.get('passed') and matches and complete and detailed else 'FAIL',
+            row.update(state=('STALE' if not matches else
+                              'PASS' if r.get('passed') and complete and detailed else 'FAIL'),
                        report_sha256=sha(path), source_matches=matches,
+                       evidence_receipt=receipt, evidence_errors=receipt_errors,
                        required_operations=REQUIRED_OPERATIONS.get(name), scope_complete=complete,
                        required_signal_model_present=detailed,
                        checks=r.get('checks'), failure_count=r.get('failure_count', 0))
@@ -139,7 +143,9 @@ def main():
                                  reason='Reproduced signal margin / terminal voltage failure on this GDS.'))
     result = dict(all_required_reports_pass=all(r['state'] == 'PASS' for r in rows) and not blocking,
         created_utc=datetime.now(timezone.utc).isoformat(), source_gds_sha256=digest,
-        source_mask_sha256=sha(HERE / 'layout/sram512_mask.gds'), source_snapshot=source_files(),
+        source_mask_sha256=sha(HERE / 'layout/sram512_mask.gds'),
+        source_snapshot=source_files() if all(r['state']=='PASS' for r in rows) and not blocking else {},
+        current_source_snapshot=source_files(),
         pdk=provenance('dev'), tests=rows, blocking_signal_diagnostics=blocking,
         scope='Evidence index for this source snapshot, not a replacement for fresh verification. RC coefficients and global Vth shifts are uncalibrated sensitivity tests; pad/frame integration and statistical yield qualification are outside this core verification.')
     write_json(REPORTS / 'validation_summary.json', result)
@@ -150,4 +156,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    raise SystemExit(0 if main()['all_required_reports_pass'] else 1)

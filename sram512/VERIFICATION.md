@@ -24,7 +24,20 @@ PDKは無改変のTR-1um devコミット`6afbd918951f2ea0dcd11c5a46986b4c20f9e6f
 
 必須26群は全てPASSです。詳細なJSON・ログは開発リポジトリに保存し、
 `sram512/reports/validation_summary.json`で対象レポートを列挙しています。
-提出フォルダにはこの結果説明を収録しています。
+
+回路・試験コード・PDKが実行時と一致することを、各試験の`reports/evidence/`で照合します。
+一致しない結果は`STALE`となり、合格扱いの提出物生成を停止します。
+`run.py digital`と`run.py layout-check`は実行後にこの記録を更新します。
+その他の試験は、対応するレポート名を指定して実行します。
+
+```sh
+python3 sram512/tools/evidence.py --report analog_pd102_nominal -- \
+  python3 sram512/tools/analog.py --name-prefix pd102
+python3 sram512/tools/test_verification.py
+```
+
+今回の判定修正は既存の波形を再検査したもので、全シミュレーションの再実行ではありません。
+経緯と修正確認は[レビュー対応記録](../reviews/sram512_review_response_2026-09-13.md)を参照してください。
 
 ## 同梱TBと詳細RC試験の違い
 
