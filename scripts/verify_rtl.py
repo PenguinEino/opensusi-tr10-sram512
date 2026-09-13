@@ -44,6 +44,7 @@ def main():
     parser.add_argument('--row-bits', type=int)
     parser.add_argument('--col-bits', type=int)
     parser.add_argument('--waves', action='store_true')
+    parser.add_argument('--exhaustive', action='store_true', help='also exhaust all legal 2x2 command pairs and memory backgrounds')
     args = parser.parse_args()
     if (args.row_bits is None) != (args.col_bits is None):
         parser.error('specify both --row-bits and --col-bits')
@@ -77,11 +78,14 @@ def main():
         if output.strip():
             print(output, end='')
         waves = args.waves and (len(shapes) == 1 or (row_bits, col_bits) == (1, 1))
-        output = run(sim_prefix + [executable] + (['+waves'] if waves else []), work, 'simulation.log')
+        extra = ['+exhaustive'] if args.exhaustive and (row_bits, col_bits) == (1, 1) else []
+        output = run(sim_prefix + [executable] + (['+waves'] if waves else []) + extra, work, 'simulation.log')
         passes = [line for line in output.splitlines() if line.startswith('PASS ')]
         if len(passes) != 1:
             raise RuntimeError(f'Missing PASS result: {work / "simulation.log"}\n{output}')
         print(passes[0], flush=True)
+        for line in output.splitlines():
+            if line.startswith('COVERAGE:'):print(line, flush=True)
         if waves:
             print(f'Waveform: {work / "serial_controller.vcd"}', flush=True)
     print('Digital RTL verification complete. Logs: build/rtl/')

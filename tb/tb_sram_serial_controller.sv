@@ -36,6 +36,8 @@ module tb_sram_serial_controller;
     integer reset_tests = 0;
     integer rises = 0;
     integer i, pass, phase, addr;
+    integer background, previous_cmd, next_cmd, command_index, command_code;
+    integer exhaustive_pairs = 0;
     reg [31:0] random_state = 32'h51a70b3d;
     reg data_bit;
 
@@ -317,6 +319,26 @@ module tb_sram_serial_controller;
             check(SDO === last_read, "unused count must not capture SOUT");
         end
         access(0, 0, 0, 0);
+
+        // Exhaust every legal ordered command pair over all 16 initial 2x2
+        // memory backgrounds. Commands are read, write-0, write-1 per address.
+        // Establish backgrounds only through the public serial interface.
+        if ($test$plusargs("exhaustive")) begin
+            if (DEPTH != 4) $fatal(1, "exhaustive command pairs require 2x2");
+            for (background = 0; background < 16; background = background+1)
+                for (previous_cmd = 0; previous_cmd < 12; previous_cmd = previous_cmd+1)
+                    for (next_cmd = 0; next_cmd < 12; next_cmd = next_cmd+1) begin
+                        for (i = 0; i < 4; i = i+1)
+                            access(i, 1, (background >> i) & 1, 0);
+                        for (command_index = 0; command_index < 2; command_index = command_index+1) begin
+                            command_code = command_index == 0 ? previous_cmd : next_cmd;
+                            access(command_code / 3, command_code % 3 != 0,
+                                   command_code % 3 == 2, 0);
+                        end
+                        exhaustive_pairs = exhaustive_pairs + 1;
+                    end
+            $display("COVERAGE: %0d ordered command pairs over 16 initial memory backgrounds", exhaustive_pairs);
+        end
 
         $display("PASS %0dx%0d: %0d operations, %0d checks, %0d async resets; N=%0d, count=%0d bits",
                  1 << ROW_BITS, 1 << COL_BITS, operations, checks, reset_tests,

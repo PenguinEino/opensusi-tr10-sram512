@@ -90,10 +90,13 @@ def verify(work,case):
             if b not in ['0','1']:raise RuntimeError(f'unknown RTL expectation: {line}')
             level(n,int(b),t,tag='RTL')
     rtl_checks=checks
-    known={};last_read=0
+    reset_windows=case['reset_windows'] if 'reset_windows' in case else [(0,245),(case['reset_at'],case['reset_at']+245)]
+    known={};last_read=0; previous_first=-1
     for i,op in enumerate(case['operations']):
         a=op['e0'];first=op['first'];row=op['row'];col=op['col'];wr=op['write'];bit=op['data'];tag=f'op{i}'
-        if first>case['reset_at'] and i==16:last_read=0
+        if any(previous_first < start < first for start,_ in reset_windows):last_read=0
+        if op.get('forget_memory_before'):known.clear()
+        previous_first=first
         for n,b in [('RA',row),('CA',col),('DIN',bit if wr else 0)]:
             level(n,b,a-65,a+795,tag=tag+' frame hold after last RX')
         level('xctrl.W',wr,a+35,a+795,tag=tag+' mode hold')
@@ -135,8 +138,10 @@ def verify(work,case):
         level('SDO',last_read,first+35,a+599 if not wr else a+795,tag=tag+' result hold')
         if not wr:
             last_read=bit;level('SDO',bit,a+635,a+795,tag=tag+' captured result')
-    # Both RESET assertions initialize with CLK stopped; SRAM retains valid bits.
-    for start,end in [(35,245),(case['reset_at']+35,case['reset_at']+245)]:
+    # Check settled outputs of each asynchronous RESET assertion. Retention
+    # during access interruption is deliberately outside the memory contract.
+    for assertion,end in reset_windows:
+        start=assertion+35
         for n in ['RA','CA','DIN','xctrl.W','SDO','WL_EN','WRITE_EN','WL0','WL1','PD_Y','PD_YB']+[f'xctrl.C{i}' for i in range(4)]:level(n,0,start,end,tag='async RESET')
         for n in ['PREB','SAE']:level(n,1,start,end,tag='async RESET')
     if errors:
