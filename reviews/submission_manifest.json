@@ -1,7 +1,7 @@
 {
   "format_version": 3,
-  "created_utc": "2026-09-13T03:44:26.211333+00:00",
-  "source_commit": "7a44ee065e23145ee5d84749f0509656484413c6",
+  "created_utc": "2026-09-13T04:34:01.274748+00:00",
+  "source_commit": "91572c2cd792265b5eb248e67d3f81f74ec099f8",
   "status": "CORE_VERIFIED_WITH_DOCUMENTED_MODEL_LIMITS",
   "pdk_revision": "6afbd918951f2ea0dcd11c5a46986b4c20f9e6f9",
   "source_gds_sha256": "56810ad742a73036fb9db5207c75a2fcd63d344833c17da5f6270f1dc128bca1",
@@ -202,8 +202,8 @@
       "sha256": "4205efe06d3c53de105edf92434bf52c97920a8d7a19a6f04d120f16e43151cc"
     },
     "SPEC.md": {
-      "bytes": 4189,
-      "sha256": "2e96bacdd51db5daf4c11b44f79444a64f4c9d5df265364e00e92d9c8bc7b11f"
+      "bytes": 4285,
+      "sha256": "82379e25049e80de193779b356a9e75a877cb2697055ad09f08dc3381c426963"
     },
     "sense_amp_7t.sch": {
       "bytes": 2708,
@@ -320,7 +320,7 @@
   },
   "archive": {
     "path": "build/sram512/submission/sram512_submission_7cf6744ff1a1.zip",
-    "sha256": "2fcfc9f56a24abda21664151c48d20b6ebba0c9539f093c363825ac6ecf8684d",
-    "bytes": 1753084
+    "sha256": "78caafa1ae61ac2dcda2baf072813e9b69464446a81a6e5eff9c6f59d131f5a9",
+    "bytes": 1753131
   }
 }
