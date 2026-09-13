@@ -38,8 +38,8 @@
   "scope": "Unchanged electrical SCH/SYM files and MOS simulation netlist. An isolated export was freshly netlisted with standard Xschem LVS settings, then checked by the original dev GUI macro using its default current-view source and simulation/sram512.spice lookup. Exported GDS preserves every polygon and text coordinate after integrating one wrapper. Fresh DRC 0 and strict LVS match; earlier transistor simulation remains applicable by netlist/model identity.",
   "final_archive": {
     "path": "build/sram512/submission/sram512_submission_7cf6744ff1a1.zip",
-    "sha256": "b8049130b090b819de02a3c985ed17e58e3743e6a4453ba2cd06a2e46f349970",
-    "bytes": 1753102
+    "sha256": "2fcfc9f56a24abda21664151c48d20b6ebba0c9539f093c363825ac6ecf8684d",
+    "bytes": 1753084
   },
   "layout_export": {
     "passed": true,
@@ -205,5 +205,13 @@
     "images_visually_reviewed": true,
     "area_figures_recomputed": true,
     "scope": "README previews and appeal, specification terminology, and exporter updated. All 26 SCH/SYM/GDS files are byte-identical to the preceding export; existing physical and simulation evidence remains applicable. Flat ZIP, all file hashes, document links and image decoders checked."
+  },
+  "readme_wording_update": {
+    "checked_utc": "2026-09-13T03:44:50.112288+00:00",
+    "changed_files": [
+      "README.md"
+    ],
+    "other_29_files_unchanged": true,
+    "archive_hashes_checked": true
   }
 }
