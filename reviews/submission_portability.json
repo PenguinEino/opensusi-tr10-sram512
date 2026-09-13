@@ -270,5 +270,16 @@
       "sha256": "424c4582eedc962868aa0b1bf8786d08a9f19133878ae7b40d5a857cd34878b8"
     }
   ],
-  "scope": "Portable schematic MOS testbench with its original lumped loads; no detailed distributed RC transient was repeated. Electrical files in the final export match the independently tested copy."
+  "scope": "Portable schematic MOS testbench with its original lumped loads; no detailed distributed RC transient was repeated. Electrical files in the final export match the independently tested copy.",
+  "final_archive": {
+    "path": "build/sram512/submission/sram512_submission_56810ad742a7.zip",
+    "sha256": "f8f0adb0c387a97ea70a78688f740caac6afddd53a2274a8de8c1c7112c9e7c6",
+    "bytes": 2071629,
+    "files": 106,
+    "source_commit": "16821aa34fa3dd947c3ab6db74ced68163327be8",
+    "manifest_sha256": "c2bdca3509724afa8930776b3bd2173a41c484f3bfa9ea60d3d5e67ea91afd1d",
+    "all_payload_hashes_match": true,
+    "local_document_links": 18,
+    "checked_utc": "2026-09-13T02:21:56.566245+00:00"
+  }
 }
