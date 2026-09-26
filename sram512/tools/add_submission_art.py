@@ -13,6 +13,8 @@ import zipfile
 from pathlib import Path
 
 import klayout.db as db
+from submission_figures import pin_figure
+from submission_previews import export_previews
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -104,6 +106,19 @@ def main():
     manifest = json.loads(MANIFEST.read_text())
     digest = hashlib.sha256(GDS.read_bytes()).hexdigest()
     manifest['files']['sram512.gds'] = {'bytes': GDS.stat().st_size, 'sha256': digest}
+    previews = export_previews(GDS, GDS.parent)
+    pins = pin_figure(GDS, GDS.parent)
+    manifest['previews']['layout'] = previews['layout']
+    manifest['figures']['pins'] = pins
+    for name in ('sram512_layout.png', 'sram512_pins.png'):
+        path = GDS.parent / name
+        manifest['files'][name] = {
+            'bytes': path.stat().st_size,
+            'sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
+        }
+        target = ROOT / 'build/sram512/submission' / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(path, target)
     manifest['silicon_art'] = {
         'cell': CELL, 'layer': list(LAYER), 'words_and_bboxes_um': spans,
         'orientation_degrees': 90, 'pixel_um': 5,
