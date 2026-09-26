@@ -466,8 +466,8 @@
       "sha256": "2baf283213c54b648d6eedbcbdce39248d61013e2fdc348ccb6be615ddbf8555"
     },
     "sram512.gds": {
-      "bytes": 434770,
-      "sha256": "7cf6744ff1a17bc7a6560639bbdaeea98041bc4eb0629763154e4c86e44be5a2"
+      "bytes": 437258,
+      "sha256": "d83e9e0d5a858d5e2a906a454a0cffdfb0a5ffb24e5bce0ba5ce7179eaff5282"
     },
     "sram512.sch": {
       "bytes": 28066,
@@ -575,8 +575,58 @@
     }
   },
   "archive": {
-    "path": "build/sram512/submission/sram512_submission_7cf6744ff1a1.zip",
-    "sha256": "4dd763f388a9df293f92000c00751533e87e0824352e9779ecd80b7c9f746857",
-    "bytes": 2290009
+    "path": "build/sram512/submission/sram512_submission_d83e9e0d5a85.zip",
+    "sha256": "0ce6e6e155a6d542c4403223410628f07b5209ee4b921c15b091235d1351a592",
+    "bytes": 2290789
+  },
+  "silicon_art": {
+    "cell": "sram512_silicon_art",
+    "layer": [
+      20,
+      0
+    ],
+    "words_and_bboxes_um": [
+      [
+        "EINOSUKE",
+        [
+          1696.0,
+          28.0,
+          1731.0,
+          298.0
+        ]
+      ],
+      [
+        "OKAZAKI",
+        [
+          1696.0,
+          322.0,
+          1731.0,
+          557.0
+        ]
+      ]
+    ],
+    "orientation_degrees": 90,
+    "pixel_um": 5,
+    "minimum_existing_m2_clearance_um": 3,
+    "submitted_gds_sha256": "d83e9e0d5a858d5e2a906a454a0cffdfb0a5ffb24e5bce0ba5ce7179eaff5282"
+  },
+  "submission_repair": {
+    "cell": "pcell_core",
+    "removed_layer": [
+      235,
+      0
+    ],
+    "removed_shapes": 1,
+    "reason": "Restore the verified source bitcell geometry where the submitted GDS had a stray polygon and shifted PMOS instances.",
+    "restored_pmos_origins_dbu": [
+      [
+        6000,
+        20400
+      ],
+      [
+        12000,
+        20400
+      ]
+    ]
   }
 }
